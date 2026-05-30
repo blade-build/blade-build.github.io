@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blade — the build system for large-scale monorepos</title>
+  <meta name="description" content="Blade is a modern, high-performance build system for large-scale C/C++ monorepos: one declarative command to build, test, and run, with automatic dependency analysis, incremental and parallel execution." />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta property="og:title" content="Blade Build System" />
+  <meta property="og:description" content="One command to build, test, and run large-scale C/C++ monorepos." />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">
+        <img src="assets/blade-logo.png" alt="Blade logo" />
+        Blade
+      </a>
+      <nav class="nav">
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#install" data-i18n="nav.install">Install</a>
+        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-i18n="nav.docs">Docs</a>
+        <a class="nav-github" href="https://github.com/blade-build/blade-build" aria-label="GitHub">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">中文</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow" data-i18n="hero.eyebrow">Born at Tencent · Open source since 2012</span>
+        <h1 data-i18n-html="hero.title">The build system for <span class="accent">large&#8209;scale monorepos</span></h1>
+        <p class="lede" data-i18n="hero.lede">
+          Blade turns a sprawling C/C++ codebase into one declarative graph.
+          Build, test, and run any set of targets with a single command —
+          with automatic dependency analysis, incremental rebuilds, and
+          parallel testing.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#install" data-i18n="hero.cta1">Get started</a>
+          <a class="btn btn-ghost" href="https://github.com/blade-build/blade-build" data-i18n="hero.cta2">View on GitHub</a>
+        </div>
+        <p class="platforms" data-i18n-html="hero.platforms">
+          <strong>Linux</strong> primary · <strong>macOS</strong> &amp; <strong>Windows</strong> experimental
+        </p>
+
+        <div class="install" id="install">
+          <div class="install-label" data-i18n="install.label">Install in one line</div>
+          <div class="cmd">
+            <code id="install-cmd"><span class="prompt">$ </span>curl https://blade-build.github.io/install.sh | bash</code>
+            <button class="copy-btn" id="copy-btn" type="button" aria-label="Copy install command" data-i18n="install.copy">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal demo -->
+    <section class="section-tint">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="demo.title">One command, the whole loop</h2>
+          <p data-i18n="demo.sub">Point Blade at a directory pattern and it compiles, links, and tests everything it depends on.</p>
+        </div>
+        <div class="terminal" aria-label="Example Blade session">
+          <div class="terminal-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="title">bash — blade</span>
+          </div>
+<pre><span class="c-prompt">$</span> <span class="c-cmd">blade test common/...</span>
+<span class="c-dim">Blade(info): Loading BUILD files...</span>
+<span class="c-dim">Blade(info): Analyzing dependency graph...</span>
+<span class="c-blue">[42/42]</span> LINK common/rpc/rpc_test
+<span class="c-dim">Blade(info): Building done.</span>
+<span class="c-ok">[  PASSED  ]</span> 128 tests in 18 targets
+<span class="c-ok">Blade(info): All tests passed!</span>
+
+<span class="c-prompt">$</span> <span class="c-cmd">blade build -pdebug //app/server</span>   <span class="c-dim" data-i18n="demo.cmt1"># debug profile</span>
+<span class="c-prompt">$</span> <span class="c-cmd">blade run //tools/cli -- --help</span>      <span class="c-dim" data-i18n="demo.cmt2"># build &amp; run</span>
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="feat.title">Designed for scale</h2>
+          <p data-i18n="feat.sub">The conventions that keep a million-line monorepo fast and correct.</p>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+            <h3 data-i18n="feat.1.h">Incremental &amp; parallel</h3>
+            <p data-i18n="feat.1.p">A Ninja backend rebuilds only what changed and runs builds and tests across all your cores.</p>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+            <h3 data-i18n="feat.2.h">Declarative BUILD files</h3>
+            <p data-i18n-html="feat.2.p">Say <em>what</em> to build — targets, sources, direct deps — not how. Blade figures out the rest.</p>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+            <h3 data-i18n="feat.3.h">Multi-language</h3>
+            <p data-i18n="feat.3.p">C/C++ first, plus Java, Python, Scala, Protocol Buffers, lex/yacc, and more in one graph.</p>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg></div>
+            <h3 data-i18n="feat.4.h">Dependency-aware</h3>
+            <p data-i18n="feat.4.p">Automatic dependency analysis and header-inclusion checks catch missing and unused deps early.</p>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h3 data-i18n="feat.5.h">Testing built in</h3>
+            <p data-i18n="feat.5.p">Incremental and parallel test execution, with coverage and continuous-integration in mind.</p>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19V5m6 14V9m6 10V13m4 6H2"/></svg></div>
+            <h3 data-i18n="feat.6.h">Battle-tested at scale</h3>
+            <p data-i18n="feat.6.p">Powers core systems at Tencent and beyond — advertising, WeChat backends, infrastructure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <section class="section-tint">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="langs.title">Speaks your stack</h2>
+          <p data-i18n="langs.sub">Mix languages in a single dependency graph and let Blade wire the toolchains together.</p>
+        </div>
+        <div class="langs">
+          <span class="lang-chip">C / C++</span>
+          <span class="lang-chip">Java</span>
+          <span class="lang-chip">Python</span>
+          <span class="lang-chip">Scala</span>
+          <span class="lang-chip">Protocol Buffers</span>
+          <span class="lang-chip">Thrift</span>
+          <span class="lang-chip">lex / yacc</span>
+          <span class="lang-chip">SWIG</span>
+          <span class="lang-chip">CUDA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band">
+      <div class="container">
+        <h2 data-i18n="cta.title">Build like the big repos do</h2>
+        <p data-i18n="cta.sub">Install Blade and run your first target in under a minute.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://github.com/blade-build/blade-build/blob/master/doc/en/quick_start.md" data-i18n="cta.cta1">Read the quick start</a>
+          <a class="btn btn-ghost" href="https://github.com/blade-build/blade-build" data-i18n="cta.cta2">Star on GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="/">
+        <img src="assets/blade-logo.png" alt="Blade logo" />
+        Blade Build
+      </a>
+      <div class="footer-links">
+        <a href="https://github.com/blade-build/blade-build">GitHub</a>
+        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-i18n="footer.docs">Documentation</a>
+        <a href="https://github.com/blade-build/blade-build/blob/master/COPYING" data-i18n="footer.license">License (BSD)</a>
+        <a href="https://github.com/blade-build/blade-build/issues" data-i18n="footer.issues">Issues</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // --- Bilingual content. English is the inline default (no-JS / crawler
+      // fallback); this dictionary supplies both languages for the toggle. ---
+      var I18N = {
+        en: {
+          "doc.title": "Blade — the build system for large-scale monorepos",
+          "nav.features": "Features",
+          "nav.install": "Install",
+          "nav.docs": "Docs",
+          "hero.eyebrow": "Born at Tencent · Open source since 2012",
+          "hero.title": "The build system for <span class=\"accent\">large&#8209;scale monorepos</span>",
+          "hero.lede": "Blade turns a sprawling C/C++ codebase into one declarative graph. Build, test, and run any set of targets with a single command — with automatic dependency analysis, incremental rebuilds, and parallel testing.",
+          "hero.cta1": "Get started",
+          "hero.cta2": "View on GitHub",
+          "hero.platforms": "<strong>Linux</strong> primary · <strong>macOS</strong> &amp; <strong>Windows</strong> experimental",
+          "install.label": "Install in one line",
+          "install.copy": "Copy",
+          "install.copied": "Copied",
+          "demo.title": "One command, the whole loop",
+          "demo.sub": "Point Blade at a directory pattern and it compiles, links, and tests everything it depends on.",
+          "demo.cmt1": "# debug profile",
+          "demo.cmt2": "# build & run",
+          "feat.title": "Designed for scale",
+          "feat.sub": "The conventions that keep a million-line monorepo fast and correct.",
+          "feat.1.h": "Incremental & parallel",
+          "feat.1.p": "A Ninja backend rebuilds only what changed and runs builds and tests across all your cores.",
+          "feat.2.h": "Declarative BUILD files",
+          "feat.2.p": "Say <em>what</em> to build — targets, sources, direct deps — not how. Blade figures out the rest.",
+          "feat.3.h": "Multi-language",
+          "feat.3.p": "C/C++ first, plus Java, Python, Scala, Protocol Buffers, lex/yacc, and more in one graph.",
+          "feat.4.h": "Dependency-aware",
+          "feat.4.p": "Automatic dependency analysis and header-inclusion checks catch missing and unused deps early.",
+          "feat.5.h": "Testing built in",
+          "feat.5.p": "Incremental and parallel test execution, with coverage and continuous-integration in mind.",
+          "feat.6.h": "Battle-tested at scale",
+          "feat.6.p": "Powers core systems at Tencent and beyond — advertising, WeChat backends, infrastructure.",
+          "langs.title": "Speaks your stack",
+          "langs.sub": "Mix languages in a single dependency graph and let Blade wire the toolchains together.",
+          "cta.title": "Build like the big repos do",
+          "cta.sub": "Install Blade and run your first target in under a minute.",
+          "cta.cta1": "Read the quick start",
+          "cta.cta2": "Star on GitHub",
+          "footer.docs": "Documentation",
+          "footer.license": "License (BSD)",
+          "footer.issues": "Issues",
+          "toggle": "中文"
+        },
+        zh: {
+          "doc.title": "Blade — 面向大规模 monorepo 的构建系统",
+          "nav.features": "特性",
+          "nav.install": "安装",
+          "nav.docs": "文档",
+          "hero.eyebrow": "诞生于腾讯 · 2012 年起开源",
+          "hero.title": "面向<span class=\"accent\">大规模 monorepo</span> 的构建系统",
+          "hero.lede": "Blade 把庞大的 C/C++ 代码库收敛成一张声明式依赖图。一条命令即可构建、测试、运行任意目标集合——自动分析依赖、增量重建、并行测试。",
+          "hero.cta1": "快速开始",
+          "hero.cta2": "在 GitHub 查看",
+          "hero.platforms": "<strong>Linux</strong> 为主 · <strong>macOS</strong> 与 <strong>Windows</strong> 实验性支持",
+          "install.label": "一行命令安装",
+          "install.copy": "复制",
+          "install.copied": "已复制",
+          "demo.title": "一条命令，跑完整个流程",
+          "demo.sub": "把目录模式交给 Blade，它会编译、链接并测试其依赖的一切。",
+          "demo.cmt1": "# 调试模式",
+          "demo.cmt2": "# 构建并运行",
+          "feat.title": "为规模而生",
+          "feat.sub": "让百万行 monorepo 保持快速与正确的那一套约定。",
+          "feat.1.h": "增量与并行",
+          "feat.1.p": "基于 Ninja 后端，只重建变化的部分，并在所有 CPU 核心上并行构建与测试。",
+          "feat.2.h": "声明式 BUILD 文件",
+          "feat.2.p": "只需声明<em>构建什么</em>——目标、源文件、直接依赖——而非如何构建，其余交给 Blade。",
+          "feat.3.h": "多语言",
+          "feat.3.p": "以 C/C++ 为主，同时支持 Java、Python、Scala、Protocol Buffers、lex/yacc 等，统一在一张图中。",
+          "feat.4.h": "依赖感知",
+          "feat.4.p": "自动依赖分析与头文件包含检查，及早发现缺失与未使用的依赖。",
+          "feat.5.h": "内建测试",
+          "feat.5.p": "增量、并行执行测试，并为覆盖率与持续集成而设计。",
+          "feat.6.h": "经大规模检验",
+          "feat.6.p": "支撑腾讯及更多公司的核心系统——广告平台、微信后台、基础设施等。",
+          "langs.title": "贴合你的技术栈",
+          "langs.sub": "在同一张依赖图里混合多种语言，由 Blade 把各自的工具链接起来。",
+          "cta.title": "像大厂仓库一样构建",
+          "cta.sub": "安装 Blade，一分钟内跑起你的第一个目标。",
+          "cta.cta1": "阅读快速开始",
+          "cta.cta2": "去 GitHub 点个 Star",
+          "footer.docs": "文档",
+          "footer.license": "许可证 (BSD)",
+          "footer.issues": "问题反馈",
+          "toggle": "EN"
+        }
+      };
+
+      var HTML_KEYS = {}; // keys rendered as innerHTML (contain markup)
+      document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+        HTML_KEYS[el.getAttribute("data-i18n-html")] = true;
+      });
+
+      function apply(lang) {
+        var dict = I18N[lang] || I18N.en;
+        document.documentElement.lang = (lang === "zh" ? "zh-CN" : "en");
+        if (dict["doc.title"]) document.title = dict["doc.title"];
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var v = dict[el.getAttribute("data-i18n")];
+          if (v != null) el.textContent = v;
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+          var v = dict[el.getAttribute("data-i18n-html")];
+          if (v != null) el.innerHTML = v;
+        });
+
+        var toggle = document.getElementById("lang-toggle");
+        if (toggle) toggle.textContent = dict["toggle"];
+        try { localStorage.setItem("blade-lang", lang); } catch (e) {}
+        current = lang;
+      }
+
+      function detect() {
+        try {
+          var saved = localStorage.getItem("blade-lang");
+          if (saved === "en" || saved === "zh") return saved;
+        } catch (e) {}
+        var langs = navigator.languages || [navigator.language || "en"];
+        for (var i = 0; i < langs.length; i++) {
+          if (/^zh\b/i.test(langs[i])) return "zh";
+        }
+        return "en";
+      }
+
+      var current = "en";
+      apply(detect());
+
+      var toggle = document.getElementById("lang-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          apply(current === "zh" ? "en" : "zh");
+        });
+      }
+
+      // Copy-to-clipboard for the install command.
+      var btn = document.getElementById("copy-btn");
+      if (btn) {
+        btn.addEventListener("click", function () {
+          navigator.clipboard.writeText("curl https://blade-build.github.io/install.sh | bash").then(function () {
+            var dict = I18N[current] || I18N.en;
+            btn.textContent = dict["install.copied"];
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = dict["install.copy"];
+              btn.classList.remove("copied");
+            }, 1800);
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
