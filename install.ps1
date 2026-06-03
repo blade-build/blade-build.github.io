@@ -10,15 +10,41 @@
 #   BLADE_REPO            source repo/URL   (default: the GitHub repo)
 #   BLADE_INSTALL_DIR     install location  (default: ~/.cache/blade-build)
 #   BLADE_NO_MODIFY_PATH  set to 1 to skip the PATH change (CI / testing)
+#   BLADE_NONINTERACTIVE  set to 1 to never prompt (e.g. the winget Ninja offer)
 
 $ErrorActionPreference = 'Stop'
+
+function Install-Ninja {
+    # Ninja is blade's build backend. When it is missing, offer to install it
+    # via winget (stable package id); fall back to a hint otherwise.
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Host "Note: 'ninja' is not on PATH; blade needs Ninja 1.10+ (https://ninja-build.org)." -ForegroundColor Yellow
+        return
+    }
+    if (-not [Environment]::UserInteractive -or $env:BLADE_NONINTERACTIVE -eq '1') {
+        Write-Host "Note: 'ninja' is not on PATH; install it with: winget install Ninja-build.Ninja" -ForegroundColor Yellow
+        return
+    }
+    $answer = Read-Host "Ninja (blade's build backend) was not found. Install it now with winget? [Y/n]"
+    if ($answer -match '^\s*[Nn]') {
+        Write-Host "Skipped. Install it later with: winget install Ninja-build.Ninja" -ForegroundColor Yellow
+        return
+    }
+    Write-Host "Installing Ninja via winget ..." -ForegroundColor Cyan
+    winget install --id Ninja-build.Ninja -e --source winget --accept-source-agreements --accept-package-agreements
+    if (Get-Command ninja -ErrorAction SilentlyContinue) {
+        Write-Host "Ninja installed." -ForegroundColor Green
+    } else {
+        Write-Host "Ninja installed; open a new terminal for it to appear on PATH." -ForegroundColor Yellow
+    }
+}
 
 function Install-Blade {
     $repo = if ($env:BLADE_REPO) { $env:BLADE_REPO } else { 'https://github.com/blade-build/blade-build' }
     $dir  = if ($env:BLADE_INSTALL_DIR) { $env:BLADE_INSTALL_DIR } else { Join-Path $HOME '.cache\blade-build' }
 
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        throw "git is required but was not found. Install it from https://git-scm.com/download/win"
+        throw "git is required but was not found. Install it (winget install Git.Git) or from https://git-scm.com/download/win"
     }
 
     if (Test-Path (Join-Path $dir '.git')) {
@@ -45,12 +71,13 @@ function Install-Blade {
         $env:Path = "$dir;$env:Path"   # make `blade` work in the current session too
     }
 
-    # blade needs Python 3.10+ and Ninja at run time -- warn, don't fail (parity
-    # with install.sh, which assumes prerequisites are present).
-    foreach ($tool in 'python', 'ninja') {
-        if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
-            Write-Host "Note: '$tool' is not on PATH; blade needs it (Python 3.10+ and Ninja 1.10+)." -ForegroundColor Yellow
-        }
+    # blade needs Python 3.10+ and Ninja at run time. Warn if Python is missing;
+    # for Ninja -- which has a stable winget package -- offer to install it.
+    if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
+        Write-Host "Note: 'python' is not on PATH; blade needs Python 3.10+ (winget install Python.Python.3.13)." -ForegroundColor Yellow
+    }
+    if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
+        Install-Ninja
     }
 
     Write-Host ""
