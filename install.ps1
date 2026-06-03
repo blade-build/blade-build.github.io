@@ -2,13 +2,13 @@
 #
 #   irm https://blade-build.github.io/install.ps1 | iex
 #
-# Mirrors install.sh: clone (or update) blade-build into ~/.cache/blade-build
+# Mirrors install.sh: clone (or update) blade-build into %LOCALAPPDATA%\blade-build
 # and make the `blade` command available -- here by adding that dir (which
 # holds blade.bat) to your user PATH.
 #
 # Environment overrides (all optional):
 #   BLADE_REPO            source repo/URL   (default: the GitHub repo)
-#   BLADE_INSTALL_DIR     install location  (default: ~/.cache/blade-build)
+#   BLADE_INSTALL_DIR     install location  (default: %LOCALAPPDATA%\blade-build)
 #   BLADE_NO_MODIFY_PATH  set to 1 to skip the PATH change (CI / testing)
 #   BLADE_NONINTERACTIVE  set to 1 to never prompt (e.g. the winget Ninja offer)
 
@@ -41,7 +41,15 @@ function Install-Ninja {
 
 function Install-Blade {
     $repo = if ($env:BLADE_REPO) { $env:BLADE_REPO } else { 'https://github.com/blade-build/blade-build' }
-    $dir  = if ($env:BLADE_INSTALL_DIR) { $env:BLADE_INSTALL_DIR } else { Join-Path $HOME '.cache\blade-build' }
+    $dir  = if ($env:BLADE_INSTALL_DIR) { $env:BLADE_INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA 'blade-build' }
+
+    # Migrate an install from the old ~/.cache location (pre-2026-06 layout).
+    $legacy = Join-Path $HOME '.cache\blade-build'
+    if ((Test-Path (Join-Path $legacy '.git')) -and -not (Test-Path $dir) -and ($dir -ne $legacy)) {
+        Write-Host "Moving existing install from $legacy to $dir ..." -ForegroundColor Cyan
+        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dir) | Out-Null
+        Move-Item -Path $legacy -Destination $dir
+    }
 
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
         throw "git is required but was not found. Install it (winget install Git.Git) or from https://git-scm.com/download/win"
@@ -62,10 +70,12 @@ function Install-Blade {
 
     if ($env:BLADE_NO_MODIFY_PATH -ne '1') {
         $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-        $entries  = if ($userPath) { $userPath -split ';' } else { @() }
-        if ($entries -notcontains $dir) {
-            Write-Host "Adding $dir to your user PATH ..." -ForegroundColor Cyan
-            $newPath = if ($userPath) { "$dir;$userPath" } else { $dir }
+        $entries  = if ($userPath) { @($userPath -split ';') } else { @() }
+        # Put $dir on PATH, dropping any stale entry pointing at the old location.
+        $kept    = $entries | Where-Object { $_ -and $_ -ne $dir -and $_ -ne $legacy }
+        $newPath = (@($dir) + $kept) -join ';'
+        if ($newPath -ne $userPath) {
+            Write-Host "Updating your user PATH ..." -ForegroundColor Cyan
             [Environment]::SetEnvironmentVariable('Path', $newPath, 'User')
         }
         $env:Path = "$dir;$env:Path"   # make `blade` work in the current session too
