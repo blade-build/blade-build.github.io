@@ -102,8 +102,20 @@ cd "$dir"
 ./install
 
 # Best-effort prerequisite help (blade needs Python 3.10+ and Ninja at runtime).
-if ! command -v python3 >/dev/null 2>&1 && ! command -v python >/dev/null 2>&1; then
-    echo "Note: 'python3' is not on PATH; blade needs Python 3.10+."
+# Probe for a >=3.10 interpreter by asking Python itself (sys.version_info) via
+# its exit code -- robust, unlike parsing --version (format/locale/stderr).
+have_python310() {
+    local py
+    for py in python3 python python3.13 python3.12 python3.11 python3.10; do
+        if command -v "$py" >/dev/null 2>&1 && \
+           "$py" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' 2>/dev/null; then
+            return 0
+        fi
+    done
+    return 1
+}
+if ! have_python310; then
+    echo "Note: no Python 3.10+ found on PATH; blade needs Python 3.10+."
 fi
 if ! command -v ninja >/dev/null 2>&1; then
     offer_install_ninja

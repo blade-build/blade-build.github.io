@@ -39,6 +39,17 @@ function Install-Ninja {
     }
 }
 
+function Test-Python310 {
+    # blade.bat runs `python.exe`, so verify `python` resolves to Python >= 3.10
+    # by asking Python itself (robust -- no --version string parsing). The
+    # Microsoft Store alias stub exits non-zero here, so it reads as "missing".
+    if (-not (Get-Command python -ErrorAction SilentlyContinue)) { return $false }
+    try {
+        & python -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' *> $null
+        return ($LASTEXITCODE -eq 0)
+    } catch { return $false }
+}
+
 function Install-Blade {
     $repo = if ($env:BLADE_REPO) { $env:BLADE_REPO } else { 'https://github.com/blade-build/blade-build' }
     $dir  = if ($env:BLADE_INSTALL_DIR) { $env:BLADE_INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA 'blade-build' }
@@ -83,8 +94,8 @@ function Install-Blade {
 
     # blade needs Python 3.10+ and Ninja at run time. Warn if Python is missing;
     # for Ninja -- which has a stable winget package -- offer to install it.
-    if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-        Write-Host "Note: 'python' is not on PATH; blade needs Python 3.10+ (winget install Python.Python.3.13)." -ForegroundColor Yellow
+    if (-not (Test-Python310)) {
+        Write-Host "Note: no Python 3.10+ found as 'python'; blade needs Python 3.10+ (winget install Python.Python.3.13)." -ForegroundColor Yellow
     }
     if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
         Install-Ninja
