@@ -57,8 +57,13 @@
 
         <div class="install" id="install">
           <div class="install-label" data-i18n="install.label">Install in one line</div>
+          <div class="os-tabs" role="tablist" aria-label="Operating system">
+            <button class="os-tab" type="button" role="tab" data-os="windows">Windows</button>
+            <button class="os-tab" type="button" role="tab" data-os="macos">macOS</button>
+            <button class="os-tab" type="button" role="tab" data-os="linux">Linux</button>
+          </div>
           <div class="cmd">
-            <code id="install-cmd"><span class="prompt">$ </span>curl https://blade-build.github.io/install.sh | bash</code>
+            <code id="install-cmd"><span class="prompt">$ </span><span id="install-cmd-text">curl -fsSL https://blade-build.github.io/install.sh | bash</span></code>
             <button class="copy-btn" id="copy-btn" type="button" aria-label="Copy install command" data-i18n="install.copy">Copy</button>
           </div>
         </div>
@@ -323,11 +328,48 @@
         });
       }
 
-      // Copy-to-clipboard for the install command.
+      // --- OS-aware install command. Windows gets the PowerShell one-liner;
+      // macOS and Linux share the POSIX install.sh. The shown command defaults
+      // to the visitor's OS and can be switched with the tabs. ---
+      var INSTALL = {
+        windows: { cmd: "irm https://blade-build.github.io/install.ps1 | iex", prompt: "PS> " },
+        macos:   { cmd: "curl -fsSL https://blade-build.github.io/install.sh | bash", prompt: "$ " },
+        linux:   { cmd: "curl -fsSL https://blade-build.github.io/install.sh | bash", prompt: "$ " }
+      };
+      var currentOS = "linux";
+
+      function detectOS() {
+        var p = ((navigator.userAgentData && navigator.userAgentData.platform) ||
+                 navigator.platform || navigator.userAgent || "").toLowerCase();
+        if (p.indexOf("win") !== -1) return "windows";
+        if (/mac|iphone|ipad|ipod/.test(p)) return "macos";
+        return "linux";
+      }
+
+      function applyOS(os) {
+        if (!INSTALL[os]) os = "linux";
+        currentOS = os;
+        var text = document.getElementById("install-cmd-text");
+        if (text) text.textContent = INSTALL[os].cmd;
+        var promptEl = document.querySelector("#install-cmd .prompt");
+        if (promptEl) promptEl.textContent = INSTALL[os].prompt;
+        document.querySelectorAll(".os-tab").forEach(function (t) {
+          var on = t.getAttribute("data-os") === os;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      }
+
+      document.querySelectorAll(".os-tab").forEach(function (t) {
+        t.addEventListener("click", function () { applyOS(t.getAttribute("data-os")); });
+      });
+      applyOS(detectOS());
+
+      // Copy-to-clipboard for the currently shown install command.
       var btn = document.getElementById("copy-btn");
       if (btn) {
         btn.addEventListener("click", function () {
-          navigator.clipboard.writeText("curl https://blade-build.github.io/install.sh | bash").then(function () {
+          navigator.clipboard.writeText(INSTALL[currentOS].cmd).then(function () {
             var dict = I18N[current] || I18N.en;
             btn.textContent = dict["install.copied"];
             btn.classList.add("copied");

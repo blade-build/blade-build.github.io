@@ -199,6 +199,29 @@ a:hover { color: var(--blue-strong); }
   text-align: left;
   font-weight: 500;
 }
+.os-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.os-tab {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.os-tab:hover { color: var(--ink); border-color: var(--blue-soft); }
+.os-tab.active {
+  color: #fff;
+  background: var(--blue);
+  border-color: var(--blue);
+}
 .cmd {
   display: flex;
   align-items: center;
