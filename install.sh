@@ -4,17 +4,25 @@
 #
 #   curl -fsSL https://blade-build.github.io/install.sh | bash
 #
-# Clones (or updates) blade-build into ~/.cache/blade-build and runs its
+# Clones (or updates) blade-build into ~/.local/share/blade-build and runs its
 # ./install, which puts the `blade` command on your PATH.
 #
 # Environment overrides (optional):
 #   BLADE_REPO          source repo/URL  (default: the GitHub repo)
-#   BLADE_INSTALL_DIR   install location (default: ~/.cache/blade-build)
+#   BLADE_INSTALL_DIR   install location (default: ~/.local/share/blade-build)
 
 set -euo pipefail
 
 repo="${BLADE_REPO:-https://github.com/blade-build/blade-build}"
-dir="${BLADE_INSTALL_DIR:-$HOME/.cache/blade-build}"
+dir="${BLADE_INSTALL_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/blade-build}"
+
+# Migrate an install from the old ~/.cache location (pre-2026-06 layout).
+legacy="$HOME/.cache/blade-build"
+if [[ -d "$legacy/.git" && ! -e "$dir" && "$dir" != "$legacy" ]]; then
+    echo "Moving existing install from $legacy to $dir ..."
+    mkdir -p "$(dirname "$dir")"
+    mv "$legacy" "$dir"
+fi
 
 if ! command -v git >/dev/null 2>&1; then
     echo "error: git is required but was not found. Please install git first." >&2
