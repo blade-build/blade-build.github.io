@@ -25,7 +25,7 @@
       <nav class="nav">
         <a href="#features" data-i18n="nav.features">Features</a>
         <a href="#install" data-i18n="nav.install">Install</a>
-        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-i18n="nav.docs">Docs</a>
+        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-href-en="https://github.com/blade-build/blade-build/tree/master/doc/en" data-href-zh="https://github.com/blade-build/blade-build/tree/master/doc/zh_CN" data-i18n="nav.docs">Docs</a>
         <a class="nav-github" href="https://github.com/blade-build/blade-build" aria-label="GitHub">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           GitHub
@@ -52,7 +52,7 @@
           <a class="btn btn-ghost" href="https://github.com/blade-build/blade-build" data-i18n="hero.cta2">View on GitHub</a>
         </div>
         <p class="platforms" data-i18n-html="hero.platforms">
-          <strong>Linux</strong> primary · <strong>macOS</strong> &amp; <strong>Windows</strong> experimental
+          <strong>Linux</strong> · <strong>macOS</strong> · <strong>Windows</strong> — gcc · clang · MSVC
         </p>
 
         <div class="install" id="install">
@@ -111,6 +111,11 @@
             <p data-i18n="feat.1.p">A Ninja backend rebuilds only what changed and runs builds and tests across all your cores.</p>
           </div>
           <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <h3 data-i18n="feat.7.h">Three platforms, one BUILD</h3>
+            <p data-i18n="feat.7.p">The same BUILD files build natively on Linux, macOS, and Windows — gcc, clang, and MSVC, selected per toolchain config.</p>
+          </div>
+          <div class="feature">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
             <h3 data-i18n="feat.2.h">Declarative BUILD files</h3>
             <p data-i18n-html="feat.2.p">Say <em>what</em> to build — targets, sources, direct deps — not how. Blade figures out the rest.</p>
@@ -118,7 +123,7 @@
           <div class="feature">
             <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
             <h3 data-i18n="feat.3.h">Multi-language</h3>
-            <p data-i18n="feat.3.p">C/C++ first, plus Java, Python, Scala, Protocol Buffers, lex/yacc, and more in one graph.</p>
+            <p data-i18n="feat.3.p">C/C++ first, plus Java, Python, Go, Scala, Protocol Buffers, lex/yacc, and more in one graph.</p>
           </div>
           <div class="feature">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg></div>
@@ -126,9 +131,14 @@
             <p data-i18n="feat.4.p">Automatic dependency analysis and header-inclusion checks catch missing and unused deps early.</p>
           </div>
           <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v9"/></svg></div>
+            <h3 data-i18n="feat.8.h">Hermetic third-party deps</h3>
+            <p data-i18n-html="feat.8.p">Pull version-pinned C++ libraries from vcpkg with <code>vcpkg#port:lib</code> — installed and built on demand. The maven_jar for C++.</p>
+          </div>
+          <div class="feature">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
             <h3 data-i18n="feat.5.h">Testing built in</h3>
-            <p data-i18n="feat.5.p">Incremental and parallel test execution, with coverage and continuous-integration in mind.</p>
+            <p data-i18n="feat.5.p">Incremental, parallel test execution — plus sanitizers (ASan/TSan/UBSan/…) and coverage reports via a single flag, no BUILD changes.</p>
           </div>
           <div class="feature">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19V5m6 14V9m6 10V13m4 6H2"/></svg></div>
@@ -150,6 +160,7 @@
           <span class="lang-chip">C / C++</span>
           <span class="lang-chip">Java</span>
           <span class="lang-chip">Python</span>
+          <span class="lang-chip">Go</span>
           <span class="lang-chip">Scala</span>
           <span class="lang-chip">Protocol Buffers</span>
           <span class="lang-chip">Thrift</span>
@@ -166,7 +177,7 @@
         <h2 data-i18n="cta.title">Build like the big repos do</h2>
         <p data-i18n="cta.sub">Install Blade and run your first target in under a minute.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="https://github.com/blade-build/blade-build/blob/master/doc/en/quick_start.md" data-i18n="cta.cta1">Read the quick start</a>
+          <a class="btn btn-primary" href="https://github.com/blade-build/blade-build/blob/master/doc/en/quick_start.md" data-href-en="https://github.com/blade-build/blade-build/blob/master/doc/en/quick_start.md" data-href-zh="https://github.com/blade-build/blade-build/blob/master/doc/zh_CN/quick_start.md" data-i18n="cta.cta1">Read the quick start</a>
           <a class="btn btn-ghost" href="https://github.com/blade-build/blade-build" data-i18n="cta.cta2">Star on GitHub</a>
         </div>
       </div>
@@ -181,7 +192,7 @@
       </a>
       <div class="footer-links">
         <a href="https://github.com/blade-build/blade-build">GitHub</a>
-        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-i18n="footer.docs">Documentation</a>
+        <a href="https://github.com/blade-build/blade-build/tree/master/doc/en" data-href-en="https://github.com/blade-build/blade-build/tree/master/doc/en" data-href-zh="https://github.com/blade-build/blade-build/tree/master/doc/zh_CN" data-i18n="footer.docs">Documentation</a>
         <a href="https://github.com/blade-build/blade-build/blob/master/COPYING" data-i18n="footer.license">License (BSD)</a>
         <a href="https://github.com/blade-build/blade-build/issues" data-i18n="footer.issues">Issues</a>
       </div>
@@ -203,7 +214,7 @@
           "hero.lede": "Blade turns a sprawling C/C++ codebase into one declarative graph. Build, test, and run any set of targets with a single command — with automatic dependency analysis, incremental rebuilds, and parallel testing.",
           "hero.cta1": "Get started",
           "hero.cta2": "View on GitHub",
-          "hero.platforms": "<strong>Linux</strong> primary · <strong>macOS</strong> &amp; <strong>Windows</strong> experimental",
+          "hero.platforms": "<strong>Linux</strong> · <strong>macOS</strong> · <strong>Windows</strong> — gcc · clang · MSVC",
           "install.label": "Install in one line",
           "install.copy": "Copy",
           "install.copied": "Copied",
@@ -218,13 +229,17 @@
           "feat.2.h": "Declarative BUILD files",
           "feat.2.p": "Say <em>what</em> to build — targets, sources, direct deps — not how. Blade figures out the rest.",
           "feat.3.h": "Multi-language",
-          "feat.3.p": "C/C++ first, plus Java, Python, Scala, Protocol Buffers, lex/yacc, and more in one graph.",
+          "feat.3.p": "C/C++ first, plus Java, Python, Go, Scala, Protocol Buffers, lex/yacc, and more in one graph.",
           "feat.4.h": "Dependency-aware",
           "feat.4.p": "Automatic dependency analysis and header-inclusion checks catch missing and unused deps early.",
           "feat.5.h": "Testing built in",
-          "feat.5.p": "Incremental and parallel test execution, with coverage and continuous-integration in mind.",
+          "feat.5.p": "Incremental, parallel test execution — plus sanitizers (ASan/TSan/UBSan/…) and coverage reports via a single flag, no BUILD changes.",
           "feat.6.h": "Battle-tested at scale",
           "feat.6.p": "Powers core systems at Tencent and beyond — advertising, WeChat backends, infrastructure.",
+          "feat.7.h": "Three platforms, one BUILD",
+          "feat.7.p": "The same BUILD files build natively on Linux, macOS, and Windows — gcc, clang, and MSVC, selected per toolchain config.",
+          "feat.8.h": "Hermetic third-party deps",
+          "feat.8.p": "Pull version-pinned C++ libraries from vcpkg with <code>vcpkg#port:lib</code> — installed and built on demand. The maven_jar for C++.",
           "langs.title": "Speaks your stack",
           "langs.sub": "Mix languages in a single dependency graph and let Blade wire the toolchains together.",
           "cta.title": "Build like the big repos do",
@@ -246,7 +261,7 @@
           "hero.lede": "Blade 把庞大的 C/C++ 代码库收敛成一张声明式依赖图。一条命令即可构建、测试、运行任意目标集合——自动分析依赖、增量重建、并行测试。",
           "hero.cta1": "快速开始",
           "hero.cta2": "在 GitHub 查看",
-          "hero.platforms": "<strong>Linux</strong> 为主 · <strong>macOS</strong> 与 <strong>Windows</strong> 实验性支持",
+          "hero.platforms": "<strong>Linux</strong> · <strong>macOS</strong> · <strong>Windows</strong> 三平台 · gcc · clang · MSVC 三套工具链",
           "install.label": "一行命令安装",
           "install.copy": "复制",
           "install.copied": "已复制",
@@ -261,13 +276,17 @@
           "feat.2.h": "声明式 BUILD 文件",
           "feat.2.p": "只需声明<em>构建什么</em>——目标、源文件、直接依赖——而非如何构建，其余交给 Blade。",
           "feat.3.h": "多语言",
-          "feat.3.p": "以 C/C++ 为主，同时支持 Java、Python、Scala、Protocol Buffers、lex/yacc 等，统一在一张图中。",
+          "feat.3.p": "以 C/C++ 为主，同时支持 Java、Python、Go、Scala、Protocol Buffers、lex/yacc 等，统一在一张图中。",
           "feat.4.h": "依赖感知",
           "feat.4.p": "自动依赖分析与头文件包含检查，及早发现缺失与未使用的依赖。",
           "feat.5.h": "内建测试",
-          "feat.5.p": "增量、并行执行测试，并为覆盖率与持续集成而设计。",
+          "feat.5.p": "增量、并行执行测试——还有 sanitizer（ASan/TSan/UBSan 等）与覆盖率报告，一个开关即可，无需改 BUILD。",
           "feat.6.h": "经大规模检验",
           "feat.6.p": "支撑腾讯及更多公司的核心系统——广告平台、微信后台、基础设施等。",
+          "feat.7.h": "三平台，一份 BUILD",
+          "feat.7.p": "同一份 BUILD 文件在 Linux、macOS、Windows 上原生构建——gcc、clang、MSVC 三套工具链，按配置选择。",
+          "feat.8.h": "三方依赖，开箱即取",
+          "feat.8.p": "用 <code>vcpkg#port:lib</code> 从 vcpkg 拉取版本固定的 C++ 库，按需安装构建。C++ 版的 maven_jar。",
           "langs.title": "贴合你的技术栈",
           "langs.sub": "在同一张依赖图里混合多种语言，由 Blade 把各自的工具链接起来。",
           "cta.title": "像大厂仓库一样构建",
@@ -298,6 +317,11 @@
         document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
           var v = dict[el.getAttribute("data-i18n-html")];
           if (v != null) el.innerHTML = v;
+        });
+        // Doc links point at the language-matching doc tree (en/ <-> zh_CN/).
+        document.querySelectorAll("[data-href-en]").forEach(function (el) {
+          var h = el.getAttribute("data-href-" + lang);
+          if (h) el.setAttribute("href", h);
         });
 
         var toggle = document.getElementById("lang-toggle");
