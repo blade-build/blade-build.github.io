@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/FAQ/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Blade Frequently Asked Questions - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Blade Frequently Asked Questions";
+        var mkdocs_page_input_path = "FAQ.md";
+        var mkdocs_page_url = "/docs/en/FAQ/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Blade Frequently Asked Questions</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#runtime-environment-issues">Runtime Environment Issues</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#platform-compatibility-problems">Platform Compatibility Problems</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vim-syntax-highlighting-for-build-files">Vim Syntax Highlighting for BUILD Files</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#alt-key-functionality-issues">Alt Key Functionality Issues</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-system-issues">Build System Issues</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dependency-ordering-impact-on-compilation-results">Dependency Ordering Impact on Compilation Results</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ccache-error-message-caching-problem">ccache Error Message Caching Problem</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-libraries-without-source-code">Using Libraries Without Source Code</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prebuilt-library-with-shared-objects-only">Prebuilt Library with Shared Objects Only</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#converting-static-libraries-to-dynamic-libraries">Converting Static Libraries to Dynamic Libraries</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-a-specific-gcc-or-clang-version">Using a Specific GCC or Clang Version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#persistent-compilation-errors-after-code-modifications">Persistent Compilation Errors After Code Modifications</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#so-libraries-with-embedded-path-information">SO Libraries with Embedded Path Information</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-error-flags-not-functioning">New Error Flags Not Functioning</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#blade-clean-command-not-removing-generated-files">blade clean Command Not Removing Generated Files</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-display-the-command-line-of-the-build">How to display the command line of the build</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#publishing-precompiled-libraries">Publishing Precompiled Libraries</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#unrecognized-options-error">Unrecognized Options Error</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#source-file-ownership-conflict">Source File Ownership Conflict</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#enabling-c11-support">Enabling C++11 Support</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#optimizing-disk-space-usage">Optimizing Disk Space Usage</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#debug-information-level-management">Debug Information Level Management</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debugfission-optimization">DebugFission Optimization</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug-information-compression">Debug Information Compression</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug-symbol-separation">Debug Symbol Separation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dynamic-linking-for-test-programs">Dynamic Linking for Test Programs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#thin-static-library-generation">Thin Static Library Generation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#libstdc-library-not-found">libstdc++ Library Not Found</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#compiler-process-termination-due-to-resource-constraints">Compiler Process Termination Due to Resource Constraints</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disk-space-exhaustion">Disk Space Exhaustion</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#excluding-directories-with-external-build-files">Excluding Directories with External Build Files</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Blade Frequently Asked Questions</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/FAQ.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="blade-frequently-asked-questions">Blade Frequently Asked Questions<a class="headerlink" href="#blade-frequently-asked-questions" title="Permanent link">&para;</a></h1>
+<h2 id="runtime-environment-issues">Runtime Environment Issues<a class="headerlink" href="#runtime-environment-issues" title="Permanent link">&para;</a></h2>
+<h3 id="platform-compatibility-problems">Platform Compatibility Problems<a class="headerlink" href="#platform-compatibility-problems" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Blade fails to execute and reports syntax errors on the target platform.</p>
+<p><strong>Diagnostic Procedure:</strong></p>
+<p>Blade v3 requires Python 3.10 or newer. Verify your Python installation:</p>
+<pre><code class="language-bash">python -V  # Check Python version
+</code></pre>
+<p><strong>Troubleshooting Steps:</strong></p>
+<ol>
+<li><strong>Version Verification:</strong> If an older Python is installed but errors persist, confirm <code>python -V</code> displays Python 3.10 or newer</li>
+<li><strong>PATH Environment:</strong> Update your PATH environment variable if necessary, or restart your terminal session</li>
+<li><strong>Interpreter Identification:</strong> Use <code>env python</code> or <code>which python</code> to identify the active Python interpreter</li>
+</ol>
+<h3 id="vim-syntax-highlighting-for-build-files">Vim Syntax Highlighting for BUILD Files<a class="headerlink" href="#vim-syntax-highlighting-for-build-files" title="Permanent link">&para;</a></h3>
+<p><strong>Issue:</strong> Syntax highlighting fails when editing BUILD files in Vim.</p>
+<p><strong>Resolution Checklist:</strong></p>
+<ol>
+<li><strong>Installation Verification:</strong> Confirm Blade installation completed successfully</li>
+<li><strong>Syntax File Existence:</strong> Check if <code>~/.vim/syntax/blade.vim</code> exists and references the correct file</li>
+<li><strong>Configuration Validation:</strong> Ensure <code>~/.vimrc</code> contains: <code>autocmd! BufRead,BufNewFile BUILD set filetype=blade</code></li>
+</ol>
+<p><strong>Escalation:</strong> If the issue persists after these steps, contact the Blade development team for assistance.</p>
+<h3 id="alt-key-functionality-issues">Alt Key Functionality Issues<a class="headerlink" href="#alt-key-functionality-issues" title="Permanent link">&para;</a></h3>
+<p><strong>Issue:</strong> Alt key functionality is not working as expected.</p>
+<p><strong>Resolution:</strong></p>
+<ol>
+<li><strong>Reinstallation:</strong> Execute the Blade installation process again</li>
+<li><strong>PATH Configuration:</strong> Add <code>~/bin</code> to your user profile and restart your session</li>
+</ol>
+<p><strong>Note:</strong> This issue typically relates to terminal emulator configuration rather than Blade itself.</p>
+<h2 id="build-system-issues">Build System Issues<a class="headerlink" href="#build-system-issues" title="Permanent link">&para;</a></h2>
+<h3 id="dependency-ordering-impact-on-compilation-results">Dependency Ordering Impact on Compilation Results<a class="headerlink" href="#dependency-ordering-impact-on-compilation-results" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Dependency order in <code>deps</code> affects compilation outcomes. For instance, <code>//common/config/ini:ini</code> produces different results based on its position in the dependency list.</p>
+<p><strong>Root Cause Investigation:</strong></p>
+<ol>
+<li><strong>Prebuilt Library Interference:</strong> Compilation errors indicate <code>su.1.0</code> (a prebuilt library) positioned between dependencies</li>
+<li><strong>Behavioral Variation:</strong> <code>//common/config/ini:ini</code> compilation behavior changes relative to <code>su.1.0</code> placement</li>
+<li><strong>Dependency Analysis:</strong> Investigation reveals <code>su.1.0</code> depends on <code>//common/config/ini:ini</code> but lacks static library compilation</li>
+<li><strong>Symbol Resolution Failure:</strong> When <code>//common/config/ini:ini</code> follows <code>su.1.0</code>, GCC's symbol lookup order fails to resolve references</li>
+</ol>
+<p><strong>Best Practices:</strong></p>
+<ul>
+<li><strong>Source Compilation Preference:</strong> Compile projects from source whenever feasible</li>
+<li><strong>Prebuilt Library Minimization:</strong> Limit prebuilt library usage; ensure they include complete dependency targets</li>
+<li><strong>Dependency Verification:</strong> Validate dependency relationships when using prebuilt components</li>
+</ul>
+<h3 id="ccache-error-message-caching-problem">ccache Error Message Caching Problem<a class="headerlink" href="#ccache-error-message-caching-problem" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Compilation errors persist despite source file modifications, suggesting ccache may be caching error messages or warnings.</p>
+<p><strong>Diagnostic Procedure:</strong></p>
+<ol>
+<li><strong>Documentation Review:</strong> Examine ccache documentation - direct mode may experience internal errors</li>
+<li><strong>Configuration Isolation:</strong> Test with modified configuration to isolate cache-related issues</li>
+<li><strong>Preprocessing Analysis:</strong> Header file changes not reflected in preprocessed output</li>
+<li><strong>Path Resolution Discovery:</strong> Identical header files exist in both <code>build_release</code> and source directories</li>
+<li><strong>Include Path Order:</strong> Default ordering (<code>-Ibuild_release -I.</code>) prioritizes <code>build_release</code> directory</li>
+<li><strong>File Placement Conflict:</strong> Colleagues placed files in output directory while modifications occurred in project files</li>
+</ol>
+<p><strong>Resolution:</strong></p>
+<ul>
+<li><strong>Include Path Validation:</strong> Thoroughly review and validate include path configurations</li>
+<li><strong>Build Directory Management:</strong> Maintain clear separation between source and build directories</li>
+<li><strong>Cache Management:</strong> Implement proper ccache invalidation procedures when file conflicts occur</li>
+</ul>
+<h3 id="using-libraries-without-source-code">Using Libraries Without Source Code<a class="headerlink" href="#using-libraries-without-source-code" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> Working with prebuilt libraries that lack source code.</p>
+<p><strong>Solution:</strong> Refer to the [[#cc_library]] documentation for prebuilt library configuration.</p>
+<h3 id="prebuilt-library-with-shared-objects-only">Prebuilt Library with Shared Objects Only<a class="headerlink" href="#prebuilt-library-with-shared-objects-only" title="Permanent link">&para;</a></h3>
+<p><strong>Problem Description:</strong>
+Prebuilt library contains only <code>.so</code> files, but dynamic library compilation is required.</p>
+<p><strong>Technical Analysis:</strong></p>
+<ol>
+<li>For <code>cc_library</code> targets requiring dynamic library compilation, provide only dynamic library files</li>
+<li><code>cc_plugin</code> targets require static library files</li>
+</ol>
+<p><strong>Recommendations:</strong></p>
+<ul>
+<li>Prebuilt libraries should ideally provide both static and dynamic library variants</li>
+<li>Ensure you're using the latest version of Blade for optimal compatibility</li>
+</ul>
+<h3 id="converting-static-libraries-to-dynamic-libraries">Converting Static Libraries to Dynamic Libraries<a class="headerlink" href="#converting-static-libraries-to-dynamic-libraries" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong>
+Only static libraries (.a files) are available, but dynamic library (.so) compilation is required.</p>
+<p><strong>Technical Solution:</strong></p>
+<p>Static libraries (.a) are archives containing object files (.o). Conversion to dynamic libraries involves:</p>
+<pre><code class="language-bash"># Extract object files from static library
+ar -x mylib.a
+# Create shared object from extracted object files
+gcc -shared *.o -o mylib.so
+</code></pre>
+<p><strong>Additional Notes:</strong></p>
+<ul>
+<li>Blade provides automated conversion via the <code>atoso</code> script</li>
+<li>Dynamic libraries cannot be converted back to static libraries</li>
+<li>For third-party code, obtain both static and dynamic library variants whenever possible</li>
+</ul>
+<h3 id="using-a-specific-gcc-or-clang-version">Using a Specific GCC or Clang Version<a class="headerlink" href="#using-a-specific-gcc-or-clang-version" title="Permanent link">&para;</a></h3>
+<p><strong>Requirement:</strong>
+Compile projects using a specific GCC or Clang version.</p>
+<p><strong>Implementation:</strong>
+Configure the toolchain via <code>cc_toolchain_config</code> in BLADE_ROOT:</p>
+<pre><code class="language-python"># Use GCC 13
+cc_toolchain_config(
+    name   = 'gcc-13',
+    kind   = 'gcc',
+    prefix = '/opt/gcc-13',
+)
+
+# Use Clang 17
+cc_toolchain_config(
+    name   = 'clang-17',
+    kind   = 'clang',
+    prefix = '/opt/clang-17',
+)
+</code></pre>
+<p>Select at build time with <code>--cc-toolchain</code>:</p>
+<pre><code class="language-bash">blade build --cc-toolchain=gcc-13   # Select by name
+blade build --cc-toolchain=clang    # Select by kind (auto-detect paths)
+</code></pre>
+<p>For a single toolchain, omit <code>name</code> to use it as the default:</p>
+<pre><code class="language-python">cc_toolchain_config(kind='clang')
+</code></pre>
+<p><strong>Best Practices:</strong></p>
+<ul>
+<li>Ensure you're using the latest Blade version</li>
+<li>Use matching versions for compiler and linker components</li>
+<li>Commit toolchain configuration to BLADE_ROOT for team-wide consistency</li>
+</ul>
+<h3 id="persistent-compilation-errors-after-code-modifications">Persistent Compilation Errors After Code Modifications<a class="headerlink" href="#persistent-compilation-errors-after-code-modifications" title="Permanent link">&para;</a></h3>
+<p><strong>Issue Description:</strong>
+Blade compilation errors persist on CI machines even after error fixes and code updates from SVN.</p>
+<p><strong>Root Cause Analysis:</strong></p>
+<ul>
+<li>File modification verification reveals potential copy issues</li>
+<li>CI machine file ownership: non-root user cannot overwrite root-owned files</li>
+<li>Error messages reference outdated file versions due to permission constraints</li>
+</ul>
+<p><strong>Resolution:</strong></p>
+<ul>
+<li>Carefully manage file ownership during permission transitions</li>
+<li>Ensure proper file synchronization between development and CI environments</li>
+</ul>
+<h3 id="so-libraries-with-embedded-path-information">SO Libraries with Embedded Path Information<a class="headerlink" href="#so-libraries-with-embedded-path-information" title="Permanent link">&para;</a></h3>
+<p><strong>Issue Description:</strong>
+Blade-compiled shared object (.so) libraries contain path information, which complicates usage. Can this behavior be configured?</p>
+<p><strong>Design Rationale:</strong></p>
+<p>In large-scale projects with multiple sub-projects, libraries may be renamed across different contexts. Manual coordination of naming conflicts would be impractical.</p>
+<p>Blade's approach of embedding path information in libraries provides a fundamental solution to naming conflicts. When utilizing these libraries, simply reference them using their full path identifiers.</p>
+<h3 id="new-error-flags-not-functioning">New Error Flags Not Functioning<a class="headerlink" href="#new-error-flags-not-functioning" title="Permanent link">&para;</a></h3>
+<p><strong>Issue Description:</strong>
+Recently updated Blade version, but new error flags are not taking effect during compilation.</p>
+<p><strong>Troubleshooting Steps:</strong></p>
+<ul>
+<li>Verify Blade installation is current and properly updated</li>
+<li>Check if C++ program filters or ignores specific error flags</li>
+<li>Blade selectively applies error flags based on compiler support to avoid compilation failures</li>
+<li>Confirm GCC version meets minimum requirements for new flag features</li>
+</ul>
+<p><strong>Resolution:</strong></p>
+<ul>
+<li>Upgrade GCC to a version that supports the required error flag functionality</li>
+</ul>
+<h3 id="blade-clean-command-not-removing-generated-files">blade clean Command Not Removing Generated Files<a class="headerlink" href="#blade-clean-command-not-removing-generated-files" title="Permanent link">&para;</a></h3>
+<p><strong>Issue Description:</strong>
+<code>blade clean</code> command fails to remove project-generated files.</p>
+<p><strong>Resolution:</strong></p>
+<p>Ensure command parameter consistency between build and clean operations:</p>
+<ul>
+<li>Use <code>blade clean -prelease</code> to clean files generated by <code>blade build -prelease</code></li>
+<li>Use <code>blade clean -pdebug</code> to clean files generated by <code>blade build -pdebug</code></li>
+</ul>
+<p><strong>Verification:</strong></p>
+<p>Double-check command syntax and parameter matching to ensure proper cleanup execution.</p>
+<h3 id="how-to-display-the-command-line-of-the-build">How to display the command line of the build<a class="headerlink" href="#how-to-display-the-command-line-of-the-build" title="Permanent link">&para;</a></h3>
+<p>I want to see the complete command executed during the build process.
+The complete command line can be displayed by adding the --verbose parameter to the build.</p>
+<h3 id="publishing-precompiled-libraries">Publishing Precompiled Libraries<a class="headerlink" href="#publishing-precompiled-libraries" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong>
+Distributing proprietary code as precompiled libraries while maintaining dependencies on open-source components.</p>
+<p><strong>Original Library Configuration:</strong></p>
+<pre><code class="language-python">cc_library(
+    name = 'security',
+    srcs = 'security.cpp',
+    hdrs = ['security.h'],
+    deps = [
+        '//common/base/string:string',
+        '//thirdparty/glog:glog',
+    ]
+)
+</code></pre>
+<p><strong>Precompiled Distribution Configuration:</strong></p>
+<pre><code class="language-python">cc_library(
+    name = 'security',
+    hdrs = ['security.h'],
+    prebuilt = True,  # Replace srcs with prebuilt flag
+    deps = [
+        '//common/base/string:string',
+        '//thirdparty/glog:glog',
+    ]
+)
+</code></pre>
+<p><strong>Key Considerations:</strong></p>
+<ul>
+<li>External header files remain unchanged</li>
+<li>Dependency specifications must be preserved</li>
+<li>Only distribute libraries you have rights to publish as precompiled binaries</li>
+<li>Follow cc_library documentation for proper prebuilt library organization</li>
+</ul>
+<h3 id="unrecognized-options-error">Unrecognized Options Error<a class="headerlink" href="#unrecognized-options-error" title="Permanent link">&para;</a></h3>
+<p><strong>Error Example:</strong> <code>unrecognized options {'link_all_symbols': 1}</code></p>
+<p><strong>Root Cause:</strong>
+Different target types support distinct parameter sets. This error occurs when attempting to use parameters not supported by the target type.</p>
+<p><strong>Common Causes:</strong></p>
+<ul>
+<li>Parameter misapplication across different target types</li>
+<li>Spelling errors in parameter names</li>
+</ul>
+<p><strong>Debugging Assistance:</strong>
+Blade's Vim syntax highlighting helps identify parameter errors during editing.</p>
+<h3 id="source-file-ownership-conflict">Source File Ownership Conflict<a class="headerlink" href="#source-file-ownership-conflict" title="Permanent link">&para;</a></h3>
+<p><strong>Error Example:</strong>
+<code>Source file cp_test_config.cc belongs to both cc_test xcube/cp/jobcontrol:job_controller_test and cc_test xcube/cp/jobcontrol:job_context_test</code></p>
+<p><strong>Technical Rationale:</strong></p>
+<p>This violates C++'s <a href="http://en.wikipedia.org/wiki/One_Definition_Rule">One Definition Rule</a>, which prevents:
+- Unnecessary duplicate compilation
+- Potential compilation parameter inconsistencies</p>
+<p><strong>Best Practice:</strong></p>
+<p>Each source file should belong to exactly one target. For shared functionality:
+1. Extract common code into a separate <code>cc_library</code>
+2. Reference this library via <code>deps</code> in dependent targets
+3. Maintain clear ownership boundaries between components</p>
+<h3 id="enabling-c11-support">Enabling C++11 Support<a class="headerlink" href="#enabling-c11-support" title="Permanent link">&para;</a></h3>
+<p><strong>Configuration:</strong>
+Add the following to your configuration file:</p>
+<pre><code class="language-python">cc_config(
+    cxxflags='-std=gnu++11'
+)
+</code></pre>
+<p><strong>Version Compatibility:</strong></p>
+<ul>
+<li>Refer to <a href="https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html">GCC Online Documentation</a> for additional dialect options</li>
+<li>For GCC versions predating C++11 standardization, use <code>"gnu++0x"</code> instead</li>
+<li>Modern GCC versions (e.g., GCC 6+) default to C++14, making this configuration optional</li>
+</ul>
+<h3 id="optimizing-disk-space-usage">Optimizing Disk Space Usage<a class="headerlink" href="#optimizing-disk-space-usage" title="Permanent link">&para;</a></h3>
+<p><strong>Challenge:</strong>
+Blade-built projects often involve large-scale codebases, resulting in substantial disk space consumption from build artifacts.</p>
+<p><strong>Space Optimization Strategies:</strong></p>
+<h4 id="debug-information-level-management">Debug Information Level Management<a class="headerlink" href="#debug-information-level-management" title="Permanent link">&para;</a></h4>
+<p>Blade defaults to including debugging symbols for enhanced debugging capabilities with tools like GDB. However, debug symbols constitute the largest portion of binary files.</p>
+<p><strong>Configuration:</strong></p>
+<pre><code class="language-python"># Reduce debug information overhead
+global_config(
+    debug_info_level = 'no'
+)
+</code></pre>
+<p><strong>Debug Level Options:</strong></p>
+<ul>
+<li><code>no</code>: No debug information - minimal binary size, no symbol visibility in GDB</li>
+<li><code>low</code>: Basic symbols - function names and global variables only</li>
+<li><code>mid</code>: Standard debugging - includes local variables and function parameters (default)</li>
+<li><code>high</code>: Comprehensive debugging - maximum symbol information including macros</li>
+</ul>
+<p><strong>Trade-off:</strong> Lower debug levels significantly reduce binary size but limit debugging capabilities.</p>
+<h4 id="debugfission-optimization">DebugFission Optimization<a class="headerlink" href="#debugfission-optimization" title="Permanent link">&para;</a></h4>
+<p><strong>Feature:</strong> DebugFission separates debug information from executable files, reducing binary size while maintaining debugging capabilities.</p>
+<p><strong>Configuration Reference:</strong></p>
+<ul>
+<li><a href="../config/#cc_config"><code>cc_config.fission</code></a> - Enable DebugFission functionality</li>
+<li><a href="../config/#cc_config"><code>cc_config.dwp</code></a> - Package debug information files (.dwo) into debug packages (.dwp)</li>
+<li><a href="../build_rules/cc/#using-dwp-files">Using dwp files in package</a> - Integration of debug packages in deployment artifacts</li>
+</ul>
+<h4 id="debug-information-compression">Debug Information Compression<a class="headerlink" href="#debug-information-compression" title="Permanent link">&para;</a></h4>
+<p><strong>Optimization:</strong> Utilize GCC's <a href="https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html"><code>-gz</code></a> option to compress debug information.</p>
+<p><strong>Implementation Strategy:</strong></p>
+<ul>
+<li>Applicable during both compilation and linking phases</li>
+<li>For final executable size optimization, apply only during linking phase</li>
+<li>Compression/decompression overhead may impact build performance</li>
+</ul>
+<p><strong>Global Configuration:</strong></p>
+<pre><code class="language-python">cc_config(
+    ...
+    cppflags = [..., '-gz', ...],
+    linkflags = [..., '-gz', ...],
+    ...
+)
+</code></pre>
+<p><strong>Target-Specific Configuration:</strong></p>
+<pre><code class="language-python">cc_binary(
+    name = 'xxx_server',
+    ...
+    extra_linkflags = ['-gz'],
+)
+</code></pre>
+<p><strong>Compatibility Notes:</strong></p>
+<ul>
+<li>Requires <a href="https://sourceware.org/gdb/current/onlinedocs/gdb/Requirements.html">GDB versions supporting compressed debug symbols</a></li>
+<li>Older GDB versions or missing zlib configuration will prevent debug symbol reading</li>
+</ul>
+<h4 id="debug-symbol-separation">Debug Symbol Separation<a class="headerlink" href="#debug-symbol-separation" title="Permanent link">&para;</a></h4>
+<p><strong>Challenge:</strong> Reducing debug symbol levels or stripping symbols minimizes binary size but compromises debugging capabilities.</p>
+<p><strong>Solution:</strong> Implement <a href="https://sourceware.org/gdb/onlinedocs/gdb/Separate-Debug-Files.html">Separated Debugging Symbols</a> to maintain debugging functionality while optimizing binary size.</p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Maintains full debugging capabilities</li>
+<li>Reduces deployed binary footprint</li>
+<li>Enables efficient debugging symbol distribution</li>
+</ul>
+<p><strong>Implementation:</strong> Store debug symbols in separate files referenced by the main executable.</p>
+<h4 id="dynamic-linking-for-test-programs">Dynamic Linking for Test Programs<a class="headerlink" href="#dynamic-linking-for-test-programs" title="Permanent link">&para;</a></h4>
+<p><strong>Configuration:</strong></p>
+<pre><code class="language-python">cc_test_config(
+    dynamic_link = True
+)
+</code></pre>
+<p><strong>Rationale:</strong></p>
+<ul>
+<li>Test programs are not deployed to production environments</li>
+<li>Dynamic linking significantly reduces disk space requirements</li>
+<li>Individual test cases requiring static linking can override with <code>dynamic_link = False</code></li>
+</ul>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Substantial disk space savings for test artifacts</li>
+<li>Faster build times due to reduced linking overhead</li>
+<li>Flexible configuration for specific test requirements</li>
+</ul>
+<h4 id="thin-static-library-generation">Thin Static Library Generation<a class="headerlink" href="#thin-static-library-generation" title="Permanent link">&para;</a></h4>
+<p><strong>Feature:</strong> GNU ar supports 'thin' static library format, which differs from traditional static libraries by storing object file paths rather than actual object code.</p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Significantly reduces disk space consumption</li>
+<li>Maintains build system efficiency</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>Not suitable for distribution outside the build environment</li>
+<li>Compatible with Blade's internal library usage patterns</li>
+</ul>
+<p><strong>Configuration:</strong></p>
+<pre><code class="language-python">cc_library_config(
+    thin = True  # Generate thin static libraries
+)
+</code></pre>
+<p><strong>Usage Context:</strong> Ideal for internal build system libraries where distribution is not required.</p>
+<h3 id="libstdc-library-not-found">libstdc++ Library Not Found<a class="headerlink" href="#libstdc-library-not-found" title="Permanent link">&para;</a></h3>
+<p><strong>Error:</strong> <code>cannot find -lstdc++</code></p>
+<p><strong>Solution:</strong> Install the static version of libstdc++ library:</p>
+<pre><code class="language-bash">yum install libstdc++-static
+</code></pre>
+<p><strong>Context:</strong> This error typically occurs when linking requires the static C++ standard library, which may not be installed by default on some systems.</p>
+<h3 id="compiler-process-termination-due-to-resource-constraints">Compiler Process Termination Due to Resource Constraints<a class="headerlink" href="#compiler-process-termination-due-to-resource-constraints" title="Permanent link">&para;</a></h3>
+<p><strong>Error:</strong> <code>g++: Fatal error: Killed signal terminated program cc1plus</code></p>
+<p><strong>Root Cause:</strong> System resources may be insufficient for Blade's default job count calculation.</p>
+<p><strong>Resolution:</strong> Reduce parallel job count using the <code>-j</code> parameter:</p>
+<pre><code class="language-bash">blade build -j4  # Use 4 jobs on an 8-core machine
+</code></pre>
+<p><strong>Best Practice:</strong> Adjust job count based on available system memory and CPU resources to prevent out-of-memory conditions.</p>
+<h3 id="disk-space-exhaustion">Disk Space Exhaustion<a class="headerlink" href="#disk-space-exhaustion" title="Permanent link">&para;</a></h3>
+<p><strong>Error:</strong> <code>No space left on device</code></p>
+<p><strong>Root Causes:</strong></p>
+<ul>
+<li>Output directory disk space depletion</li>
+<li>Temporary directory space constraints</li>
+</ul>
+<p><strong>Resolution:</strong></p>
+<ul>
+<li>Clean up build artifacts and temporary files</li>
+<li>Configure alternative temporary directory via <a href="https://gcc.gnu.org/onlinedocs/gcc/Environment-Variables.html">TMPDIR</a> environment variable</li>
+</ul>
+<p><strong>Prevention:</strong> Monitor disk usage during large builds and implement cleanup automation.</p>
+<h3 id="excluding-directories-with-external-build-files">Excluding Directories with External Build Files<a class="headerlink" href="#excluding-directories-with-external-build-files" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> Skip directories containing build files from other build systems (e.g., Bazel).</p>
+<p><strong>Solution:</strong> Create an empty <code>.bladeskip</code> file in the target directory.</p>
+<p><strong>Effect:</strong> Blade will exclude the directory and all its subdirectories from build processing.</p>
+<p><strong>Use Case:</strong> Ideal for managing mixed build system environments or excluding third-party code with incompatible build configurations.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../develop/visibility/" class="btn btn-neutral float-left" title="How target visibility is implemented and enforced"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../develop/visibility/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

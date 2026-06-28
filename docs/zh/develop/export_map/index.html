@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/export_map/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>export_map（符号导出控制）实现原理 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "export_map\uff08\u7b26\u53f7\u5bfc\u51fa\u63a7\u5236\uff09\u5b9e\u73b0\u539f\u7406";
+        var mkdocs_page_input_path = "develop/export_map.md";
+        var mkdocs_page_url = "/docs/zh/develop/export_map/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">export_map（符号导出控制）实现原理</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 一个属性，三种链接器现实</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-_resolve_linker_input_file">2. 属性解析（_resolve_linker_input_file）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-linux-macos-_cc_link">3. Linux 与 macOS 派发（_cc_link）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-windows-dll-_dynamic_cc_library_windows">4. Windows DLL 路径（_dynamic_cc_library_windows）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-builtin_tools">5. 转换工具（builtin_tools）</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">export_map（符号导出控制）实现原理</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/export_map.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="export_map"><code>export_map</code>（符号导出控制）实现原理<a class="headerlink" href="#export_map" title="Permanent link">&para;</a></h1>
+<p><code>export_map</code> 通过链接器的
+<a href="https://sourceware.org/binutils/docs/ld/VERSION.html">version script</a> 控制一个共
+享库/可执行文件导出哪些符号。在 GNU ld 上它被原样透传；在 macOS 与 Windows——它们没
+有 <code>--version-script</code>——Blade 则<em>模拟</em>它。本文讲解它<strong>如何实现</strong>；面向用户的描述见
+<a href="../../build_rules/cc/#控制共享库导出哪些符号">build_rules/cc.md</a>。</p>
+<p>涉及的源文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td><code>_resolve_linker_input_file</code>（属性 → 全路径、处理 plural 别名）、<code>_cc_link</code>（Linux/macOS 派发）、<code>_dynamic_cc_library_windows</code>（DLL <code>.def</code> 路径）</td>
+</tr>
+<tr>
+<td><code>src/blade/builtin_tools.py</code></td>
+<td><code>cc_macos_exports</code>（ld64 列表）与 <code>cc_windef</code>（<code>.def</code> 过滤）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1">1. 一个属性，三种链接器现实<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><code>export_map</code> 属性是单个 version-script 文件。其机制是<strong>导出过滤</strong>，而非 ABI 版本化
+——名字由此而来（已废弃的复数形式 <code>version_scripts</code> 是别名）。三种后端有根本差异：</p>
+<table>
+<thead>
+<tr>
+<th>工具链</th>
+<th>原生支持</th>
+<th>Blade 的做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GNU ld（Linux）</td>
+<td>有（<code>--version-script</code>）</td>
+<td>透传</td>
+</tr>
+<tr>
+<td>Apple ld64（macOS）</td>
+<td>无</td>
+<td>翻译为 <code>-exported_symbols_list</code></td>
+</tr>
+<tr>
+<td>MSVC link.exe（Windows）</td>
+<td>无</td>
+<td>过滤自动生成的 <code>.def</code></td>
+</tr>
+</tbody>
+</table>
+<p>由于 macOS/Windows 的模拟按<strong>反修饰（demangled）后的名字</strong>工作，两者都有两条限制：
+<strong>重载坍缩</strong>（一个名字要么连同所有重载一起导出、要么都不导出），以及带引号的签名模
+式（<code>"f(int)"</code>）只按其名字部分匹配（并一次性警告）。完整的 ELF version 节点仅
+Linux 独有。实践中 <code>ns::class::method</code> 形式的模式已足够。</p>
+<h2 id="2-_resolve_linker_input_file">2. 属性解析（<code>_resolve_linker_input_file</code>）<a class="headerlink" href="#2-_resolve_linker_input_file" title="Permanent link">&para;</a></h2>
+<p><code>export_map</code> 与已废弃的复数 <code>version_scripts</code> 由 <code>_resolve_linker_input_file</code> 规范化
+为 <code>export_map_fullpath</code>（至多一个路径的列表），此函数与 <code>linker_script</code> 共用。它：</p>
+<ul>
+<li>若使用了已废弃的复数形式则警告并回退（两者都给时忽略复数）；</li>
+<li>若给了多个文件则警告并只保留第一个——GNU ld 拒绝两个匿名 version 节点，单个文件是
+  唯一有意义的数量。</li>
+</ul>
+<p>保持为单元素列表，使其能直接拼接进现有的 <code>_cc_link(version_scripts=...)</code> 处理。</p>
+<h2 id="3-linux-macos-_cc_link">3. Linux 与 macOS 派发（<code>_cc_link</code>）<a class="headerlink" href="#3-linux-macos-_cc_link" title="Permanent link">&para;</a></h2>
+<p><code>_cc_link</code> 收到 <code>version_scripts</code>，并按目标 OS 分支：</p>
+<pre><code class="language-python">if version_scripts:
+    if is_darwin:
+        # 翻译为 ld64 的 -exported_symbols_list
+        export_map = version_scripts[0]
+        exports_list = '%s.exported_symbols_list' % output
+        self.generate_build('cc_macos_exports', exports_list,
+                            inputs=objs, implicit_deps=[export_map],
+                            variables={'export_map': export_map})
+        extra_linkflags.append('-Wl,-exported_symbols_list,' + exports_list)
+        implicit_deps.append(exports_list)
+    else:
+        extra_linkflags += ['-Wl,--version-script=%s' % ver for ver in version_scripts]
+        implicit_deps += version_scripts
+</code></pre>
+<ul>
+<li><strong>Linux</strong> —— 发射 <code>-Wl,--version-script=&lt;file&gt;</code>，并把脚本加为 implicit dep，使改脚
+  本即重链。</li>
+<li><strong>macOS</strong> —— 先由一条 <code>cc_macos_exports</code> rule 把 version script <strong>转换</strong>成 ld64 的
+  <code>-exported_symbols_list</code> 文件（见 §5），再由链接消费它。</li>
+</ul>
+<p>（<code>_cc_link</code> 这里也处理 <code>linker_script</code>（<code>-T</code>）；ld64 无对应物，故警告并丢弃。MSVC
+永不到达此分支。）</p>
+<h2 id="4-windows-dll-_dynamic_cc_library_windows">4. Windows DLL 路径（<code>_dynamic_cc_library_windows</code>）<a class="headerlink" href="#4-windows-dll-_dynamic_cc_library_windows" title="Permanent link">&para;</a></h2>
+<p>MSVC 的导出控制接入<strong>自动导出 <code>.def</code></strong>流水线，而非链接标志。Blade 已经从目标文件生
+成 <code>.def</code>（<code>cc_windef</code>，经 COMDAT 过滤）来导出 DLL 的符号。当设置了 <code>export_map</code>
+时，同一条 rule 还会把 <code>.def</code> <strong>过滤</strong>一遍 version script：</p>
+<pre><code class="language-python">export_map = self.attr.get('export_map_fullpath')
+if export_map:
+    def_vars = {'defflags': '--export_map=%s' % export_map[0]}
+    def_implicit = [export_map[0]]
+self.generate_build('cc_windef', def_file, inputs=objs,
+                    implicit_deps=def_implicit, variables=def_vars)
+</code></pre>
+<p>过滤后的 <code>.def</code> 再驱动 DLL 链接（<code>/DEF:</code>），于是只有匹配的符号被导出——这对维持在 PE
+的 64K 导出上限以内也有用。</p>
+<h2 id="5-builtin_tools">5. 转换工具（<code>builtin_tools</code>）<a class="headerlink" href="#5-builtin_tools" title="Permanent link">&para;</a></h2>
+<p>两种模拟都是"仅按名字反修饰再匹配"，构建期运行：</p>
+<ul>
+<li><strong><code>cc_macos_exports</code></strong> —— 用 <code>nm</code> 枚举每个 <code>.o</code> 的全局符号，用 libc++abi 的
+  <code>__cxa_demangle</code> 反修饰每个符号，把反修饰名与 version script 的 <code>global</code> /
+  <code>local</code> 模式匹配，并把匹配的（Mach-O 下划线前缀的）修饰名写进 ld64 读取的
+  <code>-exported_symbols_list</code> 文件。</li>
+<li><strong><code>cc_windef</code></strong> —— 在 <code>.def</code> 上的同一思路：每个符号的反修饰名
+  （<code>UnDecorateSymbolName</code> / <code>undname</code>）与脚本匹配；不匹配的导出从 <code>.def</code> 中删除。</li>
+</ul>
+<p>二者共有的特性——<em>反修饰丢弃重载签名</em>——正是这两个平台上重载坍缩、签名模式退化为仅按
+名字匹配的根本原因。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../dsl_api/" class="btn btn-neutral float-left" title="内置函数与 blade.* DSL"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../gen_rule/" class="btn btn-neutral float-right" title="gen_rule：自定义构建步骤与其它 target 如何感知它">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../dsl_api/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../gen_rule/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

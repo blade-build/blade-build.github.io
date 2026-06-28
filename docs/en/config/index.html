@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/config/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Configuration System - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Configuration System";
+        var mkdocs_page_input_path = "config.md";
+        var mkdocs_page_url = "/docs/en/config/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Configuration System</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-file-hierarchy">Configuration File Hierarchy</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-syntax">Configuration Syntax</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-characteristics">Key Characteristics:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-inspection">Configuration Inspection</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#global_config">global_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#backend_builder-string-ninja">backend_builder: string = "ninja"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#duplicated_source_action-string-warning">duplicated_source_action: string = "warning"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_timeout-int-600">test_timeout: int = 600</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug_info_level-string-mid">debug_info_level: string = "mid"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#build_jobs-int-0">build_jobs: int = 0</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_jobs-int-0">test_jobs: int = 0</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_related_envs-list">test_related_envs: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#run_unrepaired_tests-bool-false">run_unrepaired_tests: bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#legacy_public_targets-list">legacy_public_targets: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#default_visibility-list">default_visibility: list = []</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_config">cc_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#toolchain-str">toolchain: str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#extra_incs-list">extra_incs: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cppflags-list">cppflags: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cflags-list">cflags: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxxflags-list">cxxflags: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#linkflags-list">linkflags: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#warnings-list-builtin">warnings: list = builtin</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c_warnings-list-builtin">c_warnings: list = builtin</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxx_warnings-list-builtin">cxx_warnings: list = builtin</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#optimize-list-o2">optimize: list = ['-O2']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lto-str-thin-full">lto: str = '' | 'thin' | 'full'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fission-bool-false">fission: bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dwp-bool-false">dwp: bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pie-str-auto-yes-no">pie: str = 'auto' | 'yes' | 'no'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#no_semantic_interposition-bool-true">no_semantic_interposition: bool = True</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_library_config">cc_library_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_test_config">cc_test_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coverage_config">coverage_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#msvc_config">msvc_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#target_arch-string-auto">target_arch: string = 'auto'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#msvc_version-string-auto">msvc_version: string = 'auto'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#use_clang-bool-false">use_clang: bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cppflags-list-md-ehsc">cppflags: list = ['/MD', '/EHsc']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cflags-list_1">cflags: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxxflags-list-stdc17">cxxflags: list = ['/std:c++17']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#linkflags-list-subsystemconsole">linkflags: list = ['/SUBSYSTEM:CONSOLE']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#warnings-list-w3">warnings: list = ['/W3']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#optimize-dict">optimize: dict</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug_info_levels-dict">debug_info_levels: dict</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cuda_config">cuda_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#java_config">java_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#proto_library_config">proto_library_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#thrift_library_config">thrift_library_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#append-configuration-item-values">Append configuration item values</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#load_value-function">load_value function</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc-toolchain-configuration">C/C++ Toolchain Configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#kind-toolchain-family">kind — toolchain family</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prefix-install-prefix">prefix — install prefix</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-reference">Configuration reference</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#multiple-toolchain-configs">Multiple toolchain configs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#selection-priority">Selection priority</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-clang-cl-on-windows">Using clang-cl on Windows</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vcpkg_config">vcpkg_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#manage-bool-true">manage: bool = True</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#packages-dict">packages: dict = {}</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#baseline-str">baseline: str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#registries-list">registries: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#root-str">root: str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#triplet-str-auto">triplet: str = "auto"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#install_dir-str-cachevcpkg">install_dir: str = ".cache/vcpkg"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#binary_cache-str-auto">binary_cache: str = "auto"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#direct_use_allowed-list">direct_use_allowed: list = []</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
+      <li class="breadcrumb-item active">Configuration System</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/config.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="configuration-system">Configuration System<a class="headerlink" href="#configuration-system" title="Permanent link">&para;</a></h1>
+<h2 id="configuration-file-hierarchy">Configuration File Hierarchy<a class="headerlink" href="#configuration-file-hierarchy" title="Permanent link">&para;</a></h2>
+<p>Blade employs a multi-level configuration system that loads files in the following precedence order, with each subsequent level overriding the previous:</p>
+<ul>
+<li><strong>Global Configuration</strong>: <code>blade.conf</code> in the Blade installation directory</li>
+<li><strong>User Configuration</strong>: <code>~/.bladerc</code> in the user's home directory</li>
+<li><strong>Project Configuration</strong>: <code>BLADE_ROOT</code> file (also functions as a configuration file)</li>
+<li><strong>Local Configuration</strong>: <code>BLADE_ROOT.local</code> for developer-specific temporary adjustments</li>
+</ul>
+<h2 id="configuration-syntax">Configuration Syntax<a class="headerlink" href="#configuration-syntax" title="Permanent link">&para;</a></h2>
+<p>Configuration files use a function-call syntax similar to BUILD files:</p>
+<pre><code class="language-python">global_config(
+    test_timeout = 600,
+)
+</code></pre>
+<h3 id="key-characteristics">Key Characteristics:<a class="headerlink" href="#key-characteristics" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Configuration items can be specified in any order</li>
+<li>Most parameters have sensible defaults that rarely need modification</li>
+<li>Only override settings when specific customization is required</li>
+</ul>
+<h2 id="configuration-inspection">Configuration Inspection<a class="headerlink" href="#configuration-inspection" title="Permanent link">&para;</a></h2>
+<p>To examine current configuration settings:</p>
+<pre><code class="language-bash"># Dump configuration to file
+blade dump --config --to-file my.config
+
+# Display configuration to stdout
+blade dump --config
+</code></pre>
+<h3 id="global_config">global_config<a class="headerlink" href="#global_config" title="Permanent link">&para;</a></h3>
+<p>Global build system configuration parameters:</p>
+<h4 id="backend_builder-string-ninja"><code>backend_builder</code>: string = "ninja"<a class="headerlink" href="#backend_builder-string-ninja" title="Permanent link">&para;</a></h4>
+<p><strong>Backend Build System</strong></p>
+<p>Currently supports only <code>ninja</code> as the backend build system.</p>
+<p><strong>Technical Background:</strong> Blade previously used SCons but transitioned to <a href="https://ninja-build.org/">Ninja</a> due to its superior build performance. Ninja is a lower-level build system optimized for speed, making it the exclusive backend choice.</p>
+<h4 id="duplicated_source_action-string-warning"><code>duplicated_source_action</code>: string = "warning"<a class="headerlink" href="#duplicated_source_action-string-warning" title="Permanent link">&para;</a></h4>
+<p><strong>Duplicate Source File Handling</strong></p>
+<p><strong>Valid Values:</strong> <code>["warning", "error"]</code>
+<strong>Behavior:</strong> Specifies the action when a source file is detected in multiple targets.</p>
+<h4 id="test_timeout-int-600"><code>test_timeout</code>: int = 600<a class="headerlink" href="#test_timeout-int-600" title="Permanent link">&para;</a></h4>
+<p><strong>Test Execution Timeout</strong></p>
+<p><strong>Unit:</strong> Seconds
+<strong>Purpose:</strong> Tests exceeding this duration are automatically marked as failed.</p>
+<h4 id="debug_info_level-string-mid"><code>debug_info_level</code>: string = "mid"<a class="headerlink" href="#debug_info_level-string-mid" title="Permanent link">&para;</a></h4>
+<p><strong>Debug Information Generation</strong></p>
+<p><strong>Valid Values:</strong> <code>["no", "low", "mid", "high"]</code>
+<strong>Trade-off:</strong> Higher levels provide better debugging capability but increase disk space consumption.</p>
+<h4 id="build_jobs-int-0"><code>build_jobs</code>: int = 0<a class="headerlink" href="#build_jobs-int-0" title="Permanent link">&para;</a></h4>
+<p><strong>Parallel Build Jobs</strong></p>
+<p><strong>Range:</strong> 0 to number of CPU cores
+<strong>Default Behavior:</strong> 0 enables automatic job count determination by Blade.</p>
+<h4 id="test_jobs-int-0"><code>test_jobs</code>: int = 0<a class="headerlink" href="#test_jobs-int-0" title="Permanent link">&para;</a></h4>
+<p><strong>Parallel Test Jobs</strong></p>
+<p><strong>Range:</strong> 0 to half the number of CPU cores
+<strong>Default Behavior:</strong> 0 enables automatic test concurrency management.</p>
+<h4 id="test_related_envs-list"><code>test_related_envs</code>: list = []<a class="headerlink" href="#test_related_envs-list" title="Permanent link">&para;</a></h4>
+<p><strong>Test-Related Environment Variables</strong></p>
+<p><strong>Format:</strong> String or regular expression patterns
+<strong>Purpose:</strong> Identifies environment variables that impact test behavior during incremental testing.</p>
+<h4 id="run_unrepaired_tests-bool-false"><code>run_unrepaired_tests</code>: bool = False<a class="headerlink" href="#run_unrepaired_tests-bool-false" title="Permanent link">&para;</a></h4>
+<p><strong>Unrepaired Test Execution</strong></p>
+<p><strong>Behavior:</strong> Controls whether to execute tests that failed previously without code changes.</p>
+<h4 id="legacy_public_targets-list"><code>legacy_public_targets</code>: list = []<a class="headerlink" href="#legacy_public_targets-list" title="Permanent link">&para;</a></h4>
+<p><strong>Backward Compatibility for Target Visibility</strong></p>
+<p><strong>Purpose:</strong> For targets without explicit <code>visibility</code> settings, this list determines which targets default to <code>PUBLIC</code> visibility.</p>
+<p><strong>Migration Tool:</strong> Use <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>tool/collect-missing-visibility.py</code></a> to generate this list for existing projects:</p>
+<pre><code class="language-python">global_config(
+    legacy_public_targets = load_value('legacy_public_targets.conf')
+)
+</code></pre>
+<h4 id="default_visibility-list"><code>default_visibility</code>: list = []<a class="headerlink" href="#default_visibility-list" title="Permanent link">&para;</a></h4>
+<p><strong>Default Target Visibility</strong></p>
+<p><strong>Valid Values:</strong> <code>[]</code> (private) or <code>['PUBLIC']</code>
+<strong>Historical Context:</strong> Setting to <code>['PUBLIC']</code> maintains compatibility with Blade 1.x behavior.</p>
+<h3 id="cc_config">cc_config<a class="headerlink" href="#cc_config" title="Permanent link">&para;</a></h3>
+<p>Common configuration parameters for all C/C++ build targets:</p>
+<h4 id="toolchain-str"><code>toolchain</code>: str = ""<a class="headerlink" href="#toolchain-str" title="Permanent link">&para;</a></h4>
+<p><strong>Default Toolchain</strong></p>
+<p><strong>Purpose:</strong> Specifies the default <code>cc_toolchain_config</code> name to use when
+<code>--cc-toolchain=</code> is not given on the command line. The value must match
+the <code>name</code> of a <code>cc_toolchain_config()</code> entry, or a toolchain kind
+(<code>gcc</code> / <code>clang</code> / <code>msvc</code> / <code>mingw</code> / <code>cygwin</code>).</p>
+<p><strong>Override:</strong> <code>blade build --cc-toolchain=&lt;name&gt;</code> takes precedence.</p>
+<h4 id="extra_incs-list"><code>extra_incs</code>: list = []<a class="headerlink" href="#extra_incs-list" title="Permanent link">&para;</a></h4>
+<p><strong>Additional Include Directories</strong></p>
+<p><strong>Purpose:</strong> Specifies extra header file search paths for the compiler.</p>
+<h4 id="cppflags-list"><code>cppflags</code>: list = []<a class="headerlink" href="#cppflags-list" title="Permanent link">&para;</a></h4>
+<p><strong>C/C++ Common Compiler Flags</strong></p>
+<p><strong>Usage:</strong> Flags applicable to both C and C++ compilation.</p>
+<h4 id="cflags-list"><code>cflags</code>: list = []<a class="headerlink" href="#cflags-list" title="Permanent link">&para;</a></h4>
+<p><strong>C-Specific Compiler Flags</strong></p>
+<p><strong>Usage:</strong> Flags exclusive to C language compilation.</p>
+<h4 id="cxxflags-list"><code>cxxflags</code>: list = []<a class="headerlink" href="#cxxflags-list" title="Permanent link">&para;</a></h4>
+<p><strong>C++-Specific Compiler Flags</strong></p>
+<p><strong>Usage:</strong> Flags exclusive to C++ language compilation.</p>
+<h4 id="linkflags-list"><code>linkflags</code>: list = []<a class="headerlink" href="#linkflags-list" title="Permanent link">&para;</a></h4>
+<p><strong>Linker Flags</strong></p>
+<p><strong>Usage:</strong> Additional flags passed to the linker during executable/library linking.</p>
+<h4 id="warnings-list-builtin"><code>warnings</code>: list = builtin<a class="headerlink" href="#warnings-list-builtin" title="Permanent link">&para;</a></h4>
+<p><strong>C/C++ Common Warning Flags</strong></p>
+<p><strong>Default:</strong> <code>['-Wall', '-Wextra']</code>
+<strong>Recommendation:</strong> The default warning configuration is carefully selected and suitable for most development scenarios.</p>
+<h4 id="c_warnings-list-builtin"><code>c_warnings</code>: list = builtin<a class="headerlink" href="#c_warnings-list-builtin" title="Permanent link">&para;</a></h4>
+<p><strong>C-Specific Warning Flags</strong></p>
+<p><strong>Usage:</strong> Warning flags exclusive to C language compilation.</p>
+<h4 id="cxx_warnings-list-builtin"><code>cxx_warnings</code>: list = builtin<a class="headerlink" href="#cxx_warnings-list-builtin" title="Permanent link">&para;</a></h4>
+<p><strong>C++-Specific Warning Flags</strong></p>
+<p><strong>Usage:</strong> Warning flags exclusive to C++ language compilation.</p>
+<h4 id="optimize-list-o2"><code>optimize</code>: list = ['-O2']<a class="headerlink" href="#optimize-list-o2" title="Permanent link">&para;</a></h4>
+<p><strong>Optimization Flags</strong></p>
+<p><strong>Default:</strong> <code>['-O2']</code>
+<strong>Special Behavior:</strong> Optimization flags are disabled in debug mode to preserve debugging capability.</p>
+<h4 id="lto-str-thin-full"><code>lto</code>: str = <code>''</code> | <code>'thin'</code> | <code>'full'</code><a class="headerlink" href="#lto-str-thin-full" title="Permanent link">&para;</a></h4>
+<p><strong>Link-Time Optimization (LTO / ThinLTO)</strong></p>
+<p>The project's LTO policy for <strong>release</strong> builds: <code>''</code> (off, default), <code>'thin'</code> (ThinLTO — incremental, recommended), or <code>'full'</code> (monolithic). A <strong>project intrinsic</strong> (a stable decision that ships, like the optimization level), hence a config item rather than a per-invocation mode. Override per build with <code>--lto</code> / <code>--lto=full</code> / <code>--lto=no</code>, or opt a target out with <code>lto = False</code>.</p>
+<p>See <strong><a href="../optimization/#link-time-optimization-lto">C/C++ Optimization → LTO</a></strong> for the full story — release-only gating, the per-toolchain mapping (gcc/clang/native-MSVC/clang-cl), the ThinLTO cache, and robustness notes.</p>
+<h4 id="fission-bool-false"><code>fission</code>: bool = False<a class="headerlink" href="#fission-bool-false" title="Permanent link">&para;</a></h4>
+<p><strong>Debug Information Fission</strong></p>
+<p><strong>Feature:</strong> Enables GCC's <a href="https://gcc.gnu.org/wiki/DebugFission">DebugFission</a> feature.</p>
+<p><strong>Behavior:</strong> When enabled, debug information is separated into <code>.dwo</code> files, significantly reducing executable size.</p>
+<p><strong>Performance Impact:</strong> In production testing with medium debug information level, executable size reduced from 1.9GB to 532MB.</p>
+<p><strong>Command Line Alternative:</strong> <code>--fission</code> parameter</p>
+<h4 id="dwp-bool-false"><code>dwp</code>: bool = False<a class="headerlink" href="#dwp-bool-false" title="Permanent link">&para;</a></h4>
+<p><strong>Debug Information Packaging</strong></p>
+<p><strong>Prerequisite:</strong> Requires <code>fission = True</code></p>
+<p><strong>Function:</strong> Packages scattered <code>.dwo</code> files into a single <code>.dwp</code> file for easier debug information management and distribution.</p>
+<p><strong>Usage Reference:</strong> See <a href="../build_rules/cc/#cc_binary"><code>cc_binary</code></a> documentation for <code>.dwp</code> file integration.</p>
+<p><strong>Command Line Alternative:</strong> <code>--dwp</code> parameter</p>
+<h4 id="pie-str-auto-yes-no"><code>pie</code>: str = <code>'auto'</code> | <code>'yes'</code> | <code>'no'</code><a class="headerlink" href="#pie-str-auto-yes-no" title="Permanent link">&para;</a></h4>
+<p><strong>Executable PIE posture (Linux only)</strong></p>
+<p>blade compiles every translation unit with <code>-fPIC</code> so a single object set can serve <code>.a</code>, <code>.so</code>, and executables (compile once, link many). But blade never touches <code>-pie</code> / <code>-no-pie</code>, so an executable's PIE-ness is whatever the toolchain links by default — <code>gcc</code> on modern distros defaults to <code>-pie</code>, older toolchains or those built with <code>--disable-default-pie</code> do not. The result: the hardening posture isn't reproducible across machines.</p>
+<p>This knob pins it at the link step:</p>
+<ul>
+<li><code>'auto'</code> (default) — unchanged; follow the toolchain default.</li>
+<li><code>'yes'</code> — append <code>-pie</code> to the executable <code>link</code> rule (guaranteed PIE, full-image ASLR).</li>
+<li><code>'no'</code> — append <code>-no-pie</code> (guaranteed <code>ET_EXEC</code> — for embedded / special-loader scenarios that need a non-PIE binary).</li>
+</ul>
+<p>Only affects the executable <code>link</code> rule; shared libraries (<code>solink</code>) are unaffected (a <code>.so</code> with <code>-pie</code> is contradictory and the linker would error). No effect on macOS (executables are PIE by default and <code>ld64 -no_pie</code> was removed in recent versions) or MSVC (no PIC/PIE concept).</p>
+<p><strong>Verify:</strong> <code>file a.out</code> reports <code>pie executable</code> when <code>pie='yes'</code>, <code>ET_EXEC</code> when <code>pie='no'</code>.</p>
+<h4 id="no_semantic_interposition-bool-true"><code>no_semantic_interposition</code>: bool = True<a class="headerlink" href="#no_semantic_interposition-bool-true" title="Permanent link">&para;</a></h4>
+<p><strong>Recover <code>-fPIE</code>-level optimization under <code>-fPIC</code> (GCC only)</strong></p>
+<p>Default <code>True</code> makes blade pass <code>-fno-semantic-interposition</code> to <strong>GCC</strong> under its always-on <code>-fPIC</code>. The compiler then references and inlines the current TU's own global symbols directly instead of routing every reference through the GOT — recovering most of the <code>-fPIE</code>-level perf without forking the object set (we still need <code>-fPIC</code> for <code>.so</code> reuse). GCC's <a href="https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html">own docs</a> recommend the flag for "serious users"; CPython adopted it for <code>libpython3.so</code> (the matching macro is <code>Py_HAVE_NO_SEMANTIC_INTERPOSITION</code> — same double negative as ours, on purpose, to mirror the GCC flag name); Fedora ships it as a package default.</p>
+<p><strong>Per-compiler effect:</strong>
+- <strong>GCC</strong> — real win; the flag is emitted. Eliminates GOT indirection and re-enables cross-TU inlining for own globals.
+- <strong>Clang / Apple Clang</strong> — already non-interposing by default, so blade does <strong>not</strong> emit the flag. (Emitting it would trigger <code>-Wunused-command-line-argument</code> on the C++ driver, breaking <code>-Werror</code> projects.) Same posture you'd get on GCC with the flag — for free.
+- <strong>MSVC</strong> — no concept; nothing emitted.</p>
+<p><strong>What this does NOT affect</strong> (so leave the default alone if you use any of these):</p>
+<ul>
+<li><code>LD_PRELOAD</code>ed malloc replacements: <strong>jemalloc, tcmalloc, mimalloc, gperftools</strong> — these replace libc's <code>malloc</code>/<code>free</code>/<code>calloc</code>/..., which are <em>extern</em> to your TU and always go through the PLT. Unaffected.</li>
+<li>Sanitizers in preload mode (ASan, MSan, TSan, UBSan), <code>libfaketime</code>, <code>electric-fence</code>, <code>libeatmydata</code>, <code>dlsym(RTLD_NEXT, ...)</code> shims — same logic; targets are libc / runtime symbols, not your app's own symbols.</li>
+</ul>
+<p><strong>When to set <code>False</code></strong> (opt out of the optimization):</p>
+<ul>
+<li>You use a plugin/injection framework (e.g. Frida, in-app function-patching tools) that overrides symbols <strong>defined in your application binary itself</strong>, and you need internal call sites within the same TU to see the override.</li>
+<li>You ship a library that documents its own symbols as user-replaceable (rare — <code>libpython</code> does the opposite).</li>
+<li>You are debugging a strange ABI issue and want GCC's conservative default back.</li>
+</ul>
+<p>If you're not doing any of the above, leave it at <code>True</code> — the population that genuinely needs <code>False</code> is small and self-aware.</p>
+<p>Behavior change note: this default differs from earlier blade (off by default, then on by default starting this release). Existing GCC-built binaries get a free perf boost; nothing else changes for the common case.</p>
+<ul>
+<li><code>hdr_dep_missing_severity</code> : string = 'warning' | ['info', 'warning', 'error']</li>
+</ul>
+<p>The severity of the missing dependency on the library to which the header file belongs.</p>
+<ul>
+<li><code>hdr_dep_missing_ignore</code> : dict = {}</li>
+</ul>
+<p>The ignored list when verify missing dependency for a included header file.</p>
+<p>The <code>hdr_dep_missing_severity</code> and <code>hdr_dep_missing_ignore</code> control the header file dependency
+  missing verification behavior. See <a href="../build_rules/cc/#cc_library"><code>cc_library.hdrs</code></a> for details.</p>
+<p>The format of <code>hdr_dep_missing_ignore</code> is a dict like <code>{ target_label : {src : [headers] }</code>,
+  for example:</p>
+<p><code>python
+  {
+      'common:rpc' : {'rpc_server.cc':['common/base64.h', 'common/list.h']},
+  }</code></p>
+<p>Which means, for <code>common:rpc</code>, in <code>rpc_server.cc</code>, if the libraries which declared <code>common/base64.h</code>
+  and <code>common/list.h</code> are not declared in the <code>deps</code>, this error will be ignored.</p>
+<p>For the generated header files, the path can have no build_dir prefix, and it is best not to have it,
+  so that it can be used for different build types.</p>
+<p>This feature is to help upgrade old projects that do not properly declare and comply with header
+  file dependencies.</p>
+<p>To make the upgrade process easier, for all header missing errors, we provied a <a href="https://github.com/blade-build/blade-build/tree/master/tool">tool</a> to generate
+  this information after build.</p>
+<p><code>python
+  blade build ...
+  path/to/collect-inclusion-errors.py --missing &gt; hdr_dep_missing_suppress.conf</code></p>
+<p>So you can copy it to somewhere and load it in you <code>BLADE_ROOT</code>:</p>
+<p><code>python
+  cc_config(
+      hdr_dep_missing_ignore = load_value('hdr_dep_missing_suppress.conf'),
+  )</code></p>
+<p>In this way, existing header file dependency missing errors will be suppressed, but new ones will be reported normally.</p>
+<ul>
+<li><code>allowed_undeclared_hdrs</code>: list = []</li>
+</ul>
+<p>List of allowed undeclared header files.</p>
+<p>Since the header files in Blade 2 are also included in dependency management, all header files must be explicitly declared.
+  But for historical code bases, there will be a large number of undeclared header files, which are difficult to complete in a short time.
+  This option allows these header files to be ignored when checking.
+  After built, you can also run <code>tool/collect-inclusion-errors.py</code> to generate an undeclared headers list file.</p>
+<p><code>python
+  blade build ...
+  path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.conf</code></p>
+<p>And load it:</p>
+<p><code>python
+  cc_config(
+      allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
+  )</code></p>
+<p>Considering the long-term health of the code base, these problems should eventually be corrected.</p>
+<ul>
+<li><code>unused_deps_severity</code>: string = 'debug' | ['debug', 'info', 'notice', 'warning', 'error']</li>
+</ul>
+<p>Severity of the unused dependency check: a dep declared in <code>deps</code> none of whose public headers
+  is directly <code>#include</code>d by the target. Defaults to <code>'warning'</code> (advisory — reported but does not
+  fail the build); set to <code>'error'</code> to fail the build on a redundant dep, or <code>'debug'</code> to silence
+  (the check is skipped and the global declaration is not loaded). Advisory by default, like
+  Bazel's <code>unused_deps</code> tool and Buck2.</p>
+<p>Exempt from the check:
+  - libraries declared with an explicit empty <code>hdrs = []</code> (no public interface, so there is no
+    header that could be used — note this does NOT exempt <code>proto_library</code>, which has <code>.pb.h</code>; a
+    library with <code>hdrs</code> unset (<code>None</code>) is also NOT exempt — that is the separate
+    <code>cc_library_config.hdrs_missing_severity</code> warning);
+  - deps listed in <code>unused_deps_suppress</code>;
+  - deps listed in a target's <code>keep_deps</code> attribute (see <a href="../build_rules/cc/#cc_library">build_rules/cc.md</a>).</p>
+<ul>
+<li><code>unused_deps_suppress</code>: dict = {}</li>
+</ul>
+<p>A <code>{target: [deps]}</code> map of intentionally-kept deps to exempt from the unused dependency check,
+  mainly for incrementally cleaning up an existing code base.</p>
+<p><code>python
+  cc_config(
+      unused_deps_severity = 'warning',
+      unused_deps_suppress = {
+          '//app/foo:bar': ['//common/baz:qux'],
+      },
+  )</code></p>
+<p>Example:</p>
+<pre><code class="language-python">cc_config(
+    extra_incs = ['thirdparty'], # extra -I, like thirdparty
+    warnings = ['-Wall', '-Wextra'...], # C/C++ Public Warning
+    c_warnings = ['-Wall', '-Wextra'...], # C special warning
+    cxx_warnings = ['-Wall', '-Wextra'...], # C++ Dedicated warning
+    optimize = ['-O2'], # optimization level
+)
+</code></pre>
+<h3 id="cc_library_config">cc_library_config<a class="headerlink" href="#cc_library_config" title="Permanent link">&para;</a></h3>
+<p>C/C++ library configuration</p>
+<ul>
+<li><code>prebuilt_libpath_pattern</code> : string = 'lib${bits}'</li>
+</ul>
+<p>The pattern of prebuilt library subdirectory.</p>
+<p>Blade suppor built target for different platforms, such as, under the x64 linux, you can build
+  32/64 bit targets with the -m option.</p>
+<p>it also allow some variables which can be substituted:</p>
+<ul>
+<li>${bits}  Target bits, such as 32,64.</li>
+<li>${arch} Target CPU architecture name, such as i386, x86_64, etc.</li>
+<li>${profile} Build mode, can be <code>debug</code> or <code>release</code>.</li>
+</ul>
+<p>In this way, library files of multiple target platforms can be stored in different subdirectories
+  without conflict. This attribute can also be empty string, which means no subdirectory.</p>
+<p>If you only concern to one target platform, it is sure OK to have only one directory or have no
+  directory at all.</p>
+<ul>
+<li><code>generate_dynamic</code> : bool = False</li>
+</ul>
+<p>Whether to generate a dynamic library in addition to the static library.</p>
+<ul>
+<li><code>check_undefined</code> : bool = True <strong>(EXPERIMENTAL)</strong></li>
+</ul>
+<p>Project-wide default for the <a href="../build_rules/cc/#static-undefined-symbol-check">static undefined-symbol check</a>.
+  When True (default), every <code>cc_library</code>'s undefined symbols are statically validated against
+  its declared <code>deps</code> immediately after the archive is built — moving "missing dep" failures
+  earlier in the build, with diagnostics that point at the broken library instead of at the
+  final binary.</p>
+<p>The check ships on by default but, while still experimental, its findings default to
+  <code>warning</code> severity (see <code>check_undefined_severity</code> below): the build keeps going so any
+  edge cases we haven't seen surface as diagnostics rather than CI failures. Flip the severity
+  to <code>error</code> once the check is clean on your codebase.</p>
+<p>Override per-invocation with <code>--cc-check-undefined</code> / <code>--no-cc-check-undefined</code>.
+  Override per-target with <code>check_undefined = False</code> on <code>cc_library</code> (lowest setting wins —
+  a per-target <code>False</code> cannot be re-enabled from CLI or config).</p>
+<ul>
+<li><code>check_undefined_severity</code> : str = <code>'warning'</code></li>
+</ul>
+<p>Severity of an unresolved-symbol finding:
+  - <code>'warning'</code> (default, experimental setting) — log the finding via <code>console.warning</code> and
+    let the build continue.
+  - <code>'error'</code> — fail the build on any finding (the eventual non-experimental default).</p>
+<p>This setting is project-global; per-target behavior is still controlled by
+  <code>check_undefined</code> / <code>allow_undefined</code>.</p>
+<ul>
+<li><code>allow_undefined</code> : list = []</li>
+</ul>
+<p>Project-wide regex allowlist of mangled symbol names permitted to remain undefined by the
+  <code>check_undefined</code> static check. Each entry is a Python regex matched with <code>re.fullmatch</code>
+  against the mangled name (what <code>nm -u</code> prints). System symbols (libc, libstdc++, weak
+  refs) are handled by an internal baseline; this list is for project-specific exceptions
+  (e.g. symbols injected by a code generator or supplied by a not-yet-modeled toolchain
+  feature). For a narrower per-target allowlist, set <code>allow_undefined = [r'pattern', …]</code>
+  on the <code>cc_library</code> itself.</p>
+<p><code>python
+  cc_library_config(
+      check_undefined = True,
+      allow_undefined = [
+          r'__gcov_.*',         # gcov runtime, provided by --coverage at final link
+          r'_ZN3foo3barEv',     # known symbol injected by external codegen
+      ],
+  )</code></p>
+<ul>
+<li><code>arflags</code> : list = ['rcs'] <strong>(DEPRECATED)</strong></li>
+</ul>
+<p>Deprecated — use <code>deterministic</code> and/or <code>thin</code> instead.
+  Platform-specific archive flags (<code>rcs</code>/<code>D</code>/<code>T</code>) are now handled automatically.</p>
+<ul>
+<li><code>deterministic</code> : bool = False</li>
+</ul>
+<p>Generate deterministic (reproducible) static libraries.</p>
+<p>By default, <code>ar</code> embeds timestamps, UID, GID, and other metadata into the archive,
+  so the same source code produces a different checksum on every build — breaking
+  build reproducibility and reducing distributed cache (e.g. ccache) hit rates.</p>
+<p>When enabled, each platform eliminates these sources of non-determinism:</p>
+<ul>
+<li><strong>Linux:</strong> passes <code>D</code> to <code>ar</code> — zeros out timestamps, UID, and GID, keeping only file contents and symbol table</li>
+<li><strong>macOS:</strong> uses <code>libtool -static</code> instead of <code>ar</code> (Apple's <code>ar</code> does not support <code>D</code>; <code>libtool -static</code> is inherently deterministic)</li>
+<li>
+<p><strong>MSVC:</strong> passes <code>/Brepro</code> to <code>lib.exe</code> — likewise zeros out timestamps</p>
+</li>
+<li>
+<p><code>thin</code> : bool = False</p>
+</li>
+</ul>
+<p>Generate thin static libraries that store object file paths instead of actual code.
+  <strong>Only supported on Linux</strong> (GNU <code>ar</code> <code>T</code> flag). Emits an error on macOS and a warning on MSVC where thin archives are not supported.</p>
+<ul>
+<li><code>hdrs_missing_severity</code> : string = 'error' | ['debug', 'info', 'warning', 'error']</li>
+</ul>
+<p>The severity of missing <code>cc_library.hdrs</code></p>
+<ul>
+<li><code>hdrs_missing_suppress</code> : list = []</li>
+</ul>
+<p>List of target labels to be suppressed for above problem.</p>
+<p>Its format is a list of build targets (do not have a'//' at the beginning).</p>
+<p>We also provide an auxiliary tool <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-hdrs-missing.py</code></a> to easily generate this list.
+  If there are too many entries, it is recommended to load them from a separated file:</p>
+<p><code>python
+  cc_library_config(
+      hdrs_missing_suppress = load_value('blade_hdr_missing_spppress'),
+  )</code></p>
+<h3 id="cc_test_config">cc_test_config<a class="headerlink" href="#cc_test_config" title="Permanent link">&para;</a></h3>
+<p>The configuration required to build and run the test:</p>
+<pre><code class="language-python">cc_test_config(
+    dynamic_link=True, # Test program default dynamic link, can reduce disk overhead, the default is False
+    heap_check='strict', # Open HEAPCHECK of gperftools. For details, please refer to the documentation of gperftools.
+    gperftools_libs='//thirdparty/perftools:tcmalloc', # tcmclloc library, blade deps format
+    gperftools_debug_libs='//thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug library, blade deps format
+    gtest_libs='//thirdparty/gtest:gtest', #gtest library, blade deps format
+    gtest_main_libs='//thirdparty/gtest:gtest_main' # gtest_main library path, blade deps format
+)
+</code></pre>
+<p>Note:</p>
+<ul>
+<li>Since gtest 1.6, <code>make install</code> was removed but can be bypassed.</li>
+<li>The gtest library also relies on pthreads, so gtest_libs needs to be written as <code>['#gtest', '#pthread']</code></li>
+<li>Or include the source code in your source tree, such as thirdparty, you can write
+  <code>gtest_libs='//thirdparty/gtest:gtest'</code>.</li>
+</ul>
+<h3 id="coverage_config">coverage_config<a class="headerlink" href="#coverage_config" title="Permanent link">&para;</a></h3>
+<p>Code coverage report configuration (<code>blade test --coverage</code>):</p>
+<pre><code class="language-python">coverage_config(
+    # Glob patterns of C/C++ sources to drop from the coverage report.
+    # `**` matches across directories (blade glob semantics); `*`/`?` do not.
+    exclude=['thirdparty/**', '**/*_test.cc'],
+)
+</code></pre>
+<p>Applies to every C/C++ toolchain: gcc/clang/clang-cl pass these to gcovr
+<code>--exclude</code> (affecting both the HTML and the XML); native MSVC <code>cl.exe</code>
+filters the merged Cobertura by source path and recomputes the totals.
+Sources under the build directory (generated code, vendored deps) are always
+excluded regardless of this setting.</p>
+<h3 id="msvc_config">msvc_config<a class="headerlink" href="#msvc_config" title="Permanent link">&para;</a></h3>
+<p>MSVC-specific configuration, only effective on Windows:</p>
+<pre><code class="language-python">msvc_config(
+    target_arch = 'x64',
+    msvc_version = 'auto',
+    use_clang = False,
+    cppflags = ['/MD', '/EHsc'],
+    cxxflags = ['/std:c++17'],
+    linkflags = ['/SUBSYSTEM:CONSOLE'],
+    warnings = ['/W3'],
+)
+</code></pre>
+<h4 id="target_arch-string-auto"><code>target_arch</code>: string = 'auto'<a class="headerlink" href="#target_arch-string-auto" title="Permanent link">&para;</a></h4>
+<p><strong>Target architecture to build for.</strong></p>
+<p><strong>Valid values:</strong> <code>'auto'</code> (detect from host), <code>'x64'</code>, <code>'x86'</code>, <code>'arm64'</code>, <code>'arm64ec'</code></p>
+<h4 id="msvc_version-string-auto"><code>msvc_version</code>: string = 'auto'<a class="headerlink" href="#msvc_version-string-auto" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC compiler toolset version prefix.</strong></p>
+<p><strong>Valid values:</strong> <code>'auto'</code> (pick the latest available), or a specific MSVC version prefix
+such as <code>'14.44'</code>, <code>'14.51'</code>.</p>
+<p>Each Visual Studio release ships a specific range of MSVC toolset versions:</p>
+<ul>
+<li><strong>VS 2019</strong> (product version 16.x) ships MSVC 14.2x (14.20 – 14.29)</li>
+<li><strong>VS 2022</strong> (product version 17.x) ships MSVC 14.3x – 14.4x (14.30 – 14.44)</li>
+<li><strong>VS 2026</strong> (product version 18.x) ships MSVC 14.50+ (starting at 14.50, versioning is
+  <a href="https://aka.ms/msvc/lifecycle">decoupled</a> from Visual Studio starting with this release)</li>
+</ul>
+<blockquote>
+<p><strong>Relationship between VS and MSVC version numbers:</strong>
+Prior to VS 2026, the MSVC toolset version is derived from the Visual Studio product
+version: MSVC 14.<strong>XX</strong> where <strong>XX</strong> = 30 + VS minor version.  For example,
+VS 2022 17.14 ships MSVC 14.44 (= 14.30 + 14).  Starting with VS 2026, MSVC
+versioning is independent and ships on its own <a href="https://aka.ms/msvc/lifecycle">six-month cadence</a>.
+The complete mapping is documented at
+<a href="https://learn.microsoft.com/en-us/cpp/overview/compiler-versions">Microsoft C/C++ compiler versioning</a>.</p>
+</blockquote>
+<p>When <code>msvc_version</code> is set to a specific prefix (e.g. <code>'14.44'</code>), Blade searches
+all installed Visual Studio instances and selects the first one that provides a
+matching <code>VC/Tools/MSVC/&lt;version&gt;</code> directory.  This is useful for pinning a
+compatible toolset — for example, NVIDIA CUDA 13.2 officially supports MSVC 14.4x
+(VS 2022) but not MSVC 14.5x (VS 2026).</p>
+<h4 id="use_clang-bool-false"><code>use_clang</code>: bool = False<a class="headerlink" href="#use_clang-bool-false" title="Permanent link">&para;</a></h4>
+<p><strong>Compile with <code>clang-cl</code> instead of <code>cl</code>.</strong></p>
+<p>When <code>True</code>, the MSVC toolchain compiles with <code>clang-cl</code> (LLVM's MSVC-compatible
+driver) and links/archives with <code>lld-link</code> / <code>llvm-lib</code> when present, falling
+back to MSVC's <code>link</code> / <code>lib</code> otherwise. Everything else — the MSVC ABI,
+cl-style flags, Windows SDK discovery and the vcpkg <code>*-windows*</code> triplet — is
+unchanged, so this is a drop-in compiler swap, not a different <code>kind</code>.</p>
+<p>The LLVM tools are located automatically from the Visual Studio install (its
+bundled LLVM under <code>VC/Tools/Llvm/&lt;host&gt;/bin</code>, picked for the host
+architecture), so no extra path configuration is needed. See <a href="#using-clang-cl-on-windows">Using clang-cl on
+Windows</a>.</p>
+<h4 id="cppflags-list-md-ehsc"><code>cppflags</code>: list = ['/MD', '/EHsc']<a class="headerlink" href="#cppflags-list-md-ehsc" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC-specific C/C++ common compiler flags.</strong></p>
+<p>These are appended to the cross-platform <code>cc_config.cppflags</code> after filtering.</p>
+<h4 id="cflags-list_1"><code>cflags</code>: list = []<a class="headerlink" href="#cflags-list_1" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC-specific C-only compiler flags.</strong></p>
+<h4 id="cxxflags-list-stdc17"><code>cxxflags</code>: list = ['/std:c++17']<a class="headerlink" href="#cxxflags-list-stdc17" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC-specific C++-only compiler flags.</strong></p>
+<h4 id="linkflags-list-subsystemconsole"><code>linkflags</code>: list = ['/SUBSYSTEM:CONSOLE']<a class="headerlink" href="#linkflags-list-subsystemconsole" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC-specific linker flags.</strong></p>
+<h4 id="warnings-list-w3"><code>warnings</code>: list = ['/W3']<a class="headerlink" href="#warnings-list-w3" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC warning level flags.</strong></p>
+<h4 id="optimize-dict"><code>optimize</code>: dict<a class="headerlink" href="#optimize-dict" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC optimization flags for Debug and Release builds.</strong></p>
+<p>Default:</p>
+<pre><code class="language-python">{
+    'debug': ['/Od'],
+    'release': ['/O2'],
+}
+</code></pre>
+<h4 id="debug_info_levels-dict"><code>debug_info_levels</code>: dict<a class="headerlink" href="#debug_info_levels-dict" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC debug information flags per level.</strong></p>
+<p>Default:</p>
+<pre><code class="language-python">{
+    'no':   [],
+    'low':  ['/Zi'],
+    'mid':  ['/Zi', '/DEBUG'],
+    'high': ['/Zi', '/DEBUG', '/RTC1'],
+}
+</code></pre>
+<h3 id="cuda_config">cuda_config<a class="headerlink" href="#cuda_config" title="Permanent link">&para;</a></h3>
+<p>Common configuration of all cuda targets:</p>
+<ul>
+<li><code>cuda_path</code> : string = ''</li>
+</ul>
+<p>CUDA installed path, it can be empty or starts with "//"</p>
+<ul>
+<li><code>cu_warnings</code> : list = builtin</li>
+</ul>
+<p>CUDA only warnings.</p>
+<ul>
+<li><code>cuflags</code> : list = []</li>
+</ul>
+<p>CUDA common options.</p>
+<h3 id="java_config">java_config<a class="headerlink" href="#java_config" title="Permanent link">&para;</a></h3>
+<p>Java related configurations:</p>
+<ul>
+<li><code>java_home</code> : string = ''</li>
+</ul>
+<p>Set <code>$JAVA_HOME</code>, Take from '$JAVA_HOME' defaultly.</p>
+<ul>
+<li><code>version</code> : string = '' | "8" "1.8", ...</li>
+</ul>
+<p>Provide compatibility with specified release.</p>
+<ul>
+<li><code>source_version</code> : string = ''</li>
+</ul>
+<p>Provide source compatibility with specified release. take value of <code>version</code> defaultly.</p>
+<ul>
+<li>
+<p><code>target_version</code> : string = ''</p>
+</li>
+<li>
+<p><code>source_encoding</code> : string = None</p>
+</li>
+</ul>
+<p>Specify character encoding used by source files.</p>
+<p>Generate class files for specific VM version. take value of <code>version</code> defaultly.</p>
+<ul>
+<li><code>warnings</code> : list = ['-Werror', '-Xlint:all']</li>
+</ul>
+<p>Warning flags.</p>
+<ul>
+<li><code>fat_jar_conflict_severity</code> : string = 'warning'</li>
+</ul>
+<p>Severity when fat jar conflict occurs.
+  Valid values are: ["debug", "info", "warning", "error"].</p>
+<ul>
+<li><code>maven</code> : string = 'mvn'</li>
+</ul>
+<p>The command to run <code>mvn</code></p>
+<ul>
+<li><code>maven_central</code> : string = ''</li>
+</ul>
+<p>Maven repository URL.</p>
+<ul>
+<li><code>maven_jar_allowed_dirs</code> : list = []</li>
+</ul>
+<p>Directories and subdirectors in which using <code>maven_jar</code> is allowed.</p>
+<p>In order to avoid duplication of descriptions of maven artificts with the same id in the code base,
+  and version redundancy and conflicts,
+  it is recommended to set <code>maven_jar_allowed_dirs</code> to prohibit calling <code>maven_jar</code> outside these
+  directories and their subdirectories.</p>
+<p>Existing <code>maven_jar</code> targets that are already outside the allowed directories can be exempted by
+  the <code>maven_jar_allowed_dirs_exempts</code> configuration item.
+  We also provide an auxiliary tool <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-disallowed-maven-jars.py</code></a> to easily
+  generate this list.</p>
+<p>If there are too many entries, it is recommended to load them from a separate file:</p>
+<p><code>python
+  java_config(
+      maven_jar_allowed_dirs_exempts = load_value('exempted_maven_jars.conf'),
+  )</code></p>
+<ul>
+<li><code>maven_jar_allowed_dirs_exempts</code> : list []</li>
+</ul>
+<p>Targets which are exempted from the <code>maven_jar_allowed_dirs</code> check.</p>
+<ul>
+<li><code>maven_snapshot_update_policy</code> : string = 'daily'</li>
+</ul>
+<p>Update policy of snapshot version in maven repository.</p>
+<p>Valid values of <code>maven_snapshot_updata_policy</code> are: "always", "daily"(default), "interval",  "never"
+  See <a href="https://maven.apache.org/ref/3.6.3/maven-settings/settings.html">Maven Documents</a> for details.</p>
+<ul>
+<li><code>maven_snapshot_update_interval</code> : int = 86400</li>
+</ul>
+<p>Update interval of snapshot version in maven repository.</p>
+<p>The unit is minutes.</p>
+<ul>
+<li><code>maven_download_concurrency</code> : int = 0</li>
+</ul>
+<p>Number of processes when download maven artifacts.</p>
+<p>Setting <code>maven_download_concurrency</code> to more than <code>1</code> can speedup maven artifacts downloading,
+  but <a href="https://issues.apache.org/jira/browse/MNG-2802">maven local repository is not concurrent-safe defaultly</a>,
+  you can try to install <a href="http://takari.io/book/30-team-maven.html#concurrent-safe-local-repository">takari</a> to make it safe.
+  NOTE there are multiple available versions, the version in the example code of the document is not the latest one.</p>
+<h3 id="proto_library_config">proto_library_config<a class="headerlink" href="#proto_library_config" title="Permanent link">&para;</a></h3>
+<p>Compile the configuration required by protobuf</p>
+<pre><code class="language-python">proto_library_config(
+    protoc='protoc', #protoc compiler path
+    protobuf_libs='//thirdparty/protobuf:protobuf', #protobuf library path, Blade deps format
+    protobuf_path='thirdparty', # import proto search path, relative to BLADE_ROOT
+    protobuf_cc_warning='', # enable warning(disable -w) or not when compiling pb.cc, yes or no
+    protobuf_include_path = 'thirdparty', # extra -I path when compiling pb.cc
+    protoc_direct_dependencies=False, # pass --direct_dependencies to protoc
+    well_known_protos=[], # see note below
+)
+</code></pre>
+<p><code>well_known_protos</code> is the list of <code>.proto</code> files protobuf itself ships
+(<code>google/protobuf/*.proto</code>) that are whitelisted as imports when
+<code>protoc_direct_dependencies</code> is on. Left empty (the default), blade
+auto-discovers them by globbing <code>google/protobuf/**/*.proto</code> under the
+protobuf include tree -- resolved from the <code>protoc</code> install (including a
+<code>vcpkg#protobuf</code> protoc) or from <code>protobuf_incs</code> -- so the list stays
+correct across protobuf versions without hand-maintenance. If no include
+tree is resolvable (e.g. a misconfigured provider), a built-in canonical
+list is used as a safety net. Set an explicit list only to override
+discovery.</p>
+<h3 id="thrift_library_config">thrift_library_config<a class="headerlink" href="#thrift_library_config" title="Permanent link">&para;</a></h3>
+<p>Compile the configuration required by thrift</p>
+<pre><code class="language-python">thrift_library_config(
+    thrift='thrift', #protoc compiler path
+    thrift_libs='//thirdparty/thrift:thrift', #thrift library path, Blade deps format
+    thrift_path='thirdparty', # thrift include the search path for the thrift file, as opposed to BLADE_ROOT
+    thrift_incs = 'thirdparty', # compile thrift generated .cpp extra -I path
+)
+</code></pre>
+<h3 id="append-configuration-item-values">Append configuration item values<a class="headerlink" href="#append-configuration-item-values" title="Permanent link">&para;</a></h3>
+<p>All configuration items of <code>list</code> and <code>set</code> types support appending, among which <code>list</code> also supports prepending.
+The usage is to prefix the configuration item name with <code>append_</code> or <code>prepend_</code>:</p>
+<pre><code class="language-python">cc_config(
+     append_linkflags = ['-fuse-ld=gold'],
+     prepend_warnings = ['-Wfloat-compare'],
+)
+</code></pre>
+<p>For the one configuration item, you cannot assign and append at the same time:</p>
+<pre><code class="language-python"># Wrong!
+cc_config(
+     linkflags = ['-fuse-ld=gold'],
+     append_linkflags = ['-fuse-ld=gold'],
+)
+</code></pre>
+<p>There was an old <code>append</code> form, is deprecated.</p>
+<pre><code class="language-python">cc_config(
+    append = config_items(
+        Warnings = [...]
+    )
+)
+</code></pre>
+<h3 id="load_value-function">load_value function<a class="headerlink" href="#load_value-function" title="Permanent link">&para;</a></h3>
+<p>The <code>load_value</code> function can be used to load an expression as a value from a file:</p>
+<pre><code class="language-python">cc_config(
+    allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
+)
+</code></pre>
+<p>The value must conform to the Python literal specification and cannot contain execution statements.</p>
+<h2 id="cc-toolchain-configuration">C/C++ Toolchain Configuration<a class="headerlink" href="#cc-toolchain-configuration" title="Permanent link">&para;</a></h2>
+<p>The <code>cc_toolchain_config()</code> function selects the C/C++ compiler toolchain. You can define multiple named toolchains and select one via the <code>--cc-toolchain</code> command-line flag.</p>
+<h3 id="kind-toolchain-family"><code>kind</code> — toolchain family<a class="headerlink" href="#kind-toolchain-family" title="Permanent link">&para;</a></h3>
+<p><code>kind</code> determines the <strong>ToolChain class</strong>, <strong>flag syntax</strong>, <strong>deps style</strong>, and <strong>default target platform</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>kind</th>
+<th>flag syntax</th>
+<th>deps style</th>
+<th>default target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gcc</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td>host platform</td>
+</tr>
+<tr>
+<td><code>clang</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td>host platform</td>
+</tr>
+<tr>
+<td><code>mingw</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td><code>windows</code></td>
+</tr>
+<tr>
+<td><code>cygwin</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td><code>windows</code></td>
+</tr>
+<tr>
+<td><code>msvc</code></td>
+<td>MSVC</td>
+<td><code>msvc</code></td>
+<td><code>windows</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>gcc</code> and <code>clang</code> both use the GCC-family toolchain class — they differ only in the compiler binary and detected vendor. <code>mingw</code> and <code>cygwin</code> are GCC-family toolchains targeting Windows. To compile with <code>clang-cl</code> (LLVM's MSVC-compatible driver), keep <code>kind='msvc'</code> and set <a href="#use_clang-bool--false"><code>msvc_config.use_clang</code></a> — it is the same MSVC toolchain with LLVM's tools, not a separate kind.</p>
+<h3 id="prefix-install-prefix"><code>prefix</code> — install prefix<a class="headerlink" href="#prefix-install-prefix" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>When set</strong>: tools are looked up only under <code>&lt;prefix&gt;/bin/&lt;tool&gt;</code> and <code>&lt;prefix&gt;/&lt;tool&gt;</code>. PATH is <strong>never</strong> searched.</li>
+<li><strong>When not set</strong>: tools are resolved via <code>which()</code> on PATH, falling back to the bare tool name.</li>
+</ul>
+<p>This ensures a configured toolchain always pins to its own installation and won't accidentally pick up a different version from the system PATH.</p>
+<h3 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">cc_toolchain_config(
+    name   = 'gcc-13',      # Optional — used with --cc-toolchain=gcc-13 to select this config
+    kind   = 'gcc',         # 'gcc' | 'clang' | 'msvc' | 'mingw' | 'cygwin' (see table above)
+
+    target = 'linux',       # Optional — target platform: 'linux' | 'darwin' | 'windows'
+                            # Default: derived from host (mingw/cygwin/msvc always 'windows')
+
+    prefix     = '/opt/gcc-13',   # Optional — install prefix, scopes tool lookup (no PATH search)
+    tool_prefix = '',             # Optional — tool name prefix for cross-compilation
+                                  # e.g. 'arm-linux-gnueabihf-' → arm-linux-gnueabihf-gcc
+
+    cc     = '/usr/bin/gcc-13',   # Optional — override individual tools
+    cxx    = '/usr/bin/g++-13',
+    ld     = ...,                 # Optional — derived from kind/target by default
+    ar     = ...,
+
+    # MSVC-only (when kind='msvc')
+    msvc_version = '14.44',       # 'auto' or MSVC version prefix like '14.44'
+    target_arch  = 'x64',         # 'auto' | 'x64' | 'x86' | 'arm64' | 'arm64ec'
+)
+</code></pre>
+<blockquote>
+<p><strong>MSVC version numbers</strong> refer to the C/C++ compiler toolchain version
+(e.g. <code>14.44</code>, <code>14.38</code>, <code>14.28</code>), not the Visual Studio product year. See
+<a href="https://learn.microsoft.com/en-us/cpp/overview/compiler-versions">Microsoft C++ compiler versions</a>
+for the full mapping. When set to <code>'auto'</code> (the default), the highest installed
+version is used.</p>
+</blockquote>
+<h3 id="multiple-toolchain-configs">Multiple toolchain configs<a class="headerlink" href="#multiple-toolchain-configs" title="Permanent link">&para;</a></h3>
+<p>Define several toolchains and select at build time:</p>
+<pre><code class="language-python">cc_toolchain_config(
+    name   = 'gcc-13',
+    kind   = 'gcc',
+    prefix = '/opt/gcc-13',
+)
+
+cc_toolchain_config(
+    name   = 'clang-17',
+    kind   = 'clang',
+    prefix = '/opt/clang-17',
+)
+</code></pre>
+<pre><code class="language-bash">blade build --cc-toolchain=gcc-13    # Select by name
+blade build --cc-toolchain=clang     # Select by kind (auto-detect paths)
+</code></pre>
+<p>A config without a <code>name</code> serves as the default (used when <code>--cc-toolchain</code> is not
+specified):</p>
+<pre><code class="language-python">cc_toolchain_config(kind='clang')   # default toolchain
+</code></pre>
+<h3 id="selection-priority">Selection priority<a class="headerlink" href="#selection-priority" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>--cc-toolchain=</code> CLI flag (match by name, then by kind)</li>
+<li>Named or unnamed <code>cc_toolchain_config()</code> in BLADE_ROOT</li>
+<li>Auto-detection from host platform</li>
+</ol>
+<h3 id="using-clang-cl-on-windows">Using clang-cl on Windows<a class="headerlink" href="#using-clang-cl-on-windows" title="Permanent link">&para;</a></h3>
+<p><code>clang-cl</code> is not a separate <code>kind</code> — it is the MSVC toolchain compiled with
+LLVM's cl-compatible driver. Keep <code>kind='msvc'</code> (or just rely on Windows
+auto-detection) and turn it on in <code>msvc_config</code>:</p>
+<pre><code class="language-python">msvc_config(use_clang = True)
+</code></pre>
+<p>This reuses the whole MSVC path — ABI, cl-style flags, Windows SDK discovery and
+the vcpkg <code>*-windows*</code> triplet — but compiles with <code>clang-cl</code> and links/archives
+with <code>lld-link</code> / <code>llvm-lib</code> when available (falling back to MSVC's <code>link</code> /
+<code>lib</code> otherwise). The LLVM tools are located automatically from the Visual
+Studio install (its bundled LLVM under <code>VC/Tools/Llvm/&lt;host&gt;/bin</code>, picked for the
+host architecture), so no path configuration is needed. <code>msvc_version</code> and
+<code>target_arch</code> apply exactly as for plain MSVC.</p>
+<h3 id="vcpkg_config">vcpkg_config<a class="headerlink" href="#vcpkg_config" title="Permanent link">&para;</a></h3>
+<p>Configuration for consuming <a href="https://github.com/microsoft/vcpkg">vcpkg</a>
+packages as <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> dependencies. See <a href="../build_rules/vcpkg/">Using vcpkg
+packages</a> for the full guide. A single workspace-level section:
+vcpkg allows one version and one feature set per package per workspace.</p>
+<h4 id="manage-bool-true"><code>manage</code>: bool = True<a class="headerlink" href="#manage-bool-true" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> When <code>True</code> (default), Blade runs <code>vcpkg install</code> itself into a
+hermetic tree under the build directory, using an overlay triplet that
+chainloads Blade's compiler. When <code>False</code>, Blade only resolves artifacts that
+you installed yourself under <code>&lt;root&gt;/installed/&lt;triplet&gt;</code>.</p>
+<h4 id="packages-dict"><code>packages</code>: dict = {}<a class="headerlink" href="#packages-dict" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> The whitelist of allowed ports — the single source of truth for
+what a <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> reference may resolve to. Referencing a port that
+is not listed is a hard error. Each value is a version string or a dict with
+<code>version</code> and/or <code>features</code> (plus the optional <code>linkage</code>, <code>link_all_symbols</code>,
+<code>include_prefix</code>, <code>cmake_options</code> keys — see <a href="../build_rules/vcpkg/#per-port-options">Per-port
+options</a>). <code>linkage</code> defaults to <code>'auto'</code>
+(like <code>cc_library</code>: static for static-link consumers, shared on demand for
+dynamic-link ones):</p>
+<pre><code class="language-python">vcpkg_config(
+    packages = {
+        'fmt': '10.2.1',
+        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
+    },
+)
+</code></pre>
+<h4 id="baseline-str"><code>baseline</code>: str = ""<a class="headerlink" href="#baseline-str" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> Pins the ports tree to a date or git SHA
+(vcpkg.json <code>builtin-baseline</code>). Leaving it empty is not reproducible; pin it
+for consistent versions.</p>
+<h4 id="registries-list"><code>registries</code>: list = []<a class="headerlink" href="#registries-list" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> Optional private vcpkg registries
+(vcpkg-configuration.json <code>registries</code>).</p>
+<h4 id="root-str"><code>root</code>: str = ""<a class="headerlink" href="#root-str" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> The vcpkg installation (tool + ports tree). Empty means
+<code>$VCPKG_ROOT</code>. In managed mode this locates the <code>vcpkg</code> tool; in unmanaged mode
+it is also the root of the install tree that is read.</p>
+<h4 id="triplet-str-auto"><code>triplet</code>: str = "auto"<a class="headerlink" href="#triplet-str-auto" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> The vcpkg triplet. <code>auto</code> derives it from the resolved
+<code>cc_toolchain</code> (e.g. <code>x64-linux</code>, <code>arm64-osx</code>, <code>x64-windows-static</code>); set an
+explicit triplet to override.</p>
+<h4 id="install_dir-str-cachevcpkg"><code>install_dir</code>: str = ".cache/vcpkg"<a class="headerlink" href="#install_dir-str-cachevcpkg" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> The per-workspace install root for managed mode, relative to the
+build directory. Cleared by <code>blade clean</code>.</p>
+<h4 id="binary_cache-str-auto"><code>binary_cache</code>: str = "auto"<a class="headerlink" href="#binary_cache-str-auto" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> The vcpkg binary-cache backend used to reuse compiled packages
+across runs and machines. <code>"auto"</code> keeps vcpkg's built-in default (a local
+cache under the user's cache directory); any other value is passed straight
+through to <code>vcpkg install --binarysource=&lt;value&gt;</code>, so it accepts the full
+<a href="https://learn.microsoft.com/vcpkg/users/binarycaching">vcpkg binary-caching</a>
+source syntax, for example:</p>
+<pre><code class="language-python">vcpkg_config(
+    # A shared directory cache (read+write).
+    binary_cache = 'files,/path/to/cache,readwrite',
+    # ... or a NuGet feed, GitHub Actions cache, x-azblob, x-gcs, etc.
+)
+</code></pre>
+<p>Set it to <code>'clear'</code> to disable caching entirely. Only consulted in managed
+mode (<code>manage = True</code>).</p>
+<h4 id="direct_use_allowed-list"><code>direct_use_allowed</code>: list = []<a class="headerlink" href="#direct_use_allowed-list" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> Governance — the list of source subtrees (e.g. <code>'thirdparty'</code> or
+<code>'//thirdparty'</code>) where a target may depend on a bare <code>vcpkg#port:lib</code>
+reference directly. The default empty list imposes no restriction. When
+non-empty, a <code>vcpkg#...</code> dependency is only accepted if the <strong>referring</strong>
+target lives within one of the listed subtrees; anywhere else Blade reports an
+error. This lets a team funnel all third-party usage through curated wrapper
+<code>cc_library</code> targets (kept under <code>thirdparty/</code>) while business code depends on
+those wrappers rather than on vcpkg ports directly.</p>
+<pre><code class="language-python">vcpkg_config(
+    # Only BUILD files under thirdparty/ may write `deps = ['vcpkg#fmt:fmt']`.
+    direct_use_allowed = ['thirdparty'],
+)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../optimization/" class="btn btn-neutral float-left" title="C/C++ Optimization (PGO / AutoFDO / LTO)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../misc/" class="btn btn-neutral float-right" title="Accessibility">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../optimization/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../misc/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

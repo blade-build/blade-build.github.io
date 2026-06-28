@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/visibility/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Visibility 是如何实现与执行的 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Visibility \u662f\u5982\u4f55\u5b9e\u73b0\u4e0e\u6267\u884c\u7684";
+        var mkdocs_page_input_path = "develop/visibility.md";
+        var mkdocs_page_url = "/docs/zh/develop/visibility/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Visibility 是如何实现与执行的</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 属性形态与默认值</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 归一化</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3">3. 执行：何时、何地</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 特例与豁免</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 技术细节与用户体验优化</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">Visibility 是如何实现与执行的</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/visibility.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="visibility">Visibility 是如何实现与执行的<a class="headerlink" href="#visibility" title="Permanent link">&para;</a></h1>
+<p>Visibility 限制谁可以依赖某个 target。blade 把每个 target 的"允许调用
+方"集合存为一小组规范化 pattern，在依赖分析阶段对每条 dep 边做一次检
+查——一次构建一次，不是运行时。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>_init_visibility</code>、<code>_check_visibility</code>、<code>_match_visibility</code></td>
+</tr>
+<tr>
+<td><code>src/blade/target_pattern.py</code></td>
+<td>pattern 字符串的 <code>normalize</code>、<code>match</code></td>
+</tr>
+<tr>
+<td><code>src/blade/dependency_analyzer.py</code></td>
+<td>在分析期驱动 per-edge 检查</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>global_config.default_visibility</code>、<code>legacy_public_targets</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 属性形态与默认值<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><code>visibility</code> 接受：</p>
+<ul>
+<li><code>'PUBLIC'</code> 或 <code>['PUBLIC']</code>——全局可见。</li>
+<li>显式 target pattern 列表：<code>['//path:target', ':sibling',
+  '//path:*', '//path/...']</code>。</li>
+<li><code>[]</code>——只对定义它的 BUILD 文件可见。</li>
+<li><code>None</code>（不写）——回退默认值（见下文）。</li>
+</ul>
+<p>不写 <code>visibility</code> 时的解析：</p>
+<ol>
+<li>若 target 的键出现在 <code>global_config.legacy_public_targets</code>，按
+   <code>{'PUBLIC'}</code> 处理。这是过去把所有东西默认为 public 的项目的迁移
+   坡。</li>
+<li>否则用 <code>global_config.default_visibility</code>，它本身默认空集合（私
+   有）。Blade 2.0+ 把私有定为默认；<code>legacy_public_targets</code> 是按
+   target 保留旧行为的显式开关，便于项目逐步审计。</li>
+</ol>
+<p><code>target._visibility</code> 是真正被检查时查询的归一化集合。
+<code>_visibility_is_default</code> 仅记录用户是否显式写了 <code>visibility=</code>——只用于
+让诊断更清晰（"默认为私有，详见文档"）。</p>
+<h2 id="2">2. 归一化<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p><code>_init_visibility()</code> 把每个 pattern 过一遍
+<code>target_pattern.normalize(v, self.path)</code>：</p>
+<ul>
+<li><code>'//foo:bar'</code> → <code>'foo:bar'</code></li>
+<li><code>':sibling'</code> → <code>'&lt;当前 path&gt;:sibling'</code>（当前 BUILD 所在包）</li>
+<li><code>'//foo:*'</code> → <code>'foo:*'</code>（<code>foo/</code> 下全部）</li>
+<li><code>'//foo/...'</code> → <code>'foo:...'</code>（<code>foo/</code> 下递归全部）</li>
+</ul>
+<p><code>'PUBLIC'</code> 当哨兵原样存储；不再做其它归一化。结果是 <code>set[str]</code>——小、
+可哈希、查起来便宜。</p>
+<h2 id="3">3. 执行：何时、何地<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>检查在 <code>dependency_analyzer.analyze_deps()</code> 中、deps 展开后做一次。对
+每条直接边 <code>A -&gt; B</code>，<code>_check_visibility(A, B)</code> 求
+<code>_match_visibility(A, B)</code>：</p>
+<ol>
+<li><strong>同包？</strong> <code>A.path == B.path</code> 则通过。共享一个 BUILD 的 target 之
+   间始终互相可见——"明确知道自己在做什么"的最小单位。</li>
+<li><strong>B 的集合里有 <code>'PUBLIC'</code>？</strong> 通过。</li>
+<li><strong>B 的集合里有精确键 A.key？</strong> 通过。</li>
+<li><strong>pattern 命中？</strong> 遍历 pattern，
+   <code>target_pattern.match(A.key, p)</code> 处理 <code>:*</code> 与 <code>:...</code> 通配。命中则
+   通过。</li>
+</ol>
+<p>均不命中则报错：</p>
+<pre><code>&lt;A 的源位置&gt;: error: &lt;A&gt;: Not allowed to depend on &quot;//&lt;B&gt;&quot;
+                          because of its visibility,
+&lt;B 的源位置&gt;: info: which is declared here
+</code></pre>
+<p>若 B 的 visibility 是默认私有，诊断会再加一句"No explicit 'visibility'
+declaration, defaults to private"——这是用户最易困惑的情形。</p>
+<p>代价是 O(deps × patterns)。实践中 visibility 集合很小（通常 1–3
+个），匹配是集合成员检查 + 短迭代，不需要缓存。</p>
+<h2 id="4">4. 特例与豁免<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>同包 target 完全绕过 visibility。</strong> 这条规则让 <code>cc_test</code> 能访问同
+  包姊妹库的私有内部，而无需 per-test 豁免——同处一个 BUILD，检查本来
+  就是 no-op。</li>
+<li><strong>系统库</strong>（<code>#dl</code>、<code>#pthread</code>…）构造时把 <code>visibility=['PUBLIC']</code>
+  写死，总是可达。</li>
+<li><strong>隐式依赖</strong>（自动注入 <code>cc_test</code> 的 gtest、SCM stamp…）经
+  <code>_add_implicit_library</code> 加入，进入普通 deps 列表。它们<strong>不</strong>豁免；
+  隐式 dep 库仍需有合适的可见性，否则每次构建注入就会静默失败。实践
+  中这些库按惯例为 <code>PUBLIC</code>。</li>
+<li><strong>prebuilt 与 foreign cc 库</strong>走标准机制——无特例路径。</li>
+<li><strong>未加载的 target 不检查。</strong> 惰性 BUILD 加载使工作区里那些被请求集
+  合够不到的受限 target 不会被审视。这是 by design：分析只在被构建闭
+  包上跑。</li>
+</ul>
+<h2 id="5">5. 技术细节与用户体验优化<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.0 起默认私有</strong>，加上 <code>legacy_public_targets</code> 迁移坡。这种改动很
+  难在大型 monorepo 一夜推完；坡度允许项目按 target 逐步翻转，而非一
+  次性转换全部。</li>
+<li><strong><code>':...'</code> 递归 pattern 走字符串前缀匹配，不走遍历 target 树。</strong> 便
+  宜（一次前缀比较），且因 target 键早就归一化为 <code>&lt;path&gt;:&lt;name&gt;</code> 而准
+  确。</li>
+<li><strong>诊断带两端。</strong> 失败既指 A 的 BUILD 行（dep 声明处），又指 B 的
+  BUILD 行（visibility 声明处）。用户不必在文件间反复跳。</li>
+<li><strong>未做匹配结果缓存。</strong> 检查一次分析一次，pattern 简单；加缓存只增代
+  码不节省时间。若套件长大，缓存就是个一句话的 <code>(A.key,
+  frozenset(B._visibility))</code> 字典。</li>
+<li><strong>同包豁免是最常用的隐式规则。</strong> 这是为什么很多 BUILD 完全不写
+  <code>visibility=</code>：需要互通的 target 是兄弟、同包规则就让它们工作而无需
+  声明。只有外部包要进来时 visibility 才登场。</li>
+<li><strong>Visibility 是强制，不是过滤。</strong> blade 不把被禁的 dep 从图里偷偷去
+  掉；它报错并停下来。这是刻意的——静默忽略会掩盖真实 bug（比如
+  <code>deps</code> 拼写错误看起来"像是库被藏起来了"）。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../vcpkg/" class="btn btn-neutral float-left" title="vcpkg 支持实现原理"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../FAQ/" class="btn btn-neutral float-right" title="Blade 常见问题">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../vcpkg/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../FAQ/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

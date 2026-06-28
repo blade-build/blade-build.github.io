@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/vcpkg/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How vcpkg Support Works - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How vcpkg Support Works";
+        var mkdocs_page_input_path = "develop/vcpkg.md";
+        var mkdocs_page_url = "/docs/en/develop/vcpkg/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How vcpkg Support Works</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-two-phases-cleanly-split">1. Two phases, cleanly split</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-the-vcpkg-reference-is-a-dep-scheme">2. The vcpkg# reference is a dep scheme</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-resolution-_vcpkg_dep_handler-vcpkglibrary">3. Resolution: _vcpkg_dep_handler → VcpkgLibrary</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-parsing-what-a-port-actually-needs">4. Parsing what a port actually needs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-managed-install-setup">5. Managed install: setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-linkage-model">6. Linkage model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-where-to-look-first">7. Where to look first</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How vcpkg Support Works</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/vcpkg.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-vcpkg-support-works">How vcpkg Support Works<a class="headerlink" href="#how-vcpkg-support-works" title="Permanent link">&para;</a></h1>
+<p>Blade consumes <a href="https://github.com/microsoft/vcpkg">vcpkg</a> libraries as
+first-class deps via <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> references. This document explains
+<strong>how it is implemented</strong> (<a href="https://github.com/blade-build/blade-build/issues/1236">issue #1236</a>);
+for the user-facing guide see <a href="../../build_rules/vcpkg/">build_rules/vcpkg.md</a>.</p>
+<p>Source files involved:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/vcpkg.py</code></td>
+<td>All vcpkg logic: triplet derivation, <code>.pc</code>/CMake parsing, manifest/triplet generation, the <code>vcpkg#</code> dep handler, and the managed-install orchestration (<code>setup</code>)</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>register_dep_scheme</code> + <code>_unify_scheme_dep</code> — the <code>&lt;scheme&gt;#&lt;coordinate&gt;</code> dispatch that routes <code>vcpkg#...</code> into the handler</td>
+</tr>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td><code>VcpkgLibrary</code> — the auto-created target that links a resolved port artifact</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td><code>setup_vcpkg()</code> — calls <code>vcpkg.setup(self)</code> between config load and BUILD parsing</td>
+</tr>
+<tr>
+<td><code>src/blade/load_build_files.py</code></td>
+<td>imports <code>blade.vcpkg</code> so the scheme registers</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td>the <code>vcpkg_config(...)</code> schema</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-two-phases-cleanly-split">1. Two phases, cleanly split<a class="headerlink" href="#1-two-phases-cleanly-split" title="Permanent link">&para;</a></h2>
+<p>vcpkg support is organized so that the <strong>pure, testable logic</strong> is separable from
+the side-effecting orchestration. <code>vcpkg.py</code>'s module docstring calls these out:</p>
+<ul>
+<li><strong>Reference resolution</strong> (analysis phase): turn a <code>vcpkg#port:lib</code> string into
+  concrete install-tree paths, and create a target for it. Pure functions plus
+  one handler.</li>
+<li><strong>Managed install</strong> (<code>setup</code>, build phase): generate a manifest + overlay
+  triplet and run <code>vcpkg install</code>. The only step that touches the network / disk
+  heavily.</li>
+</ul>
+<p>Most of the module is pure functions over plain inputs (<code>triplet_for</code>,
+<code>parse_pkgconfig</code>, <code>manifest_json</code>, <code>port_required_libs</code>, …), unit-tested in
+isolation; the stateful parts (<code>_vcpkg_dep_handler</code>, <code>setup</code>) are thin wrappers
+that gather inputs from the toolchain/config and call them.</p>
+<h2 id="2-the-vcpkg-reference-is-a-dep-scheme">2. The <code>vcpkg#</code> reference is a dep <em>scheme</em><a class="headerlink" href="#2-the-vcpkg-reference-is-a-dep-scheme" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg</code> extends Blade's <code>#name</code> system-library family. A dependency of the form
+<code>&lt;scheme&gt;#&lt;coordinate&gt;</code> is dispatched by <code>target._unify_scheme_dep</code>, and at
+import time <code>vcpkg.py</code> registers itself:</p>
+<pre><code class="language-python">_blade_target.register_dep_scheme('vcpkg', _vcpkg_dep_handler)
+</code></pre>
+<p>The import happens in <code>load_build_files.py</code>, so the scheme is live before any
+BUILD file is parsed. <code>#pthread</code> (no scheme) still means "a system lib resolved
+by name"; <code>vcpkg#fmt:fmt</code> means "resolve <code>fmt:fmt</code> through the vcpkg provider".</p>
+<h2 id="3-resolution-_vcpkg_dep_handler-vcpkglibrary">3. Resolution: <code>_vcpkg_dep_handler</code> → <code>VcpkgLibrary</code><a class="headerlink" href="#3-resolution-_vcpkg_dep_handler-vcpkglibrary" title="Permanent link">&para;</a></h2>
+<p>When a target depends on <code>vcpkg#fmt:fmt</code>, <code>_vcpkg_dep_handler(referrer, 'fmt:fmt')</code>:</p>
+<ol>
+<li><strong>Governance</strong> — if <code>vcpkg_config.direct_use_allowed</code> is set, reject a
+   reference from a path outside the allowlist (mirrors the wrapper-library
+   discipline large repos use).</li>
+<li><strong>Triplet</strong> — <code>triplet_for_toolchain(toolchain)</code> derives the triplet from
+   Blade's resolved toolchain (<code>x64-linux</code>, <code>arm64-osx</code>, …); <code>'auto'</code> /
+   unspecified resolves the static variant (on Windows that means the <code>-static</code>
+   triplet, since vcpkg defaults to dynamic there).</li>
+<li><strong><code>resolve_reference(...)</code></strong> — pure validation + path math: split
+   <code>port:lib</code>, enforce the <strong>whitelist</strong> (<code>port in packages</code>, else a hard error),
+   compute <code>lib_dir</code> (the <code>debug/lib</code> subtree for an MSVC-ABI debug build, else
+   <code>lib</code>) and the shared <code>include_dir</code>. <code>lib == 'hdrs'</code> marks a header-only port.</li>
+<li><strong>Target creation</strong> — auto-create one <code>VcpkgLibrary</code> (the same pattern as
+   <code>_add_system_library</code>), keyed by <code>vcpkg#port:lib</code> so it is created once and
+   reused. For an <code>'auto'</code>-linkage port in managed mode it also computes the
+   <em>shared</em> sibling's <code>dynamic_lib_dir</code> in the separate <code>-shared</code> install tree.</li>
+</ol>
+<p>The <code>root</code> / <code>triplet</code> are stashed on the target so it can resolve the port's
+pkg-config private system libs and transitive <code>Requires:</code> siblings <strong>lazily at
+generate time</strong> — at analysis time the install tree may not exist yet (the
+install runs in between; see §5).</p>
+<h2 id="4-parsing-what-a-port-actually-needs">4. Parsing what a port actually needs<a class="headerlink" href="#4-parsing-what-a-port-actually-needs" title="Permanent link">&para;</a></h2>
+<p>A single <code>vcpkg#protobuf:protobuf</code> reference must pull in the right sibling
+archives and system libs. <code>vcpkg.py</code> reads that from the install tree:</p>
+<ul>
+<li><code>parse_pkgconfig(text)</code> parses a port's <code>.pc</code> file — <code>Libs</code> / <code>Libs.private</code>
+  (the <code>-l&lt;name&gt;</code> exports and the private system libs) and <code>Requires</code> /
+  <code>Requires.private</code> (sibling vcpkg modules). <code>_expand</code> resolves <code>${prefix}</code>-style
+  pkg-config variables.</li>
+<li><code>port_required_libs(...)</code> follows those <code>Requires:</code> to the sibling archives —
+  this is how protobuf (v22+) transparently links the whole <code>absl_*</code> +
+  <code>utf8_range</code> set without the user listing them.</li>
+<li><code>port_system_libs(...)</code> extracts the OS/SDK libs from <code>Libs.private</code> and the
+  CMake link interface (<code>_cmake_link_libs</code>).</li>
+</ul>
+<p>These are pure text functions, which is what makes them straightforward to
+unit-test against captured <code>.pc</code> fixtures.</p>
+<h2 id="5-managed-install-setup">5. Managed install: <code>setup</code><a class="headerlink" href="#5-managed-install-setup" title="Permanent link">&para;</a></h2>
+<p><code>build_manager.setup_vcpkg()</code> calls <code>vcpkg.setup(builder)</code> once, <strong>after config
+load and after analyze, before the install artifacts are needed</strong>. Key behaviors:</p>
+<ul>
+<li><strong>No-op unless needed</strong> — returns early unless <code>manage=True</code> (default) with a
+  non-empty <code>packages</code>, <em>and</em> <code>_build_uses_vcpkg(builder)</code> is true. This
+  <strong>demand-driven</strong> gate lets a workspace declare <code>vcpkg_config</code> unconditionally
+  (it is a fixed project property) while a build that references no <code>vcpkg#...</code>
+  dep pays nothing — and never needs the vcpkg tool.</li>
+<li><strong>Overlay triplet</strong> — it generates a <code>blade-&lt;triplet&gt;</code> overlay
+  (<code>overlay_triplet_cmake</code>) that <strong>chainloads Blade's resolved compiler</strong>
+  (<code>chainload_cmake</code>) so the artifacts are ABI-compatible with the rest of the
+  build. MSVC is the exception: <code>cl.exe</code> uses vcpkg's native toolchain (no
+  chainload) so vcpkg sets up the full MSVC environment.</li>
+<li><strong>Hermetic tree</strong> — manifest (<code>vcpkg.json</code>), the chainload cmake, and the
+  overlay triplet are written under <code>&lt;build&gt;/.cache/vcpkg/</code>; <code>vcpkg install</code>
+  installs into <code>installed/&lt;overlay&gt;</code> there. Only the <em>artifacts</em> live under the
+  build dir; the vcpkg <em>tool</em> is still found via <code>vcpkg_config.root</code> /
+  <code>$VCPKG_ROOT</code> / <code>PATH</code> (<code>_find_vcpkg_tool</code>).</li>
+<li><strong>Stamp-skip</strong> — an md5 over <code>(manifest + chainload + triplet_cmake + overlay)</code>
+  is compared against <code>.blade-vcpkg-stamp</code>; an unchanged stamp with an existing
+  <code>installed/&lt;overlay&gt;</code> skips the install entirely.</li>
+<li><strong>Second (shared) tree on demand</strong> — <code>_auto_dynamic_ports(builder, packages)</code>
+  computes which <code>'auto'</code> ports a <code>dynamic_link</code> binary actually depends on (from
+  the analyzed graph — <code>setup</code> runs after analyze). Only those are installed a
+  second time as shared libraries into a separate <code>-shared</code> install root
+  (<code>_install_shared</code>). An all-static build skips this completely.</li>
+</ul>
+<h2 id="6-linkage-model">6. Linkage model<a class="headerlink" href="#6-linkage-model" title="Permanent link">&para;</a></h2>
+<p><code>port_options</code> / <code>_effective_linkage</code> resolve a port's <code>linkage</code>
+(<code>'auto'</code> / <code>'static'</code> / <code>'dynamic'</code>). The <code>'auto'</code> default mirrors
+<code>cc_library</code>: the static archive always exists, and a shared build is produced
+<strong>only on demand</strong> when a <code>dynamic_link</code> binary depends on the port — which is
+why the shared build lands in a separate <code>blade-&lt;triplet&gt;-shared</code> tree (vcpkg
+builds one linkage per triplet). <code>dynamic_ports</code> / <code>auto_ports</code> feed the triplet
+and second-install computations above. This is what prevents the
+singleton-duplication problem (one shared instance of gflags/protobuf/… across
+all dylibs) without per-port configuration.</p>
+<h2 id="7-where-to-look-first">7. Where to look first<a class="headerlink" href="#7-where-to-look-first" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A <em>resolution</em> bug (wrong path, missing sibling, whitelist message) →
+  <code>resolve_reference</code> / <code>port_required_libs</code> / <code>_vcpkg_dep_handler</code>.</li>
+<li>An <em>install</em> bug (wrong triplet, ABI mismatch, re-installs every build) →
+  <code>setup</code> / <code>overlay_triplet_cmake</code> / <code>chainload_cmake</code> / the stamp logic.</li>
+<li>A <em>linkage</em> bug (static where shared expected, singleton collision) →
+  <code>port_options</code> / <code>_effective_linkage</code> / <code>_auto_dynamic_ports</code>.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../test_execution/" class="btn btn-neutral float-left" title="How blade test runs user tests"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../visibility/" class="btn btn-neutral float-right" title="How target visibility is implemented and enforced">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../test_execution/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../visibility/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

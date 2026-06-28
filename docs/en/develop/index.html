@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Development - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Development";
+        var mkdocs_page_input_path = "develop.md";
+        var mkdocs_page_url = "/docs/en/develop/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Development</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#code-structure">Code Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-it-works">How It Works</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#loading-configuration">Loading Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#loading-build-files">Loading BUILD Files</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dependency-analysis">Dependency Analysis</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generating-backend-build-files">Generating Backend Build Files</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#executing-the-backend-build">Executing the Backend Build</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#running-tests">Running Tests</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-topics">Implementation Topics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#unit-tests-srctestsunit">Unit tests (src/tests/unit/)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#integration-tests-srctest">Integration tests (src/test/)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#type-checking">Type checking</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-a-new-build-rule">Adding a New Build Rule</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-design-patterns">Key design patterns</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#debugging-and-diagnostics">Debugging and Diagnostics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#passing-options-to-the-backend-builder-ninja">Passing options to the backend builder (ninja)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ci">CI</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#distribution">Distribution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#other-resources">Other Resources</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">Development</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h1>
+<h2 id="code-structure">Code Structure<a class="headerlink" href="#code-structure" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">src/
+├── blade/              # Main source package
+│   ├── main.py         # CLI entry point
+│   ├── command_line.py # Argument parsing
+│   ├── config.py       # Configuration loading (blade.conf, BLADE_ROOT, etc.)
+│   ├── workspace.py    # Workspace discovery and management
+│   ├── load_build_files.py  # BUILD file loading and DSL sandbox
+│   ├── dependency_analyzer.py  # Topological sort and dependency resolution
+│   ├── backend.py      # Backend build system generation (Ninja)
+│   ├── build_manager.py     # Build orchestration
+│   ├── ninja_runner.py      # Ninja invocation
+│   ├── binary_runner.py     # Executing built binaries
+│   ├── test_runner.py       # Test sandbox and execution
+│   ├── test_scheduler.py    # Parallel test scheduling
+│   ├── toolchain.py    # Compiler toolchain abstraction (GCC, MSVC, Clang)
+│   ├── *_targets.py    # Build rule implementations (cc, java, py, go, etc.)
+│   ├── target.py       # Base Target class
+│   ├── build_rules.py  # Rule registration infrastructure
+│   ├── dsl_api.py      # Safe `blade.*` DSL module exposed to BUILD files
+│   ├── blade_types.py  # Shared type aliases (StrOrList, StrOrListOpt)
+│   ├── util.py         # General-purpose helpers
+│   ├── console.py      # Logging and diagnostic output
+│   ├── config.py       # Configuration schema
+│   └── inclusion_check.py  # Header dependency checking for C/C++
+├── tests/
+│   ├── unit/           # Unit tests (pytest, fast, offline)
+│   └── (integration)   # See src/test/
+└── test/               # Integration / end-to-end tests (pytest, require toolchain)
+</code></pre>
+<p><strong>Rule-target modules</strong> (<code>*_targets.py</code>) each define one or more build rule types:</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Rule(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cc_targets.py</code></td>
+<td><code>cc_library</code>, <code>cc_binary</code>, <code>cc_test</code>, <code>cc_plugin</code>, <code>prebuilt_cc_library</code>, <code>foreign_cc_library</code></td>
+</tr>
+<tr>
+<td><code>java_targets.py</code></td>
+<td><code>java_library</code>, <code>java_binary</code>, <code>java_test</code></td>
+</tr>
+<tr>
+<td><code>py_targets.py</code></td>
+<td><code>py_library</code>, <code>py_binary</code>, <code>py_test</code></td>
+</tr>
+<tr>
+<td><code>proto_library_target.py</code></td>
+<td><code>proto_library</code></td>
+</tr>
+<tr>
+<td><code>go_targets.py</code></td>
+<td><code>go_library</code>, <code>go_binary</code>, <code>go_test</code></td>
+</tr>
+<tr>
+<td><code>scala_targets.py</code></td>
+<td><code>scala_library</code>, <code>scala_test</code></td>
+</tr>
+<tr>
+<td><code>cu_targets.py</code></td>
+<td><code>cu_library</code>, <code>cu_binary</code>, <code>cu_test</code></td>
+</tr>
+<tr>
+<td><code>gen_rule_target.py</code></td>
+<td><code>gen_rule</code></td>
+</tr>
+<tr>
+<td><code>lex_yacc_target.py</code></td>
+<td><code>lex_yacc_library</code></td>
+</tr>
+<tr>
+<td><code>resource_library_target.py</code></td>
+<td><code>resource_library</code></td>
+</tr>
+<tr>
+<td><code>windows_resources_target.py</code></td>
+<td><code>windows_resources</code></td>
+</tr>
+<tr>
+<td><code>package_target.py</code></td>
+<td><code>package</code></td>
+</tr>
+<tr>
+<td><code>sh_test_target.py</code></td>
+<td><code>sh_test</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<h3 id="loading-configuration">Loading Configuration<a class="headerlink" href="#loading-configuration" title="Permanent link">&para;</a></h3>
+<p>After Blade starts, it loads configuration files from multiple paths via <code>execfile</code>. These are Python source files that call predefined configuration functions, updating the configuration dict in <code>blade.config</code>.</p>
+<p>Command-line options matching <code>global_config</code> keys are then applied with the highest priority.</p>
+<h3 id="loading-build-files">Loading BUILD Files<a class="headerlink" href="#loading-build-files" title="Permanent link">&para;</a></h3>
+<p>Blade expands from the command-line targets, executing <code>BUILD</code> files one by one via a restricted <code>execfile</code> sandbox. When BUILD code runs, it calls rule functions (e.g., <code>cc_library(...)</code>) which register targets into Blade's internal data structures.</p>
+<p>BUILD files are loaded recursively for all transitive dependencies.</p>
+<h3 id="dependency-analysis">Dependency Analysis<a class="headerlink" href="#dependency-analysis" title="Permanent link">&para;</a></h3>
+<p>Blade performs a topological sort from the command-line target roots, producing an ordered build target list.</p>
+<h3 id="generating-backend-build-files">Generating Backend Build Files<a class="headerlink" href="#generating-backend-build-files" title="Permanent link">&para;</a></h3>
+<p>Each target generates backend actions (Ninja rules) which are written to a backend build file (e.g. <code>build.ninja</code>).</p>
+<h3 id="executing-the-backend-build">Executing the Backend Build<a class="headerlink" href="#executing-the-backend-build" title="Permanent link">&para;</a></h3>
+<p>Blade invokes the backend build tool (Ninja) to perform the actual build, then removes the generated build file.</p>
+<h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h3>
+<p>Test targets are built, then executed in parallel within sandbox environments. Results are collected and reported.</p>
+<h2 id="implementation-topics">Implementation Topics<a class="headerlink" href="#implementation-topics" title="Permanent link">&para;</a></h2>
+<p>In-depth documents on how individual subsystems are implemented, in
+roughly the order they appear in a <code>blade build</code> invocation:</p>
+<ul>
+<li><a href="configuration/">How configuration is loaded, layered, and consumed</a></li>
+<li><a href="build_file_loading/">How BUILD files are discovered, loaded, and registered</a></li>
+<li><a href="dsl_api/">Built-in functions and the <code>blade.*</code> DSL</a></li>
+<li><a href="visibility/">How target visibility is implemented and enforced</a></li>
+<li><a href="dependency_analysis/">Dependency analysis and ninja file generation</a></li>
+<li><a href="gen_rule/"><code>gen_rule</code>: custom build steps and how other targets see them</a></li>
+<li><a href="custom_rule/">How custom rules (<code>define_rule</code>) work</a></li>
+<li><a href="cc_build/">How C/C++ programs are built</a></li>
+<li><a href="hdrs_check/">How the C/C++ header dependency check (hdrs check) works</a></li>
+<li><a href="check_undefined/">How the static undefined-symbol check (<code>check_undefined</code>) works</a></li>
+<li><a href="export_map/">How <code>export_map</code> (symbol-export control) works</a></li>
+<li><a href="vcpkg/">How vcpkg support works</a></li>
+<li><a href="protobuf_build/">How <code>proto_library</code> handles multi-language codegen</a></li>
+<li><a href="java_scala_build/">How Java and Scala programs are built</a></li>
+<li><a href="python_build/">How Python targets are built and packaged</a></li>
+<li><a href="console/">The console: the build progress panel and the ninja status pipeline</a></li>
+<li><a href="test_execution/">How <code>blade test</code> runs user tests</a></li>
+<li><a href="self_testing/">How blade-build itself is tested</a></li>
+</ul>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<h3 id="unit-tests-srctestsunit">Unit tests (<code>src/tests/unit/</code>)<a class="headerlink" href="#unit-tests-srctestsunit" title="Permanent link">&para;</a></h3>
+<p>Fast, offline tests that exercise individual modules. No toolchain or system dependencies required.</p>
+<pre><code class="language-bash">pip install -r requirements-dev.txt
+PYTHONPATH=src python -m pytest src/tests/unit/ -v
+</code></pre>
+<h3 id="integration-tests-srctest">Integration tests (<code>src/test/</code>)<a class="headerlink" href="#integration-tests-srctest" title="Permanent link">&para;</a></h3>
+<p>End-to-end tests that drive real build/test cycles against fixture data in <code>src/test/testdata/</code>. Requires a working C/C++ toolchain (GCC, MSVC, or Clang).</p>
+<pre><code class="language-bash">src/test/runall.sh          # Run all integration tests
+src/test/run.sh &lt;test_name&gt; # Run a single test (e.g. cc_library_test)
+</code></pre>
+<h3 id="type-checking">Type checking<a class="headerlink" href="#type-checking" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">pip install -r requirements-dev.txt
+pyright
+</code></pre>
+<h2 id="adding-a-new-build-rule">Adding a New Build Rule<a class="headerlink" href="#adding-a-new-build-rule" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Create a target class</strong> in a new or existing <code>*_targets.py</code> module. Inherit from <code>Target</code> (or a suitable subclass) and implement <code>generate()</code>.</li>
+<li><strong>Define the rule-entry function</strong> (e.g., <code>windows_resources()</code>) — this function normalizes BUILD-file-friendly types (<code>StrOrListOpt</code>) into <code>list[str]</code> via <code>var_to_list</code> / <code>var_to_list_or_none</code>, creates the target instance, and registers it via <code>build_manager.instance.register_target()</code>.</li>
+<li><strong>Expose it in the DSL</strong> by adding the function to <code>blade/__init__.py</code> and <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/dsl_api.py">dsl_api.py</a>.</li>
+<li><strong>Add integration test data</strong> under <code>src/test/testdata/&lt;rule_name&gt;/</code> with a <code>BUILD</code> file and source fixtures, then add a test class in <code>src/test/&lt;rule_name&gt;_test.py</code>.</li>
+<li><strong>Update documentation</strong> in <a href="../build_rules/cc/">build_rules/cc.md</a> (or a new file for a new category).</li>
+</ol>
+<h3 id="key-design-patterns">Key design patterns<a class="headerlink" href="#key-design-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>StrOrList</code> / <code>StrOrListOpt</code></strong> — Rule-entry functions accept <code>str | list[str]</code> unions for BUILD-file ergonomics. Always normalize to <code>list[str]</code> via <code>var_to_list()</code> (or <code>var_to_list_or_none()</code> for optional params) before passing to parent constructors.</li>
+<li><strong>Toolchain abstraction</strong> (<code>toolchain.py</code>) — Platform-specific build details (compiler, linker, file suffixes) are encapsulated behind the <code>ToolChain</code> base class. Rule implementations query the toolchain rather than branching on <code>os.name</code>.</li>
+<li><strong><code>blade.cc_toolchain</code></strong> — A read-only proxy exposed to BUILD files via the DSL for platform-aware decisions (file naming, capability queries).</li>
+</ul>
+<h2 id="debugging-and-diagnostics">Debugging and Diagnostics<a class="headerlink" href="#debugging-and-diagnostics" title="Permanent link">&para;</a></h2>
+<p>Most subcommands support <code>--stop-after</code> with options <code>{load, analyze, generate, build}</code> to stop after a specific phase:</p>
+<pre><code class="language-bash">blade build --stop-after generate
+</code></pre>
+<p>This stops after generating the backend build file (e.g. <code>build.ninja</code>), letting you inspect the generated output.</p>
+<p><code>--profiling</code> outputs a performance analysis report after execution. Combine with <code>--stop-after</code> to profile specific phases.</p>
+<h3 id="passing-options-to-the-backend-builder-ninja">Passing options to the backend builder (ninja)<a class="headerlink" href="#passing-options-to-the-backend-builder-ninja" title="Permanent link">&para;</a></h3>
+<p><code>--backend-builder-options</code> forwards arbitrary options straight to ninja (see <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/ninja_runner.py"><code>ninja_runner.py</code></a>). The most useful for debugging:</p>
+<pre><code class="language-bash"># Why is a target (re)built — especially one that rebuilds on EVERY run?
+# Ask ninja to explain each decision.
+blade build //foo/... --backend-builder-options=&quot;-d explain&quot;
+
+# Show the exact commands ninja runs (-v), and/or dry-run without building (-n).
+blade build //foo/... --backend-builder-options=&quot;-v&quot;
+</code></pre>
+<p><code>-d explain</code> prints, for every edge it would run, <em>why</em> it is considered dirty — a newer input, an output older than an input, a changed command line, or a recorded dependency (<code>deps</code>/depfile) that no longer exists. It is the first tool to reach for when a build isn't incremental.</p>
+<p>You can also run ninja directly against the generated build file (handy after <code>blade build --stop-after generate</code>, which keeps it instead of deleting it). Blade runs ninja from the workspace root, so use the build-dir-relative path; add <code>-n</code> for a dry run that explains without building:</p>
+<pre><code class="language-bash">ninja -f build_release/build.ninja -d explain -n
+</code></pre>
+<p>Tip: ninja only strips its <code>msvc_deps_prefix</code> (<code>Note: including file:</code>) lines from console output as a side effect of <code>deps = msvc</code>; all other tool chatter is echoed verbatim. On MSVC, Blade's <code>cc_wrapper.py</code> / <code>link_wrapper.py</code> (written into the build dir) filter compiler/linker noise that ninja won't.</p>
+<h2 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions workflows run on every PR and push to <code>master</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Workflow</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python package</strong></td>
+<td>Unit tests + integration tests + pyright on Ubuntu (Python 3.10–3.14)</td>
+</tr>
+<tr>
+<td><strong>Windows CI</strong></td>
+<td>Unit tests + smoke tests + E2E on Windows (Python 3.10–3.13)</td>
+</tr>
+<tr>
+<td><strong>CodeQL</strong></td>
+<td>Security analysis</td>
+</tr>
+<tr>
+<td><strong>Check Markdown links</strong></td>
+<td>Link validation for documentation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="distribution">Distribution<a class="headerlink" href="#distribution" title="Permanent link">&para;</a></h2>
+<p><code>dist_blade</code> in the repository root packages the source into a zip for deployment. Place it alongside the <code>blade</code> bootstrap script and <code>blade.conf</code>.</p>
+<h2 id="other-resources">Other Resources<a class="headerlink" href="#other-resources" title="Permanent link">&para;</a></h2>
+<p>Community analyses of Blade's internals (based on earlier versions, still informative):</p>
+<ul>
+<li><a href="https://tsgsz.github.io/2013/11/01/2013-11-01-thinking-in-design-of-blade-cpp-build/">On the design and implementation of C++Build in Blade</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_4af176450101bg69.html">Where is the sharp blade in the end</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../upgrade-to-v2/" class="btn btn-neutral float-left" title="Upgrade to V2"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="build_file_loading/" class="btn btn-neutral float-right" title="How BUILD files are discovered, loaded, and registered">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../upgrade-to-v2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="build_file_loading/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

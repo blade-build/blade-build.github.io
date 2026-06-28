@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/hdrs_check/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How the C/C++ Header Dependency Check (hdrs check) Works - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How the C/C++ Header Dependency Check (hdrs check) Works";
+        var mkdocs_page_input_path = "develop/hdrs_check.md";
+        var mkdocs_page_url = "/docs/en/develop/hdrs_check/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-implementation-mechanism">1. Implementation mechanism</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#11-collecting-which-library-owns-which-header">1.1 Collecting "which library owns which header"</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12-persisting-per-target-check-info-incchk">1.2 Persisting per-target check info (.incchk)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#13-emitting-the-inclusion-stack-at-compile-time-incstk-files">1.3 Emitting the "inclusion stack" at compile time (.incstk files)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#msvc-tee-showincludes-instead-of-a-separate-preprocess">MSVC: tee /showIncludes instead of a separate preprocess</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#14-triggering-the-check-the-ccincchk-rule">1.4 Triggering the check (the ccincchk rule)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#15-running-the-check-inclusion_checkpy">1.5 Running the check (inclusion_check.py)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-check-header-not-exported-private-header-used-across-libraries">2. Check: header not exported / private header used across libraries</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-check-a-header-is-included-but-its-owning-library-is-not-declared-in-deps">3. Check: a header is included but its owning library is not declared in deps</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-missing-direct-dependency-missing-dependency">3.1 Missing direct dependency (Missing dependency)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32-missing-indirect-generated-header-dependency-missing-indirect-dependency">3.2 Missing indirect (generated-header) dependency (Missing indirect dependency)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#severity-and-suppression">Severity and suppression</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#design-trade-offs-and-boundaries">Design trade-offs and boundaries</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-completeness-boundary-configuration-sensitivity">The completeness boundary: configuration sensitivity</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-h-instead-of-the-depfile">Why -H instead of the depfile</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#direct-include-detection-h-plus-a-naive-source-scan-supplement">Direct-include detection: -H plus a naive source-scan supplement</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#why-the-supplement-at-all">Why the supplement at all</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#known-limitations">Known limitations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#relationship-to-bazels-sandbox-layering_check">Relationship to Bazel's sandbox / layering_check</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#appendix-related-artifact-files">Appendix: related artifact files</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How the C/C++ Header Dependency Check (hdrs check) Works</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/hdrs_check.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-the-cc-header-dependency-check-hdrs-check-works">How the C/C++ Header Dependency Check (hdrs check) Works<a class="headerlink" href="#how-the-cc-header-dependency-check-hdrs-check-works" title="Permanent link">&para;</a></h1>
+<p>Since Blade 2.0, C/C++ header files are part of dependency management: when a target <code>#include</code>s a header, it must declare the library that owns that header in its <code>deps</code>, otherwise Blade reports a problem at the end of the build. This document explains <strong>how that check is implemented</strong>; for the user-facing description and fix guidance see <a href="../../build_rules/cc/#fix-missing-dependencies-errors-caused-by-hdrs">build_rules/cc.md</a>.</p>
+<p>Source files involved:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td>Collect the "header → library" declarations, write per-target check info, generate the check rule</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td>Write the global declaration to <code>inclusion_declaration.data</code></td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td>Generate the compile command that emits the inclusion stack (GCC: <code>cc_wrapper.sh</code> adds <code>-H</code>; MSVC: <code>cc_wrapper.py</code> tees <code>/showIncludes</code>), plus the <code>cxxhdrs</code> and <code>ccincchk</code> rules</td>
+</tr>
+<tr>
+<td><code>src/blade/inclusion_check.py</code></td>
+<td>The actual check logic (invoked as a subprocess at build time)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-implementation-mechanism">1. Implementation mechanism<a class="headerlink" href="#1-implementation-mechanism" title="Permanent link">&para;</a></h2>
+<p>The mechanism has three phases: <strong>declaration collection</strong> (while loading BUILD files) → <strong>persisting info</strong> (generation phase) → <strong>emitting inclusion stacks and checking</strong> (build phase).</p>
+<h3 id="11-collecting-which-library-owns-which-header">1.1 Collecting "which library owns which header"<a class="headerlink" href="#11-collecting-which-library-owns-which-header" title="Permanent link">&para;</a></h3>
+<p>While loading BUILD files, each <code>cc_library</code> registers the headers it owns into three process-wide global maps (<code>cc_targets.py</code>):</p>
+<ul>
+<li><code>declare_hdrs()</code> → <code>_hdr_targets_map</code>: <strong>public header</strong> (the <code>hdrs</code> attribute) → set of owning libraries.</li>
+<li><code>declare_hdr_dir()</code> → <code>_hdr_dir_targets_map</code>: <strong>public include directory</strong> (e.g. <code>export_incs</code>, generated dirs) → set of owning libraries.</li>
+<li><code>declare_private_hdrs()</code> → <code>_private_hdrs_target_map</code>: <strong>private header</strong> (a <code>.h</code> listed in <code>srcs</code>) → set of owning targets.</li>
+</ul>
+<p>A header may belong to several libraries, so the values are sets.</p>
+<p>After all BUILD files (including every transitive dependency) are loaded, <code>build_manager._write_inclusion_declaration_file()</code> serializes these three maps together with the <code>allowed_undeclared_hdrs</code> config into <code>&lt;build_dir&gt;/inclusion_declaration.data</code>, to be read by the check subprocess at build time.</p>
+<h3 id="12-persisting-per-target-check-info-incchk">1.2 Persisting per-target check info (<code>.incchk</code>)<a class="headerlink" href="#12-persisting-per-target-check-info-incchk" title="Permanent link">&para;</a></h3>
+<p><code>cc_targets._write_inclusion_check_info()</code> writes one <code>&lt;target&gt;.incchk</code> (pickle) per cc target, holding the local context the check needs:</p>
+<ul>
+<li><code>deps</code>, <code>expanded_srcs</code> / <code>expanded_hdrs</code> (the expanded source and header lists);</li>
+<li><code>declared_hdrs</code> / <code>declared_incs</code>: the public headers/dirs of this target <strong>and of its <code>deps</code></strong> (<code>_collect_declared_headers()</code>) — i.e. "the headers that are legal within this target's visibility";</li>
+<li><code>declared_genhdrs</code> / <code>declared_genincs</code>: the <strong>generated headers</strong> collected transitively from <code>deps</code> (<code>_transitive_declared_generated_includes()</code>);</li>
+<li><code>severity</code>, <code>suppress</code> (from config).</li>
+</ul>
+<p>It also writes a <code>&lt;target&gt;.incchk.extra</code> containing <code>hdrs_deps</code> / <code>private_hdrs_deps</code> / <code>allowed_undeclared_hdrs</code> — a <strong>local subset cache</strong> of the global declaration maps, so the check subprocess can query the small file first and avoid loading the large global file every time. It is a separate file so that "information that only exists after the first build" is not mixed into <code>.incchk</code> and does not trigger unnecessary rebuilds (see <a href="https://github.com/blade-build/blade-build/issues/1034">issue #1034</a>).</p>
+<p><code>.incchk</code> <strong>is rewritten only when its content changes</strong>, keeping its mtime stable to avoid triggering a needless re-check.</p>
+<h3 id="13-emitting-the-inclusion-stack-at-compile-time-incstk-files">1.3 Emitting the "inclusion stack" at compile time (<code>.incstk</code> files)<a class="headerlink" href="#13-emitting-the-inclusion-stack-at-compile-time-incstk-files" title="Permanent link">&para;</a></h3>
+<p>The check needs to know which headers each source/header <strong>actually</strong> includes. The compiler produces this as a side effect of compilation:</p>
+<ul>
+<li><strong>Source files (GCC/Clang)</strong>: every compile goes through the generated wrapper <code>cc_wrapper.sh</code> (see <code>backend.py</code>), which appends GCC's <code>-H</code> option to the compile command and uses an awk program to separate the "inclusion stack" from ordinary diagnostics, writing it to <code>&lt;src&gt;.incstk</code>. The path is passed via the per-object <code>inclusion_stack</code> ninja variable, so it is independent of the object-file suffix (<code>.o</code> vs <code>.obj</code>).</li>
+<li><strong>Source files (MSVC)</strong>: see the MSVC note below — the same <code>.incstk</code> is produced during the normal compile, no separate preprocess.</li>
+<li><strong>Public headers (all toolchains)</strong>: a header is never compiled into an object, so on <strong>every</strong> toolchain a separate <code>cxxhdrs</code> rule preprocesses it (GCC/Clang <code>-E</code>, MSVC <code>/P</code>) to produce <code>&lt;hdr&gt;.incstk</code>. This is independent of the source-file path below — it is the only inclusion stack a header gets.</li>
+</ul>
+<p>A <code>.incstk</code> file encodes the <strong>inclusion level with the number of leading dots</strong>, for example (GCC format):</p>
+<pre><code class="language-text">. ./app/example/foo.h
+.. build_release/app/example/proto/foo.pb.h
+... build_release/common/rpc/rpc_service.pb.h
+. ./common/rpc/rpc_client.h
+</code></pre>
+<p>The MSVC format is <code>Note: including file:  &lt;path&gt;</code>, using the number of leading spaces for the level. Both are parsed by <code>inclusion_check._parse_hdr_level_line()</code>.</p>
+<h4 id="msvc-tee-showincludes-instead-of-a-separate-preprocess">MSVC: tee <code>/showIncludes</code> instead of a separate preprocess<a class="headerlink" href="#msvc-tee-showincludes-instead-of-a-separate-preprocess" title="Permanent link">&para;</a></h4>
+<p>GCC's <code>-H</code> writes the inclusion stack to stderr, which the awk wrapper splits off into <code>.incstk</code>. MSVC has no <code>-H</code>; it emits <code>/showIncludes</code> lines (<code>Note: including file: &lt;path&gt;</code>) interleaved with diagnostics, and ninja's native <code>deps = msvc</code> already parses those same lines to build the dependency graph. To avoid compiling each source file <em>twice</em> (once for <code>.obj</code> + ninja deps, once to preprocess for the inclusion stack), the MSVC <code>cc</code>/<code>cxx</code> rules wrap the compile in <code>cc_wrapper.py</code>, which <strong>tees</strong> the compiler output:</p>
+<ul>
+<li>it merges the child's stdout and stderr into one pipe (reading only one side risks a pipe-buffer deadlock) and streams every line back to ninja's <code>deps = msvc</code> parser unchanged;</li>
+<li>in parallel it writes the <code>Note: including file:</code> lines to <code>&lt;src&gt;.incstk</code>, so the same single compile feeds both consumers.</li>
+</ul>
+<p>Two things are filtered, with <strong>different</strong> treatment for each:</p>
+<ul>
+<li>the <strong>bare basename</strong> the compiler echoes for the file it processes — a cl.exe quirk that cannot be turned off. ninja's <code>CLParser::FilterInputFilename</code> already strips this echo <strong>for source files</strong> (it matches <code>.c/.cc/.cxx/.cpp/.c++</code>), so the <code>cc</code>/<code>cxx</code> rules need no help; but it does <strong>not</strong> strip header extensions, so the echoed <code>foo.h</code> from the <code>cxxhdrs</code> <code>/P</code> rule leaks through. We therefore drop any lone filename token ourselves (this also covers nvcc, which echoes its <code>.cu</code> source plus intermediate temp names). Such a token is <strong>dropped from both sides</strong> — neither written to <code>.incstk</code> nor forwarded to ninja — since it is not a <code>Note: including file:</code> line and the deps parser does not need it;</li>
+<li><strong>absolute paths outside the workspace</strong> (system/SDK headers): these are dropped from <code>.incstk</code> only (the checker discards absolute paths anyway, so keeping them would just bloat the file and slow the check), <strong>but still forwarded to ninja</strong> — its <code>deps = msvc</code> graph needs the complete include set.</li>
+</ul>
+<p>So on MSVC the inclusion stack is a by-product of the normal compile, exactly as <code>-H</code> is on GCC — no separate per-source preprocess is needed.</p>
+<blockquote>
+<p><strong>Path separators.</strong> The backend writes the declaration data (<code>declared_hdrs</code>, the global <code>public_hdrs</code> map, …) with the OS separator, i.e. backslashes on Windows, while <code>/showIncludes</code> paths are normalized to forward slashes. <code>inclusion_check.py</code> reconciles the two by normalizing <strong>all</strong> declaration paths to forward slashes as they are loaded (<code>_unix_path_set</code> / <code>_unix_path_dict</code> / <code>_unix_path_pairs</code>), so the comparisons are separator-agnostic regardless of which platform produced the data.</p>
+</blockquote>
+<h3 id="14-triggering-the-check-the-ccincchk-rule">1.4 Triggering the check (the <code>ccincchk</code> rule)<a class="headerlink" href="#14-triggering-the-check-the-ccincchk-rule" title="Permanent link">&para;</a></h3>
+<p><code>cc_targets._generate_inclusion_check()</code> generates one <code>ccincchk</code> rule per target:</p>
+<pre><code class="language-text">python -m blade.builtin_tools cc_inclusion_check &lt;target&gt;.incchk.result &lt;target&gt;.incchk
+</code></pre>
+<p>Its implicit deps are all of the target's <code>.incstk</code> files and object files; its output is <code>&lt;target&gt;.incchk.result</code> (which contains <code>OK</code> when the check passes). That result file is wired as an <strong>order-only dependency</strong> of the link step — so a passing check does not trigger a relink, and a change in check info only re-runs the check rather than relinking.</p>
+<h3 id="15-running-the-check-inclusion_checkpy">1.5 Running the check (<code>inclusion_check.py</code>)<a class="headerlink" href="#15-running-the-check-inclusion_checkpy" title="Permanent link">&para;</a></h3>
+<p><code>ccincchk</code> ultimately calls <code>inclusion_check.check()</code>:</p>
+<ol>
+<li>Load the target's <code>.incchk</code> (and <code>.extra</code>), and lazily load the global <code>inclusion_declaration.data</code> on demand.</li>
+<li>For each source and header of the target, locate the corresponding <code>.incstk</code> and parse it with <code>_parse_inclusion_stacks()</code> into:</li>
+<li><strong>directly included headers</strong> (level 1, non-absolute path);</li>
+<li><strong>generated headers</strong> (paths under <code>build_dir</code>): record the <strong>full inclusion stack</strong> from the source to that generated header, and <strong>stop descending</strong> there — deeper inclusions are guaranteed by the generator (e.g. <code>proto_library</code>);</li>
+<li><strong>absolute paths</strong> (system headers): ignored.</li>
+<li>Run the two kinds of checks below (sections 2 and 3) over the parsed result.</li>
+</ol>
+<hr />
+<h2 id="2-check-header-not-exported-private-header-used-across-libraries">2. Check: header not exported / private header used across libraries<a class="headerlink" href="#2-check-header-not-exported-private-header-used-across-libraries" title="Permanent link">&para;</a></h2>
+<p>This kind targets <strong>directly included</strong> headers and is done in <code>_check_direct_headers()</code>. For each directly included header <code>hdr</code>:</p>
+<ol>
+<li>If <code>hdr</code> is in this target's <code>declared_hdrs</code> → legal, skip.</li>
+<li>Call <code>find_libs_by_header(hdr)</code> to find which <strong>public</strong> library(ies) own it: match the header against the public-header map exactly first; if no match, walk <strong>up the parent directories</strong> matching the public include-directory map.</li>
+<li>
+<p><strong>No public owner found</strong> → check whether it is some target's private header (<code>find_targets_by_private_hdr()</code>, i.e. listed in some target's <code>srcs</code>):</p>
+<ul>
+<li><strong>It is another target's private header</strong> (the owner set does not contain this target) → error:</li>
+</ul>
+<p><code>text
+   "X" is a private header file of "//foo:bar"</code></p>
+<p>i.e. a <strong>private header used across libraries</strong>. A private header may only be included by its owning library; for another library to use it, the owner should export it by adding it to <code>hdrs</code>.
+ - <strong>It is not any library's private header</strong> (and not exported by any library) → treated as <strong>undeclared / not exported</strong>, error:</p>
+<p><code>text
+   "X" is not declared in any cc target. ...</code></p>
+<p>(unless the header is in <code>allowed_undeclared_hdrs</code> or in the <code>suppress</code> list.) i.e. the header does not appear in any library's <code>hdrs</code> or <code>srcs</code>.
+   - <strong>A public owner is found</strong> → proceed to the "missing direct dependency" check in section 3.</p>
+</li>
+</ol>
+<p>Messages are assembled by <code>_header_undeclared_message()</code>, <code>_hdr_declaration_message()</code> and <code>_or_joined_libs()</code>; the latter shortens libraries in the same directory to <code>:name</code> and writes others as <code>//path:name</code>.</p>
+<hr />
+<h2 id="3-check-a-header-is-included-but-its-owning-library-is-not-declared-in-deps">3. Check: a header is included but its owning library is not declared in <code>deps</code><a class="headerlink" href="#3-check-a-header-is-included-but-its-owning-library-is-not-declared-in-deps" title="Permanent link">&para;</a></h2>
+<p>This kind is "included a header but did not declare its owning library in <code>deps</code>", split into <strong>direct</strong> and <strong>indirect</strong>.</p>
+<h3 id="31-missing-direct-dependency-missing-dependency">3.1 Missing direct dependency (Missing dependency)<a class="headerlink" href="#31-missing-direct-dependency-missing-dependency" title="Permanent link">&para;</a></h3>
+<p>Still in <code>_check_direct_headers()</code>: when <code>hdr</code> has a public owner set <code>libs</code>, but the intersection of <code>libs</code> with <code>deps ∪ {self}</code> is empty → error:</p>
+<pre><code class="language-text">&lt;target&gt;: Missing dependency declaration:
+  In file included from &quot;src/foo.cc&quot;,
+    For &quot;common/rpc/rpc_client.h&quot;, which belongs to &quot;//common/rpc:rpc_client&quot;
+</code></pre>
+<p>i.e. you directly <code>#include</code> a library's public header but did not depend on that library in <code>deps</code>. The fix is usually to add the reported library to this target's <code>deps</code>.</p>
+<h3 id="32-missing-indirect-generated-header-dependency-missing-indirect-dependency">3.2 Missing indirect (generated-header) dependency (Missing indirect dependency)<a class="headerlink" href="#32-missing-indirect-generated-header-dependency-missing-indirect-dependency" title="Permanent link">&para;</a></h3>
+<p>Done in <code>_check_generated_headers()</code>. For each inclusion stack, take the <strong>generated header</strong> <code>generated_hdr</code> at its tail:</p>
+<ul>
+<li>if it was already checked as a direct header → skip;</li>
+<li>if it is <strong>transitively declared</strong> (in <code>declared_genhdrs</code> / <code>declared_genincs</code>, i.e. it comes from some <code>dep</code>'s <code>generated_hdrs</code>) → legal;</li>
+<li>otherwise → error <code>Missing indirect dependency declaration</code>, printing the <strong>full inclusion chain</strong> from the source up to that generated header to help locate the missing link.</li>
+</ul>
+<p><strong>Why is the indirect check restricted to "generated headers"?</strong> If a generated header (a product of <code>proto_library</code>, <code>gen_rule</code>, etc.) has a missing dependency, it may <strong>not yet be generated</strong> or be a <strong>stale version</strong> when the current target compiles, causing compile errors or — worse — subtle runtime errors. Non-generated headers have their transitive visibility guaranteed naturally by compilation/linking, so they need no enforced declaration and are not checked indirectly.</p>
+<h3 id="severity-and-suppression">Severity and suppression<a class="headerlink" href="#severity-and-suppression" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>cc_config.hdr_dep_missing_severity</code>: the severity of a finding (<code>error</code> / <code>warning</code>). The check fails only when it is <code>error</code> and a problem actually exists.</li>
+<li><code>cc_config.hdr_dep_missing_suppress</code>: suppress problems that existed before the upgrade.</li>
+<li><code>cc_config.allowed_undeclared_hdrs</code>: an allow-list of undeclared headers.</li>
+</ul>
+<p>See <a href="../../config/#cc_config">Configuration</a> for details.</p>
+<hr />
+<h2 id="design-trade-offs-and-boundaries">Design trade-offs and boundaries<a class="headerlink" href="#design-trade-offs-and-boundaries" title="Permanent link">&para;</a></h2>
+<h3 id="the-completeness-boundary-configuration-sensitivity">The completeness boundary: configuration sensitivity<a class="headerlink" href="#the-completeness-boundary-configuration-sensitivity" title="Permanent link">&para;</a></h3>
+<p>The check is based on the <code>#include</code>s the compiler <strong>actually reached</strong> in a single build. <code>-H</code> / <code>/showIncludes</code> only report the branches that are <strong>active</strong> under the current <code>#ifdef</code> / <code>-D</code> / target platform and toolchain. So a dependency that is only needed under a <em>different</em> configuration (e.g. a header included only under <code>#if defined(__linux__)</code> or <code>#ifdef DEBUG</code>) is not observed in the current build, and a missing declaration for it goes undetected.</p>
+<p>This is not unique to this mechanism: Bazel's sandbox has the <strong>exact same</strong> blind spot — it only constrains the current compile action, and inactive branches are equally invisible. No "single-configuration observation" can be complete across configurations. The practical mitigation is the <strong>CI build matrix</strong>: run the build under several configurations (linux/mac, debug/release, ...) and let each one's check accumulate, approaching global coverage.</p>
+<h3 id="why-h-instead-of-the-depfile">Why <code>-H</code> instead of the depfile<a class="headerlink" href="#why-h-instead-of-the-depfile" title="Permanent link">&para;</a></h3>
+<p>The compiler's <code>-MMD</code> depfile already lists every header a translation unit uses, but it is <strong>flat</strong> — a set with no inclusion levels, so it cannot distinguish "directly included" from "included indirectly through some header". The two checks here (the "missing direct dependency" and "missing indirect / generated-header dependency" of section 3) depend precisely on that level information, so we must use <code>-H</code> / <code>/showIncludes</code>, which give an <strong>inclusion tree</strong>; the depfile cannot be reused for this.</p>
+<h3 id="direct-include-detection-h-plus-a-naive-source-scan-supplement">Direct-include detection: <code>-H</code> plus a naive source-scan supplement<a class="headerlink" href="#direct-include-detection-h-plus-a-naive-source-scan-supplement" title="Permanent link">&para;</a></h3>
+<p>The set of "directly included headers" drives the missing-dep, private-header, undeclared-header, and unused-dep checks. blade derives it from two sources combined:</p>
+<ul>
+<li><strong>Authoritative: depth-1 entries from <code>-H</code></strong> in the <code>.incstk</code> (<code>_parse_inclusion_stacks</code> in <code>inclusion_check.py</code>). These are what the compiler actually traversed at depth 1 from this source.</li>
+<li><strong>Supplement: a regex source-scan</strong> that lists every literal <code>#include "..."</code> / <code>#include &lt;...&gt;</code> in the source file (<code>_scan_source_includes</code>).</li>
+</ul>
+<p>The two are combined as:</p>
+<pre><code class="language-text">direct_hdrs = depth-1 ∪ (source_scan ∩ all_paths_in_incstk)
+</code></pre>
+<p>The intersection with <code>_read_all_incstk_paths(...)</code> — paths the compiler actually traversed at <em>any</em> depth — is <strong>the gate</strong>. Anything the compiler did not compile (block-commented <code>#include</code>s, <code>#if 0</code> blocks, untaken <code>#ifdef</code> branches, a mis-quoted system header like <code>#include "stdio.h"</code>) naturally drops out at this intersection because it never reaches the <code>.incstk</code>. So the scanner is intentionally <strong>naive</strong>: it does not strip comments, does not evaluate <code>#if 0</code>, does not track <code>#ifdef</code>. Trying to be smarter would be redundant (the intersection already handles it) or even incorrect (e.g. stripping <code>#if 0 / ... / #endif</code> blindly would also drop a live <code>#else</code> branch).</p>
+<h4 id="why-the-supplement-at-all">Why the supplement at all<a class="headerlink" href="#why-the-supplement-at-all" title="Permanent link">&para;</a></h4>
+<p><code>-H</code> reports each header at the depth it was <em>first encountered</em>; the multiple-include-guard optimization then suppresses any subsequent <code>#include</code> of the same header. So a direct <code>#include "foo.h"</code> in <code>bar.cc</code> is silently elided from depth-1 if some earlier <code>#include</code> (e.g. <code>bar.h</code>) already pulled <code>foo.h</code> in transitively. Without the supplement that case looks like "foo.h is not directly included", producing loud false positives on the unused-deps check and silent false negatives on the other three. See issue #1171.</p>
+<h4 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h4>
+<p>The scan-plus-intersect approach is <strong>not</strong> a real preprocessor. Two corner cases survive:</p>
+<ul>
+<li><strong>Macro/computed includes</strong> (<code>#define MY_HDR "x.h"</code> then <code>#include MY_HDR</code>): the regex sees the bare token <code>MY_HDR</code> and resolves nothing. <code>-H</code> covers these <em>except</em> when both macro-form AND guard-suppression occur together — a rare-squared intersection that this design accepts.</li>
+<li><strong><code>#if 0</code>-d include that is also reached transitively via another live <code>#include</code></strong>: the path appears in <code>.incstk</code> via the live transitive chain, so the intersection keeps the scanner's hit. Effect: a "redundant" dep declaration escapes the unused-deps check. Mild, rare.</li>
+</ul>
+<p>Additionally, the unused-deps check <strong>exempts system libraries</strong> (deps keyed <code>#:NAME</code>, e.g. <code>#:dl</code>, <code>#:pthread</code>). Their headers do exist (<code>&lt;dlfcn.h&gt;</code>, <code>&lt;pthread.h&gt;</code>, …) but blade has no system-header → system-lib mapping to consult — and maintaining such a map would be platform- and distro-specific — so a header-based check has nothing to evaluate them against; flagging them would always be a false positive. The same applies to <strong>header-less cc_libraries</strong> (declared <code>hdrs = []</code>).</p>
+<p>In line with <em>The completeness boundary</em> above, the hdrs check is <strong>anchored on what the compiler actually used in this build configuration</strong> — the supplement does not change that principle, it only patches the one place <code>-H</code> itself lies (depth-1 elision under guard optimization).</p>
+<h3 id="relationship-to-bazels-sandbox-layering_check">Relationship to Bazel's sandbox / <code>layering_check</code><a class="headerlink" href="#relationship-to-bazels-sandbox-layering_check" title="Permanent link">&para;</a></h3>
+<p>Bazel needs <strong>two</strong> mechanisms to cover what this single mechanism does:</p>
+<ul>
+<li>The <strong>sandbox</strong> isolates at the filesystem level: but a <code>.cc</code>'s sandbox must contain the <strong>entire transitive closure</strong> of headers (otherwise a legitimate transitive include would fail to find its file). So the sandbox can only stop "including a header that isn't in the closure at all" (fully undeclared); it <strong>cannot tell</strong> "directly included a header of a <em>transitive</em> (not direct) dependency" — a strict-deps violation.</li>
+<li><strong><code>layering_check</code></strong> supplies the latter: it is built on Clang's module maps + <code>-fmodules-decluse</code> ("declared uses") — a module map per library annotates which headers it owns plus <code>use</code> edges to its <strong>direct</strong> deps, and the compiler enforces at compile time that "an included header must come from a module the current one declares <code>use</code> on". It is compile-time and folded into the normal compile (no <code>.pcm</code> actually built), but it <strong>requires toolchain support</strong>: <code>-fmodules-decluse</code> is Clang-only, gcc has no equivalent, so Bazel supports the feature only with clang on Unix/macOS.</li>
+</ul>
+<p>This mechanism covers <strong>both</strong> with a single "observe + ownership map": <code>"... is not declared in any cc target"</code> corresponds to the sandbox's "fully undeclared", and <code>libs ∩ (deps ∪ self) == ∅</code> corresponds to <code>layering_check</code>'s "a direct include must come from a direct dependency". And because it observes the output of <code>-H</code> / <code>/showIncludes</code> rather than relying on a Clang-specific enforcement flag, it works on <strong>gcc, clang, and MSVC</strong> alike.</p>
+<hr />
+<h2 id="appendix-related-artifact-files">Appendix: related artifact files<a class="headerlink" href="#appendix-related-artifact-files" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;build_dir&gt;/inclusion_declaration.data</code></td>
+<td>Global declaration: public headers/dirs, private headers, <code>allowed_undeclared_hdrs</code></td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk</code></td>
+<td>Per-target check info (deps, declared headers/dirs, generated-header declarations, severity, ...)</td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.extra</code></td>
+<td>Local subset cache of the global declaration (avoids loading the large file, avoids triggering rebuilds)</td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.result</code></td>
+<td>Check result; contains <code>OK</code> when it passes</td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.details</code></td>
+<td>The direct/generated headers reported by the compiler, used to build the <code>.extra</code> cache next build</td>
+</tr>
+<tr>
+<td><code>&lt;src&gt;.incstk</code> / <code>&lt;hdr&gt;.incstk</code></td>
+<td>The inclusion stack of a source/header (produced by <code>-H</code> / preprocessing)</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../gen_rule/" class="btn btn-neutral float-left" title="gen_rule: custom build steps and how other targets see them"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../java_scala_build/" class="btn btn-neutral float-right" title="How Java and Scala programs are built">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../gen_rule/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../java_scala_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/gen_rule/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>gen_rule: custom build steps and how other targets see them - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "gen_rule: custom build steps and how other targets see them";
+        var mkdocs_page_input_path = "develop/gen_rule.md";
+        var mkdocs_page_url = "/docs/en/develop/gen_rule/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">gen_rule: custom build steps and how other targets see them</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-attributes-and-cmd-substitution">1. Attributes and cmd substitution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-ninja-generation">2. Ninja generation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-how-other-targets-see-the-outputs">3. How other targets see the outputs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-implementation-details-and-ux-optimizations">4. Implementation details and UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">gen_rule: custom build steps and how other targets see them</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/gen_rule.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="gen_rule-custom-build-steps-and-how-other-targets-see-them"><code>gen_rule</code>: custom build steps and how other targets see them<a class="headerlink" href="#gen_rule-custom-build-steps-and-how-other-targets-see-them" title="Permanent link">&para;</a></h1>
+<p><code>gen_rule</code> lets a BUILD file run an arbitrary shell command and declare
+its outputs. The interesting part isn't the rule itself — it's how those
+outputs become first-class inputs to other targets without an explicit
+"this is a generated file" annotation everywhere.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/gen_rule_target.py</code></td>
+<td><code>GenRule</code> class, attribute validation, cmd substitution</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>_target_file_path()</code> (where outputs live)</td>
+</tr>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td>Auto-discovery of gen_rule outputs in <code>srcs</code>/<code>hdrs</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-attributes-and-cmd-substitution">1. Attributes and <code>cmd</code> substitution<a class="headerlink" href="#1-attributes-and-cmd-substitution" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">gen_rule(
+    name = 'codegen',
+    srcs = ['schema.idl'],
+    outs = ['schema.h', 'schema.cc'],
+    cmd  = '$TOOL --in=$FIRST_SRC --out-dir=$OUT_DIR',
+    deps = ['//tools:my_codegen'],
+    generated_hdrs = ['schema.h'],   # optional; auto-inferred from outs
+)
+</code></pre>
+<ul>
+<li><code>outs</code> is required; entries are normalized paths relative to the
+  package, and <code>..</code> is rejected (no escape from the build dir).</li>
+<li><code>cmd</code> is stored as a template and expanded at ninja-generation time.
+  Substitutions:</li>
+<li><code>$SRCS</code> / <code>$OUTS</code> — all inputs/outputs (ninja's <code>${in}</code>/<code>${out}</code>).</li>
+<li><code>$FIRST_SRC</code> / <code>$FIRST_OUT</code> — the first input/output as separate
+    per-edge ninja variables, so a tool that takes a single
+    input/output doesn't have to deal with list joining.</li>
+<li><code>$SRC_DIR</code> — the source package path.</li>
+<li><code>$OUT_DIR</code> — <code>build_dir/&lt;pkg&gt;</code> (where outputs land).</li>
+<li><code>$BUILD_DIR</code> — the workspace's build root.</li>
+<li><code>$(location //pkg:target)</code> — resolved to the named target's output
+    file path. This is how a gen_rule reaches another target's
+    generated artifact.</li>
+<li><code>generated_hdrs</code> (optional) names the outputs that should be treated
+  as headers for visibility purposes; if omitted, blade infers them from
+  output extensions.</li>
+<li><code>generated_incs</code> (optional) lists directories to add to consumers'
+  include path — useful for generators that produce a tree of headers
+  the consumer should <code>#include</code> by sub-path.</li>
+</ul>
+<h2 id="2-ninja-generation">2. Ninja generation<a class="headerlink" href="#2-ninja-generation" title="Permanent link">&para;</a></h2>
+<p>Each <code>gen_rule</code> declares its <strong>own</strong> ninja rule (not a shared
+<code>gen_rule</code> rule). The rule name is derived from the target key, and the
+emitted template includes a trailing <code>ls ${out} &gt; /dev/null</code> check so
+that a command which silently fails to produce its declared outputs is
+caught immediately, not later when a consumer references a missing
+file.</p>
+<p>Outputs land at <code>build_dir/&lt;pkg&gt;/&lt;outname&gt;</code> via
+<code>_target_file_path()</code>, which is the only path-construction path; there
+is no way to write outputs under the source tree. This is enforced by
+design — <code>gen_rule</code> never receives a source-relative output path.</p>
+<p>The command runs through <code>/bin/sh</code> on POSIX (and respects the
+workspace's CWD, so paths are workspace-relative). Users who need
+Windows-specific commands write them with that in mind; blade does not
+attempt to translate <code>/bin/sh</code> semantics to <code>cmd.exe</code>.</p>
+<h2 id="3-how-other-targets-see-the-outputs">3. How other targets see the outputs<a class="headerlink" href="#3-how-other-targets-see-the-outputs" title="Permanent link">&para;</a></h2>
+<p>The key piece is <strong>auto-discovery</strong>: a <code>cc_library</code> that lists
+<code>schema.cc</code> in its <code>srcs</code> doesn't need to declare a dep on the
+<code>codegen</code> target. When <code>cc_targets._cc_objects()</code> (and other consumers)
+walk <code>srcs</code>, each entry that does not exist in the source tree is
+resolved as a generated file by querying <code>_target_file_path()</code> for the
+target that produces it. The dep edge is added implicitly.</p>
+<p>Generated headers go further:</p>
+<ul>
+<li><code>gen_rule.generated_hdrs</code> / <code>generated_incs</code> are registered into the
+  same global maps used by <code>declare_hdrs()</code> / <code>declare_hdr_dir()</code>, so
+  the <a href="../hdrs_check/">hdrs check</a> knows the header's owning target.</li>
+<li>Consumers' <code>declared_genhdrs</code> and <code>declared_genincs</code> are filled by
+  walking <code>expanded_deps</code> and collecting each dep's
+  generated-header declarations. This is the transitive visibility the
+  check needs.</li>
+<li>The generated headers are added as <strong>order-only deps</strong> (<code>||</code>) of the
+  compile, so they are guaranteed to exist before any compile runs but
+  do not retrigger recompilation just because their mtime changed.</li>
+</ul>
+<p>The combination of the four (<code>-Ibuild_dir</code>, auto-discovery in <code>srcs</code>,
+generated-header declaration, order-only deps) is what makes "a
+gen_rule looks like a normal source to its consumers" work end to end.</p>
+<h2 id="4-implementation-details-and-ux-optimizations">4. Implementation details and UX optimizations<a class="headerlink" href="#4-implementation-details-and-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>The <code>ls ${out}</code> check is the safety net.</strong> It catches the case
+  where a user's <code>cmd</code> accidentally writes to a different filename than
+  declared in <code>outs</code>, or silently fails. Without it, downstream
+  consumers would fail with "no such file" errors that are much harder
+  to trace.</li>
+<li><strong>Source tree stays clean by construction.</strong> Because outputs are
+  always rooted at <code>build_dir/&lt;pkg&gt;/</code>, a gen_rule cannot pollute the
+  source tree. This is one less rule for users to learn.</li>
+<li><strong>Order-only + <code>restat</code> interact well.</strong> If a gen_rule's outputs are
+  byte-identical to last build (regeneration with the same input
+  produced the same output), ninja's <code>restat</code> on the producing rule
+  preserves the mtime and the order-only dep does not force a downstream
+  recompile. Combined with <code>write_if_changed</code>-like tools, this lets a
+  no-op codegen pass cost nothing.</li>
+<li><strong><code>$(location //pkg:target)</code> is the disciplined way to call other
+  generators.</strong> It resolves at ninja-generation time so the path is
+  correct regardless of where the producing target lives in the tree;
+  hard-coding <code>build_release/...</code> paths in a <code>cmd</code> is brittle.</li>
+<li><strong>Generated-header visibility is the same machinery as proto.</strong> A
+  gen_rule that produces <code>.h</code> files registers them via the same paths
+  proto targets use, so the <a href="../hdrs_check/">hdrs check</a> treats them
+  uniformly — there is no second pathway to maintain.</li>
+<li><strong>Auto-discovery has one caveat.</strong> If two gen_rules produce files
+  with the same name in the same package, the auto-discovery is
+  ambiguous; declaring the producing target explicitly via <code>deps</code>
+  resolves it. The check that catches this is the same per-key
+  uniqueness check used elsewhere.</li>
+<li><strong>Error reporting names the gen_rule target.</strong> Failures of the
+  <code>cmd</code> come from the underlying shell, but blade prefixes them with
+  the target fullname and a description (default <code>COMMAND</code>) so a wall
+  of parallel-build output is greppable for "which gen_rule failed?".</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../export_map/" class="btn btn-neutral float-left" title="How export_map (Symbol-Export Control) Works"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../hdrs_check/" class="btn btn-neutral float-right" title="How the C/C++ Header Dependency Check (hdrs check) Works">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../export_map/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../hdrs_check/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

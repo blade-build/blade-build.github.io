@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/dsl/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>DSL and API Module - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DSL and API Module";
+        var mkdocs_page_input_path = "dsl.md";
+        var mkdocs_page_url = "/docs/en/dsl/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">DSL and API Module</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#dsl-language">DSL Language</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#blade-module">blade Module</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#config-phase-attributes">Config-phase Attributes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build-phase-only-attributes">BUILD-phase-only Attributes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#config-phase-only-attributes">Config-phase-only Attributes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladeconfig-submodule">blade.config Submodule</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladeconsole-submodule">blade.console Submodule</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladepath-submodule">blade.path Submodule</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladeutil-submodule">blade.util Submodule</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladeworkspace-submodule">blade.workspace Submodule</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladegetenv">blade.getenv</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bladecc_toolchain-object">blade.cc_toolchain Object</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#function-valued-config-items">Function-valued Config Items</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic Usage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#limitations">Limitations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build_target-deprecation">build_target Deprecation</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
+      <li class="breadcrumb-item active">DSL and API Module</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/dsl.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="dsl-and-api-module">DSL and API Module<a class="headerlink" href="#dsl-and-api-module" title="Permanent link">&para;</a></h1>
+<h2 id="dsl-language">DSL Language<a class="headerlink" href="#dsl-language" title="Permanent link">&para;</a></h2>
+<p>For more stable build processs, blade's DSL is designed to be a restricted Python language that prohibits some builtin
+functions and keywords, include but not limited to:</p>
+<ul>
+<li><code>exec</code>, <code>execfile</code> and <code>eval</code> To improve the consistency of BUILD files.</li>
+<li><code>import</code> Use the built-in <code>blade</code> module instead</li>
+<li><code>print</code> Use the functions in <code>blade.console</code> module instead</li>
+</ul>
+<p>Some builtin functions are restricted.
+- <code>open</code> only read mode is allowed</p>
+<p>To use some common additional functions, such as <code>os.path.join</code>, you need to use similar sub-modules in the <code>blade</code> module.
+If you want to add more appropriate modules, please make an Issue.</p>
+<p>To allow unrestricted python in existing <code>BUILD</code> files, set the <code>global_config.unrestricted_dsl_dirs = [...]</code>,
+to disable DSL restriction globally, set the <code>global_config.restricted_dsl = False</code>.</p>
+<h2 id="blade-module"><code>blade</code> Module<a class="headerlink" href="#blade-module" title="Permanent link">&para;</a></h2>
+<p>The global Blade API module, accessed through <code>blade.</code>, includes:</p>
+<h3 id="config-phase-attributes">Config-phase Attributes<a class="headerlink" href="#config-phase-attributes" title="Permanent link">&para;</a></h3>
+<p>These attributes are available in both <code>BLADE_ROOT</code> configuration files and BUILD files:</p>
+<ul>
+<li><code>host_os</code> property: Name of the host OS (the machine running the build): <code>'darwin'</code>, <code>'linux'</code>, or <code>'windows'</code></li>
+<li><code>host_arch</code> property: Canonical host CPU architecture: <code>'x86_64'</code>, <code>'aarch64'</code>, etc.</li>
+<li><code>build_type</code> property: Current build type: <code>'debug'</code> or <code>'release'</code></li>
+<li><code>build_type_is_debug()</code> function: Returns <code>True</code> if the build type is <code>'debug'</code></li>
+<li><code>console</code> submodule: Output diagnostic information</li>
+<li><code>path</code> submodule: a Restricted subset of <code>os.path</code></li>
+<li><code>re</code> submodule: The python regex library</li>
+<li><code>util</code> submodule: Auxiliary functions</li>
+</ul>
+<p>Note: The build environment (host) is not necessarily the same as the target environment. <code>host_os</code> and <code>host_arch</code> should primarily be used when invoking host-side developer tools. For platform decisions related to build targets, use <code>blade.cc_toolchain</code>'s <code>target_os</code> and <code>target_arch</code> properties instead.</p>
+<h3 id="build-phase-only-attributes">BUILD-phase-only Attributes<a class="headerlink" href="#build-phase-only-attributes" title="Permanent link">&para;</a></h3>
+<p>These attributes are only available during BUILD file loading. Accessing them during <code>BLADE_ROOT</code> config parsing will abort with an error. Use <a href="#function-valued-config-items">function-valued config items</a> to defer evaluation to the BUILD phase:</p>
+<ul>
+<li><code>cc_toolchain</code> object: Read-only proxy to the current platform's C/C++ toolchain</li>
+<li><code>config</code> submodule: Read blade configuration information</li>
+<li><code>workspace</code> submodule: Workspace information</li>
+<li><code>current_source_dir</code> property: The directory where the current BUILD file is located (relative to the root directory of the workspace)</li>
+<li><code>current_target_dir</code> property: The output directory where the current BUILD file is located corresponds to (relative to the root directory of the workspace)</li>
+</ul>
+<h3 id="config-phase-only-attributes">Config-phase-only Attributes<a class="headerlink" href="#config-phase-only-attributes" title="Permanent link">&para;</a></h3>
+<p>These attributes are only callable during <code>BLADE_ROOT</code> config parsing. Calling them from a BUILD file will abort with an error:</p>
+<ul>
+<li><code>getenv(name, default=None)</code> function: Read an environment variable. See <a href="#bladegetenv"><code>blade.getenv</code></a> below.</li>
+</ul>
+<hr />
+<h3 id="bladeconfig-submodule"><code>blade.config</code> Submodule<a class="headerlink" href="#bladeconfig-submodule" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Phase:</strong> BUILD only</p>
+</blockquote>
+<p>Access configuration information, including:</p>
+<ul>
+<li><code>get_section()</code> function: Get the content of a configuration section, such as <code>cc_config</code>, which can be read through the <code>get</code> method</li>
+<li><code>get_item()</code> function: Get a specific configuration item, such as <code>blade.config.get_item('cc_config','cppflags')</code></li>
+</ul>
+<h3 id="bladeconsole-submodule"><code>blade.console</code> Submodule<a class="headerlink" href="#bladeconsole-submodule" title="Permanent link">&para;</a></h3>
+<p>Output diagnostic information, including:</p>
+<ul>
+<li><code>debug()</code> function: Output debugging message, which is not displayed by default, only output to the screen after using the <code>--verbose</code> option</li>
+<li><code>info()</code> function: Output informational message</li>
+<li><code>notice()</code> function: Output some notiable message</li>
+<li><code>warning()</code> function: Output warning message</li>
+<li><code>error()</code> function: Output error message, which will cause the build to fail</li>
+</ul>
+<h3 id="bladepath-submodule"><code>blade.path</code> Submodule<a class="headerlink" href="#bladepath-submodule" title="Permanent link">&para;</a></h3>
+<p>A subset of the <code>os.path</code> module, including <code>abspath()</code>, <code>basename()</code>, <code>dirname()</code>, <code>exists()</code>, <code>join()</code>, <code>normpath()</code>, <code>relpath()</code>, <code>sep</code>, <code>splitext()</code>.</p>
+<h3 id="bladeutil-submodule"><code>blade.util</code> Submodule<a class="headerlink" href="#bladeutil-submodule" title="Permanent link">&para;</a></h3>
+<p>Some auxiliary functions, including:</p>
+<ul>
+<li><code>var_to_list()</code> function: If type of the argument is <code>str</code>, turn it into <code>list</code> contains a single element</li>
+<li><code>var_to_list_or_none()</code> function: Like <code>var_to_list()</code>, but passes <code>None</code> through unchanged</li>
+</ul>
+<h3 id="bladeworkspace-submodule"><code>blade.workspace</code> Submodule<a class="headerlink" href="#bladeworkspace-submodule" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Phase:</strong> BUILD only</p>
+</blockquote>
+<p>Get some information about the current <a href="../workspace/">workspace</a>, including:</p>
+<ul>
+<li><code>root_dir</code> property: Returns the directory of the current root workspace</li>
+<li><code>build_dir</code> property: Returns the name of the build subdirectory under the workspace, such as <code>build_release</code></li>
+</ul>
+<h3 id="bladegetenv"><code>blade.getenv</code><a class="headerlink" href="#bladegetenv" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Phase:</strong> <code>BLADE_ROOT</code> config only. Calling from a BUILD file aborts with an error.</p>
+</blockquote>
+<p>Read an environment variable from the configuration phase. This is the sanctioned channel for env-driven configuration -- blade does not implicitly read environment variables anywhere else.</p>
+<pre><code class="language-python">def getenv(name: str, default: str | None = None) -&gt; str | None
+</code></pre>
+<p><strong>Typical use:</strong> select a toolchain via a CI matrix without committing the matrix shape into BLADE_ROOT.</p>
+<pre><code class="language-python"># BLADE_ROOT
+cc_toolchain_config(
+    name = 'default',
+    kind = 'gcc',
+    cc = blade.getenv('CC', 'gcc'),
+    cxx = blade.getenv('CXX', 'g++'),
+)
+</code></pre>
+<p>Then a CI workflow's <code>CC=gcc-10 CXX=g++-10 ./blade build ...</code> selects the right toolchain. Any string-valued config field can be sourced this way.</p>
+<p><strong>Why config-only?</strong> Restricting env access to the global config layer keeps all env dependencies in one auditable file (BLADE_ROOT) and lets BUILD files stay hermetic -- the same source tree produces the same artifacts at the same target regardless of env. If a BUILD-phase rule needs the env-derived value (e.g. <code>foreign_cc_library</code> passing CC/CXX to a Makefile), read it from the resolved toolchain or config instead:</p>
+<pre><code class="language-python"># BUILD or *.bld file
+cc = blade.cc_toolchain.tool('cc')   # already folded from env at config time
+cxx = blade.cc_toolchain.tool('cxx')
+</code></pre>
+<p><strong>Limitation:</strong> <code>blade.getenv()</code> returns the env value at the moment <code>BLADE_ROOT</code> loads. Changing the env between two runs of the same workspace does not by itself invalidate per-target build caches -- if you rely on env-driven config for incremental correctness, list the variable names in <code>global_config.test_related_envs</code> or otherwise include them in your configuration fingerprint.</p>
+<h3 id="bladecc_toolchain-object"><code>blade.cc_toolchain</code> Object<a class="headerlink" href="#bladecc_toolchain-object" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Phase:</strong> BUILD only</p>
+</blockquote>
+<p>A read-only proxy to the current platform's C/C++ toolchain, for making platform-aware decisions in BUILD files.</p>
+<p><strong>File naming properties</strong> (all return <code>str</code>):</p>
+<ul>
+<li><code>obj_suffix</code>: Object file suffix (e.g. <code>.o</code> on Linux/macOS, <code>.obj</code> on MSVC)</li>
+<li><code>static_lib_suffix</code>: Static library suffix (e.g. <code>.a</code> on Linux/macOS, <code>.lib</code> on MSVC)</li>
+<li><code>dynamic_lib_suffix</code>: Dynamic library suffix (e.g. <code>.so</code> on Linux, <code>.dylib</code> on macOS, <code>.dll</code> on MSVC)</li>
+<li><code>lib_prefix</code>: Library name prefix (e.g. <code>lib</code> on Linux/macOS, <code>""</code> on Windows)</li>
+<li><code>exe_suffix</code>: Executable file suffix (e.g. <code>""</code> on Linux/macOS, <code>.exe</code> on Windows)</li>
+</ul>
+<p><strong>Platform properties</strong> (all return <code>str</code>):</p>
+<ul>
+<li><code>cc_vendor</code>: Compiler vendor: <code>'gcc'</code>, <code>'clang'</code>, or <code>'unknown'</code></li>
+<li><code>target_os</code>: Target OS being compiled for: <code>'darwin'</code>, <code>'linux'</code>, or <code>'windows'</code>. In cross-compilation this may differ from <code>blade.host_os</code></li>
+<li><code>target_arch</code>: Target CPU architecture: <code>'x86_64'</code>, <code>'aarch64'</code>, etc. In cross-compilation this may differ from <code>blade.host_arch</code></li>
+</ul>
+<p><strong>Tool lookup:</strong></p>
+<ul>
+<li><code>tool(key)</code> → <code>str | None</code>: Return the path to a tool identified by <em>key</em>.
+  Supported keys: <code>'cc'</code>, <code>'cxx'</code>, <code>'ld'</code>, <code>'ar'</code>, <code>'rc'</code>, <code>'as'</code>.
+  Returns <code>None</code> when the tool is unavailable (e.g. <code>tool('rc')</code> is <code>None</code> on Linux).</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre><code class="language-python">cc = blade.cc_toolchain
+
+# Compose output file names
+obj = src + cc.obj_suffix
+static_lib = cc.lib_prefix + 'foo' + cc.static_lib_suffix
+binary = 'myapp' + cc.exe_suffix
+
+# Query tool availability
+if cc.tool('rc'):
+    print('Resource compiler:', cc.tool('rc'))
+
+# Cross-compilation-aware dependency selection
+if cc.target_os == 'linux':
+    libs.append('//thirdparty/linux_only:lib')
+elif cc.target_os == 'darwin':
+    libs.append('//thirdparty/mac_only:lib')
+
+# Host platform (the machine running the build)
+protoc = 'tools/protoc-%s-%s' % (blade.host_os, blade.host_arch)
+</code></pre>
+<hr />
+<h2 id="function-valued-config-items">Function-valued Config Items<a class="headerlink" href="#function-valued-config-items" title="Permanent link">&para;</a></h2>
+<p>Config item values can be functions (including lambdas) that are evaluated lazily during the BUILD phase, allowing access to <code>blade</code> attributes that are only available at that stage (e.g. <code>cc_toolchain</code>).</p>
+<h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">cc_test_config(
+    # Dynamically determine config values based on build type and target architecture
+    dynamic_link=lambda blade: not blade.build_type_is_debug() and blade.cc_toolchain.target_arch != 'ppc64le',
+    heap_check=lambda blade: 'strict' if blade.cc_toolchain.target_arch != 'aarch64' else '',
+)
+</code></pre>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The function must accept <strong>exactly 1 parameter</strong> (the <code>blade</code> module). The arity is checked at assignment time.</li>
+<li>The return type must match the default value type of the config item. This is checked at evaluation time.</li>
+<li><strong>Functions cannot be mixed with plain values in the same list</strong> — the entire item value is either a function or a plain value. Mixed lists such as <code>[func, 'value']</code> are not supported.</li>
+<li>The <code>append_</code> / <code>prepend_</code> prefixes cannot be used with function-valued items.</li>
+<li>Regular functions work, not just lambdas:</li>
+</ul>
+<pre><code class="language-python">def my_extra_incs(blade):
+    return [
+        'thirdparty/',
+        'thirdparty/%s/' % blade.cc_toolchain.target_arch,
+    ]
+
+cc_config(
+    extra_incs=my_extra_incs,
+)
+</code></pre>
+<hr />
+<h2 id="build_target-deprecation"><code>build_target</code> Deprecation<a class="headerlink" href="#build_target-deprecation" title="Permanent link">&para;</a></h2>
+<p><code>build_target</code> is deprecated and will be removed in a future version. Use the following <code>blade.</code> replacements:</p>
+<table>
+<thead>
+<tr>
+<th><code>build_target</code></th>
+<th>Replacement</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build_target.bits</code></td>
+<td><code>blade.cc_toolchain</code> (inferred from target_arch)</td>
+<td>Target bit width, e.g. 32 or 64. Requires function-valued config item at BUILD phase</td>
+</tr>
+<tr>
+<td><code>build_target.arch</code></td>
+<td><code>blade.cc_toolchain.target_arch</code></td>
+<td>Target CPU architecture</td>
+</tr>
+<tr>
+<td><code>build_target.os</code></td>
+<td><code>blade.cc_toolchain.target_os</code></td>
+<td>Target operating system</td>
+</tr>
+<tr>
+<td><code>build_target.is_debug()</code></td>
+<td><code>blade.build_type_is_debug()</code></td>
+<td>Whether this is a debug build</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Migration example:</strong></p>
+<pre><code class="language-python"># Old (in BLADE_ROOT)
+def get_build_dir():
+    return 'build%d_%s' % (
+        build_target.bits,
+        'debug' if build_target.is_debug() else 'release',
+    )
+
+# New
+# Config-phase attributes can be used directly
+# BUILD-phase-only attributes (e.g. cc_toolchain) require function-valued config items
+cc_test_config(
+    dynamic_link=lambda blade: not blade.build_type_is_debug() and blade.cc_toolchain.target_arch != 'ppc64le',
+)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../build_file/" class="btn btn-neutral float-left" title="Writing BUILD Files"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../functions/" class="btn btn-neutral float-right" title="Build Functions">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../build_file/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../functions/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

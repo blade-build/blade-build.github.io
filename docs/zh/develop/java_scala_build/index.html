@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/java_scala_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Java 与 Scala 程序是如何构建的 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Java \u4e0e Scala \u7a0b\u5e8f\u662f\u5982\u4f55\u6784\u5efa\u7684";
+        var mkdocs_page_input_path = "develop/java_scala_build.md";
+        var mkdocs_page_url = "/docs/zh/develop/java_scala_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Java 与 Scala 程序是如何构建的</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 规则类——组合优于深继承</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-classpath">2. 编译规则与 classpath 拼装</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-jar">3. JAR 打包形态</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-maven">4. Maven 集成</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 测试框架注入</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 技术细节与用户体验优化</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">Java 与 Scala 程序是如何构建的</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/java_scala_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="java-scala">Java 与 Scala 程序是如何构建的<a class="headerlink" href="#java-scala" title="Permanent link">&para;</a></h1>
+<p>Java 与 Scala 共享大部分机制：classpath 拼装、JAR 打包（普通、fat、
+one-jar）、Maven 坐标解析、测试框架注入，都被收进一个 mixin。每种语言只
+需重写真正不同的部分（编译器以及少量构建规则的细枝末节）。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/java_targets.py</code></td>
+<td><code>JavaTargetMixIn</code>、<code>JavaTarget</code>、<code>JavaLibrary</code>、<code>JavaBinary</code>、<code>JavaTest</code>、<code>JavaFatLibrary</code></td>
+</tr>
+<tr>
+<td><code>src/blade/scala_targets.py</code></td>
+<td><code>ScalaTarget</code>、<code>ScalaLibrary</code>、<code>ScalaFatLibrary</code>、<code>ScalaTest</code>（混入该 mixin）</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>javac</code> / <code>scalac</code> / <code>javajar</code> / <code>fatjar</code> / <code>onejar</code> 规则</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>java_config</code> / <code>java_test_config</code> / <code>scala_config</code> / <code>scala_test_config</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 规则类——组合优于深继承<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><code>JavaTargetMixIn</code> 集中处理 classpath、JAR 打包、Maven 逻辑，被
+<code>JavaTarget</code> 与 <code>ScalaTarget</code> 同时混入。这样每个规则子类拿到共同行为，
+而无需 <code>Target</code> 层级里再加共同基类：</p>
+<ul>
+<li><code>java_library</code> / <code>java_binary</code> / <code>java_test</code> / <code>java_fat_library</code>，外
+  加 <code>prebuilt_java_library</code>（跳过编译，包装给定的 <code>binary_jar</code>）。</li>
+<li><code>scala_library</code> / <code>scala_fat_library</code> / <code>scala_test</code> —— <code>ScalaTarget</code>
+  允许同一 target 里混入 <code>.scala</code> 与 <code>.java</code> 源，团队可渐进式引入
+  Scala。</li>
+<li><code>proto_library</code> <strong>也</strong>混入 <code>JavaTargetMixIn</code>，让下游 Java/Scala 目标
+  能直接依赖一个 proto target，按普通 Java dep 一样拿到它的生成 <code>.jar</code>。</li>
+</ul>
+<p>mixin 避免了菱形继承：每个规则类多继承 <code>Target</code>（与 blade 通用集成）
+和该 mixin（JVM 特定行为）。</p>
+<h2 id="2-classpath">2. 编译规则与 classpath 拼装<a class="headerlink" href="#2-classpath" title="Permanent link">&para;</a></h2>
+<p><strong>javac</strong>（Linux/macOS）—— 规则模板调用用户的 <code>javac</code>，带
+<code>-source</code>/<code>-target</code>、<code>-encoding</code>、<code>-classpath ${classpath}</code>，编译到临时
+<code>${classes_dir}</code>，再 <code>jar c[s]f</code> 打包。Windows 路由到 <code>javac_compile</code>
+builtin，统一参数转义。</p>
+<p><strong>scalac</strong> —— 直接输出 <code>.jar</code>（没有中间 classes 目录），共用同样的
+classpath / flag 合成。scalac 调用可以一并接 <code>.java</code> 源，与 Java 布局
+对齐。</p>
+<p><strong>Classpath 拼装</strong>（<code>JavaTargetMixIn._get_compile_deps</code>）走目标的直接
+dep、它们的 <code>exported_deps</code>、解析后的 Maven 传递依赖。Maven 版本冲突先
+解决（<code>_detect_maven_conflicted_deps</code>）：直接 <code>maven_jar</code> dep 优先，否
+则取最高版本。结果去重并排序，让两次相同构建得到位级相同的编译命令。</p>
+<p>classpath 分隔符使用 <code>os.pathsep</code> —— POSIX 上 <code>:</code>，Windows 上 <code>;</code> ——
+集中一处处理，per-target 代码不必关心。</p>
+<h2 id="3-jar">3. JAR 打包形态<a class="headerlink" href="#3-jar" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>.jar</code></strong>（<code>javajar</code> 规则）：标准形态。若 target 含资源输入，class
+  先打成中间 <code>__classes__.jar</code>，再与资源合并成最终 <code>.jar</code>（保留 Maven
+  <code>src/main/resources</code> ↔ jar 根映射）。</li>
+<li><strong><code>.fat.jar</code></strong>（<code>fatjar</code> 规则）：把传递依赖压平到一个归档。打包期再
+  做一次冲突检测；<code>_set_pack_exclusions</code> 允许按 Maven id 通配符排除
+  （如 <code>org.slf4j:*:*</code>）。压缩级别在 <code>java_config</code> 中可配置。</li>
+<li><strong><code>.one.jar</code></strong>（<code>onejar</code> 规则）：<code>java_binary</code> 形态 —— fat jar 外面套
+  一个 boot-loader jar（来自 <code>java_binary_config.one_jar_boot_jar</code>），
+  自动设置 <code>Main-Class</code>，让 <code>java -jar</code> 直接可用。</li>
+</ul>
+<p>资源处理（<code>_process_resources</code> → <code>_generate_resources</code>）接受原始文件，
+也接受 <code>location</code> 引用其它目标产物，省去为生成数据文件单加 <code>gen_rule</code>
+中转。</p>
+<h2 id="4-maven">4. Maven 集成<a class="headerlink" href="#4-maven" title="Permanent link">&para;</a></h2>
+<p><code>maven_jar(name, id, transitive=True/False)</code> 声明
+<code>group:artifact:version</code> 坐标。mixin 使用工作区本地的 Maven 缓存
+（<code>.m2/repository/</code>），按需填充；只读一次 POM 记录传递依赖。blade
+<strong>不</strong>在构建时调 <code>mvn</code> 解析 —— 它信任记录下来的传递列表，并在其上做自
+己的冲突解决。缓存预热后构建可完全离线。</p>
+<p>三种 dep 可见性，对应类似 Bazel 的概念：</p>
+<ul>
+<li><code>deps</code>：编译必需，对消费者传递可见。</li>
+<li><code>exported_deps</code>：像 Bazel 的 <code>exports</code>；消费者无需重复声明即可访问。</li>
+<li><code>provided_deps</code>：编译期可见，打包时<strong>剔除</strong>（如 war 里的
+  servlet-api）。</li>
+</ul>
+<h2 id="5">5. 测试框架注入<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p><code>java_test</code> 读 <code>java_test_config.junit_libs</code>，通过
+<code>_apply_junit_libs_from_config</code> 添为隐式 dep。生成的测试启动器默认走
+JUnit 的 <code>JUnitCore</code>（可由 <code>main_class</code> 覆盖），POSIX 上输出 shell
+wrapper、Windows 上输出 <code>.bat</code> —— 这样可执行体能携带 JaCoCo agent 路径
+与覆盖率 flag，省去额外的 <code>java -jar</code> 层。若 <code>junit_libs</code> 未配置，
+blade 会发出清晰的警告指向该配置项，免得用户调一个
+<code>ClassNotFoundException</code>。</p>
+<p><code>scala_test</code> 对称：<code>scala_test_config.scalatest_libs</code> 加 <code>scalatest</code>
+规则。</p>
+<h2 id="6">6. 技术细节与用户体验优化<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>没有增量 sjavac。</strong> blade 依赖默认 <code>javac</code> 与 ninja 级别的依赖追
+  踪，没有用切片的注解处理器。大型重建会重传整个 classpath；超大规模
+  Java 单体仓库上这是一个已知开销，值得知悉。</li>
+<li><strong>Classpath 顺序排序。</strong> Java 运行时不关心，但确定性让生成命令的
+  diff 容易读得多。</li>
+<li><strong>源根推断遵循 Maven 约定。</strong> <code>_java_sources_paths</code> 先看
+  <code>src/main/java</code>、<code>src/test/java</code>、<code>src/java/</code>，找不到则解析源文件中
+  的 <code>package</code> 声明。用户可按项目实际布局选择，不必显式 <code>srcroot</code>。</li>
+<li><strong>跨语言 dep 不要钱。</strong> 因为两种语言都产出 JAR、共享同一 mixin，
+  <code>scala_library</code> 可以依赖 <code>java_library</code>，反向亦然，DSL 无特殊语法。</li>
+<li><strong>Windows 体验。</strong> classpath 分隔符、测试启动脚本扩展名（<code>.bat</code>）、
+  javac 路径引号都委托给 builtin 工具或 <code>os.pathsep</code>。DSL 表层每个 OS
+  一致，Linux 上写的 BUILD 通常在 Windows 上直接能用。</li>
+<li><strong>失败信息。</strong> 编译错误来自 <code>javac</code>/<code>scalac</code> 原文，但依赖解析/打包失
+  败（缺 JAR、版本冲突、找不到 Main-Class）由 <code>console.diagnose()</code> 输
+  出并带上 BUILD 源位置，不会淹没在 Java 栈轨迹里。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hdrs_check/" class="btn btn-neutral float-left" title="C/C++ 头文件依赖检查（hdrs check）实现原理"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../protobuf_build/" class="btn btn-neutral float-right" title="proto_library 的多语言代码生成机制">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../hdrs_check/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../protobuf_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

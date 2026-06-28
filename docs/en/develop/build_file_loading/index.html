@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/build_file_loading/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How BUILD files are discovered, loaded, and registered - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How BUILD files are discovered, loaded, and registered";
+        var mkdocs_page_input_path = "develop/build_file_loading.md";
+        var mkdocs_page_url = "/docs/en/develop/build_file_loading/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How BUILD files are discovered, loaded, and registered</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-from-command-line-pattern-to-build-file-set">1. From command-line pattern to BUILD-file set</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-loading-exec-with-restricted-globals">2. Loading: exec() with restricted globals</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-target-registration-and-the-key-namespace">3. Target registration and the key namespace</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-iterative-deps-following-lazy-loading">4. Iterative deps-following (lazy loading)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-globs-and-load">5. Globs and load()</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-ux-optimizations">6. UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How BUILD files are discovered, loaded, and registered</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/build_file_loading.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-build-files-are-discovered-loaded-and-registered">How BUILD files are discovered, loaded, and registered<a class="headerlink" href="#how-build-files-are-discovered-loaded-and-registered" title="Permanent link">&para;</a></h1>
+<p>Blade does not pre-scan the whole workspace. Starting from the targets you
+asked for, it discovers exactly the BUILD files it needs, <code>exec()</code>s them in
+a restricted namespace, and follows their declared <code>deps</code> to pull in more
+BUILDs until the reachable set is closed. This keeps load time
+proportional to the part of the workspace actually involved.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/target_pattern.py</code></td>
+<td>Normalize CLI specs into canonical <code>path:name</code> keys</td>
+</tr>
+<tr>
+<td><code>src/blade/load_build_files.py</code></td>
+<td>Discover, exec, sandbox, BFS-follow deps</td>
+</tr>
+<tr>
+<td><code>src/blade/build_rules.py</code></td>
+<td>The set of names callable in a BUILD file</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td>Singleton holding the target database, key conflict detection</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>Target</code> base class, source-location capture</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-from-command-line-pattern-to-build-file-set">1. From command-line pattern to BUILD-file set<a class="headerlink" href="#1-from-command-line-pattern-to-build-file-set" title="Permanent link">&para;</a></h2>
+<p>The user can ask for <code>//foo/bar:lib</code>, <code>foo/bar</code>, or <code>//foo/bar/...</code>.
+<code>target_pattern.normalize()</code> rewrites all three into a canonical
+<code>&lt;path&gt;:&lt;name&gt;</code> form: a bare directory becomes <code>&lt;dir&gt;:*</code> (all targets in
+that BUILD), and <code>&lt;dir&gt;/...</code> becomes <code>&lt;dir&gt;/...:...</code> (the recursive
+marker).</p>
+<p><code>_expand_target_patterns()</code> then turns these patterns into a set of starting
+BUILD files:</p>
+<ul>
+<li><code>path:name</code> records <code>path:name</code> as a direct target; only that package's
+  BUILD is loaded.</li>
+<li><code>path:*</code> adds <code>path</code> to <code>starting_dirs</code>.</li>
+<li><code>path/...</code> walks the directory tree with <code>os.walk()</code> and collects every
+  directory containing a <code>BUILD</code> file, honouring two boundary markers:</li>
+<li><code>.bladeskip</code> — skip this subtree entirely.</li>
+<li>A nested <code>BLADE_ROOT</code> — never cross into another workspace.</li>
+</ul>
+<p>This recursive walk is the only place the file system is enumerated;
+everything else discovers BUILD files by following <code>deps</code> edges.</p>
+<h2 id="2-loading-exec-with-restricted-globals">2. Loading: <code>exec()</code> with restricted globals<a class="headerlink" href="#2-loading-exec-with-restricted-globals" title="Permanent link">&para;</a></h2>
+<p>Each BUILD file is a Python script. It is executed via <code>exec_file(path,
+globals_dict, None)</code>. The globals are built fresh per file by
+<code>_get_globals_for_build_file()</code>:</p>
+<ul>
+<li>All registered rule names (<code>cc_library</code>, <code>proto_library</code>, <code>gen_rule</code>, ...)
+  injected from <code>build_rules.get_all()</code>.</li>
+<li>The <code>blade</code> module (<code>dsl_api.get_blade_module()</code>) — see
+  <a href="../dsl_api/">Built-in functions and the <code>blade.*</code> DSL</a>.</li>
+<li>Optionally <code>__builtins__ = restricted.safe_builtins</code> when
+  <code>global_config.restricted_dsl</code> is on (default true), which removes
+  <code>__import__</code>, <code>exec</code>, <code>eval</code>, narrows <code>open()</code> to read-only, etc.</li>
+</ul>
+<p>There is <strong>no parameter that tells a BUILD file its own path</strong>. Instead, a
+process-wide <code>build_manager.instance</code> exposes
+<code>get_current_source_path()</code>, which is set and restored around each
+<code>exec_file()</code> call. When a rule function runs inside the BUILD, it reads
+this to form its target key (<code>&lt;path&gt;:&lt;name&gt;</code>). The source location for
+diagnostics is captured at the same time, so any error in a BUILD points to
+the exact file and line in the user's code rather than internal blade
+frames — a deliberate UX choice.</p>
+<h2 id="3-target-registration-and-the-key-namespace">3. Target registration and the key namespace<a class="headerlink" href="#3-target-registration-and-the-key-namespace" title="Permanent link">&para;</a></h2>
+<p>When <code>cc_library(name='x', ...)</code> runs, the rule constructs a <code>Target</code>,
+which on its way through <code>__init__</code> calls
+<code>build_manager.instance.register_target(self)</code>. That singleton holds a
+single <code>__target_database</code> dict keyed by <code>&lt;path&gt;:&lt;name&gt;</code>. Duplicate keys
+fail fatally <strong>at load time</strong>, with the source locations of both definitions
+in the message — cheaper to diagnose than at build time, and impossible to
+miss.</p>
+<p>System-library deps such as <code>#dl</code> are normalized to the pseudo-key <code>#:dl</code>
+so they share the same address space without colliding with anything in a
+real <code>path</code> (any path with <code>#</code> is illegal).</p>
+<h2 id="4-iterative-deps-following-lazy-loading">4. Iterative deps-following (lazy loading)<a class="headerlink" href="#4-iterative-deps-following-lazy-loading" title="Permanent link">&para;</a></h2>
+<p>After the starting BUILDs are loaded, <code>_load_related_build_files()</code> runs a
+BFS over the deps graph:</p>
+<ul>
+<li>Pop a target key from a queue, load its BUILD file (if not already
+  loaded), enqueue each of its <code>deps</code> that haven't been visited.</li>
+<li>A <code>processed_dirs</code> dict short-circuits any directory already loaded
+  (success or failure), so each BUILD file is <code>exec</code>'d at most once per
+  invocation.</li>
+<li>Targets whose paths fall under <code>.bladeskip</code> or another nested
+  <code>BLADE_ROOT</code> are dropped with a diagnostic — they cannot be reached even
+  if some other BUILD references them.</li>
+</ul>
+<p>Cycle detection comes later, in <code>dependency_analyzer._expand_target_deps()</code>:
+during the recursion it maintains a path set; revisiting an in-progress
+target is reported as a <code>Loop dependency</code> fatal with the offending edge
+named.</p>
+<h2 id="5-globs-and-load">5. Globs and <code>load()</code><a class="headerlink" href="#5-globs-and-load" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>glob(include, exclude, allow_empty=False)</code> uses <code>pathlib.Path.glob()</code>
+  relative to the BUILD's own directory. <code>**</code> is supported. Excludes are
+  filtered in a second pass — exact strings via set membership for speed,
+  patterns via <code>path.match()</code>. <code>allow_empty=True</code> is the explicit opt-in
+  for "I know this might match nothing" cases, so unintended empty matches
+  remain a warning by default.</li>
+<li><code>load('//path:ext.bld', sym1, sym2)</code> exposes named symbols from an
+  extension file. The result is cached per absolute extension path in
+  <code>__loaded_extension_info</code>, so multiple BUILDs <code>load()</code>ing the same
+  extension <code>exec</code> it only once.</li>
+</ul>
+<h2 id="6-ux-optimizations">6. UX optimizations<a class="headerlink" href="#6-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Lazy loading by deps closure</strong> keeps load time roughly proportional to
+  the slice of the workspace involved. On large monorepos this is the main
+  reason <code>blade build //foo:bar</code> doesn't have to read every BUILD file.</li>
+<li><strong>BUILD-file dedup via <code>processed_dirs</code></strong> turns a potentially exponential
+  BFS into linear work, since every BUILD is loaded once per <code>blade</code>
+  invocation regardless of how many edges point into it.</li>
+<li><strong>Extension caching via <code>__loaded_extension_info</code></strong> is the same idea one
+  level down: <code>load()</code>'d files are <code>exec</code>'d once even if referenced by many
+  BUILDs.</li>
+<li><strong>Per-target fingerprint</strong> (recorded as <code>#Fingerprint=...</code> on line 1 of
+  the per-target <code>.build.ninja</code>) lets incremental rebuilds skip
+  ninja-file regeneration entirely when a target's load-phase inputs
+  (srcs, deps, config digest, blade revision) haven't changed. See
+  <a href="../dependency_analysis/">dependency analysis &amp; ninja generation</a>.</li>
+<li><strong>Errors pin to BUILD source location.</strong> Each <code>Target</code> records the BUILD
+  file path and line number at construction; diagnostics (missing dep,
+  unknown attribute, duplicate name, ...) report in <code>BUILD:lineno: error:</code>
+  form, which most editors turn into clickable jumps. This is one of the
+  most visible "developer ergonomics" investments in blade.</li>
+<li><strong><code>.bladeskip</code> / nested <code>BLADE_ROOT</code></strong> lets a workspace carve out parts
+  of the tree (vendored sources, scratch directories) that the recursive
+  walk must ignore, without rewriting BUILDs to use explicit deps. They
+  apply both to the initial <code>...</code> expansion and to the BFS deps walk.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Development"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cc_build/" class="btn btn-neutral float-right" title="How C/C++ programs are built">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cc_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

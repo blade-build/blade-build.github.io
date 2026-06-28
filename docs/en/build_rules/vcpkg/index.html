@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/build_rules/vcpkg/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Using vcpkg packages - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Using vcpkg packages";
+        var mkdocs_page_input_path = "build_rules/vcpkg.md";
+        var mkdocs_page_url = "/docs/en/build_rules/vcpkg/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Using vcpkg packages</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reference-syntax-vcpkgportlib">Reference syntax: vcpkg#&lt;port&gt;:&lt;lib&gt;</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-package-whitelist">The package whitelist</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#per-port-options">Per-port options</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#linkage-auto-static-dynamic">linkage — auto / static / dynamic</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#singleton-libraries">Singleton libraries</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#link_all_symbols-true-force-static-initializers">link_all_symbols: True — force static initializers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#include_prefix-remap-the-header-path">include_prefix — remap the header path</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cmake_options-extra-build-options">cmake_options — extra build options</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#managed-vs-unmanaged-installs">Managed vs. unmanaged installs</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#managed-managetrue-the-default">Managed (manage=True, the default)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#unmanaged-managefalse">Unmanaged (manage=False)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multi-library-ports">Multi-library ports</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#transitive-library-dependencies">Transitive library dependencies</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-a-vcpkg-protoc-for-proto_library">Using a vcpkg protoc for proto_library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#header-only-ports">Header-only ports</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#discovering-ports-and-their-libraries">Discovering ports and their libraries</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#which-ports-and-versions-are-available">Which ports and versions are available</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#which-libraries-a-port-produces">Which libraries a port produces</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#version-management-and-reproducibility">Version management and reproducibility</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#triplets">Triplets</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#wrapping-for-large-repositories">Wrapping for large repositories</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-reference">Configuration reference</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Build Rules</li>
+      <li class="breadcrumb-item active">Using vcpkg packages</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/vcpkg.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="using-vcpkg-packages">Using vcpkg packages<a class="headerlink" href="#using-vcpkg-packages" title="Permanent link">&para;</a></h1>
+<p>Blade can consume C/C++ libraries from <a href="https://github.com/microsoft/vcpkg">vcpkg</a>
+— Microsoft's cross-platform package manager (~2500 ports) — as first-class
+dependencies, alongside your source targets and system libraries. You reference
+a vcpkg library as <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> in a target's <code>deps</code>, declare the
+allowed packages once in <code>BLADE_ROOT</code>, and Blade takes care of installing and
+linking them.</p>
+<p>This unifies third-party dependencies across Linux, macOS and Windows and
+removes most of the per-package <code>cmake_build</code> boilerplate.</p>
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Get vcpkg.</strong> Clone and bootstrap it, then either set <code>VCPKG_ROOT</code> to that
+   directory or put the <code>vcpkg</code> executable on your <code>PATH</code>:</li>
+</ol>
+<p><code>bash
+   git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
+   ~/vcpkg/bootstrap-vcpkg.sh        # bootstrap-vcpkg.bat on Windows
+   export VCPKG_ROOT=~/vcpkg</code></p>
+<ol>
+<li><strong>Declare the allowed packages</strong> in <code>BLADE_ROOT</code>:</li>
+</ol>
+<p><code>python
+   vcpkg_config(
+       baseline = '2024-12-15',          # pins the ports tree (recommended)
+       packages = {
+           'fmt': '10.2.1',
+           'openssl': '3.2.1',
+       },
+   )</code></p>
+<ol>
+<li><strong>Depend on a library</strong> with <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>:</li>
+</ol>
+<p><code>python
+   cc_binary(
+       name = 'app',
+       srcs = ['app.cc'],
+       deps = [
+           'vcpkg#fmt:fmt',
+           'vcpkg#openssl:ssl',
+       ],
+   )</code></p>
+<ol>
+<li><strong>Build.</strong> By default Blade installs the declared packages and links them:</li>
+</ol>
+<p><code>bash
+   blade build //:app</code></p>
+<h2 id="reference-syntax-vcpkgportlib">Reference syntax: <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code><a class="headerlink" href="#reference-syntax-vcpkgportlib" title="Permanent link">&para;</a></h2>
+<p>A vcpkg dependency extends Blade's <code>#name</code> system-library family. The <code>#</code>
+already means "a library not built from source in this workspace" (<code>#pthread</code>,
+<code>#dl</code>); a scheme in front of it says where the library comes from — here,
+<code>vcpkg</code>. The part after <code>#</code> is the package manager's own coordinate.</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code></td>
+<td>A specific static library — <code>lib&lt;lib&gt;.a</code> (the <code>lib</code> prefix is implied).</td>
+</tr>
+<tr>
+<td><code>vcpkg#&lt;port&gt;:hdrs</code></td>
+<td>A header-only port — only its include directory, no archive.</td>
+</tr>
+<tr>
+<td><code>vcpkg#&lt;port&gt;</code></td>
+<td><strong>Rejected</strong> — you must name a library after the port.</td>
+</tr>
+</tbody>
+</table>
+<p>References are always fully explicit: there is no "all libraries of a port"
+shortcut, so a multi-library port can never be over-linked by accident.</p>
+<p>The library basename can differ from the port name — the vcpkg port
+<code>boost-filesystem</code> produces <code>libboost_filesystem.a</code>, so it is referenced as
+<code>vcpkg#boost-filesystem:boost_filesystem</code>.</p>
+<h2 id="the-package-whitelist">The package whitelist<a class="headerlink" href="#the-package-whitelist" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg_config(packages=...)</code> is the single source of truth for which ports may
+be referenced. Referencing a port that is not listed is a <strong>hard error</strong> — this
+keeps every external dependency declared and versioned in one place. Each value
+is either a version string or a dict with the keys below:</p>
+<pre><code class="language-python">vcpkg_config(
+    packages = {
+        'fmt': '10.2.1',                                   # short form
+        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
+    },
+)
+</code></pre>
+<h2 id="per-port-options">Per-port options<a class="headerlink" href="#per-port-options" title="Permanent link">&para;</a></h2>
+<p>The dict form of a package accepts these keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>str</td>
+<td>Pin the port version (a vcpkg <code>overrides</code> entry).</td>
+</tr>
+<tr>
+<td><code>features</code></td>
+<td>list[str]</td>
+<td>vcpkg features to enable.</td>
+</tr>
+<tr>
+<td><code>linkage</code></td>
+<td><code>'auto'</code> (default) / <code>'static'</code> / <code>'dynamic'</code></td>
+<td>How the port is built (see below).</td>
+</tr>
+<tr>
+<td><code>link_all_symbols</code></td>
+<td>bool</td>
+<td>Whole-archive the static lib.</td>
+</tr>
+<tr>
+<td><code>include_prefix</code></td>
+<td>str / list[str] / dict</td>
+<td>Remap the header include path.</td>
+</tr>
+<tr>
+<td><code>cmake_options</code></td>
+<td>list[str]</td>
+<td>Extra CMake configure options for the port.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="linkage-auto-static-dynamic"><code>linkage</code> — <code>auto</code> / <code>static</code> / <code>dynamic</code><a class="headerlink" href="#linkage-auto-static-dynamic" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>'auto'</code></strong> (default) — the same rule as <code>cc_library</code>: the static archive
+  (<code>.a</code>) is always built, <strong>and</strong> the shared library is built <em>on demand</em> —
+  only when a <code>dynamic_link</code> binary actually depends on the port (via the same
+  <code>generate_dynamic</code> flag analyze sets on <code>cc_library</code> deps). A static-link
+  binary then links a self-contained <code>.a</code>, while a <code>dynamic_link</code> binary links
+  one shared library. vcpkg builds one linkage per triplet, so the shared build
+  of an <code>'auto'</code> port lands in a separate <code>blade-&lt;triplet&gt;-shared</code> install tree
+  alongside the main static tree. A port consumed only by static-link binaries
+  never gets a shared build.</li>
+<li><strong><code>'static'</code></strong> — only the static archive is built; it serves both link modes.
+  Use for a port that has no working shared build (which <code>'auto'</code> would fail).</li>
+<li><strong><code>'dynamic'</code></strong> — only the shared library is built; <em>every</em> consumer links
+  that single instance.</li>
+</ul>
+<h3 id="singleton-libraries">Singleton libraries<a class="headerlink" href="#singleton-libraries" title="Permanent link">&para;</a></h3>
+<p>Some libraries keep a process-wide registry behind static initializers — gflags
+(the flag registry), glog, protobuf (the descriptor pool), googletest (the test
+registry). If such a port is linked <strong>statically into several shared libraries</strong>,
+each <code>.so</code>/<code>.dylib</code> gets its own copy of the registry and they collide at
+runtime — duplicate flag/test registration, or a descriptor-pool lookup in one
+module that can't see what another module registered (a segfault). The default
+<strong><code>'auto'</code></strong> already prevents this: every <code>dynamic_link</code> consumer links the one
+shared instance. You only need to pin <code>linkage</code> for these when you want to
+override the default — e.g. <code>'dynamic'</code> to force shared even for static-link
+binaries:</p>
+<pre><code class="language-python">'protobuf': {'version': '3.21.12'},   # 'auto' default: one shared libprotobuf
+                                      # across all dylibs, static for static exes
+</code></pre>
+<h3 id="link_all_symbols-true-force-static-initializers"><code>link_all_symbols: True</code> — force static initializers<a class="headerlink" href="#link_all_symbols-true-force-static-initializers" title="Permanent link">&para;</a></h3>
+<p>For a port linked statically <em>once</em>, the linker may drop object files whose
+symbols are unreferenced — including ones whose static initializers do
+registration. <code>link_all_symbols</code> whole-archives the lib so they all run. (The
+singleton duplicate-copy problem above is the opposite case — it is handled by
+the default <code>'auto'</code>/<code>'dynamic'</code> linkage, not by this.)</p>
+<h3 id="include_prefix-remap-the-header-path"><code>include_prefix</code> — remap the header path<a class="headerlink" href="#include_prefix-remap-the-header-path" title="Permanent link">&para;</a></h3>
+<p>A port may ship its headers at <code>include/</code> top level (e.g. <code>snappy.h</code>) while your
+code includes them under a subdir (<code>"snappy/snappy.h"</code>). <code>include_prefix</code>
+exposes the port's include dir under the path(s) you use, with no hand-written
+wrapper headers — the port's native layout still resolves too:</p>
+<pre><code class="language-python">'snappy': {'include_prefix': 'snappy'},          # &quot;snappy/h&quot; -&gt; include/h
+'zlib':   {'include_prefix': ['zlib', 'thirdparty/zlib']},  # two prefixes
+# {prefix: subdir} maps to a header already nested in the port's include:
+'glog':   {'linkage': 'dynamic',
+           'include_prefix': {'thirdparty/glog': 'glog'}},   # -&gt; include/glog/h
+</code></pre>
+<h3 id="cmake_options-extra-build-options"><code>cmake_options</code> — extra build options<a class="headerlink" href="#cmake_options-extra-build-options" title="Permanent link">&para;</a></h3>
+<p>Pass per-port CMake configure options (emitted as that port's
+<code>VCPKG_CMAKE_CONFIGURE_OPTIONS</code>). For example vcpkg's snappy disables RTTI
+unless asked otherwise:</p>
+<pre><code class="language-python">'snappy': {'include_prefix': 'snappy',
+           'cmake_options': ['-DSNAPPY_WITH_RTTI=ON']},
+</code></pre>
+<h2 id="managed-vs-unmanaged-installs">Managed vs. unmanaged installs<a class="headerlink" href="#managed-vs-unmanaged-installs" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg_config(manage=...)</code> selects who runs <code>vcpkg install</code>.</p>
+<h3 id="managed-managetrue-the-default">Managed (<code>manage=True</code>, the default)<a class="headerlink" href="#managed-managetrue-the-default" title="Permanent link">&para;</a></h3>
+<p>Blade drives vcpkg for you. Before loading BUILD files it generates a manifest
+from your whitelist and runs <code>vcpkg install</code> into a hermetic tree under the
+build directory (<code>&lt;build&gt;/.cache/vcpkg/</code>), using an <em>overlay triplet</em>
+(<code>blade-&lt;triplet&gt;</code>) that chainloads Blade's resolved compiler so the artifacts
+stay ABI-compatible with the rest of your build. The result is reproducible and
+needs no manual steps — just <code>blade build</code>. An install is skipped when nothing
+relevant changed.</p>
+<p>The <code>vcpkg</code> <strong>tool</strong> is still located via <code>vcpkg_config.root</code>, <code>$VCPKG_ROOT</code>, or
+<code>PATH</code>; only the installed artifacts live under the build directory.</p>
+<h3 id="unmanaged-managefalse">Unmanaged (<code>manage=False</code>)<a class="headerlink" href="#unmanaged-managefalse" title="Permanent link">&para;</a></h3>
+<p>You run <code>vcpkg install</code> yourself, and Blade only resolves paths from the
+existing install tree at <code>&lt;root&gt;/installed/&lt;triplet&gt;/</code>, where <code>&lt;root&gt;</code> is
+<code>vcpkg_config.root</code> or <code>$VCPKG_ROOT</code>:</p>
+<pre><code class="language-bash">vcpkg install fmt openssl          # you install
+</code></pre>
+<pre><code class="language-python">vcpkg_config(manage = False, packages = {'fmt': '10.2.1', 'openssl': '3.2.1'})
+</code></pre>
+<h2 id="multi-library-ports">Multi-library ports<a class="headerlink" href="#multi-library-ports" title="Permanent link">&para;</a></h2>
+<p>Ports such as <code>openssl</code>, <code>protobuf</code> or <code>icu</code> produce several archives. Each is
+its own target, and you declare the ones you use:</p>
+<pre><code class="language-python">deps = [
+    'vcpkg#openssl:ssl',         # libssl.a
+    'vcpkg#openssl:crypto',      # libcrypto.a
+]
+</code></pre>
+<p>A bare <code>vcpkg#openssl</code> is rejected, so you never accidentally pull in libraries
+you do not use.</p>
+<h2 id="transitive-library-dependencies">Transitive library dependencies<a class="headerlink" href="#transitive-library-dependencies" title="Permanent link">&para;</a></h2>
+<p>A port may depend on other vcpkg libraries that it does not itself bundle —
+notably <code>protobuf</code> (v22+), whose <code>protobuf.pc</code> lists dozens of <code>absl_*</code> plus
+<code>utf8_range</code> in pkg-config <code>Requires:</code>. Blade follows those <code>Requires:</code> and
+links the required sibling archives automatically, so a single
+<code>vcpkg#protobuf:protobuf</code> reference resolves the whole abseil set; you do not
+list them yourself. (System/SDK libraries a port needs — <code>ws2_32</code>, <code>dbghelp</code>,
+… — are resolved separately from its <code>Libs.private</code> / CMake link interface.)</p>
+<h2 id="using-a-vcpkg-protoc-for-proto_library">Using a vcpkg protoc for <code>proto_library</code><a class="headerlink" href="#using-a-vcpkg-protoc-for-proto_library" title="Permanent link">&para;</a></h2>
+<p>protobuf couples the <code>protoc</code> compiler to its runtime version, so generated
+<code>.pb.cc</code> must be produced by a <code>protoc</code> matching the <code>libprotobuf</code> you link.
+Point <code>proto_library_config</code> at the vcpkg-provided protoc (and libprotobuf) so
+both come from the same pinned port:</p>
+<pre><code class="language-python">proto_library_config(
+    protoc = 'vcpkg#protobuf',                 # protoc from the vcpkg protobuf port
+    protobuf_libs = ['vcpkg#protobuf:protobuf'],
+)
+</code></pre>
+<p><code>'vcpkg#&lt;port&gt;'</code> resolves to the protoc installed in Blade's vcpkg tree. The
+resolved protoc binary is tracked as a build input, so bumping the pinned
+protobuf version re-runs codegen automatically (no stale <code>.pb.*</code>).</p>
+<h2 id="header-only-ports">Header-only ports<a class="headerlink" href="#header-only-ports" title="Permanent link">&para;</a></h2>
+<p>For a header-only port, use the <code>:hdrs</code> sentinel — Blade exposes the include
+directory and links no archive:</p>
+<pre><code class="language-python">deps = ['vcpkg#nlohmann-json:hdrs']
+</code></pre>
+<h2 id="discovering-ports-and-their-libraries">Discovering ports and their libraries<a class="headerlink" href="#discovering-ports-and-their-libraries" title="Permanent link">&para;</a></h2>
+<h3 id="which-ports-and-versions-are-available">Which ports and versions are available<a class="headerlink" href="#which-ports-and-versions-are-available" title="Permanent link">&para;</a></h3>
+<p>The available ports and their default versions are fixed by your <code>baseline</code>
+(the ports tree at that commit). To explore them:</p>
+<pre><code class="language-bash">vcpkg search            # every port and its version in the ports tree
+vcpkg search fmt        # ports whose name/description matches &quot;fmt&quot;
+</code></pre>
+<p><code>vcpkg search</code> reflects the ports tree at its current checkout. To inspect a
+specific <code>baseline</code>, check the vcpkg repo out at that commit first
+(<code>git -C $VCPKG_ROOT checkout &lt;baseline&gt;</code>), or read the version database
+directly:</p>
+<ul>
+<li><code>$VCPKG_ROOT/versions/baseline.json</code> — the baseline version of every port.</li>
+<li><code>$VCPKG_ROOT/versions/&lt;x-&gt;/&lt;port&gt;.json</code> — every published version of a port.</li>
+<li><code>$VCPKG_ROOT/ports/&lt;port&gt;/vcpkg.json</code> — the port's version, available
+  <code>features</code>, and its own dependencies.</li>
+</ul>
+<h3 id="which-libraries-a-port-produces">Which libraries a port produces<a class="headerlink" href="#which-libraries-a-port-produces" title="Permanent link">&para;</a></h3>
+<p>A <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> reference names the archive <code>lib&lt;lib&gt;.a</code>, and the
+basename can differ from the port name (<code>boost-filesystem</code> →
+<code>libboost_filesystem.a</code>; <code>openssl</code> → <code>libssl.a</code> + <code>libcrypto.a</code>). Read the
+exact names off the installed tree:</p>
+<pre><code class="language-bash"># managed mode (manage=True): under the build dir, with the blade- overlay triplet
+ls build_release/.cache/vcpkg/installed/blade-&lt;triplet&gt;/lib/lib*.a
+
+# unmanaged mode (manage=False): under the vcpkg root
+ls $VCPKG_ROOT/installed/&lt;triplet&gt;/lib/lib*.a
+</code></pre>
+<p>Each <code>lib&lt;name&gt;.a</code> is referenced as <code>vcpkg#&lt;port&gt;:&lt;name&gt;</code>. Two more sources:</p>
+<ul>
+<li><code>…/installed/&lt;triplet&gt;/lib/pkgconfig/&lt;pkg&gt;.pc</code> — the <code>Libs:</code> line lists the
+  <code>-l&lt;name&gt;</code> entries the port exports.</li>
+<li><code>…/installed/&lt;triplet&gt;/share/&lt;port&gt;/usage</code> — vcpkg's human-readable hint,
+  which usually names the libraries / CMake targets a port provides.</li>
+</ul>
+<p>The full list of files a port installed (including every <code>lib/*.a</code>) is in
+<code>…/installed/vcpkg/info/&lt;port&gt;_&lt;version&gt;_&lt;triplet&gt;.list</code>. A header-only port
+installs no <code>lib*.a</code> — reference it as <code>vcpkg#&lt;port&gt;:hdrs</code>.</p>
+<h2 id="version-management-and-reproducibility">Version management and reproducibility<a class="headerlink" href="#version-management-and-reproducibility" title="Permanent link">&para;</a></h2>
+<p>vcpkg's version model is per-workspace (one version and one feature set per
+package), which <code>vcpkg_config</code> maps onto directly:</p>
+<table>
+<thead>
+<tr>
+<th><code>vcpkg_config</code> field</th>
+<th>vcpkg manifest field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>baseline</code></td>
+<td><code>builtin-baseline</code></td>
+</tr>
+<tr>
+<td><code>packages[pkg]</code> version</td>
+<td><code>overrides[].version</code></td>
+</tr>
+<tr>
+<td><code>packages[pkg]['features']</code></td>
+<td><code>dependencies[].features</code></td>
+</tr>
+<tr>
+<td><code>registries</code></td>
+<td><code>registries[]</code> (private registries)</td>
+</tr>
+</tbody>
+</table>
+<p>For reproducible builds, pin <code>baseline</code> to a ports-tree commit (a date or git
+SHA); add every declared package to a version for the strongest guarantee.
+Blade installs the whole whitelist together, so the set stays consistent.</p>
+<h2 id="triplets">Triplets<a class="headerlink" href="#triplets" title="Permanent link">&para;</a></h2>
+<p>The triplet is derived automatically from Blade's toolchain
+(<code>x64-linux</code>, <code>arm64-osx</code>, <code>x64-windows-static</code>, …). In managed mode Blade uses
+a <code>blade-&lt;triplet&gt;</code> overlay that chainloads your compiler. Override the base
+triplet with <code>vcpkg_config(triplet='...')</code> when you need a specific one.</p>
+<h2 id="wrapping-for-large-repositories">Wrapping for large repositories<a class="headerlink" href="#wrapping-for-large-repositories" title="Permanent link">&para;</a></h2>
+<p>If your repository already routes third-party code through a <code>//third_party/</code>
+layer, hide the <code>vcpkg#</code> references behind ordinary <code>cc_library</code> wrappers so
+business code never sees them:</p>
+<pre><code class="language-python"># //third_party/openssl/BUILD
+cc_library(name='ssl',    deps=['vcpkg#openssl:ssl'],    visibility='PUBLIC')
+cc_library(name='crypto', deps=['vcpkg#openssl:crypto'], visibility='PUBLIC')
+
+# //services/payment/BUILD
+cc_library(name='payment', srcs=['payment.cc'], deps=['//third_party/openssl:ssl'])
+</code></pre>
+<h2 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h2>
+<p>All settings live in <code>vcpkg_config(...)</code> in <code>BLADE_ROOT</code>. See the
+<a href="../../config/#vcpkg_config"><code>vcpkg_config</code></a> section of the configuration manual for
+the full list of fields (<code>manage</code>, <code>baseline</code>, <code>packages</code>, <code>registries</code>, <code>root</code>,
+<code>triplet</code>, <code>install_dir</code>, <code>binary_cache</code>, <code>direct_use_allowed</code>).</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>vcpkg port "X" is not in the vcpkg_config.packages whitelist</code></strong> — add the
+  port to <code>vcpkg_config(packages=...)</code>.</li>
+<li><strong><code>the vcpkg tool was not found</code></strong> (managed mode) — set <code>vcpkg_config(root=...)</code>,
+  <code>$VCPKG_ROOT</code>, or put <code>vcpkg</code> on <code>PATH</code>.</li>
+<li><strong><code>static library not found at ...</code></strong> — the archive for that library is not in
+  the install tree. Check the library basename (it may differ from the port
+  name), and in unmanaged mode make sure you ran <code>vcpkg install</code> for the same
+  triplet.</li>
+<li><strong><code>a port must name a library</code></strong> — a reference is missing its <code>:lib</code>; use
+  <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> (or <code>vcpkg#&lt;port&gt;:hdrs</code>).</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../swig/" class="btn btn-neutral float-left" title="SWIG Target"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../upgrade-to-v3/" class="btn btn-neutral float-right" title="Upgrading to V3">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../swig/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../upgrade-to-v3/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

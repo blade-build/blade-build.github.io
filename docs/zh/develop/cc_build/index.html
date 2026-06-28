@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/cc_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>C/C++ 程序是如何构建的 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "C/C++ \u7a0b\u5e8f\u662f\u5982\u4f55\u6784\u5efa\u7684";
+        var mkdocs_page_input_path = "develop/cc_build.md";
+        var mkdocs_page_url = "/docs/zh/develop/cc_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ 程序是如何构建的</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 工具链抽象与选择</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 编译规则</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-per-target-flag-include">3. Per-target flag 与 include 路径合成</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 链接</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-target">5. 特殊 target</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 用户体验优化要点</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">C/C++ 程序是如何构建的</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/cc_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cc">C/C++ 程序是如何构建的<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h1>
+<p>C/C++ 流水线有四块：<strong>工具链抽象</strong>把 GCC/Clang 与 MSVC 的差异藏到一个小
+接口背后；<strong>编译规则生成器</strong>为各工具链烘焙模板；<strong>per-target 的 flag 与
+include 路径合成</strong>；以及<strong>链接规则的构造</strong>。头文件依赖检查是一个独立子
+系统，见 <a href="../hdrs_check/">hdrs check</a>。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/toolchain.py</code></td>
+<td><code>GccToolChain</code> / <code>MsvcToolChain</code> 抽象、vendor 检测</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>cc</code> / <code>cxx</code> / <code>ar</code> / <code>link</code> / <code>solink</code> rule 输出</td>
+</tr>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td>per-target flag/include 合成、库顺序</td>
+</tr>
+<tr>
+<td><code>src/blade/cu_targets.py</code></td>
+<td>CUDA 路径；继承 <code>CcTarget</code></td>
+</tr>
+<tr>
+<td><code>src/blade/build_accelerator.py</code></td>
+<td>ccache/distcc 的 wrapper 接口</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 工具链抽象与选择<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>抽象 <code>ToolChain</code> 定义了所有消费者依赖的"形状"：文件名形态
+（<code>obj_suffix</code>、<code>lib_prefix</code>、<code>static_lib_suffix</code>、<code>dynamic_lib_suffix</code>、
+<code>exe_suffix</code>）、库命名（<code>static_library_name(name)</code>、
+<code>dynamic_library_name(name)</code>）、工具取用（<code>get_cc()</code>、<code>get_cxx()</code>、
+<code>get_ar()</code>），以及小型 vendor 查询（<code>cc_is('clang')</code>）。两个具体实现：</p>
+<ul>
+<li><strong><code>GccToolChain</code></strong> —— Linux/macOS 使用。会探测编译器 <code>--version</code> 输出
+  以确定 <code>cc_vendor</code>（gcc、clang、apple-clang…），让后续 flag 逻辑能按
+  真实 vendor 分支，而不只是"像 gcc / 不像"。这关键点在于：macOS 的
+  Apple Clang 伪装成 <code>gcc</code>，少数 GNU 专属 flag（如 <code>--whole-archive</code>）
+  否则会被发到一个并不识别它们的 linker。</li>
+<li><strong><code>MsvcToolChain</code></strong> —— 仅 Windows。定位 Visual Studio + Windows SDK
+  （从注册表或 <code>vswhere.exe</code>），把请求的目标 arch 映射到正确的工具目
+  录，并暴露系统库路径，便于链接步骤输出正确的 <code>/LIBPATH:</code>。</li>
+</ul>
+<p><code>create_toolchain()</code> 选择顺序：显式 <code>--cc-toolchain=</code> CLI、
+<code>cc_config.toolchain</code>、任意 <code>cc_toolchain_config()</code> 条目、按平台自动检
+测。选定的工具链成为所有 cc target 共享的单例。</p>
+<p>加速器（<code>build_accelerator.py</code>）包了一层编译器取用，便于将来插入
+ccache/distcc 前缀；当前实现透传工具链命令，但接缝已留好。</p>
+<h2 id="2">2. 编译规则<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p><code>backend.py</code> 生成全局 ninja rule <code>cc</code>、<code>cxx</code>、（如配置启用）<code>secretcc</code>，
+再加上头文件检查所需的 <code>cxxhdrs</code> 与 <code>ccincchk</code>。</p>
+<p><strong>GCC/Clang 形态</strong> —— 命令模板大约是
+<code>cc -o ${out} -MMD -MF ${out}.d -c -fPIC ${cflags} ${cppflags} ${includes}</code>，
+外面套 <code>cc_wrapper.sh</code> 顺便产出包含栈（详见 <a href="../hdrs_check/">hdrs check</a>）。
+<code>-MMD</code> 是 depfile 机制，ninja 通过 <code>deps = gcc</code> 消费它追踪头文件变化；
+这与基于包含栈的检查互相独立。</p>
+<p><strong>MSVC 形态</strong> —— 把 <code>-MMD</code> 换成 <code>/showIncludes</code>，ninja 用 <code>deps = msvc</code>
+解析；<code>cc_wrapper.py</code> 旁路再 tee 一份到 <code>.incstk</code>，让头文件检查在
+Windows 上有相同形状的输入。<code>cxxhdrs</code> rule 另用 <code>/P</code>（预处理到文件）+
+<code>/showIncludes</code>，让头文件不必编译就能检查。含空格路径用 <code>/I"path"</code> 包
+裹，因 MSVC 解析器对此敏感。</p>
+<p><code>backend.py</code> 也把全局内禀 flag（<code>-pipe</code>、<code>-fno-omit-frame-pointer</code>、调
+试信息级别、profile/coverage/PGO 等）一处采纳，免得每个 BUILD 都得显式
+带。coverage、profile-generate/use 等从 <code>command_line.options</code> 流到此
+处。</p>
+<h2 id="3-per-target-flag-include">3. Per-target flag 与 include 路径合成<a class="headerlink" href="#3-per-target-flag-include" title="Permanent link">&para;</a></h2>
+<p>对每个 cc target，<code>cc_targets.py</code> 合成 per-edge 变量，由全局 rule 模板展
+开：</p>
+<ul>
+<li><strong>CPP flag</strong>：per-target <code>-D</code>（来自 <code>defs</code> 属性）+ <code>extra_cppflags</code> +
+  工具链内禀 cppflags。</li>
+<li><strong>CXX warnings</strong>：拆分成 C / C++ 两份，分别对应 <code>cc_config.warnings</code>
+  与 <code>cc_config.cxx_warnings</code>。</li>
+<li><strong>Includes</strong>（<code>-I.../I...</code>）：per-target <code>incs</code>，加上每个传递依赖的
+  <code>export_incs</code>（<code>_get_incs_list()</code> 走 <code>expanded_deps</code> 并去重），再加
+  上始终存在的 <code>-I.</code>（工作区根）与 <code>-Ibuild_dir</code>。</li>
+</ul>
+<p><code>-Ibuild_dir</code> 让 <code>#include "proto/foo.pb.h"</code> 能解析到
+<code>build_release/proto/foo.pb.h</code>。来自 <code>gen_rule</code>/<code>proto_library</code> 的生成
+头还被收入 <code>declared_incs</code> 给包含检查用，但搜索路径侧由这一项
+<code>-Ibuild_dir</code> 一次性覆盖。</p>
+<p>GCC → MSVC flag 映射（<code>toolchain.py</code> 里的 <code>_map_gcc_flags_to_msvc()</code>）把
+常见形态翻译过去（<code>-std=c++17</code> → <code>/std:c++17</code>、<code>-O2</code> → <code>/O2</code>、<code>-g</code> →
+<code>/Zi</code>），把 MSVC 没有的（<code>-W*</code>、<code>-pipe</code>、<code>-m*</code>、<code>-f*</code>）静默丢弃。<code>-D</code>、
+<code>-I</code> 透传过去并调整语法。这样 <code>BLADE_ROOT</code> 一份 <code>cc_config.cppflags</code> 列
+表就能跨平台通用。</p>
+<h2 id="4">4. 链接<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>每个产出可执行或动态库的 target，blade 给出一条 <code>link</code>（binary）或
+<code>solink</code>（动态库）规则调用。三处细节：</p>
+<ul>
+<li><strong><code>@${out}.rsp</code> 响应文件</strong>承载 object/库列表，避免超过 OS 命令行长度
+  限制。</li>
+<li><strong>静态 vs 动态依赖顺序</strong> —— <code>_static_dependencies()</code> 与
+  <code>_dynamic_dependencies()</code> 各自走一遍 <code>expanded_deps</code>，分成系统库
+  （<code>#dl</code> 之类）、用户库、<code>link_all_symbols</code> 库。后者放在专门位置，让链
+  接器不会丢未被引用的符号。</li>
+<li><strong>平台相关的 whole-archive 语法</strong> —— 在
+  <code>_generate_link_all_symbols_link_flags()</code> 中一次性选择：</li>
+<li>GNU ld：<code>-Wl,--whole-archive &lt;libs&gt; -Wl,--no-whole-archive</code>。</li>
+<li>Apple ld64（macOS）：每个归档 <code>-Wl,-force_load,&lt;lib&gt;</code>（没有
+    whole-archive 对应物）。</li>
+<li>MSVC link.exe：每个归档 <code>/WHOLEARCHIVE:&lt;lib&gt;</code>。
+  按 <code>sys.platform</code> / <code>os.name</code> 切换；这是 cc target 代码唯一需要操心
+  跨平台 linker 语法的地方。</li>
+</ul>
+<p>目标文件落在 <code>&lt;target&gt;.objs/&lt;src.cc&gt;.o</code>（MSVC 是 <code>.obj</code>），同目录有给包
+含检查用的 <code>&lt;target&gt;.objs/&lt;src.cc&gt;.incstk</code>。</p>
+<h2 id="5-target">5. 特殊 target<a class="headerlink" href="#5-target" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>cc_plugin</code></strong> 形如 <code>cc_library</code> 但永远输出 shared object —— 是"发布
+  产物"形态，刻意不像 library 那样被 <code>deps</code> 拉入。前后缀可定制，适配项
+  目既有的 plugin 命名习惯。</li>
+<li><strong><code>cc_test</code></strong> 是 <code>cc_binary</code>，自动注入
+  <code>cc_test_config.gtest_libs</code> / <code>gtest_main_libs</code> 里的 gtest 库；当
+  <code>heap_check=</code> 设置时再注入 gperftools。</li>
+<li><strong>CUDA</strong>（<code>cu_targets.py</code>）继承 <code>CcTarget</code>。新增 <code>cudacc</code> rule
+  （<code>nvcc -ccbin</code>），通过 <code>-Xcompiler</code> 路由宿主编译器 flag，并写同形态
+  的 <code>.incstk</code>，使 CUDA 代码的宿主侧也参与 hdrs check。</li>
+</ul>
+<h2 id="6">6. 用户体验优化要点<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>头搜索路径默认是 <code>-I.</code> + <code>-Ibuild_dir</code> 再叠 per-target。</strong> 这两条默
+  认足以解析任何工作区相对的 <code>#include "pkg/foo.h"</code>（源）与
+  <code>#include "pkg/foo.pb.h"</code>（生成）。target 只在少数非工作区相对场景
+  （vendor 库自有根）才需要 <code>incs</code>/<code>export_incs</code>。</li>
+<li><strong>响应文件常开</strong>回避了平台相关的命令行长度限制，无需每个 OS 加特例。</li>
+<li><strong>per-vendor 分支集中化。</strong> <code>cc_is(...)</code> 与那个 GCC→MSVC 映射函数让
+  target 代码保持一种形态；工具链差异集中在 <code>toolchain.py</code> 与
+  <code>backend.py</code> 的 rule 里，便于集中评审。</li>
+<li><strong>包含栈复用了编译。</strong> 同一次编译的 <code>-H</code>（或 <code>/showIncludes</code>）输出既
+  产出目标文件、又喂给头文件检查，cc target 几乎不为这套检查多付出
+  （详见 <a href="../hdrs_check/">hdrs check</a>）。</li>
+<li><strong>编译并行随 ninja 默认</strong>，但某些 rule 引用的 <code>heavy_pool</code>（depth=1）
+  让 blade 能把不擅长高并行的编译串行化，而不必降低整体构建并行度。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../build_file_loading/" class="btn btn-neutral float-left" title="BUILD 文件是如何被发现、加载与注册的"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../check_undefined/" class="btn btn-neutral float-right" title="静态未定义符号检查（check_undefined）实现原理">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../build_file_loading/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../check_undefined/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

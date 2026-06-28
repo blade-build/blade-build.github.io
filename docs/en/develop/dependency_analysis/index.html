@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/dependency_analysis/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Dependency analysis and ninja file generation - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Dependency analysis and ninja file generation";
+        var mkdocs_page_input_path = "develop/dependency_analysis.md";
+        var mkdocs_page_url = "/docs/en/develop/dependency_analysis/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Dependency analysis and ninja file generation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-dependency-graph">1. Dependency graph</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-per-target-ninja-generation">2. Per-target ninja generation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-root-buildninja-structure">3. Root build.ninja structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-incrementality">4. Incrementality</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-implementation-details-and-design-notes">5. Implementation details and design notes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-ux-optimizations">6. UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">Dependency analysis and ninja file generation</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/dependency_analysis.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="dependency-analysis-and-ninja-file-generation">Dependency analysis and ninja file generation<a class="headerlink" href="#dependency-analysis-and-ninja-file-generation" title="Permanent link">&para;</a></h1>
+<p>After BUILD files are loaded and <code>Target</code> objects are registered, blade
+turns the in-memory graph into a set of ninja files: one root
+<code>build.ninja</code> plus per-target <code>&lt;pkg&gt;/&lt;name&gt;.build.ninja</code> files included
+from it. Most of the implementation effort is in <strong>not having to do all
+that work every time</strong> — both transitive-dep expansion and per-target
+ninja generation are cached aggressively across the analysis phase and
+across incremental rebuilds.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/dependency_analyzer.py</code></td>
+<td><code>expanded_deps</code>, topological sort, cycle detection</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td>Orchestration; per-target fingerprint and ninja-file caching</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td>Root-file header, global rules, helper templates</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>generate_build</code> / fingerprint computation</td>
+</tr>
+<tr>
+<td><code>src/blade/util.py</code></td>
+<td><code>write_if_changed</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-dependency-graph">1. Dependency graph<a class="headerlink" href="#1-dependency-graph" title="Permanent link">&para;</a></h2>
+<p><code>Target.deps</code> is the <strong>declared</strong> dep list from the BUILD. Analysis fills
+in <code>Target.expanded_deps</code>: the transitive, deduplicated, topologically
+sound list a target actually needs.</p>
+<ul>
+<li><code>_expand_target_deps()</code> recurses through <code>deps</code>, with a per-walk
+  <code>root_targets</code> path set; revisiting an in-progress target raises a
+  <code>Loop dependency</code> fatal that names the offending edge.</li>
+<li><code>_unique_deps()</code> deduplicates while preserving order (keeping the last
+  occurrence), so the relative position relevant to linking is not
+  perturbed.</li>
+<li>The expanded list is <strong>memoized on the target</strong>: every consumer that
+  asks for <code>target.expanded_deps</code> afterwards gets the cached value. The
+  reverse direction (<code>expanded_dependents</code>) is filled in the same pass,
+  for the few queries that need it.</li>
+<li><code>_topological_sort()</code> runs Kahn's algorithm over the whole build graph.
+  The output order is significant: when generating ninja code for a target,
+  blade may need information already produced for its dependencies (for
+  example, a <code>proto_library</code>'s declared generated headers must be visible
+  before a <code>cc_library</code> that depends on it emits its include lines).</li>
+</ul>
+<h2 id="2-per-target-ninja-generation">2. Per-target ninja generation<a class="headerlink" href="#2-per-target-ninja-generation" title="Permanent link">&para;</a></h2>
+<p>A target's <code>generate()</code> method (implemented per subclass) emits a sequence
+of ninja <code>build</code> and <code>rule</code> statements via two helpers:</p>
+<ul>
+<li><code>Target.generate_build(rule, outputs, inputs, ...)</code> constructs a <code>build</code>
+  statement with <code>inputs</code>, <code>implicit_deps</code> (after <code>|</code>), <code>order_only_deps</code>
+  (after <code>||</code>), <code>implicit_outputs</code>, and per-edge <code>variables</code>. The result
+  is appended to the target's internal text buffer.</li>
+<li><code>_NinjaFileHeaderGenerator.generate_rule(name, command, ...)</code> in
+  <code>backend.py</code> declares a global rule (cc, cxx, ar, link, proto,
+  cxxhdrs, ccincchk, ...) once, with all the conventional fields
+  (<code>depfile</code>, <code>deps</code>, <code>restat</code>, <code>pool</code>, <code>rspfile</code>).</li>
+</ul>
+<p>The text accumulated in the target buffer is written out to
+<code>&lt;build_dir&gt;/&lt;path&gt;/&lt;name&gt;.build.ninja</code>. The root <code>build.ninja</code> then
+plain-<code>include</code>s that file (no <code>subninja</code> — the per-target files are
+fragments meant to share the global rules).</p>
+<h2 id="3-root-buildninja-structure">3. Root <code>build.ninja</code> structure<a class="headerlink" href="#3-root-buildninja-structure" title="Permanent link">&para;</a></h2>
+<p><code>_NinjaFileHeaderGenerator.generate()</code> emits the root file in a fixed order:</p>
+<ol>
+<li>The minimum <code>ninja_required_version</code> line and <code>builddir = ...</code>.</li>
+<li>Global pools (e.g. a <code>heavy_pool</code> with depth 1 to throttle a few rules
+   that don't parallelize well).</li>
+<li>All global ninja <code>rule</code> declarations — every compile/link/codegen rule
+   the workspace might use, regardless of whether any specific target ends
+   up needing them.</li>
+<li>One-off build statements such as the SCM stamp.</li>
+<li>An <code>include &lt;path&gt;.build.ninja</code> line per generated per-target file, in
+   topological order (so deps come before dependents).</li>
+</ol>
+<p>The two wrapper scripts referenced by compile rules (<code>cc_wrapper.sh</code> for
+POSIX, <code>cc_wrapper.py</code> for MSVC) and the pickled
+<code>inclusion_declaration.data</code> consumed by <code>ccincchk</code> are also written into
+the build dir as a side effect of analysis, the first time anything
+references them.</p>
+<h2 id="4-incrementality">4. Incrementality<a class="headerlink" href="#4-incrementality" title="Permanent link">&para;</a></h2>
+<p>Three caching layers cooperate to avoid redoing work on each run:</p>
+<p><strong>(a) Per-target fingerprint</strong> —<code>Target.fingerprint()</code> is an MD5 over an
+entropy dict that includes the blade revision, the config digest, srcs,
+direct deps' fingerprints, the rule type, and the rule's <code>cmd</code>. Each
+per-target ninja file starts with <code>#Fingerprint=&lt;hash&gt;</code> on line 1. Before
+regenerating, <code>build_manager</code> reads the old fingerprint; if unchanged,
+<strong>the whole per-target file is reused as-is</strong> and nothing else runs for
+that target.</p>
+<p><strong>(b) <code>write_if_changed</code></strong> in <code>util.py</code> — used for the cc wrappers, the
+inclusion-declaration pickle, the per-target ninja files, and (inside the
+cc wrappers themselves) for the <code>.incstk</code> files. It compares the new bytes
+to the on-disk file and only writes when they differ, preserving mtime
+otherwise. Ninja's <code>restat = 1</code> rule flag then uses that preserved mtime
+to <strong>prune downstream edges</strong> whose only input was a now-unchanged
+implicit output (<a href="../hdrs_check/">see hdrs check</a> for the full chain
+applied to <code>.incstk</code>).</p>
+<p><strong>(c) The <code>expanded_deps</code> memoization</strong> described above ensures the
+transitive dependency walk runs once per target per analysis phase, not
+once per consumer.</p>
+<h2 id="5-implementation-details-and-design-notes">5. Implementation details and design notes<a class="headerlink" href="#5-implementation-details-and-design-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Topological order is for generation, not execution.</strong> Ninja itself
+  schedules executions purely from the graph. Blade sorts targets so it
+  can compute fields that one target needs from another (e.g.
+  <code>declared_genhdrs</code> propagated from <code>proto_library</code> to <code>cc_library</code>)
+  before the consuming target emits its rules.</li>
+<li><strong>Order-only deps (<code>||</code>) for generated headers</strong> are pervasive. They
+  guarantee the generator runs before any compile that might <code>#include</code>
+  the generated file, but they do <strong>not</strong> force a recompile if only the
+  generator's outputs' timestamps moved. Combined with <code>restat</code> on the
+  generator's rule, this gives "regenerated but unchanged → no rebuild"
+  semantics. The compiler depfile (<code>-MMD</code>) handles actual content-level
+  re-triggering.</li>
+<li><strong>Per-target fingerprint covers exactly the load-phase inputs.</strong> Targets
+  with the same fingerprint produce the same <code>.build.ninja</code> text, by
+  construction, so reusing the file is safe. Things that don't affect
+  load-phase output (such as <code>cc_test</code> execution flags) deliberately
+  aren't in the fingerprint.</li>
+<li><strong>Targets outside the requested set still get ninja rules.</strong> Blade
+  needs them because they may be transitive deps of requested targets;
+  <code>--no-test</code> and <code>--generate-package</code> are the explicit knobs that filter
+  out test/package targets that would otherwise be pulled in.</li>
+<li><strong><code>pool = heavy_pool</code></strong> with <code>depth = 1</code> is the simplest answer to a few
+  rules whose tools (link-with-LTO, big proto codegen, ...) don't tolerate
+  high parallelism well — they are routed through a 1-wide pool so ninja
+  serializes them automatically.</li>
+<li><strong>The inclusion check uses the same caching plumbing.</strong> The <code>ccincchk</code>
+  rule's only inputs are <code>.incstk</code> implicit outputs of compile rules.
+  Because <code>write_if_changed</code> preserves the <code>.incstk</code> mtime when the
+  inclusion stack didn't actually change, ninja's <code>restat</code> skips the
+  check on recompiles that didn't alter <code>#include</code>s — a substantial perf
+  win on incremental builds.</li>
+</ul>
+<h2 id="6-ux-optimizations">6. UX optimizations<a class="headerlink" href="#6-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Memoize once, query many.</strong> <code>expanded_deps</code> and <code>expanded_dependents</code>
+  are computed in a single pass and reused by every downstream consumer.
+  The cost of "what does this depend on?" goes from O(graph) per query
+  to O(1).</li>
+<li><strong><code>write_if_changed</code> everywhere.</strong> Per-target ninja files,
+  inclusion-stack files, wrapper scripts, the inclusion-declaration
+  pickle — all only touch disk when the bytes change. Combined with
+  ninja's <code>restat</code>, this pushes the granularity of "did anything change?"
+  from "the file was rewritten" down to "the file's contents differ".</li>
+<li><strong>Per-target ninja files survive identical regenerations.</strong> A no-op
+  edit (whitespace, comment) to a BUILD file that doesn't move the
+  fingerprint costs nothing past the load phase.</li>
+<li><strong>Failures point at the cause.</strong> <code>Loop dependency</code> reports the
+  offending edge and walks the cycle; missing-dep failures in the hdrs
+  check show the inclusion stack; topological-sort failures (rare) name
+  the unresolved input. The investment in legible diagnostics here is
+  deliberate, because a bad message on a many-thousand-target graph is
+  hard to debug.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../custom_rule/" class="btn btn-neutral float-left" title="How Custom Rules (define_rule) Work"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dsl_api/" class="btn btn-neutral float-right" title="Built-in functions and the blade.* DSL">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../custom_rule/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dsl_api/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

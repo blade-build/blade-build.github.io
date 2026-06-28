@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/console/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>The console: the build progress panel and the ninja status pipeline - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "The console: the build progress panel and the ninja status pipeline";
+        var mkdocs_page_input_path = "develop/console.md";
+        var mkdocs_page_url = "/docs/en/develop/console/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">The console: the build progress panel and the ninja status pipeline</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-why-parse-ninjas-stdout-and-not-an-event-api">1. Why parse ninja's stdout (and not an event API)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-two-run-modes-ninja_runner_run_ninja_build">2. Two run modes (ninja_runner._run_ninja_build)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-the-parse-loop-ninja_runner_show_progress">3. The parse loop (ninja_runner._show_progress)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-transient-panel-vs-permanent-output">4. Transient panel vs permanent output</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-rendering-the-panel-consolerender_build_panel">5. Rendering the panel (console.render_build_panel)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-the-tri-state-grayscale-bar-console_tri_state_bar">6. The tri-state grayscale bar (console._tri_state_bar)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-rule-descriptions-are-colored-at-generation-time">7. Rule descriptions are colored at generation time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8-degradation">8. Degradation</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">The console: the build progress panel and the ninja status pipeline</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/console.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="the-console-the-build-progress-panel-and-the-ninja-status-pipeline">The console: the build progress panel and the ninja status pipeline<a class="headerlink" href="#the-console-the-build-progress-panel-and-the-ninja-status-pipeline" title="Permanent link">&para;</a></h1>
+<p><code>console.py</code> owns all of Blade's terminal decoration — colors, the cursor, and
+the live <strong>build progress panel</strong>. The interesting part is how that panel is
+driven: stock ninja exposes no structured progress API, so Blade reconstructs
+the panel from ninja's plain status text. This note explains that pipeline.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/console.py</code></td>
+<td>Color, cursor, the progress panel renderer + clear path</td>
+</tr>
+<tr>
+<td><code>src/blade/ninja_runner.py</code></td>
+<td>Runs ninja, captures its output, parses the status stream</td>
+</tr>
+<tr>
+<td><code>src/blade/ninja_rule.py</code></td>
+<td><code>NinjaRule.emit()</code> — bakes the (colored) <code>description</code> into each rule</td>
+</tr>
+<tr>
+<td><code>src/blade/gen_rule_target.py</code>, <code>src/blade/windows_resources_target.py</code></td>
+<td>Per-target local rules; must color their own <code>description</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-why-parse-ninjas-stdout-and-not-an-event-api">1. Why parse ninja's stdout (and not an event API)<a class="headerlink" href="#1-why-parse-ninjas-stdout-and-not-an-event-api" title="Permanent link">&para;</a></h2>
+<p>Ninja has <strong>no</strong> structured progress channel in the upstream tree. The protobuf
+"frontend" interface (ninja PR #1210) was never merged, and bundling a fork just
+for it isn't worth a protobuf dependency. So the only live signal is ninja's
+status text.</p>
+<p>Two facts about that text (see ninja <code>src/status_printer.cc</code>) shape the design:</p>
+<ul>
+<li><strong>Smart terminal</strong>: ninja prints a status line on edge <em>start</em> and <em>finish</em>,
+  overwriting in place with <code>\r</code>, and leaves the last line on screen — this is
+  the leftover <code>[226/226] LINK …</code> line Blade used to show.</li>
+<li><strong>Piped / dumb</strong> (what Blade uses): ninja prints <strong>only on edge finish</strong>, one
+  line per completed edge, newline-terminated — and a separate <code>FAILED:</code> /
+  <code>ninja: …</code> block on error. Edge <em>starts</em> are not printed.</li>
+</ul>
+<p>So when Blade pipes ninja, it gets a clean, parseable stream: one
+<code>[finished/total](running) &lt;desc&gt;</code> per completion, plus distinct error blocks.
+The format is fixed by <code>NINJA_STATUS='[%f/%t](%r) '</code> (<code>%f</code>/<code>%t</code>/<code>%r</code> =
+finished/total/running). Because dumb mode is finish-only, Blade can show the
+<strong>count</strong> of running edges (<code>%r</code>) but not <em>which</em> edges are running — the
+per-running-task identity would require the (unavailable) frontend protocol.</p>
+<h2 id="2-two-run-modes-ninja_runner_run_ninja_build">2. Two run modes (<code>ninja_runner._run_ninja_build</code>)<a class="headerlink" href="#2-two-run-modes-ninja_runner_run_ninja_build" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Verbose</strong> (<code>-v</code>): hand the terminal straight to ninja
+  (<code>_run_ninja_command</code>) so every command is printed in full. No panel.</li>
+<li><strong>Otherwise</strong> (default + quiet): redirect ninja's stdout+stderr to
+  <code>blade-bin/ninja_output.log</code> and tail it with <code>_show_progress</code>. Redirecting is
+  what puts ninja in dumb mode, giving the finish-only stream above.</li>
+</ul>
+<h2 id="3-the-parse-loop-ninja_runner_show_progress">3. The parse loop (<code>ninja_runner._show_progress</code>)<a class="headerlink" href="#3-the-parse-loop-ninja_runner_show_progress" title="Permanent link">&para;</a></h2>
+<p>A single reader loop classifies each line:</p>
+<ul>
+<li>Matches <code>^\[(\d+)/(\d+)\]\((\d+)\)\s+(.*)$</code> → a completed edge: update
+  finished/total/running, push the description into a bounded
+  <code>deque(maxlen=_PANEL_MAX_RECENT)</code>, compute ETA, and call
+  <code>console.render_build_panel(...)</code>. (<code>%r</code> is decremented by one — ninja prints
+  the finishing edge before decrementing its running counter.)</li>
+<li>Anything else → <code>console.output(line)</code>: a <strong>permanent</strong> line (warnings,
+  errors, <code>ninja: …</code>). Leading indentation is preserved.</li>
+<li>On exit: clear the panel; on clean success print <code>"&lt;N&gt; build steps
+  completed"</code>, which replaces the panel — no leftover <code>[N/N]</code> line.</li>
+</ul>
+<h2 id="4-transient-panel-vs-permanent-output">4. Transient panel vs permanent output<a class="headerlink" href="#4-transient-panel-vs-permanent-output" title="Permanent link">&para;</a></h2>
+<p>The whole design rests on one split:</p>
+<ul>
+<li>The <strong>panel</strong> is <em>transient</em> — it lives at the bottom of the screen and is
+  redrawn / erased in place.</li>
+<li>Everything else is <em>permanent</em> — printed with a trailing newline so it scrolls
+  up and stays.</li>
+</ul>
+<p><code>console.output()</code> → <code>_do_print()</code> calls <code>_clear_progress_bar_locked()</code> <strong>before</strong>
+printing. So when an error/warning arrives, the panel is wiped first, the message
+is printed permanently above, and the next progress line repaints the panel below
+it. Consequently <strong>only Blade's own panel is ever erased — a real error is never
+overwritten.</strong> This is what makes "the last line might be an error" a non-issue.</p>
+<h2 id="5-rendering-the-panel-consolerender_build_panel">5. Rendering the panel (<code>console.render_build_panel</code>)<a class="headerlink" href="#5-rendering-the-panel-consolerender_build_panel" title="Permanent link">&para;</a></h2>
+<p>The panel is a list of lines: a header (the bar) + the recent-completions window.
+Drawing in place:</p>
+<ul>
+<li>Track <code>_region_height</code> = lines currently on screen.</li>
+<li>To redraw: move the cursor up <code>_region_height</code> lines (<code>\033[{n}A</code>), then
+  <code>\r\033[J</code> (carriage return + clear-to-end-of-display) wipes the old panel and
+  anything below, then print the new lines and park the cursor on the empty line
+  <em>below</em> the panel — so the next redraw moves up exactly <code>_region_height</code>.</li>
+<li>The cursor is hidden while the panel is on screen (<code>_hide_cursor_locked</code>) and
+  restored on clear and via an <code>atexit</code> hook, so an interrupted build never
+  leaves the terminal cursorless.</li>
+<li>Repaints are throttled (<code>_PROGRESS_REFRESH_INTERVAL</code>), but the final 100% frame
+  always paints.</li>
+</ul>
+<p>The clear path is unified: <code>_clear_progress_bar_locked()</code> wipes the multi-line
+panel when <code>_region_height &gt; 0</code>, else the single-line bar (<code>\r</code> + clear-to-EOL).
+Both also re-show the cursor.</p>
+<h2 id="6-the-tri-state-grayscale-bar-console_tri_state_bar">6. The tri-state grayscale bar (<code>console._tri_state_bar</code>)<a class="headerlink" href="#6-the-tri-state-grayscale-bar-console_tri_state_bar" title="Permanent link">&para;</a></h2>
+<p><code>%f</code>/<code>%r</code>/<code>%t</code> give three zones: <strong>done</strong> (finished), <strong>running</strong>, and
+<strong>remaining</strong> (<code>total - finished - running</code>). The bar paints them in three
+grayscale shades — bright / mid / dark (<code>\033[38;5;{252,245,238}m</code> block glyphs)
+— so the build state reads at a glance. Segment widths use a <strong>cumulative floor</strong>
+so they always sum to the bar width exactly:</p>
+<pre><code class="language-python">done_w = width * finished // total
+run_w  = width * (finished + running) // total - done_w
+rem_w  = width - done_w - run_w
+</code></pre>
+<p>When color is off, it falls back to distinct block glyphs (<code>█</code> / <code>▒</code> / <code>░</code>). The
+bar width is sized so the header (<code>finished/total pct% ·running running  ETA …</code>)
+fits one line; the recent-window lines are truncated to the terminal width — both
+matter because a wrapped line would break the cursor-up math.</p>
+<h2 id="7-rule-descriptions-are-colored-at-generation-time">7. Rule descriptions are colored at generation time<a class="headerlink" href="#7-rule-descriptions-are-colored-at-generation-time" title="Permanent link">&para;</a></h2>
+<p>What shows after <code>[N/N]</code> is the rule's ninja <code>description</code>, expanded by ninja.
+Color is baked into that string <strong>when the ninja file is generated</strong>, not at
+print time: <code>NinjaRule.emit()</code> wraps it in <code>console.colored(desc, 'dimpurple')</code>
+(which returns plain text when color is off). Per-target <em>local</em> rules must do
+the same, or they show up uncolored in the panel while every other step is
+colored — this is why <code>gen_rule</code> and <code>windows_resources</code> (the <code>RC</code> rule) color
+their own <code>description</code>.</p>
+<h2 id="8-degradation">8. Degradation<a class="headerlink" href="#8-degradation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Non-TTY / redirected</strong> (<code>_cursor_control</code> false): <code>render_build_panel</code> is a
+  no-op — no escape codes leak into a pipe or log; only permanent lines + the
+  summary appear.</li>
+<li><strong>Color off</strong> (<code>_color_enabled</code> false): the bar uses glyph shades and
+  descriptions are plain.</li>
+<li><strong>Quiet</strong> (<code>is_quiet()</code>): the recent-completions window is dropped — only the
+  aggregate bar is shown, no per-step descriptions.</li>
+<li><strong>Verbose</strong>: no panel at all; ninja owns the terminal.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../configuration/" class="btn btn-neutral float-left" title="How configuration is loaded, layered, and consumed"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../custom_rule/" class="btn btn-neutral float-right" title="How Custom Rules (define_rule) Work">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../custom_rule/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

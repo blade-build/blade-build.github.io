@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/build_file/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>编写 BUILD 文件 - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u7f16\u5199 BUILD \u6587\u4ef6";
+        var mkdocs_page_input_path = "build_file.md";
+        var mkdocs_page_url = "/docs/zh/build_file/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">编写 BUILD 文件</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#build_1">BUILD 文件示例</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build_2">BUILD 语言</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">风格建议</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">通用属性</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#name">name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#srcs">srcs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deps">deps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#visibility">visibility</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tags">tags</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">构建规则</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">其他特性</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">用户指南</li>
+      <li class="breadcrumb-item active">编写 BUILD 文件</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_file.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="build">编写 BUILD 文件<a class="headerlink" href="#build" title="Permanent link">&para;</a></h1>
+<p>Blade 通过一组名为 <code>BUILD</code>（全大写）的文件来描述构建目标。每个 <code>BUILD</code> 文件以声明式语法，通过一组目标描述函数，指定一个或多个目标的源文件、依赖关系与配置属性。</p>
+<h2 id="build_1">BUILD 文件示例<a class="headerlink" href="#build_1" title="Permanent link">&para;</a></h2>
+<p>示例：<code>common/base/string/BUILD</code></p>
+<pre><code class="language-python">cc_library(
+    name = 'string',
+    srcs = [
+        'algorithm.cpp',
+        'format.cpp',
+        'concat.cpp',
+    ],
+    hdrs = [
+        'algorithm.h',
+        'format.h',
+        'concat.h',
+    ],
+    deps = ['//common/base:int'],
+)
+</code></pre>
+<p>BUILD 文件采用声明式语法：开发者只需声明目标名、源文件与依赖，而无需显式描述编译或链接命令。</p>
+<h2 id="build_2">BUILD 语言<a class="headerlink" href="#build_2" title="Permanent link">&para;</a></h2>
+<p>参见 <a href="../dsl/">BUILD 语言</a>。</p>
+<h2 id="_1">风格建议<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>四空格缩进，不要使用 tab 字符</li>
+<li>统一使用单引号（<code>'</code>），而非双引号（<code>"</code>）</li>
+<li>目标名全部小写</li>
+<li><code>srcs</code> 中的文件名按字母顺序排列</li>
+<li><code>deps</code> 中先列本目录内的依赖（<code>:target</code>），再列其他目录下的依赖（<code>//dir:name</code>），各自按字母顺序排列</li>
+<li>每行一个参数时，最后一个参数也以逗号（<code>,</code>）结尾，以减少增删参数时的行变更数</li>
+<li>不同目标之间留一个空行，必要时在目标前加注释</li>
+<li>注释的 <code>#</code> 后面保留一个空格，例如 <code># This is a comment</code></li>
+</ul>
+<h2 id="_2">通用属性<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Blade 通过一组 target 函数来定义构建目标，这些目标共有的通用属性如下：</p>
+<h3 id="name">name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<p>字符串。与目录路径一起构成目标的唯一标识，同时决定构建产物的输出名。</p>
+<h3 id="srcs">srcs<a class="headerlink" href="#srcs" title="Permanent link">&para;</a></h3>
+<p>列表或字符串。构建该目标所需的源文件，通常位于当前目录或其子目录中。</p>
+<p>Blade 还提供了 <a href="../functions/#glob"><code>glob</code></a> 函数，用于通过通配符生成源文件列表。</p>
+<h3 id="deps">deps<a class="headerlink" href="#deps" title="Permanent link">&para;</a></h3>
+<p>列表或字符串。声明该目标所依赖的其他目标。</p>
+<p>允许的格式：</p>
+<ul>
+<li><code>'//path/to/dir:name'</code>：其他目录下的目标。<code>path</code> 为从 <code>BLADE_ROOT</code> 出发的路径，<code>name</code> 为目标名，一目了然地指出依赖位置。</li>
+<li><code>':name'</code>：当前 BUILD 文件内的目标，路径可以省略。</li>
+<li><code>'#name'</code>：系统库。直接写 <code>#</code> 加名字即可，例如 <code>#pthread</code>、<code>#z</code> 分别等价于链接命令行上的 <code>-lpthread</code> 和 <code>-lz</code>；同时会被传递给依赖该库的其他目标。</li>
+</ul>
+<h3 id="visibility">visibility<a class="headerlink" href="#visibility" title="Permanent link">&para;</a></h3>
+<p>目标模式的列表或字符串，用于控制该目标对哪些目标可见。特殊值 <code>PUBLIC</code> 表示对所有目标可见；同一目录下的目标之间始终相互可见。</p>
+<p>示例：</p>
+<pre><code class="language-python">visibility = []                                             # 私有，仅对当前 BUILD 文件可见
+visibility = ['PUBLIC']                                     # 对所有目标可见
+visibility = ['//module1:program12', '//module1:program2']  # 仅对这两个目标可见
+visibility = ['//module2:*']                                # 仅对 module2 目录下的目标可见，不含其子目录
+visibility = ['//module3:...']                              # 对 module3 及其所有子目录下的目标均可见
+</code></pre>
+<p>在 Blade 1 中，所有目标默认都是 <code>PUBLIC</code>。在 Blade 2 中，为了适应更大规模项目的依赖管理，默认改为私有。
+对于既有项目中的存量目标，可以通过 <a href="../config/#global_config"><code>legacy_public_targets</code></a> 配置项整体设为 <code>PUBLIC</code>，只在新增目标上显式声明可见性即可。</p>
+<h3 id="tags">tags<a class="headerlink" href="#tags" title="Permanent link">&para;</a></h3>
+<p>目标的标签，用户可以自行设置和查询。Blade 会为每种目标预置一些默认标签。</p>
+<p>标签由「组名」和「名字」两部分组成，中间以冒号分隔。</p>
+<p>Blade 为各类构建目标预设了一些标签：</p>
+<ul>
+<li>按编程语言：<code>lang:cc</code>、<code>lang:java</code>、<code>lang:py</code>、<code>lang:proto</code> 等</li>
+<li>按类型：<code>type:binary</code>、<code>type:test</code>、<code>type:library</code></li>
+<li>其他属性：<code>type:prebuilt</code></li>
+</ul>
+<p>例如 <code>cc_library</code> 目标会自动具有 <code>['lang:cc', 'type:library']</code> 标签。</p>
+<p>目前默认标签尚未形成严格的命名规范，未来可能会调整。</p>
+<p>标签最大的用途是在命令行中查询与过滤，例如只构建某几种语言的目标、排除某类目标等。
+详见<a href="../command_line/">命令行参考</a>。</p>
+<h2 id="_3">构建规则<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../build_rules/cc/">构建 C/C++ 目标</a></li>
+<li><a href="../build_rules/idl/">构建 protobuf 和 thrift</a></li>
+<li><a href="../build_rules/java/">构建 Java</a></li>
+<li><a href="../build_rules/scala/">构建 Scala</a></li>
+<li><a href="../build_rules/python/">构建 Python</a></li>
+<li><a href="../build_rules/lexyacc/">构建 Lex 和 Yacc</a></li>
+<li><a href="../build_rules/swig/">构建 SWIG</a></li>
+<li><a href="../build_rules/shell/">Bash 测试</a></li>
+<li><a href="../build_rules/gen_rule/">自定义规则构建</a></li>
+<li><a href="../build_rules/package/">文件打包</a></li>
+</ul>
+<h2 id="_4">其他特性<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<ul>
+<li>BUILD 文件中可调用的<a href="../functions/">通用函数</a></li>
+<li>通过<a href="../build_rules/extension/">扩展机制</a>创建和使用自定义函数与规则</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../workspace/" class="btn btn-neutral float-left" title="工作空间配置"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dsl/" class="btn btn-neutral float-right" title="DSL 和 API 模块">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../workspace/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dsl/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

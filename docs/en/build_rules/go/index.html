@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/build_rules/go/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Build Go Targets - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Build Go Targets";
+        var mkdocs_page_input_path = "build_rules/go.md";
+        var mkdocs_page_url = "/docs/en/build_rules/go/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Build Go Targets</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#go_library">go_library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#go_binary">go_binary</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#go_test">go_test</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#go_package">go_package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-protobuf-with-go">Using Protobuf with Go</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Build Rules</li>
+      <li class="breadcrumb-item active">Build Go Targets</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/go.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="build-go-targets">Build Go Targets<a class="headerlink" href="#build-go-targets" title="Permanent link">&para;</a></h1>
+<p>Blade uses <code>go_library</code>, <code>go_binary</code>, and <code>go_test</code> to build Go packages.
+There is also a <code>go_package</code> convenience wrapper that auto-detects the package type.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Before using go targets, configure the Go toolchain in <code>BLADE_ROOT</code>:</p>
+<pre><code class="language-python">go_config(
+    go = '/usr/local/go/bin/go',
+    go_home = '/usr/local/go',
+)
+</code></pre>
+<p>When Go modules are enabled, set <code>go_module_enabled = True</code>:</p>
+<pre><code class="language-python">go_config(
+    go_home = '/usr/local/go',
+    go_module_enabled = True,
+    go_module_relpath = '',
+)
+</code></pre>
+<h2 id="go_library">go_library<a class="headerlink" href="#go_library" title="Permanent link">&para;</a></h2>
+<p>Build a Go package as a library.</p>
+<pre><code class="language-python">go_library(
+    name = 'mylib',
+    srcs = [
+        'mylib.go',
+        'helper.go',
+    ],
+    deps = [
+        '//common/go:base',
+    ],
+)
+</code></pre>
+<p>Attributes:</p>
+<ul>
+<li><code>srcs</code>: Go source files. All <code>.go</code> files in the same directory must belong to the same Go package.</li>
+<li><code>deps</code>: Other go_library or proto_library targets with Go output.</li>
+<li><code>extra_goflags</code>: Extra flags passed to the Go compiler (<code>list[str]</code> or <code>str</code>).</li>
+<li><code>visibility</code>: Visibility specification.</li>
+<li><code>tags</code>: Build tags.</li>
+</ul>
+<p>Output: a <code>.a</code> archive file placed under <code>$go_home/pkg/$GOOS_$GOARCH/</code>.</p>
+<h2 id="go_binary">go_binary<a class="headerlink" href="#go_binary" title="Permanent link">&para;</a></h2>
+<p>Build a Go executable.</p>
+<pre><code class="language-python">go_binary(
+    name = 'myserver',
+    srcs = [
+        'main.go',
+    ],
+    deps = [
+        ':mylib',
+    ],
+)
+</code></pre>
+<p>Attributes are the same as <code>go_library</code>.</p>
+<h2 id="go_test">go_test<a class="headerlink" href="#go_test" title="Permanent link">&para;</a></h2>
+<p>Build and run a Go test binary.</p>
+<pre><code class="language-python">go_test(
+    name = 'mylib_test',
+    srcs = [
+        'mylib_test.go',
+    ],
+    deps = [
+        ':mylib',
+    ],
+    testdata = [
+        'testdata/config.json',
+    ],
+)
+</code></pre>
+<p>Additional attributes:</p>
+<ul>
+<li><code>testdata</code>: Test data files, similar to other test targets.</li>
+</ul>
+<h2 id="go_package">go_package<a class="headerlink" href="#go_package" title="Permanent link">&para;</a></h2>
+<p>Convenience wrapper that automatically detects whether a directory contains a library or a command.</p>
+<pre><code class="language-python">go_package(
+    name = 'mypackage',
+    deps = [
+        '//common/go:base',
+    ],
+)
+</code></pre>
+<p>Blade scans the current directory for <code>.go</code> files:</p>
+<ul>
+<li>If any file has <code>package main</code>, a <code>go_binary</code> is created.</li>
+<li>Otherwise, a <code>go_library</code> is created.</li>
+<li>If <code>*_test.go</code> files exist, a <code>go_test</code> is created automatically.</li>
+</ul>
+<h2 id="using-protobuf-with-go">Using Protobuf with Go<a class="headerlink" href="#using-protobuf-with-go" title="Permanent link">&para;</a></h2>
+<p>Add a <code>proto_library</code> dependency to generate Go protobuf code:</p>
+<pre><code class="language-python">go_library(
+    name = 'service',
+    srcs = ['service.go'],
+    deps = [
+        '//proto:myproto',  # proto_library target
+    ],
+)
+</code></pre>
+<p>The proto file must contain a <code>go_package</code> option:</p>
+<pre><code class="language-protobuf">option go_package = &quot;github.com/example/myproto&quot;;
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../gen_rule/" class="btn btn-neutral float-left" title="Custom Build Rules"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../idl/" class="btn btn-neutral float-right" title="Build Protobuf and Thrift">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../gen_rule/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../idl/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

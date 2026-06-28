@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/python_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How Python targets are built and packaged - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How Python targets are built and packaged";
+        var mkdocs_page_input_path = "develop/python_build.md";
+        var mkdocs_page_url = "/docs/en/develop/python_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How Python targets are built and packaged</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-targets">1. Targets</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-source-and-dep-collection">2. Source and dep collection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-py_binary-packaging">3. py_binary packaging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-test-execution">4. Test execution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-implementation-details-and-ux-optimizations">5. Implementation details and UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How Python targets are built and packaged</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/python_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-python-targets-are-built-and-packaged">How Python targets are built and packaged<a class="headerlink" href="#how-python-targets-are-built-and-packaged" title="Permanent link">&para;</a></h1>
+<p>A <code>py_binary</code> ends up as a <strong>shell wrapper + a sibling <code>.zip</code></strong> archive:
+the zip is the application bundle, and the wrapper prepends it to
+<code>PYTHONPATH</code> and invokes <code>python -m &lt;entry&gt;</code>. No PEX, no PyInstaller —
+just standard Python <code>zipapp</code>-style loading. The whole pipeline is
+intentionally small and predictable.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/py_targets.py</code></td>
+<td><code>PythonLibrary</code>, <code>PythonBinary</code>, <code>PythonTest</code></td>
+</tr>
+<tr>
+<td><code>src/blade/builtin_tools.py</code></td>
+<td>The Python zip assembler and wrapper-script emitter</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>pythonlibrary</code> / <code>pythonbinary</code> ninja rules</td>
+</tr>
+<tr>
+<td><code>src/blade/test_scheduler.py</code></td>
+<td>Test launching for <code>py_test</code> (uses the same wrapper)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-targets">1. Targets<a class="headerlink" href="#1-targets" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>py_library</code></strong> — emits a <code>.pylib</code> metadata file: a Python literal
+  containing the library's source files and their MD5 digests, plus the
+  package base directory. No executable output; this is purely the unit
+  of information a <code>py_binary</code> later collects.</li>
+<li><strong><code>py_binary</code></strong> — <code>PythonLibrary</code> plus a packaging step: produces
+  <code>&lt;name&gt;.zip</code> (the bundle) and <code>&lt;name&gt;</code> (the shell wrapper).</li>
+<li><strong><code>py_test</code></strong> — <code>PythonBinary</code> with <code>run_in_shell=True</code>. The test
+  framework (unittest, pytest, ...) is whatever the user's <code>main</code> module
+  invokes; blade does not impose a runner.</li>
+</ul>
+<h2 id="2-source-and-dep-collection">2. Source and dep collection<a class="headerlink" href="#2-source-and-dep-collection" title="Permanent link">&para;</a></h2>
+<p><code>base='//path'</code> on a target controls how source paths get mapped to
+import names. With <code>base='//proto'</code>, a source <code>proto/foo/bar.py</code> becomes
+<code>foo.bar</code> at import time. <code>_get_entry()</code> computes the dotted name for the
+<code>main</code> attribute by stripping <code>.py</code> and rewriting separators.</p>
+<p>Sources can be raw <code>.py</code> files, <code>.egg</code>s, or <code>.whl</code>s. The <code>.pylib</code> records
+each as a <code>(path, md5)</code> pair; a binary then walks <code>expanded_deps</code> and
+reads every dep's <code>.pylib</code> for its file list. There is intentionally no
+native-extension story: deps that produce <code>.so</code>/<code>.dylib</code> outputs (e.g. a
+<code>cc_library</code> referenced from a Python target) are not pulled in by this
+mechanism.</p>
+<h2 id="3-py_binary-packaging">3. <code>py_binary</code> packaging<a class="headerlink" href="#3-py_binary-packaging" title="Permanent link">&para;</a></h2>
+<p>The builtin <code>python_binary</code> tool in <code>builtin_tools.py</code> does the actual
+assembly:</p>
+<ol>
+<li>Read each input <code>.pylib</code> and re-derive each source's arcname relative
+   to the configured base.</li>
+<li>Filter against the target's <code>exclusions</code> (fnmatch patterns) — useful
+   for keeping test fixtures or platform-specific files out of the bundle.</li>
+<li><code>.egg</code>/<code>.whl</code> inputs are unzipped and re-zipped on the fly, dropping
+   metadata directories (<code>.dist-info/</code>, <code>EGG-INFO/</code>) and pre-built
+   bytecode (<code>.pyc</code>); bytecode is generated at runtime instead, which
+   sidesteps cross-Python-version mismatches.</li>
+<li>Track which directories saw at least one source; inject empty
+   <code>__init__.py</code> for any directory that's part of the namespace path but
+   doesn't already have one (so namespace packages work without users
+   adding stubs by hand).</li>
+<li>Write the zip via <code>write_if_changed</code> so unchanged content preserves
+   mtime — ninja's <code>restat</code> can then prune downstream rules that depended
+   on this bundle.</li>
+</ol>
+<p>The wrapper is platform-specific but very small:</p>
+<ul>
+<li>POSIX (<code>#!/bin/sh</code>): <code>PYTHONPATH="$DIR/$NAME.zip:$PYTHONPATH" exec
+  "$BLADE_PYTHON_INTERPRETER" -m &lt;entry&gt;</code>.</li>
+<li>Windows (<code>.bat</code>): the analogous <code>set PYTHONPATH=...;%PYTHONPATH%</code>
+  followed by <code>python -m &lt;entry&gt;</code>.</li>
+</ul>
+<p><code>BLADE_PYTHON_INTERPRETER</code> lets the running shell/CI pick a specific
+interpreter version without rebuilding the bundle; the wrapper defaults
+to the host <code>python3</code>/<code>python</code>. So a <code>py_binary</code> built once can be
+launched on multiple Python versions, as long as the user's code is
+compatible.</p>
+<h2 id="4-test-execution">4. Test execution<a class="headerlink" href="#4-test-execution" title="Permanent link">&para;</a></h2>
+<p><code>py_test</code> sets <code>run_in_shell=True</code>. The test scheduler
+(<a href="../test_execution/">test execution</a>) sees that flag and launches the
+wrapper script via the shell — which then dispatches into <code>python -m
+&lt;entry&gt;</code>. blade contributes no test framework: the test author's <code>main</code>
+module is what calls <code>pytest.main()</code> / <code>unittest.main()</code> / their own
+runner. Exit code determines pass/fail, and the runfiles / testdata
+plumbing is the standard one all test rules share.</p>
+<h2 id="5-implementation-details-and-ux-optimizations">5. Implementation details and UX optimizations<a class="headerlink" href="#5-implementation-details-and-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>No <code>.pyc</code> in the bundle.</strong> Bytecode is generated at first import
+  into the user's runtime cache; the bundle stays portable across
+  Python minor versions. The cost is a one-time per-process bytecode
+  generation; the benefit is bundles that don't have to be rebuilt per
+  interpreter.</li>
+<li><strong><code>write_if_changed</code> zip.</strong> If the assembled content didn't change
+  (typical of touched-but-no-content-changed BUILD edits), the zip's
+  mtime is preserved so any dependent rules see no input change. Most
+  rebuilds of an upstream test data file have zero downstream cost.</li>
+<li><strong>Source-fingerprint MD5 in <code>.pylib</code>.</strong> ninja's depfile catches
+  filesystem changes, but the explicit MD5 in <code>.pylib</code> makes the
+  library's identity content-based rather than mtime-based — useful for
+  catching <code>touch</code>-only changes that shouldn't trigger work.</li>
+<li><strong><code>base</code> is the only knob to learn.</strong> Most other build systems require
+  a sources-vs-packages map; here a single <code>base</code> plus normal directory
+  layout is enough. The entry computation is then a pure path-to-dotted
+  rewrite, and the runtime side is just one extra <code>PYTHONPATH</code> entry.</li>
+<li><strong>Fresh-machine launchability.</strong> The pair (<code>wrapper</code>, <code>wrapper.zip</code>)
+  is self-contained as long as a Python interpreter is on <code>$PATH</code>. No
+  install step.</li>
+<li><strong>What blade does not do.</strong> It does not bundle native extensions, does
+  not perform a <code>pip install</code> of declared requirements, and does not
+  rewrite shebangs — these are deliberately left to project conventions
+  (vendor the wheels into a <code>py_library</code>, or rely on the runtime
+  environment).</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../protobuf_build/" class="btn btn-neutral float-left" title="How proto_library handles multi-language codegen"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../self_testing/" class="btn btn-neutral float-right" title="How blade-build itself is tested">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../protobuf_build/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../self_testing/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

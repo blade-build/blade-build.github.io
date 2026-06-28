@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/test_execution/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How blade test runs user tests - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How blade test runs user tests";
+        var mkdocs_page_input_path = "develop/test_execution.md";
+        var mkdocs_page_url = "/docs/en/develop/test_execution/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How blade test runs user tests</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-pipeline-overview">1. Pipeline overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-per-test-environment">2. Per-test environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-parallel-scheduling">3. Parallel scheduling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-results-summary-and-the-test-history">4. Results, summary, and the test history</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-incremental-dedup-of-unchanged-tests">5. Incremental dedup of unchanged tests</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-implementation-details-and-ux-optimizations">6. Implementation details and UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How blade test runs user tests</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/test_execution.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-blade-test-runs-user-tests">How <code>blade test</code> runs user tests<a class="headerlink" href="#how-blade-test-runs-user-tests" title="Permanent link">&para;</a></h1>
+<p>Test execution sits on top of the regular build: once the binaries are
+ready, blade decides which ones are worth running this time, prepares a
+per-test sandbox, schedules them in parallel (with one carve-out for
+exclusive tests), captures their results, and updates a persistent
+history so the next run can skip the unchanged ones.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/test_runner.py</code></td>
+<td>Discovery, history-based dedup, result aggregation</td>
+</tr>
+<tr>
+<td><code>src/blade/test_scheduler.py</code></td>
+<td>Parallel job dispatch, worker threads, timeout</td>
+</tr>
+<tr>
+<td><code>src/blade/binary_runner.py</code></td>
+<td>Per-test runfiles dir, env vars, testdata staging</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>cc_test_config</code>, <code>global_config.test_timeout</code>, <code>test_related_envs</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-pipeline-overview">1. Pipeline overview<a class="headerlink" href="#1-pipeline-overview" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>TestRunner.run()</code> collects every <code>*_test</code> target (<code>cc_test</code>,
+   <code>java_test</code>, <code>py_test</code>, <code>scala_test</code>, <code>sh_test</code>, ...) and asks
+   <code>_run_reason()</code> for each whether it needs to run this time.</li>
+<li>For tests that do, <code>BinaryRunner._prepare_env()</code> builds a per-test
+   <code>&lt;target&gt;.runfiles</code> directory, symlinks shared libs in, copies
+   testdata, and assembles the env dict.</li>
+<li><code>TestScheduler.schedule_jobs()</code> dispatches the jobs across worker
+   threads. Tests marked <code>exclusive=True</code> get a separate single-worker
+   pass after the parallel batch.</li>
+<li>After all jobs complete, the runner merges results into the test
+   history file, writes the JSON summary, and prints the
+   passed/failed/unchanged/repaired counts.</li>
+</ol>
+<h2 id="2-per-test-environment">2. Per-test environment<a class="headerlink" href="#2-per-test-environment" title="Permanent link">&para;</a></h2>
+<p>Each test runs with <code>cwd=&lt;target&gt;.runfiles</code>. The directory is rebuilt
+from scratch every run; into it go:</p>
+<ul>
+<li><strong>A symlink of the build dir</strong> (<code>runfiles/&lt;build_dir_basename&gt; -&gt;
+  &lt;abs build dir&gt;</code>). Blade-built shared libs carry their relative
+  build path as their identity (no soname / no <code>@rpath</code>), so this
+  symlink is what lets <code>build_release/lib/libfoo.so</code> resolve at
+  runtime from the test's cwd. This was the fix for issue #1167 and
+  also makes macOS dyld and Linux ld.so behave the same way without an
+  OS branch.</li>
+<li><strong>Per-soname symlinks</strong> for prebuilt libraries that do carry a
+  soname (<code>libcrypto.so.1.0.0</code>, ...). Found at runtime via the
+  <code>LD_LIBRARY_PATH</code> blade prepends to point at the runfiles dir.</li>
+<li><strong>Staged testdata</strong> copied from the target's <code>testdata</code> attr (and from
+  any sibling <code>&lt;target&gt;.testdata</code> file). Items can be plain paths or
+  <code>(src, dst)</code> tuples; <code>//</code>-prefixed paths are workspace-relative.</li>
+</ul>
+<p>The env passed to the test is a copy of <code>os.environ</code> plus:</p>
+<ul>
+<li><code>LD_LIBRARY_PATH</code> (runfiles + configured <code>run_lib_paths</code>).</li>
+<li><code>PATH</code> extended with <code>java_home/bin</code> if <code>java_config.java_home</code> is set.</li>
+<li><code>GTEST_COLOR</code>, <code>GTEST_OUTPUT=xml</code>, <code>HEAPCHECK</code> (per-target),
+  <code>PPROF_PATH</code>, <code>BLADE_COVERAGE</code> when applicable.</li>
+</ul>
+<p>Windows skips the soname-symlink path (PE loading does not look there
+anyway), so this whole sandbox is POSIX-shaped.</p>
+<h2 id="3-parallel-scheduling">3. Parallel scheduling<a class="headerlink" href="#3-parallel-scheduling" title="Permanent link">&para;</a></h2>
+<p><code>TestScheduler</code> runs two passes:</p>
+<ul>
+<li><strong>Normal pass</strong>: up to <code>global_config.test_jobs</code> worker threads pull
+  jobs from a shared queue. Each worker runs one <code>subprocess.Popen</code>,
+  captures stdout/stderr, applies the per-test timeout, and reports a
+  result back to the main thread.</li>
+<li><strong>Exclusive pass</strong>: tests with <code>exclusive=True</code> get serialized into a
+  separate queue run by a single worker, after the normal pass
+  completes. Useful for tests that fight over a fixed resource (port,
+  shared file, system-wide config).</li>
+</ul>
+<p>A timeout watcher on the main thread sends <code>SIGTERM</code> (then <code>SIGKILL</code>)
+when a job exceeds its limit; the exit code is mapped through
+<code>_signal_map()</code> so the result line reads <code>SIGTERM:-15</code> rather than a
+bare negative number.</p>
+<p>The runner switches between two output modes. With a single worker and
+normal verbosity it streams test stdout straight through, so an
+interactive <code>blade test</code> of one target reads as if the test were run
+directly. With multiple workers (or quiet mode) it buffers each test's
+output and emits it as a single block after the test finishes, so
+parallel runs don't interleave lines.</p>
+<h2 id="4-results-summary-and-the-test-history">4. Results, summary, and the test history<a class="headerlink" href="#4-results-summary-and-the-test-history" title="Permanent link">&para;</a></h2>
+<p>A per-test <code>TestRunResult(exit_code, start_time, cost_time)</code> is recorded
+for each job. The runner merges:</p>
+<ul>
+<li>Passed results: update the history, mark previously-failing tests as
+  "repaired".</li>
+<li>Failed results: increment <code>fail_count</code>, record <code>first_fail_time</code> if
+  this is a new failure, add to <code>new_failed_tests</code>.</li>
+</ul>
+<p>The history file <code>&lt;build_dir&gt;/.blade.test.stamp</code> stores, per test, the
+last <code>TestJob</code> (binary MD5, testdata MD5, env MD5, args) and the last
+<code>TestHistoryItem</code> (run result, fail counters). It is a Python <code>repr()</code>
+that loads back via <code>eval()</code>, so the schema stays human-readable and
+forward-compatible with field additions.</p>
+<p>A structured <code>blade-bin/.blade-test-summary.json</code> is also written every
+run, with the same data partitioned into <code>passed</code> / <code>failed</code> /
+<code>unchanged</code> / <code>repaired</code> / <code>new_failed</code> / <code>unrepaired</code> / <code>excluded</code>.
+Outside tooling (CI dashboards, IDE integrations) reads from there
+instead of parsing terminal output.</p>
+<h2 id="5-incremental-dedup-of-unchanged-tests">5. Incremental dedup of unchanged tests<a class="headerlink" href="#5-incremental-dedup-of-unchanged-tests" title="Permanent link">&para;</a></h2>
+<p>The whole machinery in §4 and §5 — test history, the
+<code>.blade-test-summary.json</code>, the <code>unchanged</code> / <code>unrepaired</code> buckets —
+exists primarily for <strong>large-monorepo CI ergonomics</strong>: in a repo with
+thousands of tests, one persistently-broken test must not gate the
+whole CI pipeline, but it cannot disappear from the summary either.
+The mechanism is a side-channel that keeps such tests visible (first-fail
+time + retry count in <code>unrepaired</code>) so an owner is still nudged to fix
+them, without holding the rest of the suite hostage.</p>
+<p><code>_run_reason()</code> decides whether a test must run:</p>
+<ul>
+<li><code>EXPLICIT</code> — the test was named on the command line.</li>
+<li><code>FULL_TEST</code> — <code>--full-test</code> overrides the dedup entirely.</li>
+<li><code>ALWAYS_RUN</code> — target sets <code>always_run=True</code>.</li>
+<li><code>BINARY</code> / <code>TESTDATA</code> / <code>ENVIRONMENT</code> / <code>ARGUMENT</code> — the corresponding
+  MD5 changed since the last passing run. Environment uses
+  <code>global_config.test_related_envs</code> (regex list) to decide which env
+  vars matter, so a change to <code>EDITOR</code> doesn't invalidate every test.</li>
+<li><code>STALE</code> — the last run is older than the cutoff (currently one day).</li>
+<li><code>NO_HISTORY</code> — first run.</li>
+<li><code>FAILED</code> / <code>RETRY</code> — the test failed last time and isn't covered by
+  the unrepaired-skip policy.</li>
+</ul>
+<p>If none of the above triggers, the test is silently skipped and counted
+under "unchanged" in the summary. Tests that have been failing for a
+while can be parked into the "unrepaired" bucket (with first-fail time
+and retry count surfaced in the summary) rather than re-running every
+build — important when one stubborn test holds up an otherwise green
+suite.</p>
+<h2 id="6-implementation-details-and-ux-optimizations">6. Implementation details and UX optimizations<a class="headerlink" href="#6-implementation-details-and-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Runfiles + cwd-relative dylib resolution.</strong> The single
+  <code>runfiles/&lt;build_dir&gt;</code> symlink is what makes blade-built <code>.so</code>/<code>.dylib</code>
+  files findable from a test's cwd without special install names or
+  rpath. The cost of that symlink is one syscall per test; the benefit
+  is that test execution works identically on Linux and macOS.</li>
+<li><strong>Exclusive tests are a separate pass.</strong> Mixing exclusive tests into
+  the parallel queue would have meant either capping parallelism for
+  the whole pass or doing per-test gating. A second, single-worker
+  pass is simpler and keeps the parallel path's logic simple.</li>
+<li><strong>The env MD5 with a configurable allow-list.</strong> <code>test_related_envs</code>
+  lets a workspace declare which env vars actually affect test
+  results, so cosmetic changes (terminal program, shell PS1) don't
+  invalidate the cache. Tests that genuinely depend on, say, <code>TZ</code> add
+  it to the list.</li>
+<li><strong>Output capture vs streaming.</strong> Auto-selecting based on worker count
+  and verbosity makes the common single-target debugging case
+  pleasant (no buffering) without sacrificing readable output on a
+  thousand-test parallel run.</li>
+<li><strong>JSON summary alongside terminal output.</strong> The summary file lets
+  CI hook into structured results without grepping the test log; it
+  carries timing, exit code, fail counts, and the "new failed" /
+  "repaired" deltas that humans care about.</li>
+<li><strong><code>unrepaired</code> policy.</strong> Skipping known-broken tests by default
+  (with a clear summary line) is a deliberate UX choice: a broken
+  test should not hold up the rest of the suite, but the summary
+  still says "still unrepaired, failing since X, retried N times" so
+  it doesn't get forgotten.</li>
+<li><strong>Coverage cleanup.</strong> When <code>--coverage</code> is set, <code>_clean_for_coverage()</code>
+  removes the per-test runfiles build-dir symlinks at the end so the
+  coverage tool walking the runfiles tree doesn't follow them into
+  the real build dir.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../self_testing/" class="btn btn-neutral float-left" title="How blade-build itself is tested"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../vcpkg/" class="btn btn-neutral float-right" title="How vcpkg Support Works">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../self_testing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../vcpkg/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

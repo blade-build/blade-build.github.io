@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/check_undefined/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How the Static Undefined-Symbol Check (check_undefined) Works - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How the Static Undefined-Symbol Check (check_undefined) Works";
+        var mkdocs_page_input_path = "develop/check_undefined.md";
+        var mkdocs_page_url = "/docs/en/develop/check_undefined/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-the-idea-a-symbol-set-difference-computed-once">1. The idea: a symbol set-difference, computed once</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-syms-per-archive-_emit_archive_syms">2. .syms per archive (_emit_archive_syms)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-per-target-spec-_generate_check_undefined">3. Per-target spec (_generate_check_undefined)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-one-batched-ninja-edge-backend_emit_cc_check_undefined_batch">4. One batched ninja edge (backend._emit_cc_check_undefined_batch)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-the-check-itself-builtin_tools">5. The check itself (builtin_tools)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-opt-outs-and-where-it-doesnt-run">6. Opt-outs and where it doesn't run</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How the Static Undefined-Symbol Check (check_undefined) Works</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/check_undefined.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-the-static-undefined-symbol-check-check_undefined-works">How the Static Undefined-Symbol Check (<code>check_undefined</code>) Works<a class="headerlink" href="#how-the-static-undefined-symbol-check-check_undefined-works" title="Permanent link">&para;</a></h1>
+<p>A <code>cc_library</code> is an archive (<code>.a</code>/<code>.lib</code>), which a linker happily builds even if
+it references symbols no dependency provides — the error only surfaces much later
+when some binary links it. <code>check_undefined</code> closes that gap: it verifies, per
+library, that every undefined external is satisfied by the library's declared
+<code>deps</code>, <strong>without</strong> doing a shared link. This document explains <strong>how it is
+implemented</strong>; for the user-facing description see
+<a href="../../build_rules/cc/#static-undefined-symbol-check">build_rules/cc.md</a>.</p>
+<p>It is <a href="https://github.com/blade-build/blade-build/issues/1225">experimental</a>;
+findings default to <code>warning</code> severity.</p>
+<p>Source files involved:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td><code>_emit_archive_syms</code> (one <code>nm</code>/<code>dumpbin</code> per archive) and <code>_generate_check_undefined</code> (collect each target's spec)</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td><code>register_cc_check_undefined</code> / <code>cc_check_undefined_specs</code> — accumulate specs; the system-symbol caches</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>_emit_cc_check_undefined_batch</code> — write the manifest + emit the single <code>ccchkund_batch</code> ninja edge</td>
+</tr>
+<tr>
+<td><code>src/blade/builtin_tools.py</code></td>
+<td><code>generate_cc_check_undefined[_batch]</code> — the actual symbol set-difference, run as a subprocess at build time</td>
+</tr>
+<tr>
+<td><code>src/blade/toolchain.py</code></td>
+<td><code>STATIC_LIB_SYMS_LABEL</code>, the <code>ccsyms</code> rule (nm vs dumpbin), default-linked-libs baseline</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-the-idea-a-symbol-set-difference-computed-once">1. The idea: a symbol set-difference, computed once<a class="headerlink" href="#1-the-idea-a-symbol-set-difference-computed-once" title="Permanent link">&para;</a></h2>
+<p>The check is, at heart: <strong><code>undefined(lib) − defined(lib ∪ deps ∪ system) ⊆ allowlist</code></strong>.
+The implementation's whole effort is making that cheap and reliable across a big
+graph:</p>
+<ol>
+<li>Run the symbol reader (<code>nm</code>, or <code>dumpbin</code> on MSVC) <strong>once per archive</strong>, not
+   once per consumer.</li>
+<li>Cache each archive's symbols in a <code>&lt;archive&gt;.syms</code> text file (undefined <code>#U</code>
+   and intra-archive defined <code>#D</code> sections).</li>
+<li>Pre-generate <code>.syms</code>-format caches for system libraries.</li>
+<li>Do the set-difference in a <strong>single batched subprocess</strong> for the whole
+   project, rather than one Python process per library.</li>
+</ol>
+<h2 id="2-syms-per-archive-_emit_archive_syms">2. <code>.syms</code> per archive (<code>_emit_archive_syms</code>)<a class="headerlink" href="#2-syms-per-archive-_emit_archive_syms" title="Permanent link">&para;</a></h2>
+<p>When a <code>cc_library</code> produces its archive, <code>_emit_archive_syms</code> emits a <code>ccsyms</code>
+ninja rule that runs <code>nm</code> once and writes <code>&lt;archive&gt;.syms</code>, recorded under the
+toolchain's <code>STATIC_LIB_SYMS_LABEL</code>. It is <strong>idempotent</strong> — re-registering the
+same label on a target is a no-op, so an archive is never nm'd twice. On MSVC the
+archive is a COFF <code>.lib</code> read with <code>dumpbin</code>; the <code>.syms</code> format is identical, so
+everything downstream is platform-agnostic.</p>
+<p>This is the key scaling move: it "collapses what used to be O(targets × deps)
+<code>nm</code> invocations down to one <code>nm</code> per archive total", because a dependent reads
+its dep's cached <code>.syms</code> instead of re-nm-ing the dep's archive.</p>
+<h2 id="3-per-target-spec-_generate_check_undefined">3. Per-target spec (<code>_generate_check_undefined</code>)<a class="headerlink" href="#3-per-target-spec-_generate_check_undefined" title="Permanent link">&para;</a></h2>
+<p>For each <code>cc_library</code> (unless opted out — see §6), this collects the inputs the
+check needs and registers a <em>spec</em> on the BuildManager:</p>
+<ul>
+<li><code>target_syms</code> — the library's own <code>&lt;archive&gt;.syms</code> (used for both its <code>#U</code>
+  undefined set and its <code>#D</code> defined set).</li>
+<li><code>dep_syms</code> — each transitive <code>cc_library</code> dep's <code>.syms</code> (the <code>#D</code> set only).</li>
+<li><code>sys_caches</code> — for each system-lib dep (<code>path == '#'</code>), its pre-generated
+  symbol cache (resolved via <code>get_system_symbol_cache</code> or carried on an
+  absolute-path lib), <strong>plus</strong> the toolchain's default-linked-libs baseline
+  (<code>get_default_linked_system_caches</code> — msvcrt/ucrt/… on MSVC, libc/libm/…
+  elsewhere). De-duplicated, since an alias can appear in both.</li>
+<li><code>allow_file</code> — the per-target + global <code>allow_undefined</code> regexes written to a
+  <code>&lt;archive&gt;.a.allow</code> sidecar so they survive shell quoting and ninja variable
+  substitution intact.</li>
+</ul>
+<p>The system-cache step is what lets the check <strong>enforce system-lib discipline</strong>:
+<code>pow()</code> resolves only if the consumer declares <code>'#m'</code>, because libm's symbols are
+in <code>sys_caches</code> only when <code>#m</code> is a dep.</p>
+<h2 id="4-one-batched-ninja-edge-backend_emit_cc_check_undefined_batch">4. One batched ninja edge (<code>backend._emit_cc_check_undefined_batch</code>)<a class="headerlink" href="#4-one-batched-ninja-edge-backend_emit_cc_check_undefined_batch" title="Permanent link">&para;</a></h2>
+<p>Rather than a per-target <code>ccchkund</code> rule (which paid one Python-interpreter
+startup <em>per library</em> on every build), all specs are accumulated and the backend
+emits a <strong>single</strong> <code>ccchkund_batch</code> edge after every target has generated:</p>
+<ul>
+<li>Specs are sorted by <code>target_label</code> and serialized to
+  <code>.cache/cc_check_undefined.manifest.json</code> (write-if-changed, so the manifest is
+  byte-stable and doesn't spuriously re-trigger).</li>
+<li>The edge's explicit inputs are the manifest + every distinct <code>.syms</code> cache (so
+  ninja re-runs the batch precisely when any symbol set changes); the <code>.allow</code>
+  files are implicit deps.</li>
+<li>The output is a stamp file, and <strong>no <code>default</code> is declared</strong> — ninja
+  auto-builds leaf outputs, so the stamp is reached without overriding ninja's
+  leaf discovery (which would break <code>blade build //some:target</code>).</li>
+<li><strong>Cached regen</strong> — if every cc_library's sub-ninja was reused this run, no spec
+  is registered, but the previous manifest on disk is re-emitted so the main
+  <code>build.ninja</code> regen stays idempotent. With genuinely nothing to check (MSVC
+  with everything opted out, or no manifest), it emits nothing.</li>
+</ul>
+<p>Because the stamp has <strong>no consumers</strong> (no build node depends on the result), the
+batch doesn't serialize against the rest of the build — it runs in parallel and
+only <em>reports</em>.</p>
+<h2 id="5-the-check-itself-builtin_tools">5. The check itself (<code>builtin_tools</code>)<a class="headerlink" href="#5-the-check-itself-builtin_tools" title="Permanent link">&para;</a></h2>
+<p><code>generate_cc_check_undefined_batch</code> runs at build time as the <code>ccchkund_batch</code>
+subprocess. For each spec it loads the <code>.syms</code> files, computes
+<code>undefined − (own_defined ∪ dep_defined ∪ system_defined)</code>, drops anything
+matching an <code>allow_undefined</code> regex, and reports the remainder at the configured
+<code>severity</code>. The non-batched <code>generate_cc_check_undefined</code> is the same logic for a
+single target (kept for clarity / direct invocation).</p>
+<h2 id="6-opt-outs-and-where-it-doesnt-run">6. Opt-outs and where it doesn't run<a class="headerlink" href="#6-opt-outs-and-where-it-doesnt-run" title="Permanent link">&para;</a></h2>
+<p><code>_generate_check_undefined</code> returns early (no spec) when:</p>
+<ul>
+<li><code>check_undefined = False</code> on the target (CLI <code>--cc-check-undefined</code> /
+  <code>--no-cc-check-undefined</code> and <code>cc_library_config.check_undefined</code> set the
+  default; per-target <code>False</code> always wins — see the tri-state resolution in
+  <code>CcTarget.__init__</code>).</li>
+<li><code>allow_undefined = True</code> — the legacy "unresolved by design, the consumer
+  provides them" signal, which also disables <code>-Wl,--no-undefined</code> at link time;
+  the static check would contradict it. (A <em>list</em> <code>allow_undefined</code> is an
+  allowlist and continues through the check as regexes.)</li>
+</ul>
+<p>It also runs for <code>generate_dynamic</code> libraries: the dynamic link's
+<code>-Wl,--no-undefined</code> is the final word, but the static check catches the same
+miss per-library <em>before</em> any link runs, with faster feedback (#1225). On MSVC it
+works via <code>dumpbin</code>, with the CRT covered by the default-linked-libs baseline so
+<code>/DEFAULTLIB</code> directives don't false-positive.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cc_build/" class="btn btn-neutral float-left" title="How C/C++ programs are built"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../configuration/" class="btn btn-neutral float-right" title="How configuration is loaded, layered, and consumed">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../cc_build/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

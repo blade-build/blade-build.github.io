@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/console/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>console：构建进度面板与 ninja 状态流水线 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "console\uff1a\u6784\u5efa\u8fdb\u5ea6\u9762\u677f\u4e0e ninja \u72b6\u6001\u6d41\u6c34\u7ebf";
+        var mkdocs_page_input_path = "develop/console.md";
+        var mkdocs_page_url = "/docs/zh/develop/console/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">console：构建进度面板与 ninja 状态流水线</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-ninja-stdout-api">1. 为什么解析 ninja 的 stdout（而不是事件 API）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-ninja_runner_run_ninja_build">2. 两种运行模式（ninja_runner._run_ninja_build）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-ninja_runner_show_progress">3. 解析循环（ninja_runner._show_progress）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-vs">4. 瞬态面板 vs 永久输出</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-consolerender_build_panel">5. 渲染面板（console.render_build_panel）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-console_tri_state_bar">6. 三段灰度进度条（console._tri_state_bar）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-rule-description">7. rule 的 description 在生成期就上好色</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8">8. 退化</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">console：构建进度面板与 ninja 状态流水线</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/console.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="console-ninja">console：构建进度面板与 ninja 状态流水线<a class="headerlink" href="#console-ninja" title="Permanent link">&para;</a></h1>
+<p><code>console.py</code> 掌管 Blade 所有终端修饰——颜色、光标,以及实时的<strong>构建进度面板</strong>。
+有意思的是这个面板<strong>怎么来的</strong>:官方 ninja 没有结构化的进度 API,所以 Blade
+从 ninja 的纯文本状态流里把面板重建出来。本文讲这条流水线。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/console.py</code></td>
+<td>颜色、光标、进度面板渲染 + 擦除路径</td>
+</tr>
+<tr>
+<td><code>src/blade/ninja_runner.py</code></td>
+<td>运行 ninja、捕获输出、解析状态流</td>
+</tr>
+<tr>
+<td><code>src/blade/ninja_rule.py</code></td>
+<td><code>NinjaRule.emit()</code>——把(带色的)<code>description</code> 烤进每条 rule</td>
+</tr>
+<tr>
+<td><code>src/blade/gen_rule_target.py</code>、<code>src/blade/windows_resources_target.py</code></td>
+<td>每目标本地 rule;须自己给 <code>description</code> 上色</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-ninja-stdout-api">1. 为什么解析 ninja 的 stdout（而不是事件 API）<a class="headerlink" href="#1-ninja-stdout-api" title="Permanent link">&para;</a></h2>
+<p>上游 ninja <strong>没有</strong>结构化进度通道。protobuf 的「frontend」接口(ninja PR #1210)
+从未合入主线,为它单独绑一个 fork + protobuf 依赖不值当。所以唯一的实时信号
+就是 ninja 的状态文本。</p>
+<p>关于这段文本的两个事实(见 ninja <code>src/status_printer.cc</code>)决定了设计:</p>
+<ul>
+<li><strong>智能终端</strong>:ninja 在 edge <em>开始</em>和<em>结束</em>各打一行状态,用 <code>\r</code> 原地覆盖,
+  并把最后一行留屏——这就是 Blade 以前残留的 <code>[226/226] LINK …</code>。</li>
+<li><strong>管道 / dumb</strong>(Blade 用的):ninja <strong>只在 edge 结束时</strong>打印,每完成一条一行、
+  以换行结尾;出错另有 <code>FAILED:</code> / <code>ninja: …</code> 块。edge <em>开始</em>不打印。</li>
+</ul>
+<p>所以 Blade 一旦用管道,就得到一条干净可解析的流:每完成一条一行
+<code>[finished/total](running) &lt;desc&gt;</code>,外加独立的报错块。格式由
+<code>NINJA_STATUS='[%f/%t](%r) '</code> 固定(<code>%f</code>/<code>%t</code>/<code>%r</code> = 完成/总数/在跑)。因为
+dumb 模式只在结束时打印,Blade 能显示在跑的<strong>数量</strong>(<code>%r</code>),却拿不到<strong>是哪几条</strong>
+在跑——逐个在跑任务的身份需要(不可用的)frontend 协议。</p>
+<h2 id="2-ninja_runner_run_ninja_build">2. 两种运行模式（<code>ninja_runner._run_ninja_build</code>）<a class="headerlink" href="#2-ninja_runner_run_ninja_build" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>verbose</strong>(<code>-v</code>):把终端直接交给 ninja(<code>_run_ninja_command</code>),完整打印每条
+  命令。无面板。</li>
+<li><strong>其它</strong>(默认 + quiet):把 ninja 的 stdout+stderr 重定向到
+  <code>blade-bin/ninja_output.log</code>,用 <code>_show_progress</code> 追读。重定向正是让 ninja 进入
+  dumb 模式、给出上面那条「只在结束时」的流。</li>
+</ul>
+<h2 id="3-ninja_runner_show_progress">3. 解析循环（<code>ninja_runner._show_progress</code>）<a class="headerlink" href="#3-ninja_runner_show_progress" title="Permanent link">&para;</a></h2>
+<p>单个读取循环对每行分类:</p>
+<ul>
+<li>匹配 <code>^\[(\d+)/(\d+)\]\((\d+)\)\s+(.*)$</code> → 一条完成的 edge:更新
+  完成/总数/在跑,把描述压入有界的 <code>deque(maxlen=_PANEL_MAX_RECENT)</code>,算出 ETA,
+  调 <code>console.render_build_panel(...)</code>。(<code>%r</code> 减一——ninja 在给在跑计数减一之前
+  就打印了正在结束的这条。)</li>
+<li>其它 → <code>console.output(line)</code>:<strong>永久</strong>行(警告、错误、<code>ninja: …</code>)。保留前导缩进。</li>
+<li>退出时:擦掉面板;干净成功则打印 <code>"&lt;N&gt; build steps completed"</code> 取代面板——
+  不留 <code>[N/N]</code> 残行。</li>
+</ul>
+<h2 id="4-vs">4. 瞬态面板 vs 永久输出<a class="headerlink" href="#4-vs" title="Permanent link">&para;</a></h2>
+<p>整个设计建立在一个区分上:</p>
+<ul>
+<li><strong>面板</strong>是<em>瞬态</em>的——它待在屏幕底部,原地重绘 / 擦除。</li>
+<li>其它都是<em>永久</em>的——带换行打印,滚上去并留住。</li>
+</ul>
+<p><code>console.output()</code> → <code>_do_print()</code> 会在打印<strong>之前</strong>调 <code>_clear_progress_bar_locked()</code>。
+所以报错/警告一到,先擦掉面板,消息永久打印在上方,下一条进度行再在其下方重画面板。
+于是<strong>被擦的永远只是 Blade 自己的面板——真正的报错绝不会被覆盖</strong>。这正是让
+「最后一行可能是报错」不再成为问题的关键。</p>
+<h2 id="5-consolerender_build_panel">5. 渲染面板（<code>console.render_build_panel</code>）<a class="headerlink" href="#5-consolerender_build_panel" title="Permanent link">&para;</a></h2>
+<p>面板是一组行:表头(进度条)+ 最近完成窗口。原地绘制:</p>
+<ul>
+<li>记 <code>_region_height</code> = 当前在屏行数。</li>
+<li>重绘:光标上移 <code>_region_height</code> 行(<code>\033[{n}A</code>),再 <code>\r\033[J</code>(回车 +
+  清到屏幕末尾)擦掉旧面板及其下方一切,然后打印新行,并把光标停在面板<em>下方</em>的
+  空行——这样下次重绘正好上移 <code>_region_height</code>。</li>
+<li>面板在屏时隐藏光标(<code>_hide_cursor_locked</code>),并在擦除时及 <code>atexit</code> 钩子里恢复,
+  所以被中断的构建不会留下没有光标的终端。</li>
+<li>重绘有节流(<code>_PROGRESS_REFRESH_INTERVAL</code>),但最后的 100% 帧一定画。</li>
+</ul>
+<p>擦除路径是统一的:<code>_clear_progress_bar_locked()</code> 在 <code>_region_height &gt; 0</code> 时擦多行
+面板,否则擦单行进度条(<code>\r</code> + 清到行尾)。两者都会重新显示光标。</p>
+<h2 id="6-console_tri_state_bar">6. 三段灰度进度条（<code>console._tri_state_bar</code>）<a class="headerlink" href="#6-console_tri_state_bar" title="Permanent link">&para;</a></h2>
+<p><code>%f</code>/<code>%r</code>/<code>%t</code> 给出三段:<strong>已完成</strong>、<strong>进行中</strong>、<strong>未开始</strong>
+(<code>total - finished - running</code>)。进度条用三档灰度——亮 / 中 / 暗
+(<code>\033[38;5;{252,245,238}m</code> 的方块字符)——一眼看出构建状态。段宽用<strong>累积取整</strong>,
+保证三段之和恒等于条宽:</p>
+<pre><code class="language-python">done_w = width * finished // total
+run_w  = width * (finished + running) // total - done_w
+rem_w  = width - done_w - run_w
+</code></pre>
+<p>无颜色时退回三种可辨的方块字符(<code>█</code> / <code>▒</code> / <code>░</code>)。条宽按「表头一行放得下」来定
+(<code>finished/total pct% ·running running  ETA …</code>),最近窗口的行按终端宽度截断——
+两者都重要,因为一旦折行就会打乱「上移 N 行」的计算。</p>
+<h2 id="7-rule-description">7. rule 的 description 在生成期就上好色<a class="headerlink" href="#7-rule-description" title="Permanent link">&para;</a></h2>
+<p><code>[N/N]</code> 后面显示的是 rule 的 ninja <code>description</code>,由 ninja 展开。颜色是
+<strong>在生成 ninja 文件时</strong>烤进那个字符串的,而非打印时:<code>NinjaRule.emit()</code> 用
+<code>console.colored(desc, 'dimpurple')</code> 包起来(颜色关闭时返回纯文本)。每目标的
+<em>本地</em> rule 必须照做,否则它在面板里没颜色、而其它步骤都有色——这就是
+<code>gen_rule</code> 和 <code>windows_resources</code>(<code>RC</code> rule)要给自己的 <code>description</code> 上色的原因。</p>
+<h2 id="8">8. 退化<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>非 TTY / 重定向</strong>(<code>_cursor_control</code> 为假):<code>render_build_panel</code> 直接空操作——
+  不往管道/日志里漏控制码;只出现永久行 + 汇总。</li>
+<li><strong>颜色关闭</strong>(<code>_color_enabled</code> 为假):进度条用方块字符档位,描述为纯文本。</li>
+<li><strong>quiet</strong>(<code>is_quiet()</code>):去掉最近完成窗口——只显示聚合进度条,不显示逐条描述。</li>
+<li><strong>verbose</strong>:完全没有面板;ninja 独占终端。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../configuration/" class="btn btn-neutral float-left" title="配置项是如何加载、分层与读取的"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../custom_rule/" class="btn btn-neutral float-right" title="自定义规则（define_rule）实现原理">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../custom_rule/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

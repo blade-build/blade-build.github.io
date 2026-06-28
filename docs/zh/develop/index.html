@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>开发 - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u5f00\u53d1";
+        var mkdocs_page_input_path = "develop.md";
+        var mkdocs_page_url = "/docs/zh/develop/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">开发</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">代码结构</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">基本原理</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">加载配置</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build">加载 BUILD 文件</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">依赖分析</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">生成后端构建文件</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">执行后端构建系统</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">运行测试</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_9">实现专题</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_10">测试</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#srctestsunit">单元测试（src/tests/unit/）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#srctest">集成测试（src/test/）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">类型检查</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_12">新增构建规则</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_13">核心设计模式</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_14">调试与诊断</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ninja">向后端构建器（ninja）传递选项</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ci">CI</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_15">打包</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_16">其他资料</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">开发</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">开发<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">代码结构<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">src/
+├── blade/              # 主源码包
+│   ├── main.py         # CLI 入口
+│   ├── command_line.py # 命令行参数解析
+│   ├── config.py       # 配置加载（blade.conf, BLADE_ROOT 等）
+│   ├── workspace.py    # 工作空间发现与管理
+│   ├── load_build_files.py  # BUILD 文件加载与 DSL 沙箱
+│   ├── dependency_analyzer.py # 拓扑排序与依赖解析
+│   ├── backend.py      # 后端构建系统生成（Ninja）
+│   ├── build_manager.py     # 构建编排
+│   ├── ninja_runner.py      # Ninja 调用
+│   ├── binary_runner.py     # 执行构建产物
+│   ├── test_runner.py       # 测试沙箱与执行
+│   ├── test_scheduler.py    # 并行测试调度
+│   ├── toolchain.py    # 编译工具链抽象（GCC、MSVC、Clang）
+│   ├── *_targets.py    # 构建规则实现（cc、java、py、go 等）
+│   ├── target.py       # 目标基类
+│   ├── build_rules.py  # 规则注册基础设施
+│   ├── dsl_api.py      # 暴露给 BUILD 文件的 safe `blade.*` DSL 模块
+│   ├── blade_types.py  # 共享类型别名（StrOrList、StrOrListOpt）
+│   ├── util.py         # 通用工具函数
+│   ├── console.py      # 日志与诊断输出
+│   ├── config.py       # 配置模式定义
+│   └── inclusion_check.py  # C/C++ 头文件依赖检查
+├── tests/
+│   └── unit/           # 单元测试（pytest，无需工具链）
+└── test/               # 集成/端到端测试（pytest，需要工具链）
+</code></pre>
+<p><strong>规则模块</strong>（<code>*_targets.py</code>）各自定义一个或多个构建规则：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cc_targets.py</code></td>
+<td><code>cc_library</code>、<code>cc_binary</code>、<code>cc_test</code>、<code>cc_plugin</code>、<code>prebuilt_cc_library</code>、<code>foreign_cc_library</code></td>
+</tr>
+<tr>
+<td><code>java_targets.py</code></td>
+<td><code>java_library</code>、<code>java_binary</code>、<code>java_test</code></td>
+</tr>
+<tr>
+<td><code>py_targets.py</code></td>
+<td><code>py_library</code>、<code>py_binary</code>、<code>py_test</code></td>
+</tr>
+<tr>
+<td><code>proto_library_target.py</code></td>
+<td><code>proto_library</code></td>
+</tr>
+<tr>
+<td><code>go_targets.py</code></td>
+<td><code>go_library</code>、<code>go_binary</code>、<code>go_test</code></td>
+</tr>
+<tr>
+<td><code>scala_targets.py</code></td>
+<td><code>scala_library</code>、<code>scala_test</code></td>
+</tr>
+<tr>
+<td><code>cu_targets.py</code></td>
+<td><code>cu_library</code>、<code>cu_binary</code>、<code>cu_test</code></td>
+</tr>
+<tr>
+<td><code>gen_rule_target.py</code></td>
+<td><code>gen_rule</code></td>
+</tr>
+<tr>
+<td><code>lex_yacc_target.py</code></td>
+<td><code>lex_yacc_library</code></td>
+</tr>
+<tr>
+<td><code>resource_library_target.py</code></td>
+<td><code>resource_library</code></td>
+</tr>
+<tr>
+<td><code>windows_resources_target.py</code></td>
+<td><code>windows_resources</code></td>
+</tr>
+<tr>
+<td><code>package_target.py</code></td>
+<td><code>package</code></td>
+</tr>
+<tr>
+<td><code>sh_test_target.py</code></td>
+<td><code>sh_test</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">基本原理<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="_4">加载配置<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Blade 启动后，依次尝试通过 <code>execfile</code> 函数执行多个路径下的配置文件。这些配置文件都是 Python 源文件，调用 blade 里预先定义好的配置函数，把配置项更新到 <code>blade.config</code> 的配置 dict 里。</p>
+<p>然后，命令行选项里与 <code>global_config</code> 同名的选项会覆盖更新到配置中，使得命令行参数的优先级最高。</p>
+<h3 id="build">加载 BUILD 文件<a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>
+<p>Blade 从命令行指定的构建目标展开，通过受限的 <code>execfile</code> 沙箱逐个执行 <code>BUILD</code> 文件。BUILD 文件代码被执行时，调用规则函数（如 <code>cc_library(...)</code>）把目标注册到 blade 内部的数据结构里。</p>
+<p>所有传递依赖对应的 BUILD 文件都会被递归加载，直到所有依赖都被加载。</p>
+<h3 id="_5">依赖分析<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Blade 从命令行指定的目标根出发，进行拓扑排序，得出有序的构建目标列表。</p>
+<h3 id="_6">生成后端构建文件<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>各目标逐一生成后端构建动作（Ninja 规则），写入后端构建文件（如 <code>build.ninja</code>）。</p>
+<h3 id="_7">执行后端构建系统<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>Blade 调用后端构建工具（Ninja）执行实际构建，完成后删除生成的构建文件。</p>
+<h3 id="_8">运行测试<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>测试目标先被构建，然后在沙箱环境中并行执行。所有测试完毕后汇总结果并输出报告。</p>
+<h2 id="_9">实现专题<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>各子系统实现原理的深入文档，大致按 <code>blade build</code> 的执行顺序排列：</p>
+<ul>
+<li><a href="configuration/">配置项的加载、分层与读取</a></li>
+<li><a href="build_file_loading/">BUILD 文件的发现、加载与注册</a></li>
+<li><a href="dsl_api/">内置函数与 <code>blade.*</code> DSL</a></li>
+<li><a href="visibility/">Visibility 的实现与执行</a></li>
+<li><a href="dependency_analysis/">依赖分析与 ninja 文件生成</a></li>
+<li><a href="gen_rule/"><code>gen_rule</code>：自定义构建步骤与其它 target 如何感知它</a></li>
+<li><a href="custom_rule/">自定义规则（<code>define_rule</code>）实现原理</a></li>
+<li><a href="cc_build/">C/C++ 程序的构建</a></li>
+<li><a href="hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a></li>
+<li><a href="check_undefined/">静态未定义符号检查（<code>check_undefined</code>）实现原理</a></li>
+<li><a href="export_map/"><code>export_map</code>（符号导出控制）实现原理</a></li>
+<li><a href="vcpkg/">vcpkg 支持实现原理</a></li>
+<li><a href="protobuf_build/"><code>proto_library</code> 的多语言代码生成</a></li>
+<li><a href="java_scala_build/">Java 与 Scala 程序的构建</a></li>
+<li><a href="python_build/">Python 目标的构建与打包</a></li>
+<li><a href="console/">console：构建进度面板与 ninja 状态流水线</a></li>
+<li><a href="test_execution/"><code>blade test</code> 如何运行用户测试</a></li>
+<li><a href="self_testing/">blade-build 自身是如何被测试的</a></li>
+</ul>
+<h2 id="_10">测试<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<h3 id="srctestsunit">单元测试（<code>src/tests/unit/</code>）<a class="headerlink" href="#srctestsunit" title="Permanent link">&para;</a></h3>
+<p>快速的离线测试，验证独立模块。不依赖工具链或系统环境。</p>
+<pre><code class="language-bash">pip install -r requirements-dev.txt
+PYTHONPATH=src python -m pytest src/tests/unit/ -v
+</code></pre>
+<h3 id="srctest">集成测试（<code>src/test/</code>）<a class="headerlink" href="#srctest" title="Permanent link">&para;</a></h3>
+<p>端到端测试，对 <code>src/test/testdata/</code> 下的夹具数据驱动真实的构建/测试流程。需要可用的 C/C++ 工具链（GCC、MSVC 或 Clang）。</p>
+<pre><code class="language-bash">src/test/runall.sh          # 运行全部集成测试
+src/test/run.sh &lt;test_name&gt; # 运行单个测试（如 cc_library_test）
+</code></pre>
+<h3 id="_11">类型检查<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">pip install -r requirements-dev.txt
+pyright
+</code></pre>
+<h2 id="_12">新增构建规则<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>创建目标类</strong> — 在新增或已有的 <code>*_targets.py</code> 模块中创建目标类，继承 <code>Target</code>（或合适的子类）并实现 <code>generate()</code> 方法。</li>
+<li><strong>定义规则入口函数</strong>（如 <code>windows_resources()</code>）—— 此函数负责将 BUILD 友好的类型（<code>StrOrListOpt</code>）通过 <code>var_to_list</code> / <code>var_to_list_or_none</code> 规范化为 <code>list[str]</code>，创建目标实例，通过 <code>build_manager.instance.register_target()</code> 注册。</li>
+<li><strong>暴露到 DSL</strong> — 将规则函数加入 <code>blade/__init__.py</code> 和 <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/dsl_api.py">dsl_api.py</a>。</li>
+<li><strong>添加集成测试数据</strong> — 在 <code>src/test/testdata/&lt;rule_name&gt;/</code> 下放置 BUILD 文件和源文件夹具，在 <code>src/test/&lt;rule_name&gt;_test.py</code> 添加测试类。</li>
+<li><strong>更新文档</strong> — 在 <a href="../build_rules/cc/">build_rules/cc.md</a>（或新规则类别对应的新文件）中添加说明。</li>
+</ol>
+<h3 id="_13">核心设计模式<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>StrOrList</code> / <code>StrOrListOpt</code></strong> — 规则入口函数接受 <code>str | list[str]</code> 联合类型，以方便 BUILD 文件书写。始终在传入父类构造函数之前，通过 <code>var_to_list()</code>（可选参数用 <code>var_to_list_or_none()</code>）规范化为 <code>list[str]</code>。</li>
+<li><strong>工具链抽象</strong>（<code>toolchain.py</code>）— 平台相关的构建细节（编译器、链接器、文件后缀）封装在 <code>ToolChain</code> 基类之后。规则实现通过查询工具链对象而非分支判断 <code>os.name</code>。</li>
+<li><strong><code>blade.cc_toolchain</code></strong> — 通过 DSL 暴露给 BUILD 文件的只读代理对象，用于跨平台判断（文件命名、能力查询等）。</li>
+</ul>
+<h2 id="_14">调试与诊断<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p>大多数子命令支持 <code>--stop-after</code> 选项，可选参数为 <code>{load, analyze, generate, build}</code>，控制在指定阶段完成后停止：</p>
+<pre><code class="language-bash">blade build --stop-after generate
+</code></pre>
+<p>此命令在生成后端构建系统描述文件（如 <code>build.ninja</code>）后停止，可用于检查生成结果。</p>
+<p><code>--profiling</code> 选项在 blade 结束后输出性能分析报告。可与 <code>--stop-after</code> 组合用于分析不同阶段的性能。</p>
+<h3 id="ninja">向后端构建器（ninja）传递选项<a class="headerlink" href="#ninja" title="Permanent link">&para;</a></h3>
+<p><code>--backend-builder-options</code> 可把任意选项直接转发给 ninja（见 <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/ninja_runner.py"><code>ninja_runner.py</code></a>）。调试时最常用的：</p>
+<pre><code class="language-bash"># 为什么某个目标会被（重新）构建——尤其是每次都重建的？让 ninja 解释它的判断。
+blade build //foo/... --backend-builder-options=&quot;-d explain&quot;
+
+# 打印 ninja 实际执行的命令（-v），或只做 dry-run 不实际构建（-n）。
+blade build //foo/... --backend-builder-options=&quot;-v&quot;
+</code></pre>
+<p><code>-d explain</code> 会为每条将要执行的 edge 打印它被判定为“脏”的<em>原因</em>——输入更新、输出比输入旧、命令行变化、或记录的依赖（<code>deps</code>/depfile）已不存在。当构建不增量（尤其是每次都重建）时，这是首先要用的工具。</p>
+<p>也可以直接对生成的构建文件运行 ninja（在 <code>blade build --stop-after generate</code> 之后很方便，该选项会保留而非删除它）。blade 从工作区根目录运行 ninja，所以用相对 build 目录的路径；加 <code>-n</code> 做只解释不构建的 dry-run：</p>
+<pre><code class="language-bash">ninja -f build_release/build.ninja -d explain -n
+</code></pre>
+<p>提示：ninja 只会作为 <code>deps = msvc</code> 的副作用从控制台输出中剥掉它的 <code>msvc_deps_prefix</code>（<code>Note: including file:</code>）行；其余工具输出都原样回显。在 MSVC 上，blade 的 <code>cc_wrapper.py</code> / <code>link_wrapper.py</code>（生成在 build 目录里）会过滤 ninja 不处理的编译器/链接器噪音。</p>
+<h2 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions 工作流在每次 PR 和 push 到 <code>master</code> 时运行：</p>
+<table>
+<thead>
+<tr>
+<th>工作流</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python package</strong></td>
+<td>Ubuntu 上的单元测试 + 集成测试 + pyright（Python 3.10–3.14）</td>
+</tr>
+<tr>
+<td><strong>Windows CI</strong></td>
+<td>Windows 上的单元测试 + smoke 测试 + E2E（Python 3.10–3.13）</td>
+</tr>
+<tr>
+<td><strong>CodeQL</strong></td>
+<td>安全分析</td>
+</tr>
+<tr>
+<td><strong>Check Markdown links</strong></td>
+<td>文档链接有效性检查</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_15">打包<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<p>代码根目录下的 <code>dist_blade</code> 可将源码打包为 zip 用于部署，与 <code>blade</code> 启动脚本和 <code>blade.conf</code> 放在同一目录即可。</p>
+<h2 id="_16">其他资料<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<p>以下两篇社区对 Blade 实现原理的分析，基于 Blade 早期版本，有些过时，仍有参考价值：</p>
+<ul>
+<li><a href="https://tsgsz.github.io/2013/11/01/2013-11-01-thinking-in-design-of-blade-cpp-build/">浅谈 blade 中 C++Build 的设计与实现</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_4af176450101bg69.html">锋利的 blade 到底锋利在哪里</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../upgrade-to-v2/" class="btn btn-neutral float-left" title="升级到 V2 版"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="build_file_loading/" class="btn btn-neutral float-right" title="BUILD 文件是如何被发现、加载与注册的">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../upgrade-to-v2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="build_file_loading/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

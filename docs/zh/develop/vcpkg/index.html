@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/vcpkg/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>vcpkg 支持实现原理 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "vcpkg \u652f\u6301\u5b9e\u73b0\u539f\u7406";
+        var mkdocs_page_input_path = "develop/vcpkg.md";
+        var mkdocs_page_url = "/docs/zh/develop/vcpkg/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">vcpkg 支持实现原理</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 两个阶段，干净分离</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-vcpkg-scheme">2. vcpkg# 引用是一个依赖 scheme</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-_vcpkg_dep_handler-vcpkglibrary">3. 解析：_vcpkg_dep_handler → VcpkgLibrary</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-port">4. 解析一个 port 真正需要什么</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-setup">5. 托管安装：setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 链接模型</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7">7. 出问题先看哪里</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">vcpkg 支持实现原理</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/vcpkg.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="vcpkg">vcpkg 支持实现原理<a class="headerlink" href="#vcpkg" title="Permanent link">&para;</a></h1>
+<p>Blade 通过 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 引用把 <a href="https://github.com/microsoft/vcpkg">vcpkg</a>
+库当作一等依赖来消费。本文讲解它<strong>如何实现</strong>
+（<a href="https://github.com/blade-build/blade-build/issues/1236">issue #1236</a>）；面向用户
+的指南见 <a href="../../build_rules/vcpkg/">build_rules/vcpkg.md</a>。</p>
+<p>涉及的源文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/vcpkg.py</code></td>
+<td>全部 vcpkg 逻辑：triplet 推导、<code>.pc</code>/CMake 解析、manifest/triplet 生成、<code>vcpkg#</code> 依赖处理器，以及托管安装编排（<code>setup</code>）</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>register_dep_scheme</code> + <code>_unify_scheme_dep</code>——把 <code>vcpkg#...</code> 路由到处理器的 <code>&lt;scheme&gt;#&lt;coordinate&gt;</code> 派发</td>
+</tr>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td><code>VcpkgLibrary</code>——自动创建、链接已解析 port 制品的目标</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td><code>setup_vcpkg()</code>——在配置加载与 BUILD 解析之间调用 <code>vcpkg.setup(self)</code></td>
+</tr>
+<tr>
+<td><code>src/blade/load_build_files.py</code></td>
+<td>import <code>blade.vcpkg</code>，使 scheme 注册生效</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>vcpkg_config(...)</code> schema</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1">1. 两个阶段，干净分离<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>vcpkg 支持的组织方式让<strong>纯粹、可测试的逻辑</strong>能与有副作用的编排分开。<code>vcpkg.py</code> 的
+模块 docstring 点明了这两者：</p>
+<ul>
+<li><strong>引用解析</strong>（分析期）：把一个 <code>vcpkg#port:lib</code> 字符串变成具体的安装树路径，并为
+  它创建一个目标。纯函数加一个处理器。</li>
+<li><strong>托管安装</strong>（<code>setup</code>，构建期）：生成 manifest + overlay triplet 并运行
+  <code>vcpkg install</code>。唯一大量触碰网络/磁盘的步骤。</li>
+</ul>
+<p>模块大部分是对朴素输入的纯函数（<code>triplet_for</code>、<code>parse_pkgconfig</code>、
+<code>manifest_json</code>、<code>port_required_libs</code> …），可独立单测；有状态的部分
+（<code>_vcpkg_dep_handler</code>、<code>setup</code>）只是从 toolchain/config 收集输入再调用它们的薄包
+装。</p>
+<h2 id="2-vcpkg-scheme">2. <code>vcpkg#</code> 引用是一个依赖 <em>scheme</em><a class="headerlink" href="#2-vcpkg-scheme" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg</code> 扩展了 Blade 的 <code>#name</code> 系统库家族。形如 <code>&lt;scheme&gt;#&lt;coordinate&gt;</code> 的依赖由
+<code>target._unify_scheme_dep</code> 派发，<code>vcpkg.py</code> 在 import 时注册自己：</p>
+<pre><code class="language-python">_blade_target.register_dep_scheme('vcpkg', _vcpkg_dep_handler)
+</code></pre>
+<p>这个 import 发生在 <code>load_build_files.py</code> 中，所以 scheme 在任何 BUILD 文件被解析之
+前就已生效。<code>#pthread</code>（无 scheme）仍表示"按名字解析的系统库"；<code>vcpkg#fmt:fmt</code> 表
+示"通过 vcpkg provider 解析 <code>fmt:fmt</code>"。</p>
+<h2 id="3-_vcpkg_dep_handler-vcpkglibrary">3. 解析：<code>_vcpkg_dep_handler</code> → <code>VcpkgLibrary</code><a class="headerlink" href="#3-_vcpkg_dep_handler-vcpkglibrary" title="Permanent link">&para;</a></h2>
+<p>当某目标依赖 <code>vcpkg#fmt:fmt</code> 时，<code>_vcpkg_dep_handler(referrer, 'fmt:fmt')</code>：</p>
+<ol>
+<li><strong>治理</strong> —— 若设置了 <code>vcpkg_config.direct_use_allowed</code>，则拒绝来自白名单之外路
+   径的引用（呼应大仓常用的 wrapper 库纪律）。</li>
+<li><strong>triplet</strong> —— <code>triplet_for_toolchain(toolchain)</code> 从 Blade 解析出的工具链推导
+   triplet（<code>x64-linux</code>、<code>arm64-osx</code> …）；<code>'auto'</code>/未指定时解析为静态变体（在
+   Windows 上即 <code>-static</code> triplet，因为 vcpkg 那里默认动态）。</li>
+<li><strong><code>resolve_reference(...)</code></strong> —— 纯验证 + 路径计算：拆分 <code>port:lib</code>，强制执行<strong>白
+   名单</strong>（<code>port in packages</code>，否则硬报错），计算 <code>lib_dir</code>（MSVC-ABI debug 构建用
+   <code>debug/lib</code> 子树，否则 <code>lib</code>）与共享的 <code>include_dir</code>。<code>lib == 'hdrs'</code> 标记
+   header-only port。</li>
+<li><strong>目标创建</strong> —— 自动创建一个 <code>VcpkgLibrary</code>（与 <code>_add_system_library</code> 同一套路），
+   以 <code>vcpkg#port:lib</code> 为 key，因而只创建一次并复用。对托管模式下 <code>'auto'</code> 链接的
+   port，还会在独立的 <code>-shared</code> 安装树里计算<em>共享</em>兄弟的 <code>dynamic_lib_dir</code>。</li>
+</ol>
+<p><code>root</code> / <code>triplet</code> 被存放在目标上，使其能<strong>在 generate 期惰性</strong>解析该 port 的
+pkg-config 私有系统库与传递性 <code>Requires:</code> 兄弟——分析期安装树可能还不存在（安装在两
+者之间运行；见 §5）。</p>
+<h2 id="4-port">4. 解析一个 port 真正需要什么<a class="headerlink" href="#4-port" title="Permanent link">&para;</a></h2>
+<p>单个 <code>vcpkg#protobuf:protobuf</code> 引用必须拉入正确的兄弟归档与系统库。<code>vcpkg.py</code> 从安
+装树读取这些信息：</p>
+<ul>
+<li><code>parse_pkgconfig(text)</code> 解析 port 的 <code>.pc</code> 文件——<code>Libs</code> / <code>Libs.private</code>（<code>-l</code>
+  导出与私有系统库）以及 <code>Requires</code> / <code>Requires.private</code>（兄弟 vcpkg 模块）。
+  <code>_expand</code> 解析 <code>${prefix}</code> 之类的 pkg-config 变量。</li>
+<li><code>port_required_libs(...)</code> 跟随这些 <code>Requires:</code> 找到兄弟归档——这正是 protobuf
+  （v22+）能透明链接整套 <code>absl_*</code> + <code>utf8_range</code> 而无需用户逐一列出的原因。</li>
+<li><code>port_system_libs(...)</code> 从 <code>Libs.private</code> 与 CMake 链接接口
+  （<code>_cmake_link_libs</code>）提取 OS/SDK 库。</li>
+</ul>
+<p>这些都是纯文本函数，因而很容易用抓取的 <code>.pc</code> 夹具做单测。</p>
+<h2 id="5-setup">5. 托管安装：<code>setup</code><a class="headerlink" href="#5-setup" title="Permanent link">&para;</a></h2>
+<p><code>build_manager.setup_vcpkg()</code> 调用 <code>vcpkg.setup(builder)</code> 一次，<strong>在配置加载与
+analyze 之后、在需要安装制品之前</strong>。关键行为：</p>
+<ul>
+<li><strong>无需即空操作</strong> —— 除非 <code>manage=True</code>（默认）且 <code>packages</code> 非空，<em>并且</em>
+  <code>_build_uses_vcpkg(builder)</code> 为真，否则提前返回。这一<strong>按需驱动</strong>的闸门让工作区可
+  以无条件声明 <code>vcpkg_config</code>（这是固定的项目属性），而一次不引用任何 <code>vcpkg#...</code>
+  依赖的构建分文不付——也永不需要 vcpkg 工具。</li>
+<li><strong>overlay triplet</strong> —— 它生成一个 <code>blade-&lt;triplet&gt;</code> overlay
+  （<code>overlay_triplet_cmake</code>），<strong>chainload Blade 解析出的编译器</strong>
+  （<code>chainload_cmake</code>），使制品与构建其余部分 ABI 兼容。MSVC 是例外：<code>cl.exe</code> 用
+  vcpkg 原生工具链（不 chainload），由 vcpkg 搭建完整的 MSVC 环境。</li>
+<li><strong>隔离树</strong> —— manifest（<code>vcpkg.json</code>）、chainload cmake 与 overlay triplet 写到
+  <code>&lt;build&gt;/.cache/vcpkg/</code> 下；<code>vcpkg install</code> 安装到那里的 <code>installed/&lt;overlay&gt;</code>。
+  只有<em>制品</em>位于构建目录下；vcpkg <em>工具</em>仍通过 <code>vcpkg_config.root</code> / <code>$VCPKG_ROOT</code>
+  / <code>PATH</code> 查找（<code>_find_vcpkg_tool</code>）。</li>
+<li><strong>stamp 跳过</strong> —— 对 <code>(manifest + chainload + triplet_cmake + overlay)</code> 的 md5
+  与 <code>.blade-vcpkg-stamp</code> 比对；stamp 未变且 <code>installed/&lt;overlay&gt;</code> 已存在则完全跳过
+  安装。</li>
+<li><strong>按需的第二棵（共享）树</strong> —— <code>_auto_dynamic_ports(builder, packages)</code> 从已分析的
+  图计算出哪些 <code>'auto'</code> port 真的被 <code>dynamic_link</code> 二进制依赖（<code>setup</code> 在 analyze
+  之后运行）。只有这些 port 才被第二次安装为共享库到独立的 <code>-shared</code> 安装根
+  （<code>_install_shared</code>）。纯静态构建完全跳过此步。</li>
+</ul>
+<h2 id="6">6. 链接模型<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p><code>port_options</code> / <code>_effective_linkage</code> 解析 port 的 <code>linkage</code>
+（<code>'auto'</code> / <code>'static'</code> / <code>'dynamic'</code>）。<code>'auto'</code> 默认仿照 <code>cc_library</code>：静态归档
+始终存在，而共享构建<strong>仅在按需</strong>——当某 <code>dynamic_link</code> 二进制依赖该 port 时——才产
+生，这就是共享构建落在独立 <code>blade-&lt;triplet&gt;-shared</code> 树的原因（vcpkg 每个 triplet 只
+构建一种链接方式）。<code>dynamic_ports</code> / <code>auto_ports</code> 喂给上面的 triplet 与第二次安装
+计算。这正是无需逐 port 配置就能避免单例重复问题（gflags/protobuf/… 在所有 dylib 间
+只有一份共享实例）的机制。</p>
+<h2 id="7">7. 出问题先看哪里<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<ul>
+<li><em>解析</em>问题（路径错、兄弟缺失、白名单消息）→ <code>resolve_reference</code> /
+  <code>port_required_libs</code> / <code>_vcpkg_dep_handler</code>。</li>
+<li><em>安装</em>问题（triplet 错、ABI 不匹配、每次都重装）→ <code>setup</code> /
+  <code>overlay_triplet_cmake</code> / <code>chainload_cmake</code> / stamp 逻辑。</li>
+<li><em>链接</em>问题（该共享却静态、单例冲突）→ <code>port_options</code> / <code>_effective_linkage</code> /
+  <code>_auto_dynamic_ports</code>。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../test_execution/" class="btn btn-neutral float-left" title="blade test 如何运行用户测试"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../visibility/" class="btn btn-neutral float-right" title="Visibility 是如何实现与执行的">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../test_execution/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../visibility/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/command_line/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Command Line Reference - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Command Line Reference";
+        var mkdocs_page_input_path = "command_line.md";
+        var mkdocs_page_url = "/docs/en/command_line/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Command Line Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#basic-command-line-syntax">Basic Command Line Syntax</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#subcommands">Subcommands</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#blade-init">blade init</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#target-pattern-syntax">Target Pattern Syntax</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#supported-pattern-formats">Supported Pattern Formats</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#path-resolution-rules">Path Resolution Rules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#directory-search-behavior">Directory Search Behavior</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#target-tag-filtering">Target Tag Filtering</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#filter-expression-syntax">Filter Expression Syntax</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#filtering-examples">Filtering Examples</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#filtering-scope">Filtering Scope</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tag-discovery">Tag Discovery</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#subcommand-options">Subcommand Options</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#common-command-line-options">Common Command Line Options</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#command-line-completion">Command Line Completion</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
+      <li class="breadcrumb-item active">Command Line Reference</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/command_line.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="command-line-reference">Command Line Reference<a class="headerlink" href="#command-line-reference" title="Permanent link">&para;</a></h1>
+<h2 id="basic-command-line-syntax">Basic Command Line Syntax<a class="headerlink" href="#basic-command-line-syntax" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">blade &lt;subcommand&gt; [options]... [target patterns]...
+</code></pre>
+<h2 id="subcommands">Subcommands<a class="headerlink" href="#subcommands" title="Permanent link">&para;</a></h2>
+<p>Blade supports the following subcommands:</p>
+<ul>
+<li><code>build</code> - Build specified targets</li>
+<li><code>test</code> - Build and execute tests</li>
+<li><code>clean</code> - Clean up specified targets</li>
+<li><code>dump</code> - Export useful information</li>
+<li><code>query</code> - Query target dependencies</li>
+<li><code>run</code> - Build and execute a single executable target</li>
+<li><code>init</code> - Create a <code>BLADE_ROOT</code> in the current directory</li>
+<li><code>root</code> - Print the workspace root directory</li>
+</ul>
+<h3 id="blade-init"><code>blade init</code><a class="headerlink" href="#blade-init" title="Permanent link">&para;</a></h3>
+<p>Bootstrap a new workspace by creating a <code>BLADE_ROOT</code> file in the current directory. The file contains commented-out configuration blocks that you uncomment and edit as needed.</p>
+<pre><code class="language-bash">blade init                       # default: C/C++ config block
+blade init --lang=cc,java        # include C/C++ and Java config blocks
+blade init --lang=all            # include every supported language
+blade init --force               # initialize even inside an existing workspace
+</code></pre>
+<p><code>--lang</code> accepts a comma-separated list of <code>cc</code> (a.k.a. <code>c++</code>), <code>java</code>, <code>scala</code>, <code>go</code>, <code>python</code>, <code>proto</code>, or <code>all</code>.</p>
+<p>By default <code>blade init</code> refuses to run when the current directory is <strong>at or under an existing <code>BLADE_ROOT</code></strong>, because that would create a nested workspace (a <code>BLADE_ROOT</code> already in this directory, or one in any parent directory). Pass <code>--force</code> to initialize anyway — this overwrites a <code>BLADE_ROOT</code> in the current directory, or creates a nested one beneath a parent workspace.</p>
+<h2 id="target-pattern-syntax">Target Pattern Syntax<a class="headerlink" href="#target-pattern-syntax" title="Permanent link">&para;</a></h2>
+<p>Target patterns are space-separated lists that identify build targets. These patterns are supported in command lines, configuration items, and target attributes.</p>
+<h3 id="supported-pattern-formats">Supported Pattern Formats<a class="headerlink" href="#supported-pattern-formats" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>path:name</code> - Specific target within a path</li>
+<li><code>path:*</code> - All targets within a path</li>
+<li><code>path</code> - Equivalent to <code>path:*</code></li>
+<li><code>path/...</code> - All targets within a path and all subdirectories recursively</li>
+<li><code>:name</code> - Target in the current directory</li>
+</ul>
+<h3 id="path-resolution-rules">Path Resolution Rules<a class="headerlink" href="#path-resolution-rules" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Full Paths:</strong> Paths starting with <code>//</code> represent absolute paths from the workspace root</li>
+<li><strong>Direct Targets:</strong> Patterns without wildcards in the name component are considered direct targets</li>
+<li><strong>Default Behavior:</strong> When no target is specified, Blade builds all targets in the current directory (excluding subdirectories)</li>
+<li><strong>Empty Expansion:</strong> Specifying <code>...</code> as the end target will not fail if the path exists, even if expansion results in no targets</li>
+</ul>
+<h3 id="directory-search-behavior">Directory Search Behavior<a class="headerlink" href="#directory-search-behavior" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Recursive Search:</strong> Blade recursively searches <code>BUILD</code> files for <code>...</code> target patterns</li>
+<li><strong>Exclusion Mechanism:</strong> Place an empty <code>.bladeskip</code> file in directories to exclude them from recursive searches</li>
+<li><strong>Shell Compatibility:</strong> With <a href="https://ohmyz.sh/">ohmyzsh</a> installed, bare <code>...</code> expands to <code>..\..</code> - use <code>./...</code> instead</li>
+</ul>
+<h2 id="target-tag-filtering">Target Tag Filtering<a class="headerlink" href="#target-tag-filtering" title="Permanent link">&para;</a></h2>
+<p>Blade supports filtering build targets using tag expressions via the <code>--tags-filter</code> option. Each target supports <a href="../build_file/#tags">tags attribute</a>.</p>
+<h3 id="filter-expression-syntax">Filter Expression Syntax<a class="headerlink" href="#filter-expression-syntax" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Tag Names:</strong> Full tag names like <code>lang:cc</code>, <code>type:test</code></li>
+<li><strong>Logical Operators:</strong> <code>not</code>, <code>and</code>, <code>or</code></li>
+<li><strong>Group Selection:</strong> <code>group:name1,name2</code> syntax for selecting multiple tags within the same group (equivalent to <code>(group:name1 or group:name2)</code>)</li>
+<li><strong>Complex Expressions:</strong> Use quotation marks for expressions containing spaces</li>
+</ul>
+<h3 id="filtering-examples">Filtering Examples<a class="headerlink" href="#filtering-examples" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>--tags-filter='lang:cc'</code> - Filter <code>cc_*</code> targets</li>
+<li><code>--tags-filter='lang:cc,java'</code> - Filter <code>cc_*</code> and <code>java_*</code> targets</li>
+<li><code>--tags-filter='lang:cc and type:test'</code> - Filter <code>cc_test</code> targets</li>
+<li><code>--tags-filter='lang:cc and not type:test'</code> - Filter <code>cc_*</code> targets excluding <code>cc_test</code></li>
+</ul>
+<h3 id="filtering-scope">Filtering Scope<a class="headerlink" href="#filtering-scope" title="Permanent link">&para;</a></h3>
+<p>Tag filtering applies only to targets expanded through wildcard patterns on the command line. Direct targets and their dependencies are not filtered. Any target dependent on an unfiltered target remains in the build regardless of its tag matching status.</p>
+<h3 id="tag-discovery">Tag Discovery<a class="headerlink" href="#tag-discovery" title="Permanent link">&para;</a></h3>
+<p>To discover available tags for filtering:</p>
+<pre><code class="language-console">$ blade dump --all-tags ...
+[
+   &quot;lang:cc&quot;,
+   &quot;lang:java&quot;,
+   &quot;lang:lexyacc&quot;,
+   &quot;lang:proto&quot;,
+   &quot;lang:py&quot;,
+   &quot;type:binary&quot;,
+   &quot;type:foreign&quot;,
+   &quot;type:gen_rule&quot;,
+   &quot;type:library&quot;,
+   &quot;type:maven&quot;,
+   &quot;type:prebuilt&quot;,
+   &quot;type:system&quot;,
+   &quot;type:test&quot;,
+   &quot;xxx:xxx&quot;
+]
+</code></pre>
+<h2 id="subcommand-options">Subcommand Options<a class="headerlink" href="#subcommand-options" title="Permanent link">&para;</a></h2>
+<p>Different subcommands support different options. Run <code>blade &lt;subcommand&gt; --help</code> for complete option lists.</p>
+<h3 id="common-command-line-options">Common Command Line Options<a class="headerlink" href="#common-command-line-options" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>-m32</code>, <code>-m64</code> - Target architecture (32-bit/64-bit), defaults to automatic detection</li>
+<li><code>-p PROFILE</code> - Build profile (<code>debug</code>/<code>release</code>), defaults to <code>release</code></li>
+<li><code>-k</code>, <code>--keep-going</code> - Continue execution after non-fatal errors</li>
+<li><code>-j N</code>, <code>--jobs=N</code> - Parallel build jobs (Blade defaults to automatic parallelization)</li>
+<li><code>-t N</code>, <code>--test-jobs=N</code> - Parallel test execution for multi-CPU systems</li>
+<li><code>--test-timeout-multiplier=FACTOR</code> - Scale every per-test wall timeout by <code>FACTOR</code> for the current run (default <code>1.0</code>). Use on slower-than-baseline machines (e.g. shared CI runners) where the <code>global_config.test_timeout</code> configured for normal hardware is too tight. Affects only the current run; not stored in config. Example: <code>blade test --test-timeout-multiplier=3 ...</code></li>
+<li><code>--verbose</code> - Display complete command output for each executed command</li>
+<li><code>-h</code>, <code>--help</code> - Display help information</li>
+<li><code>--color=yes/no/auto</code> - Enable/disable colored output</li>
+<li><code>--exclude-targets</code> - Comma-separated target patterns to exclude from loading</li>
+<li><code>--generate-dynamic</code> - Force generation of dynamic libraries (<code>.so</code> / <code>.dylib</code> / <code>.dll</code>) for every <code>cc_library</code>, even those not depended on by a <code>dynamic_link</code> executable. Useful when you want to validate shared-link closure across the project or smoke-test that every library can be loaded dynamically. Overridden per-target by <code>cc_library(..., generate_dynamic = False)</code> (the library still stays static).</li>
+<li><code>--cc-check-undefined</code> - Force-enable the <a href="../build_rules/cc/#static-undefined-symbol-check"><code>cc_library</code> static undefined-symbol check</a> for this invocation, overriding <a href="../config/#cc_library_config"><code>cc_library_config.check_undefined</code></a>. Per-target <code>check_undefined = False</code> still wins.</li>
+<li><code>--no-cc-check-undefined</code> - Force-disable the static undefined-symbol check for this invocation.</li>
+<li><code>--generate-java</code> - Generate Java files for proto_library and swig_library</li>
+<li><code>--generate-php</code> - Generate PHP files for proto_library and swig_library</li>
+<li><code>--generate-go</code> - Generate Go files for proto_library</li>
+<li><code>--gprof</code> - Enable GNU gprof profiling support. <strong>Linux only</strong> (gcc and clang): <code>-pg</code>/gprof instrumentation only works on Linux. On macOS the flag is silently ignored (Darwin clang accepts <code>-pg</code> but treats it as a no-op, and there is no gprof tool / <code>gmon.out</code>); on Windows MSVC does not understand it. Blade skips the flag and warns once on these platforms — use <code>--coverage</code>, or a native sampling profiler (Instruments/<code>sample</code> on macOS, <code>perf</code> on Linux).</li>
+<li><code>--coverage</code> - Generate code coverage reports (supports GNU gcov and Java jacoco). For C/C++ on <strong>gcc and clang</strong> (every platform, including <strong>clang-cl</strong> on Windows) this is the <code>--coverage</code> gcov instrumentation, reported with gcovr. On Windows with <strong>native MSVC <code>cl.exe</code></strong> (which has no gcov-style instrumentation) blade instead collects coverage at run time with <code>Microsoft.CodeCoverage.Console.exe</code> (it instruments the test exe dynamically via its PDB — no compile flag — and emits Cobertura), then merges the per-test reports into <code>cc_coverage_report/coverage.cobertura.xml</code>. The tool ships with Visual Studio / the Build Tools; ARM64 targets are not supported by it.</li>
+<li><code>--profile-generate[=path]</code> / <code>--profile-use[=path]</code> - Instrumentation <a href="../optimization/#profile-guided-optimization-pgo">Profile-Guided Optimization</a> (gcc/clang/MSVC): phase 1 instruments, phase 2 rebuilds with the collected profile.</li>
+<li><code>--autofdo-generate</code> / <code>--autofdo-use=&lt;profile&gt;</code> - Sample-based PGO / <a href="../optimization/#sample-based-pgo-autofdo">AutoFDO</a> (gcc/clang + native MSVC SPGO): sample a normal optimized binary and rebuild — no instrumentation.</li>
+<li><code>--lto[=thin|full|no]</code> - <a href="../optimization/#link-time-optimization-lto">Link-Time Optimization</a> (gcc / clang / native MSVC / clang-cl), overriding the <a href="../config/#cc_config"><code>cc_config.lto</code></a> policy: bare <code>--lto</code> = ThinLTO, <code>--lto=full</code> = monolithic, <code>--lto=no</code> = off. Honored even in debug (escape hatch).</li>
+</ul>
+<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash"># Build all targets in current directory (excluding subdirectories)
+blade build
+
+# Build all targets in current directory and all subdirectories
+blade build ...
+
+# Build specific target named 'urllib' in current directory
+blade build :urllib
+
+# Build all targets under 'app' directory, excluding 'sub' subdirectory
+blade build app... --exclude-targets=app/sub...
+
+# Build and test all targets from workspace root and common subdirectory
+blade test //common/...
+blade test base/...
+
+# Build and test specific target in base subdirectory
+blade test base:string_test
+</code></pre>
+<h2 id="command-line-completion">Command Line Completion<a class="headerlink" href="#command-line-completion" title="Permanent link">&para;</a></h2>
+<p>Blade provides basic command line completion after installation. For enhanced completion functionality, install <a href="https://pypi.org/project/argcomplete/">argcomplete</a>.</p>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<pre><code class="language-console">pip install argcomplete
+</code></pre>
+<p>For non-root installations, add the <code>--user</code> parameter:</p>
+<pre><code class="language-console">pip install --user argcomplete
+</code></pre>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p>Add the following line to <code>~/.bashrc</code>:</p>
+<pre><code class="language-bash">eval &quot;$(register-python-argcomplete blade)&quot;
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../functions/" class="btn btn-neutral float-left" title="Build Functions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../test/" class="btn btn-neutral float-right" title="Testing Support">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../functions/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../test/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

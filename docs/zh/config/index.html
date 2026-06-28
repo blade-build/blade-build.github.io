@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/config/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>配置系统 - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u914d\u7f6e\u7cfb\u7edf";
+        var mkdocs_page_input_path = "config.md";
+        var mkdocs_page_url = "/docs/zh/config/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">配置系统</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">配置文件层级</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">配置语法</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">关键特性</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">查看当前配置</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#global_config">global_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#backend_builderstring-ninja">backend_builder：string = "ninja"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#duplicated_source_actionstring-warning">duplicated_source_action：string = "warning"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_timeoutint-600">test_timeout：int = 600</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug_info_levelstring-mid">debug_info_level：string = "mid"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#build_jobsint-0">build_jobs：int = 0</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_jobsint-0">test_jobs：int = 0</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test_related_envslist">test_related_envs：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#run_unrepaired_testsbool-false">run_unrepaired_tests：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#legacy_public_targetslist">legacy_public_targets：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#default_visibilitylist">default_visibility：list = []</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_config">cc_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#toolchainstr">toolchain：str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#extra_incslist">extra_incs：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cppflagslist">cppflags：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cflagslist">cflags：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxxflagslist">cxxflags：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#linkflagslist">linkflags：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#warningslist">warnings：list = 内置</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c_warningslist">c_warnings：list = 内置</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxx_warningslist">cxx_warnings：list = 内置</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#optimizelist-o2">optimize：list = ['-O2']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ltostr-thin-full">lto：str = '' | 'thin' | 'full'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fissionbool-false">fission：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dwpbool-false">dwp：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#piestr-auto-yes-no">pie：str = 'auto' | 'yes' | 'no'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#no_semantic_interpositionbool-true">no_semantic_interposition：bool = True</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hdr_dep_missing_severitystring-warning">hdr_dep_missing_severity：string = 'warning'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hdr_dep_missing_ignoredict">hdr_dep_missing_ignore：dict = {}</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#allowed_undeclared_hdrslist">allowed_undeclared_hdrs：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#unused_deps_severitystring-debug">unused_deps_severity：string = 'debug'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#unused_deps_suppressdict">unused_deps_suppress：dict = {}</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_library_config">cc_library_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#prebuilt_libpath_patternstring-libbits">prebuilt_libpath_pattern：string = 'lib${bits}'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#generate_dynamicbool-false">generate_dynamic：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#check_undefinedbool-true">check_undefined：bool = True （实验性）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#check_undefined_severitystr-warning">check_undefined_severity：str = 'warning'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#allow_undefinedlist">allow_undefined：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#deterministicbool-false">deterministic：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#thinbool-false">thin：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#arflagslist-rcs">arflags：list = ['rcs'] ~~（已废弃）~~</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hdrs_missing_severitystring-error">hdrs_missing_severity：string = 'error'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hdrs_missing_suppresslist">hdrs_missing_suppress：list = []</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cc_test_config">cc_test_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coverage_config">coverage_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#msvc_config">msvc_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#target_archstring-auto">target_arch：string = 'auto'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#msvc_versionstring-auto">msvc_version：string = 'auto'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#use_clangbool-false">use_clang：bool = False</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cppflagslist-md-ehsc">cppflags：list = ['/MD', '/EHsc']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cflagslist_1">cflags：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cxxflagslist-stdc17">cxxflags：list = ['/std:c++17']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#linkflagslist-subsystemconsole">linkflags：list = ['/SUBSYSTEM:CONSOLE']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#warningslist-w3">warnings：list = ['/W3']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#optimizedict">optimize：dict</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debug_info_levelsdict">debug_info_levels：dict</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cuda_config">cuda_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#cuda_pathstring">cuda_path：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cu_warningslist">cu_warnings：list = 内置</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cuflagslist">cuflags：list = []</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#java_config">java_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#java_homestring">java_home：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#versionstring">version：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#source_versionstring">source_version：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#target_versionstring">target_version：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#source_encodingstring-none">source_encoding：string = None</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#warningslist-werror-xlintall">warnings：list = ['-Werror', '-Xlint:all']</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fat_jar_conflict_severitystring-warning">fat_jar_conflict_severity：string = 'warning'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mavenstring-mvn">maven：string = 'mvn'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_centralstring">maven_central：string = ''</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_jar_allowed_dirslist">maven_jar_allowed_dirs：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_jar_allowed_dirs_exemptslist">maven_jar_allowed_dirs_exempts：list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_snapshot_update_policystring-daily">maven_snapshot_update_policy：string = 'daily'</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_snapshot_update_intervalint-86400">maven_snapshot_update_interval：int = 86400</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maven_download_concurrencyint-0">maven_download_concurrency：int = 0</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#proto_library_config">proto_library_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#thrift_library_config">thrift_library_config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">追加配置项的值</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#load_value">load_value 函数</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc">C/C++ 工具链配置</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#kind">kind — 工具链家族</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prefix">prefix — 安装前缀</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">配置参考</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">多工具链配置</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">选择优先级</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#windows-clang-cl">在 Windows 上使用 clang-cl</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vcpkg_config">vcpkg_config</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#manage-bool-true">manage: bool = True</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#packages-dict">packages: dict = {}</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#baseline-str">baseline: str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#registries-list">registries: list = []</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#root-str">root: str = ""</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#triplet-str-auto">triplet: str = "auto"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#install_dir-str-cachevcpkg">install_dir: str = ".cache/vcpkg"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#binary_cache-str-auto">binary_cache: str = "auto"</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#direct_use_allowed-list">direct_use_allowed: list = []</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">用户指南</li>
+      <li class="breadcrumb-item active">配置系统</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/config.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">配置系统<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">配置文件层级<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Blade 采用多层级配置体系，按以下优先级顺序加载配置文件，后加载的配置会覆盖前面的同名配置项：</p>
+<ul>
+<li><strong>全局配置：</strong> Blade 安装目录下的 <code>blade.conf</code></li>
+<li><strong>用户配置：</strong> 用户 HOME 目录下的 <code>~/.bladerc</code></li>
+<li><strong>项目配置：</strong> <code>BLADE_ROOT</code> 文件（它本身也是一个配置文件）</li>
+<li><strong>本地配置：</strong> <code>BLADE_ROOT.local</code>，面向开发者本人的临时调整</li>
+</ul>
+<h2 id="_3">配置语法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>配置文件采用与 BUILD 文件一致的函数调用式语法：</p>
+<pre><code class="language-python">global_config(
+    test_timeout = 600,
+)
+</code></pre>
+<h3 id="_4">关键特性<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>配置项之间没有顺序要求</li>
+<li>绝大多数参数都有合理的默认值，通常无需修改</li>
+<li>只有确实需要定制时再覆盖</li>
+</ul>
+<h2 id="_5">查看当前配置<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>查看当前实际生效的配置：</p>
+<pre><code class="language-bash"># 将配置导出到文件
+blade dump --config --to-file my.config
+
+# 将配置打印到标准输出
+blade dump --config
+</code></pre>
+<h3 id="global_config">global_config<a class="headerlink" href="#global_config" title="Permanent link">&para;</a></h3>
+<p>构建系统的全局配置项：</p>
+<h4 id="backend_builderstring-ninja"><code>backend_builder</code>：string = "ninja"<a class="headerlink" href="#backend_builderstring-ninja" title="Permanent link">&para;</a></h4>
+<p><strong>后端构建系统</strong></p>
+<p>目前仅支持 <code>ninja</code> 作为后端构建系统。</p>
+<p><strong>技术背景：</strong> Blade 最初依赖 SCons，后来由于优化的需要切换到了 <a href="https://ninja-build.org/">Ninja</a>。Ninja 是一个专注于构建速度的底层构建系统，在大型项目中速度显著优于 SCons，因此 Blade 已经完全采用 Ninja 作为唯一后端。</p>
+<h4 id="duplicated_source_actionstring-warning"><code>duplicated_source_action</code>：string = "warning"<a class="headerlink" href="#duplicated_source_actionstring-warning" title="Permanent link">&para;</a></h4>
+<p><strong>重复源文件的处理策略</strong></p>
+<p><strong>合法取值：</strong> <code>["warning", "error"]</code>
+<strong>行为：</strong> 当同一个源文件归属于多个目标时，决定是发出警告还是直接报错。建议设置为 <code>"error"</code>。</p>
+<h4 id="test_timeoutint-600"><code>test_timeout</code>：int = 600<a class="headerlink" href="#test_timeoutint-600" title="Permanent link">&para;</a></h4>
+<p><strong>测试超时时间</strong></p>
+<p><strong>单位：</strong> 秒
+<strong>用途：</strong> 超过该时间仍未结束的测试会被标记为失败。</p>
+<h4 id="debug_info_levelstring-mid"><code>debug_info_level</code>：string = "mid"<a class="headerlink" href="#debug_info_levelstring-mid" title="Permanent link">&para;</a></h4>
+<p><strong>调试信息级别</strong></p>
+<p><strong>合法取值：</strong> <code>["no", "low", "mid", "high"]</code>
+<strong>权衡：</strong> 级别越高，调试信息越详细，但磁盘占用也越大。</p>
+<h4 id="build_jobsint-0"><code>build_jobs</code>：int = 0<a class="headerlink" href="#build_jobsint-0" title="Permanent link">&para;</a></h4>
+<p><strong>并行构建任务数</strong></p>
+<p><strong>取值范围：</strong> 0 到 CPU 核数
+<strong>默认行为：</strong> 设为 0 时，由 Blade 根据机器配置自动决定。</p>
+<h4 id="test_jobsint-0"><code>test_jobs</code>：int = 0<a class="headerlink" href="#test_jobsint-0" title="Permanent link">&para;</a></h4>
+<p><strong>并行测试任务数</strong></p>
+<p><strong>取值范围：</strong> 0 到 CPU 核数 / 2
+<strong>默认行为：</strong> 设为 0 时，由 Blade 自动决定并发度。</p>
+<h4 id="test_related_envslist"><code>test_related_envs</code>：list = []<a class="headerlink" href="#test_related_envslist" title="Permanent link">&para;</a></h4>
+<p><strong>与测试相关的环境变量</strong></p>
+<p><strong>格式：</strong> 字符串或正则表达式
+<strong>用途：</strong> 指定哪些环境变量会影响增量测试的结果判定。</p>
+<h4 id="run_unrepaired_testsbool-false"><code>run_unrepaired_tests</code>：bool = False<a class="headerlink" href="#run_unrepaired_testsbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>是否重跑「未修复」的测试</strong></p>
+<p><strong>行为：</strong> 控制在增量测试中是否重新运行「之前失败、代码仍未修改」的测试。也可通过命令行选项 <code>--run-unrepaired-tests</code> 开启。</p>
+<h4 id="legacy_public_targetslist"><code>legacy_public_targets</code>：list = []<a class="headerlink" href="#legacy_public_targetslist" title="Permanent link">&para;</a></h4>
+<p><strong>目标可见性的向后兼容配置</strong></p>
+<p><strong>用途：</strong> 对于未显式设置 <code>visibility</code> 的目标，该列表中列出的目标默认可见性为 <code>PUBLIC</code>。</p>
+<p><strong>迁移工具：</strong> 对于存量项目，可使用 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>tool/collect-missing-visibility.py</code></a> 生成该列表：</p>
+<pre><code class="language-python">global_config(
+    legacy_public_targets = load_value('legacy_public_targets.conf')
+)
+</code></pre>
+<h4 id="default_visibilitylist"><code>default_visibility</code>：list = []<a class="headerlink" href="#default_visibilitylist" title="Permanent link">&para;</a></h4>
+<p><strong>默认的目标可见性</strong></p>
+<p><strong>合法取值：</strong> <code>[]</code>（私有）或 <code>['PUBLIC']</code>
+<strong>历史背景：</strong> 设置为 <code>['PUBLIC']</code> 可保持与 Blade 1.x 的行为一致。</p>
+<h3 id="cc_config">cc_config<a class="headerlink" href="#cc_config" title="Permanent link">&para;</a></h3>
+<p>所有 C/C++ 构建目标的公共配置：</p>
+<h4 id="toolchainstr"><code>toolchain</code>：str = ""<a class="headerlink" href="#toolchainstr" title="Permanent link">&para;</a></h4>
+<p><strong>默认工具链</strong></p>
+<p><strong>用途：</strong> 指定命令行未提供 <code>--cc-toolchain=</code> 时使用的默认
+<code>cc_toolchain_config</code> 名称。值必须匹配某个 <code>cc_toolchain_config()</code>
+的 <code>name</code>，或者是一种工具链种类（<code>gcc</code> / <code>clang</code> / <code>msvc</code> /
+<code>mingw</code> / <code>cygwin</code>）。</p>
+<p><strong>覆盖：</strong> <code>blade build --cc-toolchain=&lt;name&gt;</code> 优先级更高。</p>
+<h4 id="extra_incslist"><code>extra_incs</code>：list = []<a class="headerlink" href="#extra_incslist" title="Permanent link">&para;</a></h4>
+<p><strong>额外的头文件搜索路径</strong></p>
+<p><strong>用途：</strong> 为编译器指定额外的头文件查找目录，例如 <code>['thirdparty']</code>。</p>
+<h4 id="cppflagslist"><code>cppflags</code>：list = []<a class="headerlink" href="#cppflagslist" title="Permanent link">&para;</a></h4>
+<p><strong>C/C++ 公共编译选项</strong></p>
+<p><strong>用途：</strong> 同时作用于 C 与 C++ 的编译选项。</p>
+<h4 id="cflagslist"><code>cflags</code>：list = []<a class="headerlink" href="#cflagslist" title="Permanent link">&para;</a></h4>
+<p><strong>C 专用编译选项</strong></p>
+<p><strong>用途：</strong> 只在编译 C 代码时生效的选项。</p>
+<h4 id="cxxflagslist"><code>cxxflags</code>：list = []<a class="headerlink" href="#cxxflagslist" title="Permanent link">&para;</a></h4>
+<p><strong>C++ 专用编译选项</strong></p>
+<p><strong>用途：</strong> 只在编译 C++ 代码时生效的选项。</p>
+<h4 id="linkflagslist"><code>linkflags</code>：list = []<a class="headerlink" href="#linkflagslist" title="Permanent link">&para;</a></h4>
+<p><strong>链接选项</strong></p>
+<p><strong>用途：</strong> 可执行文件与库的链接阶段所使用的附加选项，例如库搜索路径。</p>
+<h4 id="warningslist"><code>warnings</code>：list = 内置<a class="headerlink" href="#warningslist" title="Permanent link">&para;</a></h4>
+<p><strong>C/C++ 公共警告选项</strong></p>
+<p><strong>默认值：</strong> <code>['-Wall', '-Wextra']</code>
+<strong>建议：</strong> 默认的警告配置经过精心挑选，适用于绝大多数开发场景，建议保持默认。</p>
+<h4 id="c_warningslist"><code>c_warnings</code>：list = 内置<a class="headerlink" href="#c_warningslist" title="Permanent link">&para;</a></h4>
+<p><strong>C 专用警告选项</strong></p>
+<p><strong>用途：</strong> 只在编译 C 代码时生效的警告。</p>
+<h4 id="cxx_warningslist"><code>cxx_warnings</code>：list = 内置<a class="headerlink" href="#cxx_warningslist" title="Permanent link">&para;</a></h4>
+<p><strong>C++ 专用警告选项</strong></p>
+<p><strong>用途：</strong> 只在编译 C++ 代码时生效的警告。</p>
+<h4 id="optimizelist-o2"><code>optimize</code>：list = ['-O2']<a class="headerlink" href="#optimizelist-o2" title="Permanent link">&para;</a></h4>
+<p><strong>优化选项</strong></p>
+<p><strong>默认值：</strong> <code>['-O2']</code>
+<strong>特殊行为：</strong> 该选项在 debug 模式下会被忽略，以保留可调试性。</p>
+<h4 id="ltostr-thin-full"><code>lto</code>：str = <code>''</code> | <code>'thin'</code> | <code>'full'</code><a class="headerlink" href="#ltostr-thin-full" title="Permanent link">&para;</a></h4>
+<p><strong>链接期优化（LTO / ThinLTO）</strong></p>
+<p>项目对 <strong>release</strong> 构建的 LTO 策略：<code>''</code>（关闭，默认）、<code>'thin'</code>（ThinLTO——增量，推荐）或 <code>'full'</code>（单体）。这是一个<strong>项目内禀属性</strong>（像优化级别一样，是会随产物发布的稳定决策），故为配置项而非逐次调用的模式。可用 <code>--lto</code> / <code>--lto=full</code> / <code>--lto=no</code> 逐次覆盖，或在目标上设 <code>lto = False</code> 退出。</p>
+<p>完整说明（仅 release 的门控、各工具链映射 gcc/clang/原生 MSVC/clang-cl、ThinLTO 缓存、健壮性提示）见 <strong><a href="../optimization/#链接期优化lto">C/C++ 优化 → LTO</a></strong>。</p>
+<h4 id="fissionbool-false"><code>fission</code>：bool = False<a class="headerlink" href="#fissionbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>调试信息分离（DebugFission）</strong></p>
+<p><strong>功能：</strong> 启用 GCC 的 <a href="https://gcc.gnu.org/wiki/DebugFission">DebugFission</a> 能力。</p>
+<p><strong>行为：</strong> 开启后，调试信息会被分离到独立的 <code>.dwo</code> 文件，可显著减小可执行文件体积。</p>
+<p><strong>实测效果：</strong> 在中等调试信息级别下，某被测可执行文件体积从 1.9 GB 减小到 532 MB。</p>
+<p><strong>命令行等效：</strong> 可使用 <code>--fission</code> 参数开启。</p>
+<h4 id="dwpbool-false"><code>dwp</code>：bool = False<a class="headerlink" href="#dwpbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>打包调试信息</strong></p>
+<p><strong>前置条件：</strong> 需要同时启用 <code>fission = True</code></p>
+<p><strong>功能：</strong> 将分散的 <code>.dwo</code> 文件打包为单个 <code>.dwp</code> 文件，便于调试信息的管理与分发。</p>
+<p><strong>使用参考：</strong> 关于如何在 package 中使用 <code>.dwp</code> 文件，请参见 <a href="../build_rules/cc/#cc_binary"><code>cc_binary</code></a> 文档。</p>
+<p><strong>命令行等效：</strong> 可使用 <code>--dwp</code> 参数开启。</p>
+<h4 id="piestr-auto-yes-no"><code>pie</code>：str = <code>'auto'</code> | <code>'yes'</code> | <code>'no'</code><a class="headerlink" href="#piestr-auto-yes-no" title="Permanent link">&para;</a></h4>
+<p><strong>可执行文件的 PIE 选项（仅 Linux）</strong></p>
+<p>blade 编译时统一加 <code>-fPIC</code>，让同一组 <code>.o</code> 能服务于 <code>.a</code>、<code>.so</code> 和可执行文件（一次编译、多次链接）。但 blade 从不主动加 <code>-pie</code> / <code>-no-pie</code>，所以最终可执行文件是否 PIE 取决于工具链默认值——新版 <code>gcc</code> 默认 <code>-pie</code>，老的或 <code>--disable-default-pie</code> 构建的则不是。结果是同一份代码在不同机器上产出的安全 posture 不一致。</p>
+<p>本选项在链接时把这件事钉死：</p>
+<ul>
+<li><code>'auto'</code>（默认）—— 不修改，跟随工具链默认值。</li>
+<li><code>'yes'</code> —— 在可执行的 <code>link</code> 规则里追加 <code>-pie</code>（强制 PIE，保证全镜像 ASLR）。</li>
+<li><code>'no'</code> —— 追加 <code>-no-pie</code>（强制 <code>ET_EXEC</code>，用于需要非 PIE 二进制的嵌入式/特殊加载器场景）。</li>
+</ul>
+<p>仅作用于可执行 <code>link</code> 规则；共享库（<code>solink</code>）不受影响（<code>.so</code> 加 <code>-pie</code> 是矛盾的，链接器会报错）。在 macOS（可执行默认 PIE，<code>ld64 -no_pie</code> 也在近年版本中移除）和 MSVC（没有 PIC/PIE 概念）上是 no-op。</p>
+<p><strong>验证方式：</strong> <code>file a.out</code> 在 <code>pie='yes'</code> 时报 <code>pie executable</code>，在 <code>pie='no'</code> 时报 <code>ET_EXEC</code>。</p>
+<h4 id="no_semantic_interpositionbool-true"><code>no_semantic_interposition</code>：bool = True<a class="headerlink" href="#no_semantic_interpositionbool-true" title="Permanent link">&para;</a></h4>
+<p><strong>在 <code>-fPIC</code> 下恢复 <code>-fPIE</code> 级别的优化（仅 GCC）</strong></p>
+<p>默认 <code>True</code> 让 blade 在 <strong>GCC</strong> 上把 <code>-fno-semantic-interposition</code> 加到编译命令。配合 blade 永远启用的 <code>-fPIC</code>，编译器能直接引用/内联当前 TU 内的全局符号，避免走 GOT 间接寻址——把 <code>-fPIE</code> 级别的性能拿回来，同时保留 <code>-fPIC</code> 的"可以进 <code>.so</code>"特性。命名沿用 GCC 自家的 flag 名（含一层双重否定，故意保留以和 GCC 一致；CPython 的对应宏 <code>Py_HAVE_NO_SEMANTIC_INTERPOSITION</code> 也是相同写法）。<a href="https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html">GCC 文档</a> 推荐"serious users"开启；CPython 给 <code>libpython3.so</code> 默认开；Fedora 也作为打包默认。</p>
+<p><strong>各编译器的实际效果：</strong></p>
+<ul>
+<li><strong>GCC</strong> —— 真实收益；flag 被加入命令。消除自身全局符号的 GOT 间接，恢复跨 TU 内联。</li>
+<li><strong>Clang / Apple Clang</strong> —— 自身已默认不可插桩，所以 blade <strong>不会</strong>主动加这个 flag。（如果加，C++ driver 会报 <code>-Wunused-command-line-argument</code>，开 <code>-Werror</code> 的项目编不过。）等同于 GCC 加了 flag 之后的 posture，是免费的。</li>
+<li><strong>MSVC</strong> —— 没有这个概念；什么都不加。</li>
+</ul>
+<p><strong>不受影响的场景</strong>（用了下列任何一种都可放心保持默认）：</p>
+<ul>
+<li><code>LD_PRELOAD</code> 风格的 malloc 替换：<strong>jemalloc、tcmalloc、mimalloc、gperftools</strong> —— 它们替换的是 libc 的 <code>malloc</code>/<code>free</code>/<code>calloc</code>/...，这些符号是 <em>extern</em> 到你的 TU 之外的，永远走 PLT。<strong>不受影响</strong>。</li>
+<li>preload 模式下的 sanitizers (ASan/MSan/TSan/UBSan)、<code>libfaketime</code>、<code>electric-fence</code>、<code>libeatmydata</code>、<code>dlsym(RTLD_NEXT, ...)</code> 风格的 shim —— 同理，目标都是 libc / runtime 符号，不是应用自身符号。</li>
+</ul>
+<p><strong>什么时候应该设 <code>False</code></strong>（关掉本项优化）：</p>
+<ul>
+<li>你的项目用了插件/注入框架（如 Frida、应用内 function patching 工具），需要替换<strong>你应用自己二进制里定义的符号</strong>，且需要同 TU 内的调用点也看到这些替换。</li>
+<li>你做的是一个文档化了"用户可替换符号"的库（罕见——<code>libpython</code> 反而是反过来用本优化的典型）。</li>
+<li>你在调试某种诡异的 ABI 问题，想要 GCC 的保守默认行为回来。</li>
+</ul>
+<p>如果不属于以上任意一类，保持默认 <code>True</code> 即可——真正需要 <code>False</code> 的人群很小，并且这类项目通常本来就在精细控制编译选项，会自己注意到。</p>
+<p>行为变更说明：此默认值与早期版本的 blade 不同（之前是关，本 release 起默认开）。GCC 用户的现有二进制等于免费拿到性能提升；常见场景下其他什么都没变。</p>
+<h4 id="hdr_dep_missing_severitystring-warning"><code>hdr_dep_missing_severity</code>：string = 'warning'<a class="headerlink" href="#hdr_dep_missing_severitystring-warning" title="Permanent link">&para;</a></h4>
+<p><strong>头文件所属库依赖缺失的严重性</strong></p>
+<p><strong>合法取值：</strong> <code>['info', 'warning', 'error']</code>
+<strong>说明：</strong> 与 <code>hdr_dep_missing_ignore</code> 一起控制「引用头文件但未声明其所属库依赖」的检查行为，详见 <a href="../build_rules/cc/#cc_library"><code>cc_library.hdrs</code></a>。</p>
+<h4 id="hdr_dep_missing_ignoredict"><code>hdr_dep_missing_ignore</code>：dict = {}<a class="headerlink" href="#hdr_dep_missing_ignoredict" title="Permanent link">&para;</a></h4>
+<p><strong>头文件依赖缺失的忽略列表</strong></p>
+<p>格式为字典：<code>{ 目标 : { 源文件 : [头文件列表] } }</code>。例如：</p>
+<pre><code class="language-python">{
+    'common:rpc' : {'rpc_server.cc':['common/base64.h', 'common/list.h']},
+}
+</code></pre>
+<p>表示对于 <code>common:rpc</code>，若在 <code>rpc_server.cc</code> 中引用了 <code>common/base64.h</code> 和 <code>common/list.h</code>，即便其所属库未在 <code>deps</code> 中声明，也不会报错。</p>
+<p>对于构建过程中生成的头文件，路径无需带构建目录前缀（例如 <code>build_release</code>），最好也不要带，以便在不同构建类型下通用。</p>
+<p>该功能用于帮助升级未正确声明和遵守头文件依赖的存量项目。为简化升级过程，我们还提供了<a href="https://github.com/blade-build/blade-build/tree/master/tool">辅助工具</a>，可在构建后自动生成此类信息：</p>
+<pre><code class="language-bash">blade build ...
+path/to/collect-inclusion-errors.py --missing &gt; hdr_dep_missing_suppress.conf
+</code></pre>
+<p>然后在 <code>BLADE_ROOT</code> 中加载：</p>
+<pre><code class="language-python">cc_config(
+    hdr_dep_missing_ignore = load_value('hdr_dep_missing_suppress.conf'),
+)
+</code></pre>
+<p>这样，存量的头文件依赖缺失错误会被抑制，但新增的依然会正常报告。</p>
+<h4 id="allowed_undeclared_hdrslist"><code>allowed_undeclared_hdrs</code>：list = []<a class="headerlink" href="#allowed_undeclared_hdrslist" title="Permanent link">&para;</a></h4>
+<p><strong>允许的未声明头文件列表</strong></p>
+<p>在 Blade 2 中，头文件也被纳入依赖管理，所有头文件都必须显式声明。对于存量代码库，未声明的头文件数量庞大，短期难以彻底清理。该选项允许在检查时忽略这些头文件。</p>
+<p>构建完成后，可使用 <code>tool/collect-inclusion-errors.py</code> 生成未声明头文件列表：</p>
+<pre><code class="language-bash">blade build ...
+path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.conf
+</code></pre>
+<p>然后加载：</p>
+<pre><code class="language-python">cc_config(
+    allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
+)
+</code></pre>
+<p>从代码库长期健康的角度，最终还是应当把这些问题彻底修正。</p>
+<h4 id="unused_deps_severitystring-debug"><code>unused_deps_severity</code>：string = 'debug'<a class="headerlink" href="#unused_deps_severitystring-debug" title="Permanent link">&para;</a></h4>
+<p><strong>未使用依赖检查的严重性</strong></p>
+<p><strong>用途：</strong> 检查「在 <code>deps</code> 中声明、但其任何公开头文件都没有被本目标直接 <code>#include</code>」的多余依赖。可取值为 <code>debug</code> / <code>info</code> / <code>notice</code> / <code>warning</code> / <code>error</code>。默认 <code>'warning'</code>（建议性：会提示但不导致构建失败）；设为 <code>'error'</code> 可让多余依赖导致构建失败，或设为 <code>'debug'</code> 关闭（不产生输出，也不加载全局声明文件）。与 Bazel 的 <code>unused_deps</code>、Buck2 一致，默认是建议性的、不强制。</p>
+<p><strong>豁免：</strong> 以下依赖不会被报告——</p>
+<ul>
+<li>以<strong>显式空 <code>hdrs = []</code></strong> 声明的「无公开接口」库：它没有可被使用的公开头文件，报告它纯属噪音。注意 <code>proto_library</code> 因为有 <code>.pb.h</code>，<strong>不</strong>在此列，仍会被检查；<code>hdrs</code> <strong>未声明（None）</strong> 的库也不在豁免之列——那是 <a href="#cc_library_config"><code>cc_library_config.hdrs_missing_severity</code></a> 所管的另一类问题。</li>
+<li>列在 <code>unused_deps_suppress</code> 中的依赖；</li>
+<li>列在目标 <code>keep_deps</code> 属性中的依赖（见 <a href="../build_rules/cc/#cc_library">build_rules/cc.md</a>）。</li>
+</ul>
+<h4 id="unused_deps_suppressdict"><code>unused_deps_suppress</code>：dict = {}<a class="headerlink" href="#unused_deps_suppressdict" title="Permanent link">&para;</a></h4>
+<p><strong>未使用依赖检查的抑制列表</strong></p>
+<p><strong>用途：</strong> 形如 <code>{target: [deps]}</code> 的映射，把「有意保留」的依赖从未使用依赖检查中豁免，主要用于存量代码库的逐步治理。</p>
+<pre><code class="language-python">cc_config(
+    unused_deps_severity = 'warning',
+    unused_deps_suppress = {
+        '//app/foo:bar': ['//common/baz:qux'],
+    },
+)
+</code></pre>
+<p>示例：</p>
+<pre><code class="language-python">cc_config(
+    extra_incs = ['thirdparty'],         # 额外的 -I，比如 thirdparty
+    warnings = ['-Wall', '-Wextra'...],  # C/C++ 公共警告
+    c_warnings = ['-Wall', '-Wextra'...],# C 专用警告
+    cxx_warnings = ['-Wall', '-Wextra'...], # C++ 专用警告
+    optimize = ['-O2'],                  # 优化级别
+)
+</code></pre>
+<h3 id="cc_library_config">cc_library_config<a class="headerlink" href="#cc_library_config" title="Permanent link">&para;</a></h3>
+<p>C/C++ 库的配置：</p>
+<h4 id="prebuilt_libpath_patternstring-libbits"><code>prebuilt_libpath_pattern</code>：string = 'lib${bits}'<a class="headerlink" href="#prebuilt_libpath_patternstring-libbits" title="Permanent link">&para;</a></h4>
+<p><strong>预编译库子目录模式</strong></p>
+<p>Blade 支持构建多目标平台的产物，例如在 x64 Linux 下，可以通过 <code>-m</code> 选项同时构建 32 位和 64 位目标。</p>
+<p>该模式支持以下占位符：</p>
+<ul>
+<li><code>${bits}</code>：目标执行位数，如 32、64</li>
+<li><code>${arch}</code>：CPU 架构名，如 i386、x86_64</li>
+<li><code>${profile}</code>：构建模式，<code>debug</code> 或 <code>release</code></li>
+</ul>
+<p>通过这种方式，多种目标平台的预编译库可以放置在不同子目录中而互不冲突。该属性也可以设置为空字符串，表示不使用子目录。</p>
+<p>如果只关心一个目标平台，完全可以只有一个子目录，甚至根本不用子目录。</p>
+<h4 id="generate_dynamicbool-false"><code>generate_dynamic</code>：bool = False<a class="headerlink" href="#generate_dynamicbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>是否同时生成动态库</strong></p>
+<p>除了生成静态库之外，是否同时生成动态库。</p>
+<h4 id="check_undefinedbool-true"><code>check_undefined</code>：bool = True <strong>（实验性）</strong><a class="headerlink" href="#check_undefinedbool-true" title="Permanent link">&para;</a></h4>
+<p><strong><a href="../build_rules/cc/#static-undefined-symbol-check">静态未定义符号检查</a>的项目级默认开关。</strong></p>
+<p>默认开启时，每个 <code>cc_library</code> 在归档完成后立即对其未定义符号进行静态校验，确认其声明的 <code>deps</code> 是否真的覆盖了所有用到的符号——把「缺依赖」的失败时机左移、按库给出诊断信息，而不是堆到最终二进制链接才爆出。</p>
+<p>检查默认启用，但目前仍属实验阶段，其诊断默认以 <strong>warning</strong> 级别输出（见下方 <code>check_undefined_severity</code>）：构建继续进行，未覆盖到的边缘情况以告警形式出现，而非直接打断 CI。在本检查在你的代码库稳定通过后，可将级别切换为 <code>error</code>。</p>
+<p>覆盖优先级：</p>
+<ul>
+<li>单次调用：<code>--cc-check-undefined</code> / <code>--no-cc-check-undefined</code>。</li>
+<li>单目标：在 <code>cc_library</code> 上设 <code>check_undefined = False</code>。<strong>最低值胜出</strong>——单目标 <code>False</code> 不能被 CLI 或配置重新开启。</li>
+</ul>
+<h4 id="check_undefined_severitystr-warning"><code>check_undefined_severity</code>：str = <code>'warning'</code><a class="headerlink" href="#check_undefined_severitystr-warning" title="Permanent link">&para;</a></h4>
+<p><strong>未解析符号诊断的级别。</strong></p>
+<ul>
+<li><code>'warning'</code>（默认，实验阶段值）—— 通过 <code>console.warning</code> 输出诊断，构建继续。</li>
+<li><code>'error'</code> —— 任何未解析符号都判定构建失败（脱离实验阶段后的默认目标）。</li>
+</ul>
+<p>本配置作用于项目全局；单目标层面的开关仍由 <code>check_undefined</code> / <code>allow_undefined</code> 控制。</p>
+<h4 id="allow_undefinedlist"><code>allow_undefined</code>：list = []<a class="headerlink" href="#allow_undefinedlist" title="Permanent link">&para;</a></h4>
+<p><strong>项目级正则白名单</strong>：列出允许保留为未定义状态的 mangled 符号名（按 <code>nm -u</code> 的输出，用 <code>re.fullmatch</code> 匹配）。</p>
+<p>系统符号（libc、libstdc++、弱引用）由内置基线处理，本清单仅用于项目级别的例外（例如代码生成器注入的符号、或者尚未建模的工具链特性提供的符号）。若只需在某个库内放行，可在 <code>cc_library</code> 上直接设 <code>allow_undefined = [r'pattern', …]</code>。</p>
+<pre><code class="language-python">cc_library_config(
+    check_undefined = True,
+    allow_undefined = [
+        r'__gcov_.*',         # gcov 运行时，由最终链接的 --coverage 提供
+        r'_ZN3foo3barEv',     # 已知由外部 codegen 注入的符号
+    ],
+)
+</code></pre>
+<h4 id="deterministicbool-false"><code>deterministic</code>：bool = False<a class="headerlink" href="#deterministicbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>生成可重复构建（deterministic）的静态库。</strong></p>
+<p>默认情况下，<code>ar</code> 在打包 <code>.o</code> 文件时会嵌入文件的时间戳、UID、GID 等元数据，
+导致同一份源码每次构建产物的 checksum 不同，破坏构建的可重复性（reproducible builds），
+也让分布式缓存（如 ccache）命中率下降。</p>
+<p>启用此选项后，各平台通过以下方式消除不确定性，确保相同源码产生相同的二进制产物：</p>
+<ul>
+<li><strong>Linux：</strong> 为 <code>ar</code> 加上 <code>D</code> 标志，清零时间戳、UID、GID，只保留文件内容和符号表</li>
+<li><strong>macOS：</strong> 使用 <code>libtool -static</code> 取代 <code>ar</code>（Apple 的 <code>ar</code> 不支持 <code>D</code> 标志，<code>libtool -static</code> 天生是 deterministic 的）</li>
+<li><strong>MSVC：</strong> 为 <code>lib.exe</code> 加上 <code>/Brepro</code> 标志，同样清零时间戳</li>
+</ul>
+<h4 id="thinbool-false"><code>thin</code>：bool = False<a class="headerlink" href="#thinbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>生成 thin 静态库</strong>，只记录 <code>.o</code> 文件路径，不打包实际内容。
+<strong>仅 Linux 支持</strong>（GNU <code>ar</code> 的 <code>T</code> 标志）。macOS 会报错，MSVC 会警告。</p>
+<h4 id="arflagslist-rcs"><code>arflags</code>：list = ['rcs'] ~~<strong>（已废弃）</strong>~~<a class="headerlink" href="#arflagslist-rcs" title="Permanent link">&para;</a></h4>
+<p>已废弃 — 请改用 <code>deterministic</code> 和/或 <code>thin</code>。
+平台特定的归档标志（<code>rcs</code>/<code>D</code>/<code>T</code>）现在由系统自动处理。</p>
+<h4 id="hdrs_missing_severitystring-error"><code>hdrs_missing_severity</code>：string = 'error'<a class="headerlink" href="#hdrs_missing_severitystring-error" title="Permanent link">&para;</a></h4>
+<p><strong>缺失 <code>cc_library.hdrs</code> 时的严重性</strong></p>
+<p><strong>合法取值：</strong> <code>['debug', 'info', 'warning', 'error']</code></p>
+<h4 id="hdrs_missing_suppresslist"><code>hdrs_missing_suppress</code>：list = []<a class="headerlink" href="#hdrs_missing_suppresslist" title="Permanent link">&para;</a></h4>
+<p><strong><code>hdrs</code> 缺失检查的抑制列表</strong></p>
+<p>格式为目标列表（不带 <code>//</code> 前缀），用于抑制存量代码中的 <code>hdrs</code> 属性缺失问题。</p>
+<p>我们提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-hdrs-missing.py</code></a> 用于生成该列表。条目过多时建议独立保存、集中加载：</p>
+<pre><code class="language-python">cc_library_config(
+    hdrs_missing_suppress = load_value('blade_hdr_missing_spppress'),
+)
+</code></pre>
+<h3 id="cc_test_config">cc_test_config<a class="headerlink" href="#cc_test_config" title="Permanent link">&para;</a></h3>
+<p>构建和运行测试所需的配置：</p>
+<pre><code class="language-python">cc_test_config(
+    dynamic_link = True,  # 测试程序默认动态链接，可减少磁盘占用，默认值为 False
+    heap_check = 'strict', # 开启 gperftools 的 HEAPCHECK，详见 gperftools 文档
+    gperftools_libs = '//thirdparty/perftools:tcmalloc',           # tcmalloc 库，Blade deps 格式
+    gperftools_debug_libs = '//thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug 库
+    gtest_libs = '//thirdparty/gtest:gtest',       # gtest 库
+    gtest_main_libs = '//thirdparty/gtest:gtest_main' # gtest_main 库
+)
+</code></pre>
+<p>注意：</p>
+<ul>
+<li>从 gtest 1.6 起移除了 <code>make install</code>，但可以绕过。</li>
+<li>gtest 库还依赖 pthread，因此 <code>gtest_libs</code> 可以写成 <code>['#gtest', '#pthread']</code>。</li>
+<li>也可以将源码纳入自己的源码树（如 <code>thirdparty</code> 目录），然后写作 <code>gtest_libs='//thirdparty/gtest:gtest'</code>。</li>
+</ul>
+<h3 id="coverage_config">coverage_config<a class="headerlink" href="#coverage_config" title="Permanent link">&para;</a></h3>
+<p>代码覆盖率报告配置（<code>blade test --coverage</code>）：</p>
+<pre><code class="language-python">coverage_config(
+    # 要从覆盖率报告中剔除的 C/C++ 源文件 glob 模式。
+    # `**` 跨目录匹配（blade glob 语义），`*`/`?` 不跨 `/`。
+    exclude=['thirdparty/**', '**/*_test.cc'],
+)
+</code></pre>
+<p>对所有 C/C++ 工具链生效：gcc/clang/clang-cl 转给 gcovr 的 <code>--exclude</code>（同时影响 HTML 与 XML）；原生 MSVC <code>cl.exe</code> 按源文件路径过滤合并后的 Cobertura 并重算汇总。构建目录下的源文件（生成代码、第三方依赖）无论此项如何设置都始终被排除。</p>
+<h3 id="msvc_config">msvc_config<a class="headerlink" href="#msvc_config" title="Permanent link">&para;</a></h3>
+<p>MSVC 专有配置，仅在 Windows 下生效：</p>
+<pre><code class="language-python">msvc_config(
+    target_arch = 'x64',
+    msvc_version = 'auto',
+    use_clang = False,
+    cppflags = ['/MD', '/EHsc'],
+    cxxflags = ['/std:c++17'],
+    linkflags = ['/SUBSYSTEM:CONSOLE'],
+    warnings = ['/W3'],
+)
+</code></pre>
+<h4 id="target_archstring-auto"><code>target_arch</code>：string = 'auto'<a class="headerlink" href="#target_archstring-auto" title="Permanent link">&para;</a></h4>
+<p><strong>目标架构</strong></p>
+<p><strong>合法取值：</strong> <code>'auto'</code>（自动检测宿主机架构）、<code>'x64'</code>、<code>'x86'</code>、<code>'arm64'</code>、<code>'arm64ec'</code></p>
+<h4 id="msvc_versionstring-auto"><code>msvc_version</code>：string = 'auto'<a class="headerlink" href="#msvc_versionstring-auto" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 编译器工具集版本前缀</strong></p>
+<p><strong>合法取值：</strong> <code>'auto'</code>（自动选取最新版本），或指定 MSVC 版本号前缀，如 <code>'14.44'</code>、<code>'14.51'</code>。</p>
+<p>各 Visual Studio 版本与 MSVC 工具集的对应关系：</p>
+<ul>
+<li><strong>VS 2019</strong>（产品版本 16.x）搭载 MSVC 14.2x（14.20 – 14.29）</li>
+<li><strong>VS 2022</strong>（产品版本 17.x）搭载 MSVC 14.3x – 14.4x（14.30 – 14.44）</li>
+<li><strong>VS 2026</strong>（产品版本 18.x）搭载 MSVC 14.50+（从 14.50 开始，MSVC 版本与 VS 产品版本
+  <a href="https://aka.ms/msvc/lifecycle">解耦</a>，按独立的半年周期发布）</li>
+</ul>
+<blockquote>
+<p><strong>VS 与 MSVC 版本号的对应关系：</strong>
+在 VS 2026 之前，MSVC 工具集版本由 VS 产品版本派生：MSVC 14.<strong>XX</strong>，其中
+<strong>XX</strong> = 30 + VS 次要版本号。例如 VS 2022 17.14 搭载 MSVC 14.44（= 14.30 + 14）。
+从 VS 2026 开始，MSVC 版本独立发布，遵循<a href="https://aka.ms/msvc/lifecycle">半年发布周期</a>。
+完整的对应关系参见 Microsoft 官方文档
+<a href="https://learn.microsoft.com/en-us/cpp/overview/compiler-versions">Microsoft C/C++ 编译器版本管理</a>。</p>
+</blockquote>
+<p>当 <code>msvc_version</code> 设置为特定前缀（如 <code>'14.44'</code>）时，Blade 会枚举所有已安装的 Visual Studio
+实例，选择首个 <code>VC/Tools/MSVC/&lt;version&gt;</code> 目录匹配的版本。这对于锁定兼容的工具集非常有用——
+例如 NVIDIA CUDA 13.2 官方支持 MSVC 14.4x（VS 2022），但不支持 MSVC 14.5x（VS 2026）。</p>
+<h4 id="use_clangbool-false"><code>use_clang</code>：bool = False<a class="headerlink" href="#use_clangbool-false" title="Permanent link">&para;</a></h4>
+<p><strong>使用 <code>clang-cl</code> 而非 <code>cl</code> 进行编译</strong></p>
+<p>设为 <code>True</code> 时，MSVC 工具链改用 <code>clang-cl</code>（LLVM 的 MSVC 兼容驱动）编译，并在可用时用
+<code>lld-link</code> / <code>llvm-lib</code> 链接和打包（否则回退到 MSVC 的 <code>link</code> / <code>lib</code>）。其余部分——MSVC
+ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</code> triplet——保持不变，因此这只是
+替换编译器，并非另一种 <code>kind</code>。</p>
+<p>LLVM 工具会从 Visual Studio 安装自动定位（其自带的 LLVM，位于 <code>VC/Tools/Llvm/&lt;host&gt;/bin</code>，
+按宿主机架构选取），无需额外配置路径。参见<a href="#在-windows-上使用-clang-cl">在 Windows 上使用 clang-cl</a>。</p>
+<h4 id="cppflagslist-md-ehsc"><code>cppflags</code>：list = ['/MD', '/EHsc']<a class="headerlink" href="#cppflagslist-md-ehsc" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 专有 C/C++ 公共编译选项</strong></p>
+<p>这些选项经过 Flag 过滤后会追加到跨平台的 <code>cc_config.cppflags</code> 之后。</p>
+<h4 id="cflagslist_1"><code>cflags</code>：list = []<a class="headerlink" href="#cflagslist_1" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 专有 C 编译选项</strong></p>
+<h4 id="cxxflagslist-stdc17"><code>cxxflags</code>：list = ['/std:c++17']<a class="headerlink" href="#cxxflagslist-stdc17" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 专有 C++ 编译选项</strong></p>
+<h4 id="linkflagslist-subsystemconsole"><code>linkflags</code>：list = ['/SUBSYSTEM:CONSOLE']<a class="headerlink" href="#linkflagslist-subsystemconsole" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 专有链接选项</strong></p>
+<h4 id="warningslist-w3"><code>warnings</code>：list = ['/W3']<a class="headerlink" href="#warningslist-w3" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 警告级别选项</strong></p>
+<h4 id="optimizedict"><code>optimize</code>：dict<a class="headerlink" href="#optimizedict" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC Debug / Release 优化选项</strong></p>
+<p>默认：</p>
+<pre><code class="language-python">{
+    'debug': ['/Od'],
+    'release': ['/O2'],
+}
+</code></pre>
+<h4 id="debug_info_levelsdict"><code>debug_info_levels</code>：dict<a class="headerlink" href="#debug_info_levelsdict" title="Permanent link">&para;</a></h4>
+<p><strong>MSVC 各调试级别的调试信息选项</strong></p>
+<p>默认：</p>
+<pre><code class="language-python">{
+    'no':   [],
+    'low':  ['/Zi'],
+    'mid':  ['/Zi', '/DEBUG'],
+    'high': ['/Zi', '/DEBUG', '/RTC1'],
+}
+</code></pre>
+<h3 id="cuda_config">cuda_config<a class="headerlink" href="#cuda_config" title="Permanent link">&para;</a></h3>
+<p>所有 CUDA 目标的公共配置：</p>
+<h4 id="cuda_pathstring"><code>cuda_path</code>：string = ''<a class="headerlink" href="#cuda_pathstring" title="Permanent link">&para;</a></h4>
+<p><strong>CUDA 安装路径</strong></p>
+<p>可以为空，或以 <code>//</code> 开头（表示工作区内的绝对路径）。</p>
+<h4 id="cu_warningslist"><code>cu_warnings</code>：list = 内置<a class="headerlink" href="#cu_warningslist" title="Permanent link">&para;</a></h4>
+<p><strong>CUDA 专用警告选项</strong></p>
+<h4 id="cuflagslist"><code>cuflags</code>：list = []<a class="headerlink" href="#cuflagslist" title="Permanent link">&para;</a></h4>
+<p><strong>CUDA 公共编译选项</strong></p>
+<h3 id="java_config">java_config<a class="headerlink" href="#java_config" title="Permanent link">&para;</a></h3>
+<p>Java 构建相关的配置：</p>
+<h4 id="java_homestring"><code>java_home</code>：string = ''<a class="headerlink" href="#java_homestring" title="Permanent link">&para;</a></h4>
+<p><strong>JAVA_HOME 路径</strong></p>
+<p>默认从 <code>$JAVA_HOME</code> 环境变量读取。</p>
+<h4 id="versionstring"><code>version</code>：string = ''<a class="headerlink" href="#versionstring" title="Permanent link">&para;</a></h4>
+<p><strong>JDK 兼容性版本</strong></p>
+<p>例如 <code>"8"</code>、<code>"1.8"</code> 等。</p>
+<h4 id="source_versionstring"><code>source_version</code>：string = ''<a class="headerlink" href="#source_versionstring" title="Permanent link">&para;</a></h4>
+<p><strong>源码兼容性版本</strong></p>
+<p>默认取 <code>version</code> 的值。</p>
+<h4 id="target_versionstring"><code>target_version</code>：string = ''<a class="headerlink" href="#target_versionstring" title="Permanent link">&para;</a></h4>
+<p><strong>目标 VM 版本</strong></p>
+<p>生成特定 VM 版本的 class 文件，默认取 <code>version</code> 的值。</p>
+<h4 id="source_encodingstring-none"><code>source_encoding</code>：string = None<a class="headerlink" href="#source_encodingstring-none" title="Permanent link">&para;</a></h4>
+<p><strong>源文件编码</strong></p>
+<p>指定源文件所使用的字符编码。</p>
+<h4 id="warningslist-werror-xlintall"><code>warnings</code>：list = ['-Werror', '-Xlint:all']<a class="headerlink" href="#warningslist-werror-xlintall" title="Permanent link">&para;</a></h4>
+<p><strong>Java 警告选项</strong></p>
+<h4 id="fat_jar_conflict_severitystring-warning"><code>fat_jar_conflict_severity</code>：string = 'warning'<a class="headerlink" href="#fat_jar_conflict_severitystring-warning" title="Permanent link">&para;</a></h4>
+<p><strong>fat jar 冲突的严重性</strong></p>
+<p><strong>合法取值：</strong> <code>["debug", "info", "warning", "error"]</code></p>
+<h4 id="mavenstring-mvn"><code>maven</code>：string = 'mvn'<a class="headerlink" href="#mavenstring-mvn" title="Permanent link">&para;</a></h4>
+<p><strong>Maven 命令</strong></p>
+<p>调用 <code>mvn</code> 时使用的命令名或路径。</p>
+<h4 id="maven_centralstring"><code>maven_central</code>：string = ''<a class="headerlink" href="#maven_centralstring" title="Permanent link">&para;</a></h4>
+<p><strong>Maven 仓库 URL</strong></p>
+<h4 id="maven_jar_allowed_dirslist"><code>maven_jar_allowed_dirs</code>：list = []<a class="headerlink" href="#maven_jar_allowed_dirslist" title="Permanent link">&para;</a></h4>
+<p><strong>允许调用 <code>maven_jar</code> 的目录（及其子目录）</strong></p>
+<p>为避免代码库中重复描述同一 id 的 Maven 制品、以及由此引发的版本冗余与冲突，建议通过 <code>maven_jar_allowed_dirs</code> 限制 <code>maven_jar</code> 只能在这些目录及其子目录中调用。</p>
+<p>对于已经散落在允许目录之外的存量 <code>maven_jar</code> 目标，可通过 <code>maven_jar_allowed_dirs_exempts</code> 豁免。
+我们还提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-disallowed-maven-jars.py</code></a> 用于生成此列表：</p>
+<pre><code class="language-python">java_config(
+    maven_jar_allowed_dirs_exempts = load_value('exempted_maven_jars.conf'),
+)
+</code></pre>
+<h4 id="maven_jar_allowed_dirs_exemptslist"><code>maven_jar_allowed_dirs_exempts</code>：list = []<a class="headerlink" href="#maven_jar_allowed_dirs_exemptslist" title="Permanent link">&para;</a></h4>
+<p><strong>豁免 <code>maven_jar_allowed_dirs</code> 检查的目标列表</strong></p>
+<h4 id="maven_snapshot_update_policystring-daily"><code>maven_snapshot_update_policy</code>：string = 'daily'<a class="headerlink" href="#maven_snapshot_update_policystring-daily" title="Permanent link">&para;</a></h4>
+<p><strong>Maven 仓库 SNAPSHOT 更新策略</strong></p>
+<p><strong>合法取值：</strong> <code>"always"</code>、<code>"daily"</code>（默认）、<code>"interval"</code>、<code>"never"</code>
+详见 <a href="https://maven.apache.org/ref/3.6.3/maven-settings/settings.html">Maven 文档</a>。</p>
+<h4 id="maven_snapshot_update_intervalint-86400"><code>maven_snapshot_update_interval</code>：int = 86400<a class="headerlink" href="#maven_snapshot_update_intervalint-86400" title="Permanent link">&para;</a></h4>
+<p><strong>SNAPSHOT 更新间隔</strong></p>
+<p><strong>单位：</strong> 分钟</p>
+<h4 id="maven_download_concurrencyint-0"><code>maven_download_concurrency</code>：int = 0<a class="headerlink" href="#maven_download_concurrencyint-0" title="Permanent link">&para;</a></h4>
+<p><strong>Maven 制品下载的并发数</strong></p>
+<p>设置大于 1 可加速下载，但由于 <a href="https://issues.apache.org/jira/browse/MNG-2802">Maven 本地仓库默认并非并发安全</a>，建议安装 <a href="http://takari.io/book/30-team-maven.html#concurrent-safe-local-repository">takari</a> 来保证安全。注意该插件有多个版本，文档示例中的并非最新版。</p>
+<h3 id="proto_library_config">proto_library_config<a class="headerlink" href="#proto_library_config" title="Permanent link">&para;</a></h3>
+<p>编译 protobuf 所需的配置：</p>
+<pre><code class="language-python">proto_library_config(
+    protoc = 'protoc',                                   # protoc 编译器路径
+    protobuf_libs = '//thirdparty/protobuf:protobuf',    # protobuf 库，Blade deps 格式
+    protobuf_path = 'thirdparty',                        # import 时的 proto 搜索路径，相对 BLADE_ROOT
+    protobuf_cc_warning = '',                            # 编译 pb.cc 时是否开启 warning，yes 或 no
+    protobuf_include_path = 'thirdparty',                # 编译 pb.cc 时额外的 -I 路径
+    protoc_direct_dependencies = False,                  # 是否给 protoc 传 --direct_dependencies
+    well_known_protos = [],                              # 见下方说明
+)
+</code></pre>
+<p><code>well_known_protos</code> 是 protobuf 自带的 <code>.proto</code> 文件列表
+（<code>google/protobuf/*.proto</code>），在开启 <code>protoc_direct_dependencies</code> 时作为
+允许的 import 白名单传给 protoc。留空（默认）时，blade 会在 protobuf 的头
+文件目录下用 <code>google/protobuf/**/*.proto</code> 通配自动发现——目录从 <code>protoc</code>
+的安装位置（包括 <code>vcpkg#protobuf</code> 的 protoc）或 <code>protobuf_incs</code> 解析得到，
+从而无需手工维护、并能随 protobuf 版本保持正确。若无法解析到头文件目录
+（例如 provider 配置有误），则回退到内置的标准列表作为兜底。只有需要覆盖
+自动发现结果时才显式设置该列表。</p>
+<h3 id="thrift_library_config">thrift_library_config<a class="headerlink" href="#thrift_library_config" title="Permanent link">&para;</a></h3>
+<p>编译 thrift 所需的配置：</p>
+<pre><code class="language-python">thrift_library_config(
+    thrift = 'thrift',                              # thrift 编译器路径
+    thrift_libs = '//thirdparty/thrift:thrift',     # thrift 库，Blade deps 格式
+    thrift_path = 'thrift',                         # thrift 文件的搜索路径，相对 BLADE_ROOT
+    thrift_incs = 'thirdparty',                     # 编译 thrift 生成的 .cpp 时额外的 -I 路径
+)
+</code></pre>
+<h3 id="_6">追加配置项的值<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>所有 <code>list</code> 和 <code>set</code> 类型的配置项都支持追加，其中 <code>list</code> 还支持在前面插入。用法是在配置项名前加 <code>append_</code> 或 <code>prepend_</code> 前缀：</p>
+<pre><code class="language-python">cc_config(
+    append_linkflags = ['-fuse-ld=gold'],
+    prepend_warnings = ['-Wfloat-compare'],
+)
+</code></pre>
+<p>同一个配置项不能同时直接赋值和追加：</p>
+<pre><code class="language-python"># 错误！
+cc_config(
+    linkflags = ['-fuse-ld=gold'],
+    append_linkflags = ['-fuse-ld=gold'],
+)
+</code></pre>
+<p>此外还有一种旧的 <code>append</code> 写法，已废弃：</p>
+<pre><code class="language-python">cc_config(
+    append = config_items(
+        warnings = [...]
+    )
+)
+</code></pre>
+<h3 id="load_value">load_value 函数<a class="headerlink" href="#load_value" title="Permanent link">&para;</a></h3>
+<p><code>load_value</code> 函数可以从文件中加载一个表达式并作为值使用：</p>
+<pre><code class="language-python">cc_config(
+    allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
+)
+</code></pre>
+<p>加载的值必须符合 Python 字面量规范，不能包含可执行语句。</p>
+<h2 id="cc">C/C++ 工具链配置<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h2>
+<p><code>cc_toolchain_config()</code> 函数用于选择 C/C++ 编译工具链。支持定义多个命名工具链，并通过 <code>--cc-toolchain</code> 命令行参数选择。</p>
+<h3 id="kind"><code>kind</code> — 工具链家族<a class="headerlink" href="#kind" title="Permanent link">&para;</a></h3>
+<p><code>kind</code> 决定 <strong>ToolChain 类</strong>、<strong>编译选项风格</strong>、<strong>依赖风格</strong>和<strong>默认目标平台</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>kind</th>
+<th>选项风格</th>
+<th>依赖风格</th>
+<th>默认目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gcc</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td>宿主机平台</td>
+</tr>
+<tr>
+<td><code>clang</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td>宿主机平台</td>
+</tr>
+<tr>
+<td><code>mingw</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td><code>windows</code></td>
+</tr>
+<tr>
+<td><code>cygwin</code></td>
+<td>GCC</td>
+<td><code>gcc</code></td>
+<td><code>windows</code></td>
+</tr>
+<tr>
+<td><code>msvc</code></td>
+<td>MSVC</td>
+<td><code>msvc</code></td>
+<td><code>windows</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>gcc</code> 和 <code>clang</code> 使用相同的 GCC 家族工具链类，区别仅在于编译器二进制文件和检测到的厂商。<code>mingw</code> 和 <code>cygwin</code> 是面向 Windows 的 GCC 家族工具链。如需用 <code>clang-cl</code>（LLVM 的 MSVC 兼容驱动）编译，保持 <code>kind='msvc'</code> 并设置 <a href="#use_clangbool--false"><code>msvc_config.use_clang</code></a>——它是搭配 LLVM 工具的同一套 MSVC 工具链，并非独立的 kind。</p>
+<h3 id="prefix"><code>prefix</code> — 安装前缀<a class="headerlink" href="#prefix" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>指定时</strong>：仅在 <code>&lt;prefix&gt;/bin/&lt;tool&gt;</code> 和 <code>&lt;prefix&gt;/&lt;tool&gt;</code> 下查找工具，<strong>绝不</strong>搜索 PATH。</li>
+<li><strong>未指定时</strong>：通过 <code>which()</code> 在 PATH 中查找，找不到时回退到裸工具名。</li>
+</ul>
+<p>这确保已配置的工具链始终固定使用其自带的安装版本，不会意外从系统 PATH 中获取其他版本。</p>
+<h3 id="_7">配置参考<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">cc_toolchain_config(
+    name   = 'gcc-13',      # 可选 — 配合 --cc-toolchain=gcc-13 选择此配置
+    kind   = 'gcc',         # 'gcc' | 'clang' | 'msvc' | 'mingw' | 'cygwin'（参见上表）
+
+    target = 'linux',       # 可选 — 目标平台: 'linux' | 'darwin' | 'windows'
+                            # 默认: 由 host 推导 (mingw/cygwin/msvc 始终为 'windows')
+
+    prefix     = '/opt/gcc-13',   # 可选 — 安装前缀，限定工具查找范围（不搜索 PATH）
+    tool_prefix = '',             # 可选 — 交叉编译工具名前缀
+                                  # 例如 'arm-linux-gnueabihf-' → arm-linux-gnueabihf-gcc
+
+    cc     = '/usr/bin/gcc-13',   # 可选 — 单独覆盖各工具路径
+    cxx    = '/usr/bin/g++-13',
+    ld     = ...,                 # 可选 — 默认由 kind/target 推导
+    ar     = ...,
+
+    # 仅 MSVC (kind='msvc' 时)
+    msvc_version = '14.44',       # 'auto' 或 MSVC 版本前缀，如 '14.44'
+    target_arch  = 'x64',         # 'auto' | 'x64' | 'x86' | 'arm64' | 'arm64ec'
+)
+</code></pre>
+<blockquote>
+<p><strong>MSVC 版本号</strong>指的是 C/C++ 编译器工具链版本（如 <code>14.44</code>、<code>14.38</code>、<code>14.28</code>），
+而非 Visual Studio 产品年份。完整说明参见
+<a href="https://learn.microsoft.com/zh-cn/cpp/overview/compiler-versions">Microsoft C++ 编译器版本</a>。
+设为 <code>'auto'</code>（默认值）时，自动选择已安装的最高版本。</p>
+</blockquote>
+<h3 id="_8">多工具链配置<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>定义多个工具链，构建时选择：</p>
+<pre><code class="language-python">cc_toolchain_config(
+    name   = 'gcc-13',
+    kind   = 'gcc',
+    prefix = '/opt/gcc-13',
+)
+
+cc_toolchain_config(
+    name   = 'clang-17',
+    kind   = 'clang',
+    prefix = '/opt/clang-17',
+)
+</code></pre>
+<pre><code class="language-bash">blade build --cc-toolchain=gcc-13    # 按名称选择
+blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
+</code></pre>
+<p>不带 <code>name</code> 的配置作为默认工具链（未指定 <code>--cc-toolchain</code> 时使用）：</p>
+<pre><code class="language-python">cc_toolchain_config(kind='clang')   # 默认工具链
+</code></pre>
+<h3 id="_9">选择优先级<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>--cc-toolchain=</code> 命令行参数（先按名称匹配，再按类型匹配）</li>
+<li>BLADE_ROOT 中的 <code>cc_toolchain_config()</code>（命名或未命名）</li>
+<li>宿主机平台自动检测</li>
+</ol>
+<h3 id="windows-clang-cl">在 Windows 上使用 clang-cl<a class="headerlink" href="#windows-clang-cl" title="Permanent link">&para;</a></h3>
+<p><code>clang-cl</code> 不是独立的 <code>kind</code>，而是用 LLVM 的 cl 兼容驱动编译的 MSVC 工具链。保持
+<code>kind='msvc'</code>（或直接依赖 Windows 自动检测），在 <code>msvc_config</code> 中开启即可：</p>
+<pre><code class="language-python">msvc_config(use_clang = True)
+</code></pre>
+<p>它完整复用 MSVC 路径——ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的
+<code>*-windows*</code> triplet——但用 <code>clang-cl</code> 编译，并在可用时用 <code>lld-link</code> / <code>llvm-lib</code>
+链接和打包（否则回退到 MSVC 的 <code>link</code> / <code>lib</code>）。LLVM 工具会从 Visual Studio
+安装自动定位（其自带的 LLVM，位于 <code>VC/Tools/Llvm/&lt;host&gt;/bin</code>，按宿主机架构选取），
+无需配置路径。<code>msvc_version</code> 和 <code>target_arch</code> 的用法与普通 MSVC 完全相同。</p>
+<h3 id="vcpkg_config">vcpkg_config<a class="headerlink" href="#vcpkg_config" title="Permanent link">&para;</a></h3>
+<p>用于把 <a href="https://github.com/microsoft/vcpkg">vcpkg</a> 包作为 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>
+依赖使用的配置。完整说明见<a href="../build_rules/vcpkg/">使用 vcpkg 包</a>。这是一个工作区级别的单一
+节：vcpkg 每个包每个工作区只允许一个版本、一组 features。</p>
+<h4 id="manage-bool-true"><code>manage</code>: bool = True<a class="headerlink" href="#manage-bool-true" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 为 <code>True</code>（默认）时，Blade 自己把 <code>vcpkg install</code> 安装到构建目录下的
+隔离目录，并使用 chainload 编译器的 overlay triplet。为 <code>False</code> 时，Blade 只解析
+你自己安装在 <code>&lt;root&gt;/installed/&lt;triplet&gt;</code> 下的产物。</p>
+<h4 id="packages-dict"><code>packages</code>: dict = {}<a class="headerlink" href="#packages-dict" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 允许的 port 白名单——<code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 可解析到什么的唯一事实来源。
+引用未列出的 port 是硬错误。每个值是版本字符串，或带 <code>version</code> 和/或 <code>features</code>
+的字典（还可带 <code>linkage</code>、<code>link_all_symbols</code>、<code>include_prefix</code>、<code>cmake_options</code>
+等键，见<a href="../build_rules/vcpkg/#单个-port-的选项">单个 port 的选项</a>）。<code>linkage</code>
+默认为 <code>'auto'</code>（与 <code>cc_library</code> 一致：静态链接消费者用静态库，动态链接消费者按需
+用共享库）：</p>
+<pre><code class="language-python">vcpkg_config(
+    packages = {
+        'fmt': '10.2.1',
+        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
+    },
+)
+</code></pre>
+<h4 id="baseline-str"><code>baseline</code>: str = ""<a class="headerlink" href="#baseline-str" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 把 ports 树固定到某个日期或 git SHA（vcpkg.json <code>builtin-baseline</code>）。
+留空则不可复现；固定它以获得一致的版本。</p>
+<h4 id="registries-list"><code>registries</code>: list = []<a class="headerlink" href="#registries-list" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 可选的私有 vcpkg registry（vcpkg-configuration.json <code>registries</code>）。</p>
+<h4 id="root-str"><code>root</code>: str = ""<a class="headerlink" href="#root-str" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> vcpkg 安装位置（工具 + ports 树）。留空表示 <code>$VCPKG_ROOT</code>。托管模式下
+用于定位 <code>vcpkg</code> 工具；非托管模式下同时是被读取的安装树根目录。</p>
+<h4 id="triplet-str-auto"><code>triplet</code>: str = "auto"<a class="headerlink" href="#triplet-str-auto" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> vcpkg triplet。<code>auto</code> 根据解析出的 <code>cc_toolchain</code> 推导（如
+<code>x64-linux</code>、<code>arm64-osx</code>、<code>x64-windows-static</code>）；指定具体 triplet 可覆盖。</p>
+<h4 id="install_dir-str-cachevcpkg"><code>install_dir</code>: str = ".cache/vcpkg"<a class="headerlink" href="#install_dir-str-cachevcpkg" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 托管模式下按工作区的安装根目录，相对于构建目录。<code>blade clean</code> 会清除。</p>
+<h4 id="binary_cache-str-auto"><code>binary_cache</code>: str = "auto"<a class="headerlink" href="#binary_cache-str-auto" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> vcpkg 二进制缓存后端，用于跨运行、跨机器复用已编译的包。<code>"auto"</code>
+保留 vcpkg 内置默认（用户缓存目录下的本地缓存）；其他任何值都会原样传给
+<code>vcpkg install --binarysource=&lt;value&gt;</code>，因此支持完整的
+<a href="https://learn.microsoft.com/vcpkg/users/binarycaching">vcpkg 二进制缓存</a>源语法，例如：</p>
+<pre><code class="language-python">vcpkg_config(
+    # 共享目录缓存（读写）。
+    binary_cache = 'files,/path/to/cache,readwrite',
+    # ……也可以是 NuGet feed、GitHub Actions 缓存、x-azblob、x-gcs 等。
+)
+</code></pre>
+<p>设为 <code>'clear'</code> 可完全禁用缓存。仅在托管模式（<code>manage = True</code>）下生效。</p>
+<h4 id="direct_use_allowed-list"><code>direct_use_allowed</code>: list = []<a class="headerlink" href="#direct_use_allowed-list" title="Permanent link">&para;</a></h4>
+<p><strong>作用：</strong> 治理项——允许直接依赖裸 <code>vcpkg#port:lib</code> 引用的源码子树列表（如
+<code>'thirdparty'</code> 或 <code>'//thirdparty'</code>）。默认空列表不施加任何限制。非空时，只有当
+<strong>发起依赖的</strong>目标位于列表中某个子树内，<code>vcpkg#...</code> 依赖才被接受；否则 Blade 报错。
+借此可将所有第三方用法收敛到 <code>thirdparty/</code> 下精心维护的包装 <code>cc_library</code> 目标，
+业务代码只依赖这些包装而非直接依赖 vcpkg port。</p>
+<pre><code class="language-python">vcpkg_config(
+    # 仅 thirdparty/ 下的 BUILD 可以写 `deps = ['vcpkg#fmt:fmt']`。
+    direct_use_allowed = ['thirdparty'],
+)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../optimization/" class="btn btn-neutral float-left" title="C/C++ 优化（PGO / AutoFDO / LTO）"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../misc/" class="btn btn-neutral float-right" title="辅助功能">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../optimization/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../misc/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/optimization/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>C/C++ Optimization (PGO / AutoFDO / LTO) - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "C/C++ Optimization (PGO / AutoFDO / LTO)";
+        var mkdocs_page_input_path = "optimization.md";
+        var mkdocs_page_url = "/docs/en/optimization/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#sample-based-pgo-autofdo">Sample-based PGO (AutoFDO)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#link-time-optimization-lto">Link-Time Optimization (LTO)</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
+      <li class="breadcrumb-item active">C/C++ Optimization (PGO / AutoFDO / LTO)</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/optimization.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cc-optimization-pgo-autofdo-lto">C/C++ Optimization (PGO / AutoFDO / LTO)<a class="headerlink" href="#cc-optimization-pgo-autofdo-lto" title="Permanent link">&para;</a></h1>
+<p>Advanced, opt-in techniques for squeezing more performance out of <strong>release</strong> C/C++ builds:</p>
+<ul>
+<li><strong><a href="#profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)</a></strong> — instrument, run a representative workload, rebuild with the collected profile.</li>
+<li><strong><a href="#sample-based-pgo-autofdo">Sample-based PGO (AutoFDO)</a></strong> — PGO without instrumentation: sample a normal optimized binary (production traffic) and rebuild.</li>
+<li><strong><a href="#link-time-optimization-lto">Link-Time Optimization (LTO)</a></strong> — cross-module optimization (inlining, devirtualization, dead-code elimination) at link time.</li>
+</ul>
+<p>PGO and LTO are independent axes and <strong>compose</strong> (e.g. <code>--profile-use</code> + <code>--lto</code>); AutoFDO is the no-instrumentation flavor of PGO. The relevant flags are listed in the <a href="../command_line/#subcommand-options">command-line reference</a>; this page is the how-and-why.</p>
+<h2 id="profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)<a class="headerlink" href="#profile-guided-optimization-pgo" title="Permanent link">&para;</a></h2>
+<p>Profile-Guided Optimization (PGO), also known as Feedback-Directed Optimization (FDO), is a technique that uses profile data collected from a program's real execution to guide the compiler's optimizations.</p>
+<p>PGO is a <strong>global build mode</strong> (not a per-target attribute): you instrument the whole build, run a representative workload, then rebuild using the collected profile. It is wired for <strong>gcc, clang, and native MSVC</strong>; both phases use a dedicated <code>build_*_pgo</code> directory so they never clobber your normal <code>build_*</code> objects.</p>
+<pre><code class="language-bash"># Phase 1 — instrument, then run a representative workload to collect data
+blade build //foo:server --profile-generate=/tmp/pgo
+./build_release_pgo/foo/server   # exercise the hot paths
+
+# Phase 2 — rebuild optimized, using the profile
+blade build //foo:server --profile-use=/tmp/pgo
+</code></pre>
+<p>Toolchain differences blade handles for you:</p>
+<ul>
+<li><strong>gcc</strong> reads the <code>.gcda</code> files directly and adds <code>-fprofile-correction</code> (tolerates the count skew of multithreaded programs). Both phases <strong>must</strong> share the build dir — gcc keys its <code>.gcda</code> lookup by object path — which the dedicated <code>build_*_pgo</code> dir guarantees.</li>
+<li><strong>clang</strong> needs a <em>merged</em> <code>.profdata</code>: its instrumented run emits <code>.profraw</code>, and <code>-fprofile-use=</code> must point at a merged file, not a directory. Point <code>--profile-use</code> at the directory of <code>.profraw</code> (or an already-merged <code>.profdata</code>) and <strong>blade runs <code>llvm-profdata merge</code> for you</strong>. clang's <code>-fprofile-correction</code> does not exist, so it is not emitted.</li>
+<li><strong>MSVC</strong> uses whole-program (LTCG) instrumentation: blade compiles with <code>/GL</code>, links the instrument phase with <code>/LTCG /GENPROFILE</code> and the optimize phase with <code>/LTCG /USEPROFILE</code> (and archives with <code>lib /LTCG</code>). The instrumented run writes <code>&lt;binary&gt;!N.pgc</code> next to the <code>&lt;binary&gt;.pgd</code>, and <code>/USEPROFILE</code> <strong>auto-merges</strong> them on the optimize link — no <code>pgomgr</code> step. The <code>.pgd</code> is keyed to the output name, so the shared <code>build_*_pgo</code> dir is what lets the optimize phase find the instrument phase's profile. The <code>path</code> argument is gcc/clang-specific and is not needed on MSVC (the profile lives next to the binary).</li>
+</ul>
+<p>Blade owns the build flags and the clang merge step; producing a <em>representative</em> workload (and deciding when a profile is stale) is your job. Profiles are <strong>not</strong> portable across compilers — instrument, run, and optimize all on one toolchain.</p>
+<blockquote>
+<p>The <strong>instrument</strong> build defines <code>BLADE_PGO_GENERATE</code> (a Blade-private macro, not a compiler/industry standard), so source can flush the profile runtime in long-running or forking servers — e.g. <code>#ifdef BLADE_PGO_GENERATE</code> → <code>__llvm_profile_write_file()</code> (clang) / <code>__gcov_dump()</code> (gcc) / <code>PgoAutoSweep(...)</code> (MSVC). The <strong>use</strong> build and <strong>AutoFDO</strong> define nothing: those binaries should behave exactly like a normal release.</p>
+</blockquote>
+<h3 id="sample-based-pgo-autofdo">Sample-based PGO (AutoFDO)<a class="headerlink" href="#sample-based-pgo-autofdo" title="Permanent link">&para;</a></h3>
+<p>The instrumentation-based PGO above needs two builds — instrument, then optimize — which is cumbersome, and the instrumented run carries real overhead.</p>
+<p>AutoFDO is the <strong>no-instrumentation</strong> flavor of PGO: instead of an instrumented build, you sample a <em>normal optimized</em> binary and rebuild with the result. The collection runs at ~1% overhead (vs ~2× for instrumentation), so the profile can come from real production traffic. Works on <strong>gcc/clang</strong> (sample with <code>perf</code>) and <strong>native MSVC</strong> (sample with <code>xperf</code> — see SPGO below). Uses a dedicated <code>build_*_autofdo</code> dir.</p>
+<pre><code class="language-bash"># Phase 1 — build with AutoFDO-friendly debug info, then sample under perf
+blade build //foo:server --autofdo-generate
+perf record -b -- ./build_release_autofdo/foo/server     # -b = LBR branch records
+
+# Convert perf.data -&gt; a sample profile yourself (it needs the collected binary):
+#   clang: llvm-profgen --perfdata=perf.data --binary=build_release_autofdo/foo/server --output=foo.prof
+#   gcc:   create_gcov  --binary=build_release_autofdo/foo/server --profile=perf.data --gcov=foo.afdo
+
+# Phase 2 — rebuild using the converted profile
+blade build //foo:server --autofdo-use=foo.prof
+</code></pre>
+<p><strong>Typical usage — one build per release (steady state).</strong> Unlike instrumentation PGO (which always needs a separate <em>slow instrumented</em> build), AutoFDO's collection binary is a <em>normal</em> binary, so once you have a profile you combine both phases into <strong>a single build that is both optimized and collectable</strong>:</p>
+<pre><code class="language-bash"># Each release: optimize with last cycle's profile AND stay sample-able for the next.
+blade build //foo:server --autofdo-generate --autofdo-use=foo.prof
+# ship it -&gt; sample it in production -&gt; convert -&gt; feeds the *next* release's --autofdo-use
+</code></pre>
+<p><code>--autofdo-generate</code> + <code>--autofdo-use</code> compose on all three toolchains (gcc/clang add the debug info alongside <code>-fprofile-sample-use</code>/<code>-fauto-profile</code>; MSVC links <code>/spgo</code> alongside <code>/spdin:</code> — verified legal on MSVC 14.51, x64 + ARM64). So in steady state every build is simultaneously "optimize with last profile" and "collect for next" — no dedicated extra build. (The very first time, run <code>--autofdo-generate</code> alone to bootstrap a profile.) The AutoFDO debug flags are cheap, so you can also bake them into your release config and pass just <code>--autofdo-use</code> daily.</p>
+<ul>
+<li><strong>clang</strong> → <code>-fprofile-sample-use=&lt;profile&gt;</code>; the collection build adds <code>-fdebug-info-for-profiling</code> + <code>-funique-internal-linkage-names</code> (better sample-to-source mapping).</li>
+<li><strong>gcc</strong> → <code>-fauto-profile=&lt;profile&gt;</code>; the collection build relies on debug line tables (the clang flags above are clang-only).</li>
+<li><strong>Line tables are guaranteed for the collection build.</strong> Sample-PGO maps samples back to source via debug line tables, so <code>--autofdo-generate</code> needs them. If <code>debug_info_level</code> emits none (e.g. <code>no</code>), Blade adds minimal ones for <em>that build only</em> — <code>-gmlt</code> (clang) / <code>-g1</code> (gcc) / <code>/Z7</code>+<code>/DEBUG</code> (MSVC SPGO) — and prints a one-time notice. It never <em>downgrades</em> an existing <code>-g</code> (a later <code>-gmlt</code> would), so a normal <code>debug_info_level=mid</code> build keeps its full debug info.</li>
+<li><strong><code>--autofdo-use</code> takes an <em>already-converted</em> profile</strong>, not a raw <code>perf.data</code> — the converter (<code>llvm-profgen</code>/<code>create_gcov</code>) needs the collected binary, which Blade doesn't have at build time. A raw <code>perf.data</code> is detected and rejected with the conversion command.</li>
+<li><strong>native MSVC</strong> uses its own sample-PGO — <strong>SPGO</strong> (<a href="https://devblogs.microsoft.com/cppblog/introducing-sample-profile-guided-optimization-in-msvc/">Sample Profile Guided Optimization</a>, VS 2022 / 2026 with MSVC 14.51+), which Blade drives from the same <code>--autofdo-*</code> flags: <code>--autofdo-generate</code> links <code>/spgo</code> (collect build), <code>--autofdo-use=app.spd</code> links <code>/LTCG /spdin:app.spd</code> (both compile <code>/GL</code>). You sample with <strong><code>xperf</code></strong> (IP sampling on any CPU, LBR on Intel Haswell+/AMD Zen 4+/ARM64 ARMv9.2-A+) and convert with <strong><code>SPDConvert</code></strong> into the <code>.spd</code> — those are your step, as with perf. <strong>clang-cl</strong> can't do sample-PGO on Windows (SPGO is cl-only; AutoFDO needs <code>perf</code>), so <code>--autofdo-*</code> is skipped there with a warning.</li>
+</ul>
+<p><strong>Platform availability (collection vs use).</strong> Sample-PGO <em>collection</em> needs hardware sampling: gcc/clang need <code>perf</code> + <strong>LBR</strong> (a <strong>bare-metal / PMU-passthrough x86_64 Linux</strong> host — ARM Linux VMs typically expose no PMU/LBR, so <code>perf record -b</code> fails there); native MSVC needs <code>xperf</code> (IP sampling works on any CPU, including ARM64). <strong>macOS has no sample-PGO collection path at all</strong> (no <code>perf</code>, no SPGO; Instruments/<code>sample</code>/<code>dtrace</code> don't feed <code>llvm-profgen</code>) — the <code>--autofdo-use</code> flag is still portable, so a Linux-collected profile <em>can</em> be applied there, but cross-OS/arch reuse is imperfect and unsupported. Where you can't collect, <strong>use instrumentation PGO</strong> (<code>--profile-generate</code>/<code>--profile-use</code>) — fully functional everywhere with no special hardware.</p>
+<blockquote>
+<p><strong>References:</strong> <a href="https://gcc.gnu.org/wiki/AutoFDO/Tutorial">GCC AutoFDO tutorial</a> · <a href="https://devblogs.microsoft.com/cppblog/introducing-sample-profile-guided-optimization-in-msvc/">MSVC SPGO</a></p>
+</blockquote>
+<h2 id="link-time-optimization-lto">Link-Time Optimization (LTO)<a class="headerlink" href="#link-time-optimization-lto" title="Permanent link">&para;</a></h2>
+<p>LTO performs cross-module optimization (inlining, devirtualization, dead-code elimination) at link time. Whether a project ships with LTO is a <strong>stable decision</strong>, so the primary control is the project intrinsic <a href="../config/#cc_config"><code>cc_config(lto='thin')</code></a>; the <code>--lto</code> flags only override it per invocation.</p>
+<pre><code class="language-bash">blade build //foo:server -p release --lto          # ThinLTO for this build
+blade build //foo:server -p release --lto=full     # monolithic LTO
+blade build //foo:server -p release --lto=no       # off (skip LTO's link cost while iterating)
+</code></pre>
+<ul>
+<li><strong>thin</strong> (default for <code>--lto</code>) maps to clang <code>-flto=thin</code> / gcc <code>-flto=auto</code>; clang additionally keeps a persistent ThinLTO cache under <code>&lt;build_dir&gt;/.cache/thinlto/</code> when the linker supports it (ld64 / lld / gold; GNU <code>bfd</code> is detected and the cache omitted). <strong>full</strong> is monolithic <code>-flto</code>.</li>
+<li><strong>Release only:</strong> debug builds never use LTO unless <code>--lto</code> is given explicitly. <strong>No separate build dir</strong> (unlike PGO/coverage) — LTO ships and is stable, so it rides <code>build_release</code>; toggling triggers a normal full rebuild.</li>
+<li><strong>Per-target opt-out:</strong> <code>lto = False</code> on a <code>cc_library</code> keeps it native (linked as an ordinary object alongside the bitcode) — for a TU that miscompiles under LTO, or a library that should stay native.</li>
+<li><strong>Toolchains: all four</strong> — gcc, clang, native MSVC <code>cl.exe</code>, and clang-cl. Native cl maps to <code>/GL</code>+<code>/LTCG</code> (thin/full both → <code>/LTCG</code>, since MSVC LTCG is whole-program; subsumed when a PGO mode is active). <strong>clang-cl</strong> takes the LLVM path instead: <code>-flto[=thin]</code> → bitcode, with <code>lld-link</code> doing the LTO (+ a <code>/lldltocache</code> for thin).</li>
+</ul>
+<p><strong>Toolchain notes / robustness.</strong> clang and clang-cl <code>thin</code> is true ThinLTO (incremental, cached). gcc has no ThinLTO, so thin maps to gcc's parallel WHOPR (<code>-flto=auto</code>) — a different model with no persistent cache. Native MSVC's <code>/GL</code>+<code>/LTCG</code> keeps objects COFF (so <code>cc_check_undefined</code> reads them with <code>dumpbin</code>); clang-cl LTO emits bitcode, so the check routes to <code>llvm-nm</code> instead — both keep working. gcc's whole-program LTO is also <strong>less robust on large C++ binaries</strong>: gcc 15.x has been observed to ICE (<code>internal compiler error: in odr_types_equivalent_p, at ipa-devirt.cc</code>) when linking heavy protobuf/RPC binaries. An ICE is a compiler bug, not a code error — if you hit one, drop LTO for that binary with <code>--lto=no</code> (a per-TU <code>lto=False</code> won't help, since the failure is in the whole-program link). In short: clang ThinLTO is the well-trodden path; treat <strong>gcc full-program LTO as experimental</strong>. Runtime gains are also workload- and toolchain-dependent — concentrated on genuinely cross-module hot paths, often negligible elsewhere — so measure on your own hot paths before committing a project to it.</p>
+<p><strong>Self-registration / plugin patterns (a common gotcha).</strong> LTO's whole-program dead-code elimination can drop <strong>static-initializer registrations that are only reached by name at runtime</strong> — factory / plugin / dependency-injection registries, and self-registering objects in general (the <code>[[gnu::constructor]]</code> + register-into-a-map idiom). From LTO's whole-program view the registrar is unreferenced, so it — and its <code>Register(...)</code> side effect — is stripped; the runtime lookup then fails (<code>… not found</code> / a registry <code>CHECK</code>) even though the program builds and passes <strong>without</strong> LTO. (Note that "force-load the archive" tricks — <code>link_all_symbols</code> / <code>-Wl,--whole-archive</code> / <code>-Wl,-force_load</code> — do <strong>not</strong> save you here: they force the <em>object</em> to be linked, but LTO still internalizes and dead-strips the registrar. LTO does not honor force-load for symbol retention.) This is a property of the <em>code pattern</em>, not a blade or compiler defect, but it can fail a lot of tests at once if a project's DI mechanism uses it.</p>
+<p><strong>Make the registration survive LTO</strong> by keeping the registrar — mark it <code>[[gnu::used, gnu::retain]]</code> (<code>used</code> keeps it through LTO's DCE, <code>retain</code> through the linker's <code>--gc-sections</code>):</p>
+<pre><code class="language-cpp">[[gnu::constructor, gnu::used, gnu::retain]] static void register_foo() { registry.Register(&quot;foo&quot;, …); }
+</code></pre>
+<p><strong>When <code>used</code> + <code>retain</code> is not enough.</strong> Keeping the registrar only helps if the registry it writes into is a <strong>single instance</strong>. If the registry is reached through a vague-/COMDAT-linkage singleton — e.g. a <em>template function-local</em> <code>static</code> (<code>template&lt;class T&gt; T&amp; Get() { static T r; return r; }</code>) — <strong>ThinLTO can internalize it per translation unit</strong>: the registrar runs, but registers into <em>its</em> TU's copy while the lookup reads a <em>different</em> copy → still <code>not found</code>. The fix then is to make the registry <strong>one strong-linkage global</strong>, defined in a single <code>.cc</code> (not synthesized per-TU via a template/inline local static).</p>
+<p><strong>If you can't (or won't) fix the source, turn LTO off for that binary</strong> — <code>lto = False</code> on the target, or build it with <code>--lto=no</code>. That is the reliable resolution when the registry can't be made LTO-safe.</p>
+<p>Either way, <strong>run your test suite under LTO before shipping</strong> such a binary.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../build_cache/" class="btn btn-neutral float-left" title="Build Cache"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../config/" class="btn btn-neutral float-right" title="Configuration System">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../build_cache/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../config/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

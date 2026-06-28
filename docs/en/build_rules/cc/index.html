@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/build_rules/cc/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>C/C++ Build Rules - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "C/C++ Build Rules";
+        var mkdocs_page_input_path = "build_rules/cc.md";
+        var mkdocs_page_url = "/docs/en/build_rules/cc/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ Build Rules</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#source-languages">Source languages</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#third-party-libraries">Third-party libraries</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#common-cc-attributes">Common C/C++ Attributes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#warning-string-yes-no">warning: string = ['yes', 'no']</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#defs-string">defs: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#incs-string">incs: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#optimize-string">optimize: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#extra_cppflags-string">extra_cppflags: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#extra_cflags-extra_cxxflags-extra_asflags-string">extra_cflags / extra_cxxflags / extra_asflags: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#extra_linkflags-string">extra_linkflags: string[] = []</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#linkflags-string-none">linkflags: string[] = None</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc_library">cc_library</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#fix-missing-dependencies-errors-caused-by-hdrs">Fix missing dependencies errors caused by hdrs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#check-unused-dependencies">Check unused dependencies</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#when-keep_deps-is-and-isnt-needed">When keep_deps is (and isn't) needed</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cases-automatically-exempted-from-the-check">Cases automatically exempted from the check</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#when-you-genuinely-need-keep_deps-and-when-you-dont">When you genuinely need keep_deps (and when you don't)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#common-false-positive-patterns-what-looks-like-a-redundant-dep-but-isnt">Common false-positive patterns (what looks like a redundant dep but isn't)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#static-undefined-symbol-check">Static undefined-symbol check</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prebuilt_cc_library">prebuilt_cc_library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#foreign_cc_library">foreign_cc_library</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example1-zlib">Example1, zlib</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-2-openssl">Example 2, openssl</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc_binary">cc_binary</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#using-dwp-files">Using dwp files</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc_test">cc_test</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc_plugin">cc_plugin</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#controlling-which-symbols-a-shared-library-exports">Controlling which symbols a shared library exports</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-c-example">A C++ example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#windows-dll-support">Windows DLL support</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#consumer-side-limitations">Consumer-side limitations</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#windows_resources">windows_resources</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#resource_library">resource_library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cu_library">cu_library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cu_binary">cu_binary</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cu_test">cu_test</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Build Rules</li>
+      <li class="breadcrumb-item active">C/C++ Build Rules</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/cc.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cc-build-rules">C/C++ Build Rules<a class="headerlink" href="#cc-build-rules" title="Permanent link">&para;</a></h1>
+<p>C/C++ compilation involves three distinct phases: preprocessing, compiling, and linking, each requiring specific compiler flags.</p>
+<h2 id="source-languages">Source languages<a class="headerlink" href="#source-languages" title="Permanent link">&para;</a></h2>
+<p><code>srcs</code> accepts C (<code>.c</code>), C++ (<code>.cc</code>/<code>.cpp</code>/<code>.cxx</code>), assembly (<code>.s</code>/<code>.S</code>/<code>.asm</code>),
+and Objective-C / Objective-C++ (<code>.m</code> / <code>.mm</code>). Objective-C(++) compiles through
+the same rules — the clang/gcc driver infers the language from the extension —
+and <code>.mm</code> is treated as C++ (gets <code>cxxflags</code>/<code>extra_cxxflags</code>). Link Apple
+frameworks via <code>extra_linkflags</code>, e.g. <code>extra_linkflags=['-framework', 'Foundation']</code>.
+The MSVC toolchain has no Objective-C support, so keep <code>.m</code>/<code>.mm</code> out of <code>srcs</code>
+on Windows (gate them with a <code>blade.cc_toolchain</code> conditional in the BUILD file).</p>
+<h2 id="third-party-libraries">Third-party libraries<a class="headerlink" href="#third-party-libraries" title="Permanent link">&para;</a></h2>
+<p>Besides building dependencies from source, C/C++ targets can link prebuilt
+system libraries (<code>#name</code>, e.g. <code>#pthread</code>) and packages managed by
+<a href="https://github.com/microsoft/vcpkg">vcpkg</a> through <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>
+dependencies. See <a href="../vcpkg/">Using vcpkg packages</a> for the full guide.</p>
+<h2 id="common-cc-attributes">Common C/C++ Attributes<a class="headerlink" href="#common-cc-attributes" title="Permanent link">&para;</a></h2>
+<h3 id="warning-string-yes-no"><code>warning</code>: string = ['yes', 'no']<a class="headerlink" href="#warning-string-yes-no" title="Permanent link">&para;</a></h3>
+<p>Controls whether to suppress all compiler warnings.</p>
+<p><strong>Example:</strong> <code>warning='no'</code>
+<strong>Default:</strong> 'yes' (can typically be omitted)</p>
+<h3 id="defs-string"><code>defs</code>: string[] = []<a class="headerlink" href="#defs-string" title="Permanent link">&para;</a></h3>
+<p>User-defined preprocessor macros.</p>
+<p><strong>Example:</strong> <code>defs=['_MT']</code> or <code>defs=['A=1']</code> for macros with values</p>
+<h3 id="incs-string"><code>incs</code>: string[] = []<a class="headerlink" href="#incs-string" title="Permanent link">&para;</a></h3>
+<p>Header file search paths.</p>
+<p><strong>Example:</strong> <code>incs=['poppy/myinc']</code>
+<strong>Best Practice:</strong> Use full include paths in source code rather than relying on additional search paths</p>
+<h3 id="optimize-string"><code>optimize</code>: string[] = []<a class="headerlink" href="#optimize-string" title="Permanent link">&para;</a></h3>
+<p>Compiler optimization flags.</p>
+<p><strong>Example:</strong> <code>optimize=['-O3']</code>
+<strong>Rationale:</strong> Optimization flags are separated from <code>extra_cppflags</code> because they should be disabled in debug mode to preserve debugging capability. For mature, performance-critical libraries (e.g., hash, compression, cryptography) where debugging is rarely needed, set <code>always_optimize = True</code>.</p>
+<h3 id="extra_cppflags-string"><code>extra_cppflags</code>: string[] = []<a class="headerlink" href="#extra_cppflags-string" title="Permanent link">&para;</a></h3>
+<p>Additional compilation flags applied to <strong>all</strong> C-family sources (C, C++ and assembly).</p>
+<p><strong>Example:</strong> <code>extra_cppflags = ['-Wno-format-literal']</code>
+<strong>Note:</strong> Essential flags like <code>-g</code> and <code>-fPIC</code> are built-in, so this parameter should be used sparingly.</p>
+<h3 id="extra_cflags-extra_cxxflags-extra_asflags-string"><code>extra_cflags</code> / <code>extra_cxxflags</code> / <code>extra_asflags</code>: string[] = []<a class="headerlink" href="#extra_cflags-extra_cxxflags-extra_asflags-string" title="Permanent link">&para;</a></h3>
+<p>Additional compilation flags applied to a <strong>single source language</strong>, in addition to <code>extra_cppflags</code>:</p>
+<ul>
+<li><code>extra_cflags</code> — C sources (<code>.c</code>)</li>
+<li><code>extra_cxxflags</code> — C++ sources (<code>.cc</code>, <code>.cpp</code>, <code>.cxx</code>)</li>
+<li><code>extra_asflags</code> — assembly sources (<code>.s</code>, <code>.S</code>, <code>.asm</code>)</li>
+</ul>
+<p>Use these when a flag is only valid for one language (e.g. a C++-only <code>-std=</code> or warning) so it isn't passed to the others. They are selected per source file by extension.</p>
+<p><strong>Example:</strong> <code>extra_cxxflags = ['-fno-rtti']</code></p>
+<h3 id="extra_linkflags-string"><code>extra_linkflags</code>: string[] = []<a class="headerlink" href="#extra_linkflags-string" title="Permanent link">&para;</a></h3>
+<p>Additional linker flags.</p>
+<p><strong>Example:</strong> <code>extra_linkflags = ['-fopenmp']</code>
+<strong>Note:</strong> Common flags like <code>-g</code> are already included, minimizing the need for this parameter.</p>
+<h3 id="linkflags-string-none"><code>linkflags</code>: string[] = None<a class="headerlink" href="#linkflags-string-none" title="Permanent link">&para;</a></h3>
+<p>Overrides global <a href="../../config/#cc_config">linkflags</a> configuration.</p>
+<p><strong>Example:</strong> <code>linkflags = ['-fopenmp']</code>
+<strong>Caution:</strong> This parameter overrides global settings. Use only with thorough understanding of GCC and linker options.</p>
+<h2 id="cc_library">cc_library<a class="headerlink" href="#cc_library" title="Permanent link">&para;</a></h2>
+<p>Build a C/C++ library</p>
+<p><code>cc_library</code> can be used to build static and dynamic library. But only the static library will built default, unless it is depended by a
+dynamic_linked cc_binary, or run blade build with <code>--generate-dynamic</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">cc_library(
+    name='lowercase',
+    srcs=['lower/plowercase.cpp'],
+    hdrs=['lower/plowercase.h'],
+    deps=['#pthread'],
+    link_all_symbols=False
+)
+</code></pre>
+<p>Attributes:</p>
+<ul>
+<li><code>hdrs</code>: list</li>
+</ul>
+<p>Declares the public interface header files of the library.</p>
+<p>For normal CC libraries, <code>hdrs</code> should exist, otherwise the library may not be used. Therefore, this attribute is required,
+  otherwise a diagnostic problem will be reported. If it surely does not exist, you should set it to empty([]) explicitly.</p>
+<p>The severity of the problem can be controlled by <a href="../../config/#cc_library_config"><code>cc_library_config.hdrs_missing_severity</code></a>.
+  For problems that existed before hdrs support, you can use <a href="../../config/#cc_library_config"><code>cc_library_config.hdrs_missing_suppress</code></a> to suppress
+  them.</p>
+<p>Rules for generating header files during construction, such as <code>pb.h</code> generated by <code>proto_library</code> or <code>outs</code> of the <code>gen_rule</code> target,
+  if these header files are included, these header files will also be automatically included.
+  Including the header file in the dependency management can avoid compilation or linking problems caused by the library that includes
+  the header file but does not add the dependency, especially for dynamically generated header files.</p>
+<p>A header file can belong to multiple <code>cc_library</code>. <code>cc_library</code> will not automatically export <code>hdrs</code> of other <code>cc_library</code> that it depends on in
+  <code>deps</code>.
+  Only public header files should be declared in <code>hdrs</code>. For private header files, even if they are included in public header files,
+  they do not need to be included. Private header files should be declared in its <code>srcs</code>.</p>
+<p>All CC libraries should be described by <code>cc_library</code>, especially for headers-only libraries.
+  Because most library inevitably depends on other libraries, if dependency of the ordinary library is shortage,
+  the "symbol not found" error will be reported during linking, it is easier to add missing dependencies based on error information,
+  but for headers-only libraries, even indirect dependencies, errors are reported at the linking time of the final user,
+  making it difficult to locate and fix the problem.</p>
+<p>Therefore, for header-only libraries, they also needs to be described with <code>cc_library</code>, its public header files need to be
+  declared in its <code>hdrs</code>, and its direct dependencies need to be listed in its <code>deps</code>.</p>
+<p>If the granularity of the library is too large, some unnecessary dependencies will be included due to the enforcement
+  of the <code>hdrs</code> checking. You should proper splitting the library to reduce unnecessary coupling.</p>
+<p>For example, <a href="https://github.com/google/googletest/blob/master/googletest/include/gtest/gtest_prod.h">gtest_prod.h</a> of
+  gtest is often used to declare testing support in product code, but it only contains some declarations and does not
+  depend on the implementation part of the gtest library. It is suitable to declare it in a separate <code>gtest_prod</code>
+  library instead of putting it into <code>gtest</code> library, Otherwise, the gtest library may be linked into the product code.</p>
+<ul>
+<li><code>textual_hdrs</code>: list = []</li>
+</ul>
+<p>Header-like files that are exposed to dependents and <code>#include</code>d <strong>textually</strong>,
+  but are never compiled or parsed on their own. This is the analog of Bazel's
+  <code>textual_hdrs</code>.</p>
+<p>Unlike <code>hdrs</code> — which must be self-contained, are checked for a header file
+  extension, and are each preprocessed standalone to build the inclusion-
+  dependency graph — <code>textual_hdrs</code> are exempt from all of that. They may have
+  any extension and need not be valid in isolation. Like <code>hdrs</code>, they are
+  declared as provided by this library, so a dependent that <code>#include</code>s one
+  passes the missing-dependency check (and the dependency counts as used).</p>
+<p>Use it for files that only make sense pasted into the middle of another
+  translation unit:</p>
+<ul>
+<li>
+<p><strong>X-macro / token lists</strong> — a file <code>#include</code>d repeatedly with different
+    macro definitions to expand a list (no include guard, not standalone):</p>
+<p><code>python
+cc_library(
+    name = 'opcodes',
+    srcs = ['vm.cc'],          # vm.cc: #define OP(x) ...; #include "opcodes.def"
+    hdrs = ['vm.h'],
+    textual_hdrs = ['opcodes.def'],
+)</code></p>
+</li>
+<li>
+<p><strong>Platform-dispatch fragments</strong> — one source <code>#include</code>s the right
+    implementation fragment per platform, so the fragments are not compiled
+    directly:</p>
+<p><code>python
+cc_library(
+    name = 'event_loop',
+    # event_loop.cc: #if __linux__  #include "event_loop_epoll.inc" ...
+    srcs = ['event_loop.cc'],
+    hdrs = ['event_loop.h'],
+    textual_hdrs = ['event_loop_epoll.inc', 'event_loop_kqueue.inc'],
+)</code></p>
+</li>
+</ul>
+<p>A file <code>#include</code>d textually but listed in <code>hdrs</code> instead would fail: blade
+  rejects a non-header extension, and otherwise tries to preprocess it on its
+  own — which errors on a fragment that references symbols/macros only defined
+  by its includer. <code>textual_hdrs</code> is the correct home for such files.</p>
+<ul>
+<li><code>link_all_symbols</code>: bool = False</li>
+</ul>
+<p>If you depends on the global initialization to register something, but didn't access these
+  global object directly. it works for code in <code>srcs</code> of executable. but if the global is in a library, it will be
+  discarded at the link time because linker find it is unsed.</p>
+<p>This attribute tells the linker don't discard any unused symbols in this library even if it seems
+  to be unused.</p>
+<p>You'd better put these self-registering code into a separated small library. otherwise, the whole
+  library will be linked into the executable unconditionally, increase the size of the executable.</p>
+<p>Youi also need to know, the <code>link_all_symbols</code> is the attribute of the library, not the user of it.
+  Click <a href="https://stackoverflow.com/questions/805555/ld-linker-question-the-whole-archive-option">here</a> to learn more details if you have interesting.</p>
+<ul>
+<li><code>generate_dynamic</code>: bool | None = None</li>
+</ul>
+<p>Whether a shared library (<code>.so</code>/<code>.dylib</code>/<code>.dll</code>) is generated for this library in addition to the static one.</p>
+<p>The default <code>None</code> means "decide automatically": the shared library is generated only when the library is depended on by a <code>dynamic_link</code> executable, or when building with <code>--generate-dynamic</code>. The static library is always generated regardless.</p>
+<p>Setting <code>generate_dynamic = False</code> opts the library out permanently: no shared library is ever generated, and the library is linked <strong>statically</strong> even into a <code>dynamic_link</code> executable. This is the right choice for libraries that expose global mutable data across the link boundary (for example a test framework with a global test registry), because such data is not safe to share through an auto-exported shared library — see <a href="#windows-dll-support">Windows DLL support</a> below.</p>
+<p>Setting <code>generate_dynamic = True</code> forces the shared library to be generated unconditionally.</p>
+<ul>
+<li><code>check_undefined</code>: bool = True <strong>(EXPERIMENTAL)</strong></li>
+</ul>
+<p>Whether Blade statically validates — at archive time, before any link — that the target's declared <code>deps</code> cover every undefined symbol the library references. If a symbol is left unresolved, the check reports a diagnostic pointing at the missing dep, instead of waiting for a final link to fail (often hundreds of targets later) with an opaque linker error.</p>
+<p>The check uses <code>nm</code> (or <code>dumpbin</code> on MSVC) on the target's just-built static archive and each transitive <code>cc_library</code> dep's archive, plus pre-generated symbol caches for every <code>#alias</code> system library (so e.g. consumers of <code>pow()</code> are required to actually declare <code>'#m'</code>). It runs even when <code>generate_dynamic = True</code> — it is faster than the link itself and catches the same misses earlier, per-library, with feedback that points at the specific dep instead of at the final binary.</p>
+<p>The check ships enabled by default, but while it is still experimental its findings default to <code>warning</code> severity (see <a href="../../config/#cc_library_config"><code>cc_library_config.check_undefined_severity</code></a>) — the build keeps going so any edge cases surface as diagnostics rather than CI failures. Flip the severity to <code>error</code> once it's clean on your codebase.</p>
+<p>See <a href="#static-undefined-symbol-check">Static undefined-symbol check</a> for the bigger picture; per-invocation overrides are <code>--cc-check-undefined</code> / <code>--no-cc-check-undefined</code>; the global default is <a href="../../config/#cc_library_config"><code>cc_library_config.check_undefined</code></a>.</p>
+<ul>
+<li><code>allow_undefined</code>: bool | list[str] = False</li>
+</ul>
+<p>Allows the target to reference symbols that no declared dep provides — i.e. the symbols will be resolved at the final link by something outside the dep graph (typical case: a plugin loaded by a host process that supplies the host's symbols).</p>
+<ul>
+<li><code>False</code> (default) — every undefined symbol must be covered by <code>deps</code>; the static check enforces this.</li>
+<li><code>True</code> — opt out entirely: skip the static check and pass <code>-Wl,--no-undefined</code>'s opposite (i.e. <strong>don't</strong> assert closure at link time either). Use this for plugin-style libraries that are loaded by an executable supplying the missing symbols.</li>
+<li><code>list[str]</code> — a narrowed allowlist of regex patterns matched against the mangled name (what <code>nm -u</code> prints). The static check tolerates exactly the listed names while still enforcing closure for everything else.</li>
+</ul>
+<p>This is per-target. A project-wide allowlist (matching the same regex semantics) lives in <a href="../../config/#cc_library_config"><code>cc_library_config.allow_undefined</code></a>.</p>
+<ul>
+<li><code>lto</code>: bool (default: follow the build)</li>
+</ul>
+<p>Opt this target out of <a href="../../optimization/#link-time-optimization-lto">Link-Time Optimization</a> by setting <code>lto = False</code>: its sources compile native (no <code>-flto</code>) and link as ordinary objects alongside the bitcode of the rest of the build. Use it for a translation unit that miscompiles under LTO, or a library that must stay native. Only <code>False</code> is meaningful — there is no per-target full/thin selection, because the link strategy is one choice for the whole build. Whether LTO is on at all is the project policy <a href="../../config/#cc_config"><code>cc_config.lto</code></a> (overridable with <code>--lto</code> / <code>--lto=no</code>); when LTO is off, this attribute has no effect.</p>
+<ul>
+<li><code>binary_link_only</code>: bool = False</li>
+</ul>
+<p>This library can only be a depenedency of the executable targets (Such as <code>cc_binary</code> or <code>cc_test</code>), but not normal <code>cc_library</code>s. This attribute is
+  useful for some exclusive libraries such as malloc library.</p>
+<p>For example, <code>tcmalloc</code> and <code>jemalloc</code> are both malloc library which contains same symbols (such as <code>malloc</code>, <code>free</code>), if a <code>cc_library</code> depends on
+  <code>tcmalloc</code>, the dependent <code>cc_binary</code> may not depends on <code>jemalloc</code> any more, otherwise linker will report multiple <code>malloc</code> definition. This
+  problem can be solved by setting this attribute on both 'tcmalloc' and 'jemalloc'.</p>
+<p>A 'binary_link_only' library can depends on other 'binary_link_only' libraries.</p>
+<p>```python
+  cc_library(
+      name = 'tcmaloc',
+      binary_link_only = True,
+      ...
+  )</p>
+<p>cc_library(
+      name = 'jemaloc',
+      binary_link_only = True,
+      ...
+  )
+  ```</p>
+<ul>
+<li><code>always_optimize</code>: bool = False</li>
+</ul>
+<p>True: Always optimize.
+  False: Don't optimize in debug mode.
+  The default value is False.It only apply to cc_library.</p>
+<ul>
+<li><code>prebuilt</code>: bool = False</li>
+</ul>
+<p>Use prebuilt in cc_library is deprecated. you should use <code>prebuilt_cc_library</code>.</p>
+<ul>
+<li><code>export_incs</code>: list = []</li>
+</ul>
+<p>Similar to <code>incs</code>, but it is transitive for all targets depends on it, even if indirect depends on it.</p>
+<p>NOTE:</p>
+<p>There is no dependency code in the generated cc_library, both static and dynamic. But for the
+  dynamic library, it contains the paths of dependencies.</p>
+<p>These libraries can just be used locally (such as run tests),not fit for the production environment.
+  If you want to build a shared library can be use in the environment, you should use <code>cc_plugin</code>,
+  which will include the code from it dependencies.</p>
+<ul>
+<li><code>system_include</code>: bool = False</li>
+</ul>
+<p>When <code>True</code>, consumers compile with <code>-isystem &lt;path&gt;</code> instead of <code>-I &lt;path&gt;</code> for this
+  library's <code>export_incs</code>. The compiler treats those headers as system headers: diagnostics
+  raised inside them are suppressed by default (and not promoted to errors by the consumer's
+  <code>-Werror</code>). Use for thin wrappers around third-party / vendored / generated headers whose
+  own warnings shouldn't bleed into first-party builds. <code>foreign_cc_library</code> is automatically
+  treated this way; <code>system_include = True</code> is the opt-in for hand-written wrappers.</p>
+<h3 id="fix-missing-dependencies-errors-caused-by-hdrs">Fix missing dependencies errors caused by <code>hdrs</code><a class="headerlink" href="#fix-missing-dependencies-errors-caused-by-hdrs" title="Permanent link">&para;</a></h3>
+<p>In large-scale C++ projects, dependency management is very important, and header files have not been included in it for a long time.
+Starting with Blade 2.0, header files have also been included in dependency management.
+When a cc target includes a header file, it also needs to put the <code>cc_library</code> it belongs to in its own <code>deps</code>, otherwise Blade will check and report
+the problem.</p>
+<p>The lack of a declaration on the library to which the header files belong will cause the following problems:</p>
+<ul>
+<li>The dependencies between libraries cannot be transferred correctly. If the library to which an undeclared header file belongs adds new dependencies
+  in the future, it may cause link errors.</li>
+<li>For the header files generated during the build, the lack of a dependency declaration for the library to which they belong will cause these header
+  files to have not yet been generated at compile time, resulting in compilation errors.</li>
+<li>To make matters worse, if these header files already exist but have not been updated, outdated header files may be used during compilation, which
+  will cause runtime errors that are more difficult to troubleshoot.</li>
+</ul>
+<p>The severity of the problem can be controlled by the <a href="../../config/#cc_config"><code>cc_config.hdr_dep_missing_severity</code></a> configuration item.
+For problems that existed before hdrs were supported, It can be suppressed by <a href="../../config/#cc_config"><code>cc_config.hdr_dep_missing_suppress</code></a>.</p>
+<p>Blade can detect two kind of missing dependencies:</p>
+<ul>
+<li><code>Missing dependenvy</code></li>
+</ul>
+<p>The header files are included in <code>srcs</code> or <code>hdrs</code> through the <code>#include</code> directive, but the library
+  to which they belong is not declared in <code>deps</code>, or these header files are not declared in any <code>hdrs</code>
+  of <code>cc_library</code> at all.</p>
+<p>Before mechanically following the "add this dep" suggestion, pause and ask which of the patterns
+  below actually applies — the mechanical fix is right in case (1), but in cases (6) and (7) it
+  either bloats the dep graph for nothing or runs straight into a visibility error on the next build.</p>
+<p>Problems and solutions:</p>
+<ol>
+<li>The library to which the header file belongs is not declared in the <code>deps</code> of this target, just follow the instruction to fix it.</li>
+<li>The header file is a private header file of the library to which it belongs, and direct use is prohibited. <strong>Exception:</strong> see case (7).</li>
+<li>The header file should be the public header file of this target, it should be declared in its <code>hdrs</code>.</li>
+<li>The header file should be the target's private header file, it should be declared in its <code>srcs</code>.</li>
+<li>The header file should be a public header file of other libraries, but there is no declaration, just declare it in the corresponding library's <code>hdrs</code>.</li>
+<li><strong>The <code>#include</code> is unnecessary; just delete it.</strong> Blade's missing-dep check is content-blind — it only sees that you <code>#include</code>-d a header. If your source doesn't actually use any name from that header (the include was copy-pasted, became dead after a refactor, or the type you thought you needed turns out to be re-exported through a header you already include), the right fix is to remove the <code>#include</code> line, not to add a dep. A quick check: grep your source for the types / functions defined in the suspicious header; if nothing matches, the include is dead.</li>
+<li>
+<p><strong>Legitimate "facade" re-export across a visibility boundary.</strong> When an umbrella target's own public header re-<code>#include</code>s a sub-library's header so the umbrella's consumers can use those types, blade will report a Missing-dep notice on the umbrella because the sub-library is locked down via <code>visibility</code>. The umbrella IS a legitimate consumer — it's the canonical re-exporter — but case (2)'s "private, direct use prohibited" rule is overly absolute here. Treat the umbrella like a C++ <code>friend</code>: add it to the sub-library's <code>visibility</code> list (a narrow, named widening) and declare the sub-library in the umbrella's <code>deps</code>. Both the visibility entry and the dep declaration should mention the re-export so the relationship is self-documenting.</p>
+<p><code>``python
+ # In the inner sub-library:
+ cc_library(
+     name = 'http_filter',
+     hdrs = 'http_filter.h',
+     ...,
+     #</code>friend`-style allow-list: only the two umbrella facades may
+     # depend on us directly; everyone else must go through them.
+     visibility = ['//flare/rpc:http', '//flare/rpc:rpc'],
+ )</p>
+<p># In the umbrella whose public <code>hdrs</code> re-export the sub-library:
+ cc_library(
+     name = 'rpc',
+     hdrs = ['http_filter.h', ...],  # re-includes inner header
+     deps = [
+         ...,
+         '//flare/rpc/protocol/http:http_filter',  # we re-export it
+     ],
+     visibility = 'PUBLIC',
+ )
+ ```</p>
+<p>If the umbrella consumes the sub-library only for its public surface (not as a re-export through the umbrella's own hdrs), and <code>unused_deps</code> flags the dep, that's actually the <a href="#check-unused-dependencies">Header re-export auto-exemption</a> case in the other direction — declare the sub-library's header in the umbrella's <code>hdrs</code> and the unused-deps check stops complaining without any visibility widening.</p>
+</li>
+<li>
+<p><code>Missing indirect dependency</code></p>
+</li>
+</ol>
+<p>One of the indirect included header file(included in the header file) does not appear in the <code>deps</code> of this target and its transitive dependencies.</p>
+<p>We only do this check for the header files generated during compilation.
+  Because for the rules for generating header files (such as <code>proto_library</code> or possibly <code>gen_rule</code>), if the dependencies are missing,
+  it may cause these header files to be ungenerated or outdated when compiling the current target, resulting in compilation errors.
+  Fixing this error is a little more troublesome. You need to analyze the include stack reported by the error message, starting from the source file,
+  and searching upwards in the library to which each header file belongs, whether it depends on the library to which the included header file belongs.</p>
+<p>At this time, you may encounter a situation, that is, some libraries with pure header files have no implementation files, so there is no orresponding
+  <code>cc_library</code> to describe it. To fix this issue, you need to write a new <code>cc_library</code> for it, add header files in the <code>hdrs</code>, add the implementation
+  dependencies in its <code>deps</code>, and add it to the <code>deps</code> of which library depends on it.</p>
+<p>This can solve the root cause, but it does require some effort. The simple and rude solution is to add the reported missing library to the current
+  target <code>deps</code>, which is equivalent to relying on the implementation details of some libraries, which is not recommended.</p>
+<p>Since Blade fully managed the dependency of header files, for any header files that are not declared in the <code>hdrs</code> or <code>src</code> of any library,
+an error will be reported after the build. If these header files should belong to the current target,
+According to whether it is public or private, add it to <code>hdrs</code> or <code>srcs</code> respectively.
+If it belongs to other libraries, it should be added to <code>hdrs</code> of other libraries, and you cannot include undeclared or private header files of other libraries.</p>
+<p>For undeclared header files that already existed in the code base before the upgrade, you can use the
+<a href="../../config/#cc_config">cc_config.allowed_undeclared_hdrs</a> configuration item to mask the check.</p>
+<h3 id="check-unused-dependencies">Check unused dependencies<a class="headerlink" href="#check-unused-dependencies" title="Permanent link">&para;</a></h3>
+<p>The complement of the missing-dependency check above: Blade can also detect <strong>redundant dependencies</strong> — a library declared in <code>deps</code> whose public headers are never directly <code>#include</code>d by the target's sources or headers. Redundant deps slow down builds, leak unnecessary transitive dependencies, and rot over time.</p>
+<p>This check is <strong>on by default at <code>'warning'</code></strong> (advisory — reported but does not fail the build); via <a href="../../config/#cc_config"><code>cc_config.unused_deps_severity</code></a> set it to <code>'error'</code> to fail the build, or <code>'debug'</code> to silence. Advisory by default, like Bazel's <code>unused_deps</code> tool and Buck2.</p>
+<h4 id="when-keep_deps-is-and-isnt-needed">When <code>keep_deps</code> is (and isn't) needed<a class="headerlink" href="#when-keep_deps-is-and-isnt-needed" title="Permanent link">&para;</a></h4>
+<p><strong><code>keep_deps</code> should be very rare in practice.</strong> Blade auto-exempts a number of structural patterns that legitimately show up as "unused" but are real dependencies, and a properly-structured BUILD usually doesn't need any <code>keep_deps</code> at all. Before adding a <code>keep_deps</code> entry, check whether one of the auto-exemptions below already covers your case, or whether the real fix is restructuring the dep — not silencing it.</p>
+<h4 id="cases-automatically-exempted-from-the-check">Cases automatically exempted from the check<a class="headerlink" href="#cases-automatically-exempted-from-the-check" title="Permanent link">&para;</a></h4>
+<p>A dep is <strong>never</strong> reported as unused if any of these apply:</p>
+<ol>
+<li><strong>The dep has no public headers</strong> — <code>hdrs = []</code> (explicit) or, equivalently, the dep is configured as header-less. Auto-applied to:</li>
+<li>Libraries with an explicit <code>hdrs = []</code> (no public interface).</li>
+<li>Libraries whose <code>name</code> is listed in <a href="../../config/#cc_library_config"><code>cc_library_config.hdrs_missing_suppress</code></a>. The user already declared "this library has no public header"; Blade treats it the same as <code>hdrs = []</code>.</li>
+<li>
+<p><code>foreign_cc_library</code> targets that don't enumerate explicit <code>hdrs</code>. The <code>hdr_dir</code> such a target registers is the in-source build-tree layout (e.g. <code>thirdparty/gflags/gflags</code>), but consumers <code>#include</code> from the installed layout (e.g. <code>&lt;gflags/gflags.h&gt;</code>), so the unused-deps check has no way to ever credit the dep as "used".</p>
+</li>
+<li>
+<p><strong>The target has no scannable C/C++ source.</strong> If the target's <code>srcs</code> and <code>hdrs</code> between them contain zero files that Blade can scan for <code>#include</code> directives (umbrella libs with empty srcs, <code>proto_library</code> wrappers whose generated <code>.cc</code> lives under <code>build_dir</code>, generated-only or foreign builds, …), the check skips this target — there is no <code>#include</code> corpus to compare deps against, so every dep would be a false positive.</p>
+</li>
+<li>
+<p><strong>Header re-export.</strong> When the umbrella target declares one of its own <code>hdrs</code> and at least one dep also declares the same header, the dep is treated as implicitly used. This is the umbrella-facade pattern (<code>fiber:fiber</code> listing <code>async.h</code>, <code>future.h</code>, … which <code>fiber:async</code>, <code>fiber:future</code>, … also own as their public headers).</p>
+</li>
+<li>
+<p><strong><code>export_incs</code> virtual paths.</strong> A library that ships its headers under a private subdirectory and exposes them via <code>-Iexport_inc_path</code> (e.g. <code>protobuf-3.4.1</code> with <code>src/google/protobuf/message.h</code> + <code>export_incs = ['src']</code>) registers each header under both its full path and the consumer-visible relative path (<code>google/protobuf/message.h</code>), so <code>#include &lt;google/protobuf/message.h&gt;</code> resolves back to the protobuf target.</p>
+</li>
+<li>
+<p><strong>System libraries</strong> (deps keyed <code>#:NAME</code>, e.g. <code>#:dl</code>, <code>#:pthread</code>). Their headers (<code>&lt;dlfcn.h&gt;</code>, <code>&lt;pthread.h&gt;</code>) do exist but Blade has no system-header → system-lib mapping, so a header-based check has nothing to consult.</p>
+</li>
+<li>
+<p><strong><code>keep_deps</code> and <code>unused_deps_suppress</code></strong> — explicit user overrides.</p>
+</li>
+</ol>
+<h4 id="when-you-genuinely-need-keep_deps-and-when-you-dont">When you genuinely need <code>keep_deps</code> (and when you don't)<a class="headerlink" href="#when-you-genuinely-need-keep_deps-and-when-you-dont" title="Permanent link">&para;</a></h4>
+<p>After the auto-exemptions above, what's left is the "purely link-time" pattern: a dep whose symbols are reached at link time but not via any <code>#include</code>. Even here, <code>keep_deps</code> is usually NOT the right answer:</p>
+<ul>
+<li>
+<p><strong>Self-registration libraries</strong> — protocol implementations, NSLBs, name resolvers, compressors, factory plugins that register themselves with a global registry via static initializers, and are never <code>#include</code>d directly by consumers — should move their <code>.h</code> into <code>srcs</code> and declare <code>hdrs = []</code>. The library then auto-exempts via case (1) above. <strong>If a private header is incidentally needed by another target (e.g. its matching <code>*_test.cc</code>), Blade allows that consumer to <code>#include</code> it as long as the test depends on the library</strong> — private headers from a directly declared dep are reachable by name. This means you do <strong>not</strong> need to make the header public just so the test can include it.</p>
+</li>
+<li>
+<p><strong>Umbrella facades</strong> that re-export a sub-library's interface — list the sub-library's public header in your own <code>hdrs</code>. Case (3) covers this without <code>keep_deps</code>.</p>
+</li>
+<li>
+<p><strong>Transitive deps you re-list "just to be explicit"</strong> — drop them. If <code>:hbase_channel</code> already depends on <code>:hbase_client_protocol</code>, an umbrella <code>:hbase_client</code> that depends on <code>:hbase_channel</code> does <strong>not</strong> need a redundant direct dep on <code>:hbase_client_protocol</code>. The redundant dep is what triggers the "unused" notice in the first place.</p>
+</li>
+</ul>
+<p>A library depended on for its link-time side effects (e.g. self-registration via global objects) should declare <code>link_all_symbols = True</code> regardless, so the linker does not drop it.</p>
+<p><code>keep_deps</code> is appropriate only when none of the above applies — for example, an umbrella that bundles several link-only registrations none of whose headers it owns or re-exports.</p>
+<pre><code class="language-python">cc_library(
+    name = 'foo',
+    srcs = ['foo.cc'],
+    hdrs = ['foo.h'],
+    deps = [':bar'],          # used via headers
+    keep_deps = [':baz'],     # truly link-only, header-bearing, not auto-exempt
+)
+</code></pre>
+<h4 id="common-false-positive-patterns-what-looks-like-a-redundant-dep-but-isnt">Common false-positive patterns (what looks like a redundant dep but isn't)<a class="headerlink" href="#common-false-positive-patterns-what-looks-like-a-redundant-dep-but-isnt" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>A private header declared as <code>hdrs</code>.</strong> A library whose <code>.h</code> is consumed only by its own <code>.cc</code> and matching <code>*_test.cc</code> does not need a public header at all. Move the <code>.h</code> into <code>srcs</code>, set <code>hdrs = []</code>, and case (1) auto-exempts the library for every consumer. The matching test can still <code>#include</code> the private header by name.</li>
+<li><strong>An umbrella facade not re-declaring the sub-library's hdrs.</strong> If the umbrella aggregates several sub-libraries, listing the sub-libraries' public headers in the umbrella's own <code>hdrs</code> lets case (3) auto-exempt the umbrella → sub-library deps.</li>
+<li><strong>A <code>foreign_cc_library</code> with an undeclared <code>hdrs</code> list.</strong> Without explicit <code>hdrs</code>, the hdr_dir is registered against the in-source layout and never matches consumer <code>#include</code>s; case (1) handles this automatically, but if you want missing-dep detection too, list the public headers explicitly under <code>hdrs</code>.</li>
+<li><strong>A library reached only through <code>export_incs</code> paths.</strong> Case (4) handles this — if you still see the check fire, verify the <code>export_incs</code> entry is the actual root (e.g. <code>src</code>, not <code>.</code> or the full path).</li>
+<li><strong><code>proto_library</code> listed as a "link-only" dep.</strong> A <code>proto_library</code>'s generated <code>.pb.h</code> is currently not unified with <code>_hdr_targets_map</code> in every code path; it may need to remain in <code>keep_deps</code> for now. (Fix tracked.)</li>
+</ul>
+<blockquote>
+<p>Tip: don't reach for <code>keep_deps</code> or <code>unused_deps_suppress</code> to silence the check until you've ruled out the structural fixes above. The patterns that look like "Blade is being annoying" are almost always actual structural smells (a private detail leaking through <code>hdrs</code>, an umbrella that doesn't re-export, a redundant transitive dep) that the check is correctly surfacing.</p>
+</blockquote>
+<p>Deps listed in <a href="../../config/#cc_config"><code>cc_config.unused_deps_suppress</code></a> as a <code>{target: [deps]}</code> map are also exempt (mainly for incrementally cleaning up an existing code base, where editing every BUILD file at once is impractical).</p>
+<h3 id="static-undefined-symbol-check">Static undefined-symbol check<a class="headerlink" href="#static-undefined-symbol-check" title="Permanent link">&para;</a></h3>
+<p>Blade's missing-deps check (above) catches header omissions. The companion <strong>undefined-symbol check</strong> catches the link-time complement: a <code>cc_library</code> references a symbol that no declared dep — including transitive <code>cc_library</code> deps and <code>#alias</code> system libraries — actually defines.</p>
+<p>Without this check, a missing <code>deps</code> entry surfaces only at the final binary's link step, often as a wall of <code>undefined reference to ...</code> errors that name the <em>binary</em>, not the broken library. The check moves that failure left in time: per-library, right after the archive is produced, with an error message that names the specific missing dep.</p>
+<p>How it works:</p>
+<ul>
+<li><code>nm -u &lt;archive&gt;</code> enumerates undefined symbols on the target's just-built <code>.a</code>.</li>
+<li><code>nm --defined-only</code> does the same for each transitive <code>cc_library</code> dep's archive.</li>
+<li>Each <code>#alias</code> system library (<code>#m</code>, <code>#pthread</code>, <code>#dl</code>, …) declared in the transitive deps contributes a pre-generated symbol cache.</li>
+<li>An internal baseline absorbs platform symbols (libc, libstdc++, weak refs).</li>
+<li>Anything still unresolved is reported with the symbol and the target where it appears, and fails the build.</li>
+</ul>
+<p><strong>Where it runs.</strong> On Linux and macOS. Skipped on MSVC because <code>link.exe</code> already rejects undefined externals via LNK2019, and Microsoft's <code>.obj</code> DEFAULTLIB directives resolve standard C/C++ symbols outside the source-visible <code>-l&lt;name&gt;</code> graph in ways the nm model can't faithfully represent. Also skipped per-target when <code>check_undefined = False</code> or <code>allow_undefined = True</code>.</p>
+<p><strong>When <code>generate_dynamic</code> is True.</strong> The check still runs. The final shared link's <code>-Wl,--no-undefined</code> is the authoritative answer, but nm catches the same misses <em>per-library, before any link runs</em>, which is faster and points at the specific dep that needs to change.</p>
+<p><strong>Controlling the check.</strong></p>
+<ul>
+<li>Per-target — set <a href="#cc_library"><code>check_undefined</code></a> or <a href="#cc_library"><code>allow_undefined</code></a> on the <code>cc_library</code> rule.</li>
+<li>Per-invocation — <code>--cc-check-undefined</code> to force-enable, <code>--no-cc-check-undefined</code> to force-disable. These override the project default but per-target <code>check_undefined = False</code> still wins.</li>
+<li>Project-wide — <a href="../../config/#cc_library_config"><code>cc_library_config.check_undefined</code></a> and the global regex allowlist <a href="../../config/#cc_library_config"><code>cc_library_config.allow_undefined</code></a>.</li>
+</ul>
+<p><strong>Legitimate undefined-symbol cases.</strong> A plugin loaded into a host process needs symbols that only the host's binary provides; setting <code>allow_undefined = True</code> opts that library out of both the static check and the link-time <code>--no-undefined</code>. For a narrower exception — say a single symbol the toolchain emits but doesn't link — use the list form <code>allow_undefined = [r'__some_symbol']</code> so the rest of the closure is still enforced.</p>
+<p><strong>Cost vs. <code>--generate-dynamic</code>.</strong> Before this check existed, the usual way to validate that every cc_library's deps were complete was to build the whole project with <code>--generate-dynamic</code>: each shared link runs through <code>-Wl,--no-undefined</code>, which fails the link on a missing dep. That works, but it has to (a) actually link every shared library, even when no dynamic linkage is otherwise wanted, and (b) only fails at link time, so the error message names the binary rather than the offending library. The static check moves the same validation to archive time and per-library.</p>
+<p>Measured on a real codebase (Tencent/flare's <code>flare/rpc/...</code>, 180 cc targets, macOS arm64, Python 3.14, <code>-j10</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Wall-clock</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cold full build, <code>--generate-dynamic --no-cc-check-undefined</code></td>
+<td>2m56s</td>
+<td>static + dynamic, no validation</td>
+</tr>
+<tr>
+<td>Cold full build, <code>--generate-dynamic --cc-check-undefined</code></td>
+<td>3m06s</td>
+<td>static + dynamic + static check</td>
+</tr>
+<tr>
+<td>Static-check overhead on a cold build</td>
+<td><strong>+10s (+5.7%)</strong></td>
+<td>overlaps with link work</td>
+</tr>
+<tr>
+<td>Warm pure-check phase (incremental rerun)</td>
+<td><strong>4.2s</strong></td>
+<td>180 targets, sources cached</td>
+</tr>
+<tr>
+<td>Warm dylib-relink phase, <code>--no-cc-check-undefined</code></td>
+<td>3.1s</td>
+<td>91 dylibs, sources cached</td>
+</tr>
+</tbody>
+</table>
+<p>In other words: on a project that doesn't actually need dynamic libraries, <code>--cc-check-undefined</code> is the cheap way to validate the dep graph — a few seconds on top of a normal static build — whereas <code>--generate-dynamic</code> makes you pay the full cost of every shared link just to find a missing dep. They are complementary, not redundant: keep using <code>--generate-dynamic</code> if you want shared libraries; use the static check for graph-completeness alone.</p>
+<h2 id="prebuilt_cc_library">prebuilt_cc_library<a class="headerlink" href="#prebuilt_cc_library" title="Permanent link">&para;</a></h2>
+<p>For libraries without source code, library should be put under the lib{32,64} sub dir accordingly.
+The attributes <code>deps</code>, <code>export_incs</code>, <code>link_all_symbols</code> is still avialiable, but other attributes,
+include compile and link related options, are not not present in prebuilt_cc_library.</p>
+<p>The library files can be located in two ways:</p>
+<ul>
+<li><strong>By name convention</strong> (default): the file is <code>lib&lt;name&gt;&lt;suffix&gt;</code> under a <code>lib{32,64}</code>-style subdirectory.</li>
+<li><strong>By explicit path</strong>: give the paths directly with <code>static_library</code> / <code>dynamic_library</code> (below) — useful when the file names or layout don't follow the convention.</li>
+</ul>
+<p>Attributes:</p>
+<ul>
+<li><code>libpath_pattern</code>: str, The subdirectory which contains the library files. It default to <code>cc_library_config.prebuilt_libpath_pattern</code> config.
+  See <a href="../../config/#cc_library_config">cc_library_config.prebuilt_libpath_pattern</a> for more details.</li>
+<li><code>static_library</code>: str, explicit path (relative to the target's dir) to the static archive (<code>.a</code> / <code>.lib</code>).</li>
+<li><code>dynamic_library</code>: str, explicit path (relative to the target's dir) to the shared library (<code>.so</code> / <code>.dylib</code> / <code>.dll</code>).</li>
+<li><code>import_library</code>: str, explicit path (relative to the target's dir) to a <strong>Windows import library</strong> (<code>.lib</code>) — the file you link against to use a <code>.dll</code>. Windows-only: it takes effect on the MSVC toolchain and is ignored elsewhere. When set, blade links the import lib for dynamic linking and treats <code>dynamic_library</code> (the <code>.dll</code>) as a runtime-only artifact (flattened into the test/run runfiles). On MSVC, setting <code>dynamic_library</code> <strong>requires</strong> <code>import_library</code> — a <code>.dll</code> cannot be linked directly, and you can't tell an import <code>.lib</code> from a true static <code>.lib</code> by name (so <code>static_library</code> vs <code>import_library</code> disambiguates).
+  When any explicit path is set, at least one is required, the name convention is skipped, and <code>libpath_pattern</code> is ignored (a warning is emitted). As with convention mode, when only one kind is present it serves both static and dynamic linking.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-python"># By name convention (looks for lib&lt;name&gt; under the lib{32,64} subdir):
+prebuilt_cc_library(
+    name = 'mysql',
+    deps = [':mystring', '#pthread']
+)
+
+# By explicit path:
+prebuilt_cc_library(
+    name = 'foo',
+    hdrs = ['foo.h'],
+    static_library = 'lib/libfoo.a',
+    dynamic_library = 'lib/libfoo.so',
+    export_incs = ['include'],
+)
+
+# Windows: link the import lib, ship the DLL as the runtime payload:
+prebuilt_cc_library(
+    name = 'bar',
+    hdrs = ['bar.h'],
+    import_library = 'lib/bar.lib',
+    dynamic_library = 'bin/bar.dll',
+    export_incs = ['include'],
+)
+</code></pre>
+<h2 id="foreign_cc_library">foreign_cc_library<a class="headerlink" href="#foreign_cc_library" title="Permanent link">&para;</a></h2>
+<p>NOTE: This feature is still experimental.</p>
+<p>There are already a large number of existing libraries in the world. They are built with different build systems.
+If you want to add Blade build support to them, you need to invest a lot of time cost and maintenance.
+foreign_cc_library is used to describe C/C++ libraries not built directly by Blade but generated by other build systems, such as make or cmake.
+The main difference between foreign_cc_library and prebuilt_cc_library is that the library it describes is dynamically generated by Blade during the
+build by calling other build systems,
+The library described by prebuilt_cc_library is placed in the source tree before the build. So generally foreign_cc_library always needs to be used
+with gen_rule.</p>
+<p>Considering that a large number of C/C++ libraries are built with <a href="http://autotoolset.sourceforge.net/tutorial.html">GNU Autotools</a>,
+the default parameters of foreign_cc_library are adapted to the
+<a href="https://www.gnu.org/software/automake/manual/html_node/Standard-Directory-Variables.html">autotools installation directory layout</a>.
+In order to find the library and header files correctly, foreign_cc_library assumes that the package will be installed in a certain directory
+after the build (that is, the path specified by the <code>--prefix</code> parameter of <code>configure</code>), and the header file is in the <code>include</code> subdirectory,
+The library file is installed in the <code>lib</code> subdirectory.</p>
+<p>Attributes:</p>
+<ul>
+<li><code>name</code>: str, The name of the library</li>
+<li><code>install_dir</code>: str, The installation directory after the package is built</li>
+<li><code>lib_dir</code>: list, The subdirectory name of the library in the installation directory</li>
+<li><code>has_dynamic</code>: bool = False, Whether this library has a dynamic linked edition.</li>
+<li><code>static_library</code> / <code>dynamic_library</code> / <code>import_library</code>: str, explicit paths
+  (relative to <code>install_dir</code>) to the libraries the foreign build produces,
+  overriding the <code>lib_dir</code>/<code>has_dynamic</code> name convention. Useful when the build
+  emits names the <code>lib&lt;name&gt;.&lt;suffix&gt;</code> convention can't express (version
+  suffixes, several libs, etc.). <code>import_library</code> is the Windows import <code>.lib</code>
+  for a produced <code>.dll</code> (required on MSVC when a <code>dynamic_library</code> is given).
+  Same two-mode behaviour as <code>prebuilt_cc_library</code>; the link selection, runfiles,
+  and <code>check_undefined</code> <code>.syms</code> handling are shared between the two rules.</li>
+</ul>
+<h3 id="example1-zlib">Example1, zlib<a class="headerlink" href="#example1-zlib" title="Permanent link">&para;</a></h3>
+<p>zlib can be the simplest example of autotools package. Assuming that <code>zlib-1.2.11.tar.gz</code> is in the <code>thirparty/zlib</code> directory, its BUILD file is
+<code>thirdparty/zlib/BUILD</code>:</p>
+<pre><code class="language-python"># Assume that after executing this rule, the built package will be installed under `build_release/thirdparty/openssl`,
+# then the header file is under `include/openssl`, and the library file is under `lib`.
+# We have developed general build rules for autotools and cmake, but they are still in the experimental state.
+# Here we still use `gen_rule` to examplify.
+gen_rule(
+    name = 'zlib_build',
+    srcs = ['zlib-1.2.11.tar.gz'],
+    outs = ['lib/libz.a', 'include/zlib.h', 'include/zconf.h'],
+    cmd = '...',  # tar xf, configure, make, make install...
+)
+
+# Describe the installed library of zlib
+
+foreign_cc_library(
+    name = 'z',  # The name of the library is `libz.a`, under the `lib` subdirectory
+    install_dir = '', # The installation directory is `build_release/thirdparty/libz`
+    # lib_dir= 'lib', # The dafault os OK and can be omitted.
+    deps = [':zlib_build'],
+)
+</code></pre>
+<p>Use the above library:</p>
+<pre><code class="language-python">cc_binary(
+    name = 'use_zlib',
+    srcs = ['use_zlib.cc'],
+    deps = ['//thirdparty/openssl:ssl'],
+)
+</code></pre>
+<p>use_openssl.cc:</p>
+<pre><code class="language-cpp">#include &quot;thirdparty/zlib/include/zlib.h&quot;
+// or
+#include &quot;zlib.h&quot;
+// because `thirdparty/zlib/include` has been exported in the `foreign_cc_library` defaultly
+</code></pre>
+<h3 id="example-2-openssl">Example 2, openssl<a class="headerlink" href="#example-2-openssl" title="Permanent link">&para;</a></h3>
+<p>Strictly speaking, openssl is not built with autotools, but it is generally compatible with autotools.
+Its autotools-like configure file is <code>Config</code>, and the directory layout after installation is compatible.
+However, its header file paths have package name prefix, which is not directly under <code>include</code> but under the <code>include/openssl</code> subdirectory.</p>
+<p>Suppose openssl-1.1.0.tar.gz is in the thirparty/openssl directory, and its BUILD file is thirdparty/openssl/BUILD:</p>
+<pre><code class="language-python"># Assuming that after executing this rule, the built package will be installed under `build_release/thirdparty/openssl`,
+# then the header file is under `include/openssl` and the library file is under `lib`.
+gen_rule(
+    name = 'openssl_build',
+    srcs = ['openssl-1.1.0.tar.gz'],
+    outs = ['lib/libcrypto.a', 'lib/libss.a'],
+    cmd = '...',  # tar xf, Config, make, make install...
+    export_incs = 'include', # Let the compiler find the `openssl` subdirectory under `include`
+)
+
+# Describe the above 2 libraries
+
+foreign_cc_library(
+    name = 'crypto',  # The name of the library is libcrypto.a, under the `lib` subdirectory
+    install_dir = '', # The installation directory is `build_release/thirdparty/openssl`
+    deps = [':openssl_build'],
+)
+
+foreign_cc_library(
+    name = 'ssl',  # The name of the library is libssl.a, under the `lib` subdirectory
+    install_dir = '',
+    deps  = [':openssl_build', ':crypto'],
+)
+</code></pre>
+<p>Use the above library:</p>
+<pre><code class="language-python">cc_binary(
+    name = 'use_openssl',
+    srcs = ['use_openssl.cc'],
+    deps = ['//thirdparty/openssl:ssl'],
+)
+</code></pre>
+<p>use_openssl.cc:</p>
+<pre><code class="language-cpp">#include &quot;openssl/ssl.h&quot;  // Contains package name
+</code></pre>
+<h2 id="cc_binary">cc_binary<a class="headerlink" href="#cc_binary" title="Permanent link">&para;</a></h2>
+<p>Build executable from source.</p>
+<p>Example:</p>
+<pre><code class="language-python">cc_binary(
+    name='prstr',
+    srcs=['./src/mystr_main/mystring.cpp'],
+    deps=['#pthread',':lowercase',':uppercase','#dl'],
+)
+</code></pre>
+<ul>
+<li><code>dynamic_link</code>:bool = False</li>
+</ul>
+<p>cc_binary is static linked defaultly for easy deploying, include libstdc++.
+  For some <a href="https://stackoverflow.com/questions/8140439/why-would-it-be-impossible-to-fully-statically-link-an-application">technology limitation</a>,
+  glibc is not static linked. we can link it statically, but there are still some problems.</p>
+<p>If you want to generate a dynamic linked executable, you can set it to True,all dependency
+  libraries will be linked statically, except prebuilt libraries if they has no dynamic version.
+  This may reduce disk usage, but program will startup slower. Usually it can be use for local
+  testing, but it didn't fit for deploy.</p>
+<ul>
+<li><code>export_dynamic</code>: = True</li>
+</ul>
+<p>Usually, dynamic library will only access symbols from its dependencies. but for some special
+  case, shared library need to access symbols defined in the host executable, so come the attribute.</p>
+<p>This attribute tells linker to put all symbols into its dynamic symbol table. make them visible
+   for loaded shared libraries. for more details, see <code>--export-dynamic</code> in man ld(1).</p>
+<p><code>export_dynamic</code> is an ELF (GNU-ld / ld64) feature. <strong>It has no effect on MSVC</strong> (Windows
+  has no "export all" mode; the option is ignored with a warning). On Windows, export symbols
+  <em>explicitly</em> with <code>export_map</code> (below).</p>
+<ul>
+<li><code>export_map</code> (on <code>cc_binary</code>): the same export-control file used by <code>cc_library</code> also lets an
+  <strong>executable</strong> export selected symbols, so a <code>LoadLibrary</code>'d plugin DLL can resolve them back
+  into the host (issue #1201). On GNU-ld / ld64 it is the link-time version script as usual; on
+  <strong>MSVC</strong> Blade turns it into a COMDAT-filtered <code>.def</code>, passes <code>/DEF</code> so the exe exports exactly
+  the listed symbols, and <code>link.exe</code> additionally emits an <strong>import library <code>&lt;name&gt;.lib</code></strong> that a
+  plugin DLL links (e.g. via a <code>prebuilt_cc_library</code>) to call back into the host. Export is always
+  <em>explicit</em> — Windows favors a curated set over exporting everything (which would blow the PE 64K
+  export ceiling and expose internals); for a one-off symbol, <code>linkflags = ['/EXPORT:&lt;symbol&gt;']</code>
+  works without an export map.</li>
+</ul>
+<p><code>python
+  cc_binary(name = 'host', srcs = ['host.cc'], export_map = 'host_api.map')</code></p>
+<ul>
+<li><code>strip</code>: bool = False</li>
+</ul>
+<p>Strip the executable after linking to reduce its size (symbols/debug info are removed). Blade links to a <code>&lt;name&gt;.unstripped</code> sidecar and runs <code>strip</code> into the final output. Only supported on the GNU toolchain (gcc); skipped with a notice elsewhere. Compatible with DebugFission — the <code>.dwp</code> is packaged from the objects, so you can ship a stripped binary alongside a separate <code>.dwp</code> for debugging.</p>
+<ul>
+<li><code>strip_options</code>: string[] = []</li>
+</ul>
+<p>Options passed to <code>strip</code> when <code>strip = True</code>. Defaults to <code>['--strip-unneeded']</code>. Use <code>['--strip-all']</code> (or <code>['-s']</code>) for the smallest binary, <code>['--strip-debug']</code> to drop only debug info, or <code>['-K', '&lt;symbol&gt;']</code> to keep specific symbols. See <code>man strip(1)</code>.</p>
+<ul>
+<li><code>extra_linkflags</code>: string[] = []</li>
+</ul>
+<p>Extra flags passed to the linker for this target (see the common attribute above), e.g. <code>extra_linkflags=['-Wl,-z,now']</code>.</p>
+<h3 id="using-dwp-files">Using dwp files<a class="headerlink" href="#using-dwp-files" title="Permanent link">&para;</a></h3>
+<p>When DebugFission is enabled (via <a href="../../config/#cc_config"><code>cc_config.fission</code></a>) and dwp packaging is enabled
+(via <a href="../../config/#cc_config"><code>cc_config.dwp</code></a>), the debug information is split into separate <code>.dwo</code> files,
+which are then packaged into a single <code>.dwp</code> file for each binary target.</p>
+<p>If you need to deploy the binary with debug information for debugging in production or other environments,
+you can include the dwp file in your package by referencing it through the binary target:</p>
+<pre><code class="language-python">package(
+    name = 'server_package',
+    ...,
+    srcs = [
+        # executable
+        ('$(location //server:server)', 'bin/server'),
+        # Include the dwp file for server binary
+        ('$(location //server:server dwp)', 'bin/server.dwp'),
+        ...,
+    ],
+)
+</code></pre>
+<p>The <code>$(location :target dwp)</code> syntax allows you to reference the dwp file generated for a specific binary target.</p>
+<h2 id="cc_test">cc_test<a class="headerlink" href="#cc_test" title="Permanent link">&para;</a></h2>
+<p>cc_binary, with gtest gtest_main be linked automatically,</p>
+<p>Test will be ran in a test sandbox, it can't access source code directly.
+If you want to pass some data files into it, you must need <code>testdata</code> attribute.</p>
+<ul>
+<li><code>testdata</code>: list = []</li>
+</ul>
+<p>Copy test data files into the test sandbox, make them visible to the test code.
+  This attribute supports the following forms:</p>
+<ul>
+<li>
+<p><code>'file'</code></p>
+<p>Use the original filename in test code.
+  - <code>'//your_proj/path/file'</code></p>
+<p>Use "your_proj/path/file" form to access in test code.
+  - <code>('//your_proj/path/file', "new_name")</code></p>
+<p>Use the "new_name" in test code.</p>
+</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-python">cc_test(
+    name = 'textfile_test',
+    srcs = 'textfile_test.cpp',
+    deps = ':io',
+    testdata = [
+        'test_dos.txt',
+        '//your_proj/path/file',
+        ('//your_proj/path/file', 'new_name')
+    ]
+)
+</code></pre>
+<h2 id="cc_plugin">cc_plugin<a class="headerlink" href="#cc_plugin" title="Permanent link">&para;</a></h2>
+<p>Link all denendencies into the generated <code>so</code> file, make it can be easily loaded in other languages.</p>
+<pre><code class="language-python">cc_plugin(
+    name='mystring',
+    srcs=['./src/mystr/mystring.cpp'],
+    deps=['#pthread',':lowercase',':uppercase','#dl'],
+    warning='no',
+    defs=['_MT'],
+    optimize=['O3']
+)
+</code></pre>
+<p>Attributes:</p>
+<ul>
+<li><code>prefix</code>: str | None = None, the file name prefix of the generated dynamic library. The default <code>None</code> means "use the current toolchain's platform default" (<code>lib</code> on Linux/macOS, empty on Windows).</li>
+<li><code>suffix</code>: str | None = None, the file name suffix of the generated dynamic library. The default <code>None</code> means "use the current toolchain's platform default" (<code>.so</code> on Linux, <code>.dylib</code> on macOS, <code>.dll</code> on Windows).</li>
+<li><code>allow_undefined</code>: bool = False, whether undefined symbols are allowed when linking. Because many plug-in libraries depend on the symbol names provided by the
+  host process at runtime, the definition of these symbols does not exist in the link phase.</li>
+<li><code>strip</code>: bool = False, whether to remove the debugging symbol information. If enabled, the size of the generated library can be reduced, but symbolic debugging
+  cannot be performed. Only supported on the GNU toolchain (gcc); skipped with a notice elsewhere.</li>
+<li><code>strip_options</code>: string[] = [], options passed to <code>strip</code> when <code>strip = True</code>. Defaults to <code>['--strip-unneeded']</code> (safe for a shared object). Use e.g. <code>['--strip-debug']</code> to drop only debug info, or <code>['-K', '&lt;symbol&gt;']</code> to keep specific symbols. See <code>man strip(1)</code>.</li>
+<li><code>linker_script</code>: str, a single <a href="https://sourceware.org/binutils/docs/ld/Scripts.html">linker script</a> used to control the linking process.
+  Its role is mainly to specify how to put the sections in the input file into the output file and to control the layout of the sections in the input file in the program address space.
+  The linker has a default built-in linking script, which can be viewed with <code>ld --verbose</code>. This option will replace the system's default linking script.
+  The linker script file usually has the extension <code>.ld</code> or <code>.lds</code>.
+  Only a single file is accepted: a SECTIONS script replaces the default, so multiple <code>-T</code> scripts do not meaningfully combine.
+  Linker scripts are usually quite complex, so if you just want to control the visibility of the symbols, use the <code>export_map</code> option below.<blockquote>
+<p><strong>GNU-ld feature.</strong> <code>linker_script</code> is the GNU-ld <code>-T</code> option. It works with a GNU-ld-compatible linker: GNU <code>ld</code> / <code>ld.lld</code> on ELF (Linux), and <strong>MinGW's GNU <code>ld</code></strong> when targeting Windows. It is <strong>not</strong> supported by MSVC <code>link.exe</code> or Apple's <code>ld64</code>: on macOS Blade emits a warning and drops the script (previously the link would fail with a cryptic "unknown options" error); on MSVC this attribute doesn't reach <code>_cc_link</code>.
+The plural <code>linker_scripts</code> (a list) is a <strong>deprecated alias</strong>; using it emits a warning and only the first file is used.</p>
+</blockquote>
+</li>
+<li><code>export_map</code>: str, a single <a href="https://sourceware.org/binutils/docs/ld/VERSION.html">linker "version" script</a> used to control which symbols the shared library exports.
+  Despite the linker term "version script", the mechanism here is <em>export filtering</em>, not ABI versioning — hence the name <code>export_map</code> (the industry term for a symbol-export control file). Use the anonymous-version form (no version id) to control visibility only.
+  Only a single file is accepted (GNU ld rejects more than one anonymous version node). It is available on <code>cc_library</code>, <code>cc_binary</code> and <code>cc_plugin</code>. It is passed to GNU ld's <code>--version-script</code>; the export-map files usually have the extension <code>.exp</code>, <code>.sym</code>, <code>.ver</code> or <code>.map</code>. See <a href="#controlling-which-symbols-a-shared-library-exports">the C++ example below</a>.<blockquote>
+<p><strong>Cross-platform.</strong> On Linux it is passed straight to GNU ld. On <strong>MSVC</strong> there is no <code>--version-script</code>, so Blade applies the map itself: it filters the auto-generated <code>.def</code> (see <a href="#windows-dll-support">Windows DLL support</a>) by matching each symbol's <strong>demangled name</strong> (<code>UnDecorateSymbolName</code>) against the <code>global</code>/<code>local</code> patterns. <strong>macOS (Apple ld64)</strong> is handled the same way: Blade enumerates each <code>.o</code>'s globals via <code>nm</code>, demangles each via libc++abi's <code>__cxa_demangle</code>, matches against the script, and writes the matching (Mach-O-underscore-prefixed) mangled names into ld64's <code>-exported_symbols_list</code> file. Because demangling is <em>name-only</em>, two limitations apply on both MSVC and macOS: <strong>overloads collapse</strong> (a name is exported with all its overloads or none), and a quoted signature pattern (<code>"f(int)"</code>) is matched by its <strong>name part only</strong> (with a one-time warning). Full ELF symbol versioning (version nodes) is Linux-only. In practice, writing patterns in the <code>ns::class::method</code> form is sufficient.
+<code>linker_script</code> is likewise a GNU-ld option (see its note above).
+The plural <code>version_scripts</code> (a list) is a <strong>deprecated alias</strong> for <code>export_map</code>; using it emits a warning and only the first file is used.</p>
+</blockquote>
+</li>
+</ul>
+<p><code>prefix</code> and <code>suffix</code> control the file name of the generated dynamic library. Assuming <code>name='file'</code>, on a Linux toolchain the default output is <code>libfile.so</code>;
+setting <code>prefix=''</code> makes it <code>file.so</code>. Passing a <code>name</code> that already carries a shared-library extension (e.g. <code>name='file.so'</code>) is no longer implicitly treated as "the full output file name"; to fully customize the output name, pass <code>prefix=''</code> and <code>suffix='.so'</code> explicitly.</p>
+<h3 id="controlling-which-symbols-a-shared-library-exports">Controlling which symbols a shared library exports<a class="headerlink" href="#controlling-which-symbols-a-shared-library-exports" title="Permanent link">&para;</a></h3>
+<p>To control the external visibility of symbols in the linking result, you can use <a href="https://gcc.gnu.org/wiki/Visibility">GCC extended attributes in the source code or command line options</a>. When you don't want to (or can't) annotate the sources, <code>export_map</code> does the same from the link line: it lists the symbols to keep <code>global</code> (exported); everything under <code>local</code> becomes hidden.</p>
+<h4 id="a-c-example">A C++ example<a class="headerlink" href="#a-c-example" title="Permanent link">&para;</a></h4>
+<p>Suppose a library should expose only the <code>mylib::Api</code> class and the <code>mylib::Create()</code> factory, and hide everything else (helpers, third-party symbols pulled in statically, etc.):</p>
+<pre><code class="language-cpp">// api.h
+namespace mylib {
+class Api {
+ public:
+    void Run();
+};
+Api* Create();
+}  // namespace mylib
+</code></pre>
+<p>Because C++ symbols are mangled, list the <em>demangled</em> names inside an <code>extern "C++"</code> block. Write the <code>export_map</code> file (e.g. <code>api.map</code>):</p>
+<pre><code class="language-ld">{
+global:
+    extern &quot;C++&quot; {
+        # Quoted names are matched literally (no wildcard) -- use this when
+        # the exact signature matters or to avoid matching overloads.
+        &quot;mylib::Create()&quot;;
+
+        # Unquoted names allow wildcards: export every member of mylib::Api
+        # (constructors, Run(), ...).
+        mylib::Api::*;
+
+        # vtable / typeinfo are needed by code that inherits from or
+        # dynamic_casts the class across the library boundary. The demangler
+        # prints a space here; match it with the '?' single-char wildcard.
+        typeinfo?for?mylib::Api;
+        vtable?for?mylib::Api;
+    };
+local:
+    *;  # hide everything not listed above
+};
+</code></pre>
+<p>Wire it into the BUILD file (only the shared library is affected; the static archive is unchanged):</p>
+<pre><code class="language-python">cc_library(
+    name = 'mylib',
+    srcs = ['api.cc'],
+    hdrs = ['api.h'],
+    export_map = 'api.map',
+)
+</code></pre>
+<p>To see the visibility of symbols in the library, you can use the <code>nm</code> command.</p>
+<pre><code class="language-console">000000000000010c t _init
+                 U puts@@GLIBC_2.2.5
+00000000000000000060 t register_tm_clones
+00000000000000f0 T hello
+00000000000000000100 t world
+</code></pre>
+<p>The second column is the symbol type. If lowercase, the symbol is usually local; if uppercase, the symbol is global (external).
+<code>U</code> is the undefined external symbols that the library depends on, don't care.</p>
+<p><code>cc_plugin</code> is mainly used to create various extensions, such as JNI, python extension and other dynamic libraries
+that are dynamically loaded by calling certain functions during runtime.
+It will be ignored when linking even if it appears in the <code>deps</code> of other cc targets.</p>
+<h3 id="windows-dll-support">Windows DLL support<a class="headerlink" href="#windows-dll-support" title="Permanent link">&para;</a></h3>
+<p>On a Windows (MSVC) toolchain, a <code>cc_library</code> that needs a shared library is built as a <strong>DLL plus an import library</strong>, mirroring the <code>.so</code> it would produce on Linux. This happens under the same conditions as on other platforms: the library is depended on by a <code>dynamic_link</code> executable, or you build with <code>--generate-dynamic</code>.</p>
+<p>Two Windows specifics are handled for you:</p>
+<ul>
+<li><strong>Automatic export.</strong> Unlike ELF, where every global symbol is exported by default, Windows exports nothing unless symbols are marked <code>__declspec(dllexport)</code> or listed in a module-definition (<code>.def</code>) file. To avoid forcing source changes, Blade scans the library's object files and generates a <code>.def</code> that exports every defined, externally-visible symbol — except symbols in deduplicated COMDAT sections (template instantiations, inline functions, and similar). C++ vtable and RTTI symbols are an exception: they are kept even though they are COMDAT, so a polymorphic class consumed via <code>__declspec(dllimport)</code> links correctly. This makes a plain <code>cc_library</code> usable as a DLL with no annotations, the way it already is as a <code>.so</code>. The same objects serve both static and shared linking, so you never write <code>dllexport</code> and the library is never compiled twice.</li>
+<li><strong>Runtime discovery.</strong> Windows has no rpath, and a PE import table records only a DLL's base name. So at test/run time Blade flattens every dependency DLL into the target's <code>runfiles</code> directory and prepends that directory to <code>PATH</code> — the Windows analog of <code>LD_LIBRARY_PATH</code>. Because each DLL's name encodes its package path, flattening never collides.</li>
+</ul>
+<p>Use <a href="#cc_library"><code>export_map</code></a> to narrow the export set when you want export discipline or to stay under the PE 64K export limit.</p>
+<h4 id="consumer-side-limitations">Consumer-side limitations<a class="headerlink" href="#consumer-side-limitations" title="Permanent link">&para;</a></h4>
+<p>Exporting is automated, but <strong>importing is not symmetric on Windows</strong> — the consumer side still follows the platform ABI. When you <code>#include</code> a header from a Blade-built DLL and use its symbols:</p>
+<ul>
+<li><strong>Functions</strong> — usable with no annotation; the import library provides a thunk.</li>
+<li><strong>Global variables / static data members</strong> — the consumer <strong>must</strong> declare them <code>__declspec(dllimport)</code>; without it the compiler reads the import-table slot (a pointer) instead of the variable's value, silently producing wrong results. A library that relies on shared global mutable state — most notably a test framework with a global test registry — should instead set <code>generate_dynamic = False</code> so it is linked statically into the executable. With that, the rest of the dependency graph can still be DLLs while the stateful library stays correct.</li>
+<li><strong>Polymorphic classes</strong> — Blade exports the vtable and RTTI, so a class consumed via <code>__declspec(dllimport)</code> links. You still need <code>__declspec(dllimport)</code> on the class declaration (the compiler references the <em>imported</em> vtable/RTTI).</li>
+<li><strong>Implicit special members</strong> — a <code>dllimport</code> class also imports its constructor / destructor / assignment. Auto-export only exports symbols actually <em>emitted</em> in the DLL, so an implicit member used only by the consumer is never emitted there and fails to link. Declare such members out-of-line (e.g. <code>Greeter::Greeter() = default;</code> in a <code>.cc</code>) to force the DLL to emit and export them, or expose a factory function so the consumer never constructs the class directly.</li>
+<li><strong>Consistency</strong> — whether you compile a consumer for static or DLL use must match the library you actually link. A mismatch produces <code>LNK2019</code> (unresolved) or <code>LNK4217</code> (locally defined symbol imported) errors.</li>
+</ul>
+<p>On Linux/macOS none of this applies: imports resolve through the GOT with no annotation, so a header written for those platforms needs no decoration on the use side.</p>
+<p><strong>Recommended:</strong> prefer a function-based ABI (accessors / factory functions) across DLL boundaries rather than exporting global variables or polymorphic classes directly. Functions need no <code>dllimport</code>, share one set of objects across static/dynamic, and keep headers free of platform-specific decoration.</p>
+<blockquote>
+<p>Automating the consumer-side import macro (so headers need no manual <code>dllimport</code>) is planned but not yet implemented; for now legacy exported-class headers must keep their own import macro.</p>
+</blockquote>
+<h2 id="windows_resources">windows_resources<a class="headerlink" href="#windows_resources" title="Permanent link">&para;</a></h2>
+<p>Compile Windows resource (<code>.rc</code>) files into <code>.res</code> object files using the Windows SDK Resource Compiler (<code>rc.exe</code>).
+The resulting <code>.res</code> files are automatically linked into any <code>cc_binary</code> that depends on this target via <code>deps</code>.</p>
+<p>On non-Windows platforms this rule is a <strong>no-op</strong>: it resolves to nothing and has no effect on the build.</p>
+<pre><code class="language-python">windows_resources(
+    name = 'hello_res',
+    rc_files = ['hello_gui.rc', 'version.rc'],
+    hdrs = ['resource.h'],
+    resources = ['image/blade.ico'],
+)
+</code></pre>
+<p>Attributes:</p>
+<ul>
+<li><code>rc_files</code> (required): <strong>string[]</strong> — Resource script files (<code>.rc</code>) to compile.</li>
+<li><code>hdrs</code> (optional): <strong>string[]</strong> — Header files included by the <code>.rc</code> scripts.</li>
+<li><code>resources</code> (optional): <strong>string[]</strong> — Binary resource files (e.g., <code>.ico</code>, <code>.bmp</code>) referenced by the <code>.rc</code> scripts. Changes to these files trigger a rebuild.</li>
+</ul>
+<p>The <code>.res</code> files produced by this target appear as inputs to the linker command, just like object and library files. Use it with <code>cc_binary</code>:</p>
+<pre><code class="language-python">cc_binary(
+    name = 'hello_gui',
+    srcs = ['hello_gui.c'],
+    extra_linkflags = ['/SUBSYSTEM:WINDOWS', 'user32.lib'],
+    deps = [':hello_res'],
+)
+</code></pre>
+<h2 id="resource_library">resource_library<a class="headerlink" href="#resource_library" title="Permanent link">&para;</a></h2>
+<p>Compile static data file to be resource, which can be accessed in the program directly.</p>
+<p>When we deploy a program, it often requires many other files to be deployed together. it's often boring.
+Blade support <code>resource_library</code>, make it quite easy to put resource files into the executable easily.
+For example, put there static pages into a library:</p>
+<pre><code class="language-python">resource_library(
+    name = 'static_resource',
+    srcs = [
+        'static/favicon.ico',
+        'static/forms.html',
+        'static/forms.js',
+        'static/jquery-1.4.2.min.js',
+        'static/jquery.json-2.2.min.js',
+        'static/methods.html',
+        'static/poppy.html'
+    ]
+)
+</code></pre>
+<p>It will generate a library <code>libstatic_resource.a</code>,and a header file <code>static_resource.h</code>(with full include path).</p>
+<p>When you need tp use it, you need to include <code>static_resource.h</code>(with full path from workspace root)
+and also "common/base/static_resource.h",</p>
+<p>Use STATIC_RESOURCE macro to simplify access to the data (defined in "common/base/static_resource.h"):</p>
+<pre><code class="language-cpp">StringPiece data = STATIC_RESOURCE(poppy_static_favicon_ico);
+</code></pre>
+<p>The argument of STATIC_RESOURCE is the full path of the data file, and replace all of the
+non-alphanum and hyphen character to unserscore(<code>_</code>):</p>
+<p>The data is readonly static storage. can be accessed in any time.</p>
+<p>NOTE:
+There is a little drawback for static resource, it can;t be updated at the runtime, so consider it before using.</p>
+<h2 id="cu_library">cu_library<a class="headerlink" href="#cu_library" title="Permanent link">&para;</a></h2>
+<p>build a C++ library target containing CUDA device code using nvcc.</p>
+<p>Rules are similar to <code>cc_library</code> .</p>
+<p>The attributes <code>cuda_path</code> and <code>extra_cuflags</code> are added.<br />
+<code>cuda_path</code> is pointed to cuda installed path in the local repository with prefix <code>//</code>, with that nvcc binary <code>{cuda_path}/bin/nvcc</code> and include search path <code>{cuda_path}/include</code> can be found automatically. Environment variable below will be ignored if use cuda_path.<br />
+<code>extra_cuflags</code> support some flags which only work for cuda.</p>
+<p>Environment variable <code>NVCC</code> is pointed to the path of <code>nvcc binary</code>,such as <code>NVCC=/usr/local/cuda/bin/nvcc blade build</code>.<br />
+Environment variable <code>CUDA_PATH</code> is pointed to the installed path of cuda, with which <code>{CUDA_PATH}/include</code> and <code>{CUDA_PATH}/samples/common/inc</code> will be added to include search path.</p>
+<p>Priority:  <code>cuda_path</code> &gt; <code>NVCC</code>/<code>CUDA_PATH</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">cu_library(
+    name = 'template_gpu',
+    srcs = ['template_gpu.cu'],
+    hdrs = [],
+    # cuda_path = '//thirdparty/cuda',
+)
+</code></pre>
+<h2 id="cu_binary">cu_binary<a class="headerlink" href="#cu_binary" title="Permanent link">&para;</a></h2>
+<p>build a C++ executable target containing CUDA device code using nvcc.</p>
+<p>Rules are similar to <code>cc_binary</code> . Use environment variables reference to <code>cu_library</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">cu_binary(
+    name = 'template',
+    srcs = ['template.cu'],
+    deps = [':template_cpu'],
+    # cuda_path = '//thirdparty/cuda',
+)
+</code></pre>
+<h2 id="cu_test">cu_test<a class="headerlink" href="#cu_test" title="Permanent link">&para;</a></h2>
+<p>build a C++ ut target containing CUDA device code using nvcc.</p>
+<p>Rules are similar to <code>cc_test</code> . Use environment variables reference to <code>cu_library</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">cu_test(
+    name = 'cu_test',
+    srcs = ['cu_test.cu'],
+    deps = [':template_cpu'],
+    # cuda_path = '//thirdparty/cuda',
+)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../misc/" class="btn btn-neutral float-left" title="Accessibility"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../custom_rule/" class="btn btn-neutral float-right" title="Custom Rules (define_rule)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../../misc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../custom_rule/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

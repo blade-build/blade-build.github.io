@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/build_rules/custom_rule/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Custom Rules (define_rule) - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Custom Rules (define_rule)";
+        var mkdocs_page_input_path = "build_rules/custom_rule.md";
+        var mkdocs_page_url = "/docs/en/build_rules/custom_rule/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Custom Rules (define_rule)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#quick-example">Quick example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#define_rule">define_rule</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#attributes-attr">Attributes (attr)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-action">The action</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#limitations-v1">Limitations (V1)</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Build Rules</li>
+      <li class="breadcrumb-item active">Custom Rules (define_rule)</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/custom_rule.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="custom-rules-define_rule">Custom Rules (<code>define_rule</code>)<a class="headerlink" href="#custom-rules-define_rule" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Experimental.</strong> The API (<code>define_rule</code> / <code>attr</code> / the action <code>ctx</code>) may change
+in a future release. Tracked in <a href="https://github.com/blade-build/blade-build/issues/829">#829</a>.</p>
+</blockquote>
+<p>A <a href="../extension/">macro</a> (a plain function in a <code>.bld</code> that calls existing rules
+like <code>gen_rule</code>) is enough for simple reuse. When you need a <strong>real new rule
+type</strong> — with typed attributes and a Python <em>action</em> that computes outputs and
+emits build commands — use <code>define_rule</code>. It is inspired by
+<a href="https://bazel.build/extending/rules">Bazel's rules</a> but intentionally smaller.</p>
+<h2 id="quick-example">Quick example<a class="headerlink" href="#quick-example" title="Permanent link">&para;</a></h2>
+<p>Suppose you've created an <em>awesome</em> language whose compiler, <code>awesomec</code>, generates C++.</p>
+<p><code>//myrules/awesome.bld</code>:</p>
+<pre><code class="language-python">def _impl(ctx):
+    out = ctx.declare_output(ctx.name + '.cc')          # declare an output
+    if ctx.attrs['gen_header']:
+        ctx.declare_header(ctx.name + '.h')             # a header cc_* can use
+    ctx.actions.run_shell(command='awesomec $SRCS -o $OUTS', outputs=[out])
+
+awesome_library = define_rule(
+    name='awesome_library',
+    attrs={
+        'srcs': attr.src_list(exts=['awesome']),
+        'opt':  attr.string(default='-O2'),
+        'gen_header': attr.bool(default=True),
+    },
+    provides_cc=True,
+    action=_impl,
+)
+</code></pre>
+<p><code>//demo/BUILD</code>:</p>
+<pre><code class="language-python">load('//myrules/awesome.bld', 'awesome_library')
+
+awesome_library(name='demo', srcs=['demo.awesome'])
+cc_binary(name='app', srcs=['main.cc'], deps=[':demo'])   # gets demo.h / demo.cc
+</code></pre>
+<h2 id="define_rule"><code>define_rule</code><a class="headerlink" href="#define_rule" title="Permanent link">&para;</a></h2>
+<p><code>define_rule</code> is a <strong>builtin available only in <code>.bld</code> extension files</strong> (like
+<code>attr</code>; neither is visible in <code>BUILD</code> files). Bind its result to a name so
+<code>load</code> can import it: <code>awesome_library = define_rule('awesome_library', ...)</code>.</p>
+<pre><code class="language-python">define_rule(name, attrs=None, action=None, provides_cc=False, description='CUSTOM')
+</code></pre>
+<ul>
+<li><code>name</code>: str, the rule type / generated BUILD function name.</li>
+<li><code>attrs</code>: dict, attribute name → <code>attr.&lt;kind&gt;(...)</code> (see below). <code>name</code>, <code>deps</code>,
+  <code>visibility</code>, <code>tags</code> are always available and need not be declared.</li>
+<li><code>action</code>: callable <code>action(ctx)</code> — run in the analysis phase to declare
+  outputs and register build edges (see <em>The action</em>). Required.</li>
+<li><code>provides_cc</code>: bool, if True the headers/include dirs declared by the action
+  flow to dependent <code>cc_*</code> targets (via <code>generated_hdrs</code> / <code>generated_incs</code>).</li>
+<li><code>description</code>: str, default progress label for emitted edges.</li>
+</ul>
+<h2 id="attributes-attr">Attributes (<code>attr</code>)<a class="headerlink" href="#attributes-attr" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>kind</th>
+<th>value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attr.string(default='', mandatory=False)</code></td>
+<td>str</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attr.bool(default=False)</code></td>
+<td>bool</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attr.int(default=0)</code></td>
+<td>int</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attr.string_list(default=())</code></td>
+<td>list[str]</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attr.src_list(default=(), exts=None)</code></td>
+<td>list[str]</td>
+<td>becomes the rule's <code>srcs</code>; <code>exts</code> restricts file extensions</td>
+</tr>
+<tr>
+<td><code>attr.dep_list(default=())</code></td>
+<td>list[str]</td>
+<td>merged into the rule's <code>deps</code></td>
+</tr>
+<tr>
+<td><code>attr.out_list(default=())</code></td>
+<td>list[str]</td>
+<td>a list of output names (the action declares them)</td>
+</tr>
+</tbody>
+</table>
+<p><code>mandatory=True</code> makes an attribute required. Unknown attributes, missing
+mandatory ones, and type mismatches are reported as errors.</p>
+<h2 id="the-action">The action<a class="headerlink" href="#the-action" title="Permanent link">&para;</a></h2>
+<p><code>action(ctx)</code> runs in the <strong>analysis phase</strong> (when the BUILD is loaded): it only
+<em>declares outputs</em> and <em>registers build edges</em> — it never runs commands or reads
+/ writes files (that happens later, during the build). Declaring outputs in this
+phase is what lets dependents see a rule's generated headers.</p>
+<p><code>ctx</code> read state:</p>
+<ul>
+<li><code>ctx.name</code>, <code>ctx.path</code>, <code>ctx.fullname</code>, <code>ctx.build_dir</code>, <code>ctx.target_dir</code></li>
+<li><code>ctx.attrs</code> — the validated attribute values (<code>src_list</code> already path-expanded)</li>
+<li><code>ctx.toolchain</code>, <code>ctx.config(section)</code></li>
+<li><code>ctx.deps_outputs()</code> — output files of the rule's deps</li>
+<li><code>ctx.deps_generated_headers()</code> — <code>(files, dirs)</code> of generated headers from deps</li>
+</ul>
+<p><code>ctx</code> output declaration:</p>
+<ul>
+<li><code>ctx.declare_output(name)</code> → returns the full path of an output file</li>
+<li><code>ctx.declare_header(name)</code> → like <code>declare_output</code>, and (when <code>provides_cc</code>)
+  exposes the header to dependent <code>cc_*</code> targets</li>
+<li><code>ctx.declare_inc_dir(inc)</code> → expose a generated include directory to dependents</li>
+</ul>
+<p><code>ctx.actions</code> — emit build edges:</p>
+<ul>
+<li><code>ctx.actions.run_shell(command=None, cmd_bash=None, cmd_bat=None, inputs=None,
+  outputs=None, implicit_deps=None, variables=None, description=None)</code> — emit a
+  per-target rule + build edge. <code>command</code> is the generic form (host shell);
+  <code>cmd_bash</code> / <code>cmd_bat</code> are optional platform variants (selected like
+  <a href="../gen_rule/"><code>gen_rule</code></a>). The command may use <code>$SRCS</code>, <code>$OUTS</code>,
+  <code>$OUTS[i]</code> / <code>$SRCS[i]</code> (by index or name), <code>$SRC_DIR</code>, <code>$OUT_DIR</code>,
+  <code>$BUILD_DIR</code>. (The deprecated <code>$FIRST_SRC</code> / <code>$FIRST_OUT</code> are <strong>not</strong> supported
+  here — use <code>$OUTS[0]</code> / <code>$SRCS[0]</code>.) <code>outputs</code> defaults to all outputs declared
+  so far; <code>inputs</code> to the rule's <code>srcs</code>.</li>
+<li><code>ctx.actions.run(rule, inputs=None, outputs=None, …)</code> — emit a build edge that
+  references a shared rule registered with <code>shared_rule</code>.</li>
+<li><code>ctx.actions.shared_rule(ninja_rule)</code> — register one shared ninja rule
+  (<code>blade.ninja_rule.NinjaRule</code>) once, so many edges/targets can reference it.</li>
+</ul>
+<h2 id="limitations-v1">Limitations (V1)<a class="headerlink" href="#limitations-v1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>define_rule</code> works only in <code>.bld</code> files loaded via <code>load</code> — not in <code>BUILD</code>.</li>
+<li>The per-target build cache keys on the action's source and its <code>.bld</code> file, so
+  <strong>keep the action self-contained in its <code>.bld</code></strong>; helpers imported from other
+  <code>.py</code> modules are not tracked.</li>
+<li>No general provider mechanism yet — cross-rule data is limited to the
+  <code>generated_hdrs</code> / <code>generated_incs</code> flow to <code>cc_*</code> targets.</li>
+<li>Generated headers are searched after system/SDK include paths, so avoid output
+  names that collide with system headers.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cc/" class="btn btn-neutral float-left" title="C/C++ Build Rules"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../extension/" class="btn btn-neutral float-right" title="Extension">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../cc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../extension/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

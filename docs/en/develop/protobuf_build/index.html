@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/protobuf_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How proto_library handles multi-language codegen - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How proto_library handles multi-language codegen";
+        var mkdocs_page_input_path = "develop/protobuf_build.md";
+        var mkdocs_page_url = "/docs/en/develop/protobuf_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How proto_library handles multi-language codegen</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-what-gets-generated-and-how-its-controlled">1. What gets generated, and how it's controlled</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-downstream-integration">2. Downstream integration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-protoc-invocation">3. protoc invocation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-inter-proto-deps-and-includes">4. Inter-proto deps and includes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-implementation-details-and-ux-optimizations">5. Implementation details and UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How proto_library handles multi-language codegen</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/protobuf_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-proto_library-handles-multi-language-codegen">How <code>proto_library</code> handles multi-language codegen<a class="headerlink" href="#how-proto_library-handles-multi-language-codegen" title="Permanent link">&para;</a></h1>
+<p>A <code>proto_library</code> is the entry point to a small per-language codegen
+fan-out: one <code>.proto</code> source can become C++ headers/sources, Python
+modules, Java sources packaged into a jar, Go files, and a descriptor
+set, all in the same build. The target then <strong>presents itself as a
+cc_library</strong> (and as a Java library, and as a Python library) to
+downstream consumers, so a <code>cc_library</code> can <code>deps = [':my_proto']</code>
+without an intermediate layer.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/proto_library_target.py</code></td>
+<td><code>ProtoLibrary</code> (inherits <code>CcTarget</code> + <code>JavaTargetMixIn</code>)</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>proto</code> / <code>protojava</code> / <code>protopython</code> / <code>protogo</code> rule emission</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>proto_library_config</code> (protoc paths, plugins, well-known protos)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-what-gets-generated-and-how-its-controlled">1. What gets generated, and how it's controlled<a class="headerlink" href="#1-what-gets-generated-and-how-its-controlled" title="Permanent link">&para;</a></h2>
+<p>A single proto file potentially produces multiple output sets:</p>
+<ul>
+<li><strong>C++</strong>: <code>.pb.h</code> + <code>.pb.cc</code>, always generated. These are the central
+  artifact — <code>ProtoLibrary</code> inherits from <code>CcTarget</code> and compiles them
+  into a real <code>cc_library</code> output.</li>
+<li><strong>Python</strong>: <code>_pb2.py</code> files, gated by the target's <code>target_languages</code>
+  attribute or the global <code>--generate-python</code> flag.</li>
+<li><strong>Java</strong>: a packaged <code>.jar</code>, gated by <code>target_languages='java'</code> /
+  <code>--generate-java</code>. protoc writes its <code>.java</code> into a per-proto gen dir which
+  the <code>protojava</code> rule zips into a <code>&lt;proto&gt;.srcjar</code> (the <code>proto_java_srcjar</code>
+  builtin); <code>javac_compile</code> then extracts and compiles those. The output <code>.java</code>
+  set is <strong>not</strong> predicted, so <code>option java_multiple_files = true;</code> (one <code>.java</code>
+  per top-level type, no outer class) works the same as the default single-file
+  layout. See issue #1054.</li>
+<li><strong>Go</strong>: <code>.pb.go</code>, gated similarly. Output path from <code>option go_package</code>.</li>
+<li><strong>Descriptor set</strong>: <code>.descriptors.pb</code> for tooling, on request.</li>
+</ul>
+<p>All outputs land in <code>build_dir/&lt;pkg&gt;/</code>. Per-language outputs are exposed
+as <code>_get_target_file('jar' | 'pylib' | ...)</code> so downstream rules read
+them with the same getter as any other target's primary output.</p>
+<h2 id="2-downstream-integration">2. Downstream integration<a class="headerlink" href="#2-downstream-integration" title="Permanent link">&para;</a></h2>
+<p>Three different consumer paths, all wired through the proto target's own
+generated metadata:</p>
+<p><strong>C++ consumers</strong> — because <code>ProtoLibrary</code> extends <code>CcTarget</code>, a
+downstream <code>cc_library</code> lists it in <code>deps</code> and gets:</p>
+<ul>
+<li>The <code>.pb.h</code> paths declared via <code>declare_hdrs()</code> / <code>declare_hdr_dir()</code>,
+  so the <a href="../hdrs_check/">hdrs check</a> knows which target owns
+  <code>pkg/foo.pb.h</code>.</li>
+<li>Include paths via <code>export_incs</code>, so <code>#include "pkg/foo.pb.h"</code>
+  resolves without the consumer having to add <code>-I</code> lines.</li>
+<li>Transitive generated-header visibility through
+  <code>_transitive_declared_generated_includes()</code>, so a header that
+  <code>#include</code>s another generated header still satisfies the inclusion
+  check.</li>
+<li>The <code>.pb.cc</code> objects linked into the consumer's archive — there is no
+  separate library to link; proto code generation and compilation are
+  fused into one target.</li>
+</ul>
+<p><strong>Java consumers</strong> — the mixin exposes the target's <code>.jar</code> like any
+other Java dep; the proto code generation is invisible to the consumer's
+classpath logic.</p>
+<p><strong>Python consumers</strong> — the proto target's <code>.pylib</code> lists its
+<code>_pb2.py</code> files; <code>py_binary</code> picks them up through the normal
+<code>_get_target_file('pylib')</code> walk.</p>
+<h2 id="3-protoc-invocation">3. protoc invocation<a class="headerlink" href="#3-protoc-invocation" title="Permanent link">&para;</a></h2>
+<p>The <code>proto</code>/<code>protojava</code>/<code>protopython</code>/<code>protogo</code> ninja rules each call
+<code>protoc</code> once per source file per language. Per-language flags include
+<code>--proto_path=.</code>, <code>-I=&lt;srcdir&gt;</code>, the per-language output flag
+(<code>--cpp_out=&lt;build_dir&gt;</code>, <code>--python_out=...</code>, etc.), and any
+<code>--plugin=protoc-gen-&lt;name&gt;</code> / <code>--&lt;name&gt;_out=&lt;dir&gt;</code> resolved from
+<code>proto_library_config.protoc_plugin_config</code>.</p>
+<p>Per-language protoc binaries are supported: <code>proto_library_config</code> has a
+separate <code>protoc_java</code> slot, so Java codegen can be pinned to a different
+binary or version than the default <code>protoc</code>. <code>well_known_protos</code> is also
+declared per language for the same kind of reason, so a project can pin a
+different set per output kind without forking the rule definitions.</p>
+<h2 id="4-inter-proto-deps-and-includes">4. Inter-proto deps and includes<a class="headerlink" href="#4-inter-proto-deps-and-includes" title="Permanent link">&para;</a></h2>
+<p><code>import "b.proto";</code> is only resolved correctly if the proto-target that
+owns <code>b.proto</code> is in the importing target's <code>deps</code>. blade walks
+<code>expanded_deps</code>, collects each dep's <code>public_protos</code>, and passes them as
+implicit inputs to <code>protoc</code> so changes to <code>b.proto</code> rebuild the
+generated <code>a.pb.{h,cc}</code> even though they aren't textually in <code>a.proto</code>'s
+<code>srcs</code>.</p>
+<p>For C++, the generated <code>a.pb.h</code> <code>#include</code>s <code>b.pb.h</code>. That include is
+<strong>directly</strong> taken care of by the inclusion-stack mechanism: <code>b.pb.h</code> is
+in the dep proto's <code>declared_genhdrs</code>, transitively visible through the
+normal <code>_transitive_declared_generated_includes()</code> walk. Users do not
+have to declare anything special about generated headers — being on the
+deps edge to the dep proto is enough.</p>
+<h2 id="5-implementation-details-and-ux-optimizations">5. Implementation details and UX optimizations<a class="headerlink" href="#5-implementation-details-and-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A proto target <em>is</em> a cc_library.</strong> This is the most important
+  design decision in this subsystem. Other build systems sometimes have
+  you write <code>cc_proto_library(deps=[':my_proto'])</code> as a separate
+  wrapper; blade collapses the two into one target. The cost is that
+  <code>ProtoLibrary</code> carries a lot of mixin baggage; the benefit is that
+  every <code>cc_library</code> consumer reads identical from any other dep.</li>
+<li><strong><code>-Ibuild_dir</code> does the include resolution work for free.</strong> Because
+  every cc target already has <code>-Ibuild_dir</code> on its compile line (see
+  <a href="../cc_build/">C/C++ build</a>), <code>#include "pkg/foo.pb.h"</code> resolves
+  without extra <code>-I</code> lines per consumer. proto targets only have to
+  guarantee the file lands at <code>build_dir/pkg/foo.pb.h</code>.</li>
+<li><strong>Per-language gating keeps protoc work in check.</strong> A project that
+  doesn't use Java code from its protos pays no cost for Java codegen.
+  Adding <code>--generate-java</code> at the CLI flips the global default if a
+  side build (e.g. for tooling) needs it.</li>
+<li><strong>The <code>.incstk</code> + inclusion check are oblivious to "this is a proto
+  header".</strong> Generated <code>.pb.h</code> files are headers like any other; the
+  check uses <code>declared_genhdrs</code> to know who owns them. So adding a new
+  proto-aware language doesn't require a new check pathway.</li>
+<li><strong>Per-language toolchains in one workspace.</strong> Distinct protoc binaries
+  (e.g. <code>protoc</code> for C++/Python, <code>protoc_java</code> for Java) and per-language
+  plugin configs are all declared in one place — <code>proto_library_config</code>
+  — so a project that needs to mix versions doesn't have to fork the
+  rule definitions.</li>
+<li><strong>Cross-target generated visibility shares the inclusion-declaration
+  cache.</strong> The same <code>inclusion_declaration.data</code> pickle that
+  <a href="../hdrs_check/">the hdrs check</a> consumes lists every proto's
+  generated headers, so the per-target check files don't have to
+  re-derive that map.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../java_scala_build/" class="btn btn-neutral float-left" title="How Java and Scala programs are built"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../python_build/" class="btn btn-neutral float-right" title="How Python targets are built and packaged">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../java_scala_build/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../python_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

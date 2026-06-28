@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/test_execution/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>blade test 如何运行用户测试 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "blade test \u5982\u4f55\u8fd0\u884c\u7528\u6237\u6d4b\u8bd5";
+        var mkdocs_page_input_path = "develop/test_execution.md";
+        var mkdocs_page_url = "/docs/zh/develop/test_execution/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">blade test 如何运行用户测试</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 流水线概览</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-per-test">2. Per-test 环境</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3">3. 并行调度</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 结果、汇总与测试历史</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 未变测试的增量去重</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 技术细节与用户体验优化</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">blade test 如何运行用户测试</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/test_execution.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="blade-test"><code>blade test</code> 如何运行用户测试<a class="headerlink" href="#blade-test" title="Permanent link">&para;</a></h1>
+<p>测试执行建立在常规构建之上：可执行体就绪后，blade 决定本次哪些值得
+跑，给每个测试装配 sandbox，并行调度（独占测试单走一遍），抓取结果，更
+新历史，下次就能跳过未变的。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/test_runner.py</code></td>
+<td>发现、基于历史的去重、结果汇总</td>
+</tr>
+<tr>
+<td><code>src/blade/test_scheduler.py</code></td>
+<td>并行调度、工作线程、超时</td>
+</tr>
+<tr>
+<td><code>src/blade/binary_runner.py</code></td>
+<td>per-test runfiles 目录、env、testdata 装配</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>cc_test_config</code>、<code>global_config.test_timeout</code>、<code>test_related_envs</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 流水线概览<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>TestRunner.run()</code> 收集每个 <code>*_test</code> target（<code>cc_test</code>、<code>java_test</code>、
+   <code>py_test</code>、<code>scala_test</code>、<code>sh_test</code>、…），对每个调 <code>_run_reason()</code>
+   询问本次是否需要跑。</li>
+<li>对需要跑的，<code>BinaryRunner._prepare_env()</code> 构建 per-test
+   <code>&lt;target&gt;.runfiles</code> 目录，符号链接共享库、复制 testdata、拼装
+   env 字典。</li>
+<li><code>TestScheduler.schedule_jobs()</code> 把任务分发到工作线程。
+   <code>exclusive=True</code> 的测试在并行批之后由单工作线程串行执行一遍。</li>
+<li>全部完成后，runner 把结果合入测试历史文件，写 JSON 汇总，并打印
+   passed/failed/unchanged/repaired 计数。</li>
+</ol>
+<h2 id="2-per-test">2. Per-test 环境<a class="headerlink" href="#2-per-test" title="Permanent link">&para;</a></h2>
+<p>每个测试以 <code>cwd=&lt;target&gt;.runfiles</code> 启动。该目录每次重建；里面放：</p>
+<ul>
+<li><strong>构建目录的符号链接</strong>（<code>runfiles/&lt;build_dir_basename&gt; -&gt;
+  &lt;绝对构建目录&gt;</code>）。blade 自编的共享库以相对构建路径为身份（没有
+  soname / 没有 <code>@rpath</code>），所以靠这条符号链接才能让
+  <code>build_release/lib/libfoo.so</code> 在测试 cwd 下解析得到。这是 issue
+  #1167 的修复，也让 macOS dyld 与 Linux ld.so 行为一致而无需按 OS
+  分支。</li>
+<li><strong>按 soname 的符号链接</strong>给确实带 soname 的预制库
+  （<code>libcrypto.so.1.0.0</code> 等）。运行时通过 blade 设置的
+  <code>LD_LIBRARY_PATH</code>（指向 runfiles）找到它们。</li>
+<li><strong>装配好的 testdata</strong>：从 target 的 <code>testdata</code> 属性复制（也从
+  <code>&lt;target&gt;.testdata</code> 旁路文件读取）。条目可以是普通路径或
+  <code>(src, dst)</code> 元组；以 <code>//</code> 起头的路径是工作区相对的。</li>
+</ul>
+<p>传给测试的 env 是 <code>os.environ</code> 副本加上：</p>
+<ul>
+<li><code>LD_LIBRARY_PATH</code>（runfiles + 配置的 <code>run_lib_paths</code>）。</li>
+<li>若 <code>java_config.java_home</code> 配置了，把 <code>java_home/bin</code> 加到 <code>PATH</code>。</li>
+<li>视情况加 <code>GTEST_COLOR</code>、<code>GTEST_OUTPUT=xml</code>、<code>HEAPCHECK</code>（per-target）、
+  <code>PPROF_PATH</code>、<code>BLADE_COVERAGE</code>。</li>
+</ul>
+<p>Windows 跳过 soname 符号链接那一路（PE 加载也不看那里），所以这套
+sandbox 是 POSIX 形态的。</p>
+<h2 id="3">3. 并行调度<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p><code>TestScheduler</code> 走两遍：</p>
+<ul>
+<li><strong>普通遍</strong>：最多 <code>global_config.test_jobs</code> 个工作线程从共享队列取任
+  务。每个 worker 跑一个 <code>subprocess.Popen</code>、抓 stdout/stderr、应用
+  per-test 超时、把结果回报主线程。</li>
+<li><strong>独占遍</strong>：<code>exclusive=True</code> 的测试串行到另一队列，在普通遍完成后
+  由单工作线程跑。适合争夺固定资源（端口、共享文件、系统级配置）的测
+  试。</li>
+</ul>
+<p>主线程上的超时观察者在任务超过限额时发 <code>SIGTERM</code>（再 <code>SIGKILL</code>）；退
+出码经 <code>_signal_map()</code> 翻译，结果行写作 <code>SIGTERM:-15</code> 而不是裸负数。</p>
+<p>runner 在两种输出模式间切换。单工作线程 + 正常详细程度时，把测试
+stdout 直接流过去，交互式 <code>blade test</code> 一个 target 就像直接跑测试。多
+工作线程（或安静模式）时把每个测试的输出缓冲，测试结束后一整块输出，
+避免并行时行间穿插。</p>
+<h2 id="4">4. 结果、汇总与测试历史<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>每个任务记一份 <code>TestRunResult(exit_code, start_time, cost_time)</code>。
+runner 合并：</p>
+<ul>
+<li>通过：更新历史，把之前失败的标 "repaired"。</li>
+<li>失败：<code>fail_count++</code>，新失败时记 <code>first_fail_time</code>，加进
+  <code>new_failed_tests</code>。</li>
+</ul>
+<p>历史文件 <code>&lt;build_dir&gt;/.blade.test.stamp</code> 按测试存最后一次 <code>TestJob</code>
+（binary MD5、testdata MD5、env MD5、args）与 <code>TestHistoryItem</code>（运行
+结果、失败计数）。它是一段 Python <code>repr()</code>，加载用 <code>eval()</code>，因此 schema
+保持可读、对字段扩展前向兼容。</p>
+<p>每次还写一份结构化 <code>blade-bin/.blade-test-summary.json</code>，把同样数据按
+<code>passed</code> / <code>failed</code> / <code>unchanged</code> / <code>repaired</code> / <code>new_failed</code> /
+<code>unrepaired</code> / <code>excluded</code> 分桶。外部工具（CI 看板、IDE 集成）从这里读，
+而不是抓终端文本。</p>
+<h2 id="5">5. 未变测试的增量去重<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>§4 与 §5 的整套机制——测试历史、<code>.blade-test-summary.json</code>、<code>unchanged</code>
+与 <code>unrepaired</code> 分桶——主要面向<strong>大仓的 CI 体验</strong>：在几千个测试的仓库
+里，一个长期失败的测试不该卡住整条 CI，但也不能从汇总里消失。这套机制
+是一条旁路：让这类测试<strong>继续</strong>出现在 <code>unrepaired</code> 列表（带首次失败时间
+和重试次数），推动负责人去修，同时不绑架其它测试。</p>
+<p><code>_run_reason()</code> 决定一个测试本次是否需要跑：</p>
+<ul>
+<li><code>EXPLICIT</code>——命令行点名了。</li>
+<li><code>FULL_TEST</code>——<code>--full-test</code> 完全绕过去重。</li>
+<li><code>ALWAYS_RUN</code>——target 设了 <code>always_run=True</code>。</li>
+<li><code>BINARY</code> / <code>TESTDATA</code> / <code>ENVIRONMENT</code> / <code>ARGUMENT</code>——对应 MD5 自上次
+  通过以来变了。环境用 <code>global_config.test_related_envs</code>（正则列表）
+  决定哪些 env 重要，避免 <code>EDITOR</code> 改名让全套测试失效。</li>
+<li><code>STALE</code>——上次跑距今超过截止时间（目前一天）。</li>
+<li><code>NO_HISTORY</code>——首跑。</li>
+<li><code>FAILED</code> / <code>RETRY</code>——上次失败，且未被 unrepaired-skip 策略覆盖。</li>
+</ul>
+<p>以上都不触发就静默跳过，汇总里计入"unchanged"。长期失败的测试可放入
+"unrepaired"桶（汇总里给出 first-fail 时间与重试次数），不必每次构建都
+跑——一个倔强的失败测试不该卡住整个本该绿色的套件。</p>
+<h2 id="6">6. 技术细节与用户体验优化<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Runfiles + 按 cwd 解析的 dylib。</strong> 那条 <code>runfiles/&lt;build_dir&gt;</code> 符
+  号链接让 blade 自编的 <code>.so</code>/<code>.dylib</code> 在测试 cwd 下可被找到，无需特
+  殊 install name 或 rpath。代价是每个测试一次 syscall；收益是测试在
+  Linux 与 macOS 上行为相同。</li>
+<li><strong>独占测试单独一遍。</strong> 把独占测试混进并行队列要么限并行度，要么做
+  per-test 门控。再走一遍单工作线程更简单，也让并行路径的逻辑保持简
+  洁。</li>
+<li><strong>env MD5 用可配置允许列表。</strong> <code>test_related_envs</code> 让工作区声明哪些
+  env 真正影响结果，化妆性改动（终端程序、shell PS1）不会让缓存失效。
+  真正依赖比如 <code>TZ</code> 的测试把它加进列表即可。</li>
+<li><strong>输出捕获 vs 流式。</strong> 按工作线程数与详细程度自动选择，常见的单
+  target 调试场景体验良好（不缓冲），同时保留几千测试并行时清晰的输
+  出格式。</li>
+<li><strong>JSON 汇总并行于终端输出。</strong> 汇总文件让 CI 接结构化结果而不是抓测
+  试 log；带有时间、退出码、失败计数，以及 "new failed" / "repaired"
+  这种人会在意的增量。</li>
+<li><strong><code>unrepaired</code> 策略。</strong> 默认跳过已知坏掉的测试（带清晰汇总行）是刻
+  意的 UX 选择：坏测试不该拖住其余，但汇总仍写"still unrepaired,
+  failing since X, retried N times"，免得被忘掉。</li>
+<li><strong>覆盖率清理。</strong> <code>--coverage</code> 打开时，最后 <code>_clean_for_coverage()</code>
+  会移除每个测试 runfiles 下的 build 目录符号链接，避免覆盖率工具走
+  runfiles 时跟进真实构建目录。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../self_testing/" class="btn btn-neutral float-left" title="blade-build 自身是如何被测试的"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../vcpkg/" class="btn btn-neutral float-right" title="vcpkg 支持实现原理">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../self_testing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../vcpkg/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

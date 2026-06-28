@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/java_scala_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How Java and Scala programs are built - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How Java and Scala programs are built";
+        var mkdocs_page_input_path = "develop/java_scala_build.md";
+        var mkdocs_page_url = "/docs/en/develop/java_scala_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How Java and Scala programs are built</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-rule-classes-composition-over-a-deep-hierarchy">1. Rule classes — composition over a deep hierarchy</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-compile-rules-and-classpath-assembly">2. Compile rules and classpath assembly</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-jar-packaging-shapes">3. JAR packaging shapes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-maven-integration">4. Maven integration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-test-framework-injection">5. Test framework injection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-implementation-details-and-ux-optimizations">6. Implementation details and UX optimizations</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How Java and Scala programs are built</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/java_scala_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-java-and-scala-programs-are-built">How Java and Scala programs are built<a class="headerlink" href="#how-java-and-scala-programs-are-built" title="Permanent link">&para;</a></h1>
+<p>Java and Scala share most of their machinery: classpath assembly, JAR
+packaging (plain, fat, one-jar), Maven coordinate resolution, and test
+framework injection all live behind a single mixin so each language can
+override only the parts that are genuinely different (the compiler and a
+few build-rule plumbing details).</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/java_targets.py</code></td>
+<td><code>JavaTargetMixIn</code>, <code>JavaTarget</code>, <code>JavaLibrary</code>, <code>JavaBinary</code>, <code>JavaTest</code>, <code>JavaFatLibrary</code></td>
+</tr>
+<tr>
+<td><code>src/blade/scala_targets.py</code></td>
+<td><code>ScalaTarget</code>, <code>ScalaLibrary</code>, <code>ScalaFatLibrary</code>, <code>ScalaTest</code> (inherit the mixin)</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>javac</code> / <code>scalac</code> / <code>javajar</code> / <code>fatjar</code> / <code>onejar</code> rule emission</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>java_config</code> / <code>java_test_config</code> / <code>scala_config</code> / <code>scala_test_config</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-rule-classes-composition-over-a-deep-hierarchy">1. Rule classes — composition over a deep hierarchy<a class="headerlink" href="#1-rule-classes-composition-over-a-deep-hierarchy" title="Permanent link">&para;</a></h2>
+<p><code>JavaTargetMixIn</code> centralizes classpath/jar-packing/Maven logic and is
+mixed in by both <code>JavaTarget</code> and <code>ScalaTarget</code>. Each rule subclass picks
+up the shared behavior without forcing a single common base in <code>Target</code>'s
+hierarchy:</p>
+<ul>
+<li><code>java_library</code> / <code>java_binary</code> / <code>java_test</code> / <code>java_fat_library</code>,
+  plus <code>prebuilt_java_library</code> (skips compilation, wraps a supplied
+  <code>binary_jar</code>).</li>
+<li><code>scala_library</code> / <code>scala_fat_library</code> / <code>scala_test</code> — <code>ScalaTarget</code>
+  accepts both <code>.scala</code> and <code>.java</code> sources in a single target, so a
+  team can adopt Scala incrementally.</li>
+<li><code>proto_library</code> <em>also</em> mixes in <code>JavaTargetMixIn</code>, so a downstream
+  Java/Scala target can depend directly on a proto target and pick up
+  its generated <code>.jar</code> exactly like any other Java dep.</li>
+</ul>
+<p>The mixin avoids a diamond: each rule class multiply-inherits from
+<code>Target</code> (for general blade integration) and from the mixin (for
+JVM-specific behavior).</p>
+<h2 id="2-compile-rules-and-classpath-assembly">2. Compile rules and classpath assembly<a class="headerlink" href="#2-compile-rules-and-classpath-assembly" title="Permanent link">&para;</a></h2>
+<p><strong>javac</strong> (Linux/macOS) — the rule template runs the user's <code>javac</code> with
+<code>-source</code>/<code>-target</code>, <code>-encoding</code>, <code>-classpath ${classpath}</code>, into a temp
+<code>${classes_dir}</code>, then <code>jar c[s]f</code> to pack. On Windows it routes through
+a <code>javac_compile</code> builtin to keep argument quoting consistent.</p>
+<p><strong>scalac</strong> — emits the <code>.jar</code> directly (no intermediate classes dir),
+sharing the same classpath/flag composition. Scala compiles can include
+<code>.java</code> sources in the same call, so the layout matches Java's.</p>
+<p><strong>Classpath assembly</strong> (<code>JavaTargetMixIn._get_compile_deps</code>) walks the
+target's direct deps, their <code>exported_deps</code>, and the resolved Maven
+transitive deps. Maven version conflicts are resolved up-front
+(<code>_detect_maven_conflicted_deps</code>): a direct <code>maven_jar</code> dep wins, otherwise
+the highest version wins. Result is deduplicated and sorted, so two
+identical builds get bit-identical compile commands.</p>
+<p>The classpath separator is <code>os.pathsep</code> — <code>:</code> on POSIX, <code>;</code> on Windows —
+done in one place so per-target code doesn't have to think about it.</p>
+<h2 id="3-jar-packaging-shapes">3. JAR packaging shapes<a class="headerlink" href="#3-jar-packaging-shapes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>.jar</code></strong> (<code>javajar</code> rule): the standard form. If the target has
+  resource inputs, classes are packed into an intermediate
+  <code>__classes__.jar</code> first, then merged with resources into the final
+  <code>.jar</code> (preserves Maven's <code>src/main/resources</code> ↔ jar-root mapping).</li>
+<li><strong><code>.fat.jar</code></strong> (<code>fatjar</code> rule): flattens transitive deps into one
+  archive. Conflict detection runs at packaging time as well as compile
+  time; <code>_set_pack_exclusions</code> lets the user filter by Maven-id wildcard
+  (e.g. <code>org.slf4j:*:*</code>). Compression level is configurable in
+  <code>java_config</code>.</li>
+<li><strong><code>.one.jar</code></strong> (<code>onejar</code> rule): the <code>java_binary</code> form — a fat jar
+  wrapped with a boot-loader jar (from <code>java_binary_config.one_jar_boot_jar</code>)
+  that sets <code>Main-Class</code> so <code>java -jar</code> works.</li>
+</ul>
+<p>Resource handling (<code>_process_resources</code> → <code>_generate_resources</code>) accepts
+both raw files and <code>location</code> references to other targets' outputs, so
+generated data files can be packaged without an intermediate <code>gen_rule</code>
+shuffle.</p>
+<h2 id="4-maven-integration">4. Maven integration<a class="headerlink" href="#4-maven-integration" title="Permanent link">&para;</a></h2>
+<p><code>maven_jar(name, id, transitive=True/False)</code> declares a <code>group:artifact:version</code>
+coordinate. The mixin uses a workspace-local Maven cache
+(<code>.m2/repository/</code>), populated on demand, and reads the artifact's POM
+once to record its transitive deps. Blade does <strong>not</strong> invoke <code>mvn</code> for
+resolution at build time — it trusts the recorded transitive list,
+applying its own conflict resolution on top. This keeps the build offline
+once the cache is warm.</p>
+<p>Three dep visibilities mirror what Bazel-like systems give you:</p>
+<ul>
+<li><code>deps</code> — required to compile, transitively visible to consumers.</li>
+<li><code>exported_deps</code> — like <code>exports</code> in Bazel; reachable by consumers
+  without re-declaring.</li>
+<li><code>provided_deps</code> — visible at compile time, <strong>subtracted</strong> at packaging
+  (e.g. servlet-api in a war).</li>
+</ul>
+<h2 id="5-test-framework-injection">5. Test framework injection<a class="headerlink" href="#5-test-framework-injection" title="Permanent link">&para;</a></h2>
+<p><code>java_test</code> reads <code>java_test_config.junit_libs</code> and adds them as
+implicit deps via <code>_apply_junit_libs_from_config</code>. The generated test
+launcher defaults to JUnit's <code>JUnitCore</code> runner (overridable via
+<code>main_class</code>) and is emitted as a shell wrapper on POSIX / <code>.bat</code> on
+Windows — that way the test executable can carry JaCoCo agent paths and
+coverage flags without an extra <code>java -jar</code> layer. If <code>junit_libs</code> is
+unset, blade emits a clear warning pointing users at the config item
+rather than letting them debug a <code>ClassNotFoundException</code>.</p>
+<p><code>scala_test</code> is symmetric: <code>scala_test_config.scalatest_libs</code> plus a
+<code>scalatest</code> rule.</p>
+<h2 id="6-implementation-details-and-ux-optimizations">6. Implementation details and UX optimizations<a class="headerlink" href="#6-implementation-details-and-ux-optimizations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>No incremental sjavac.</strong> Blade relies on the default <code>javac</code> and on
+  ninja-level dep tracking, not on a partitioned annotation processor.
+  Large rebuilds re-pass the full classpath; for very large Java
+  monorepos that's a known overhead worth being aware of.</li>
+<li><strong>Classpath order is sorted.</strong> Java's runtime doesn't care, but
+  determinism makes diffs of generated build commands much easier to
+  read.</li>
+<li><strong>Source-root inference is Maven-aware.</strong> <code>_java_sources_paths</code> checks
+  conventional Maven paths (<code>src/main/java</code>, <code>src/test/java</code>,
+  <code>src/java/</code>) first and falls back to parsing the <code>package</code> declaration
+  from a source. So users can pick the layout that suits the project
+  without an explicit <code>srcroot</code> attribute.</li>
+<li><strong>Cross-language deps are free.</strong> Because both languages emit JARs and
+  share the same mixin, a <code>scala_library</code> can depend on a <code>java_library</code>
+  and vice versa with no special syntax.</li>
+<li><strong>Windows ergonomics.</strong> Classpath separator, test-launcher script
+  extension (<code>.bat</code>), and javac path-quoting are all delegated to the
+  builtin tool or <code>os.pathsep</code>. The DSL surface stays the same on every
+  OS, so a BUILD file written on Linux usually just works on Windows.</li>
+<li><strong>Failure messages.</strong> Compile errors come straight from <code>javac</code>/<code>scalac</code>,
+  but the dep-resolution and packaging failures (missing JAR, version
+  conflict, missing main class) are surfaced through <code>console.diagnose()</code>
+  with the BUILD source location, so they don't get lost in a wall of
+  Java stack traces.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hdrs_check/" class="btn btn-neutral float-left" title="How the C/C++ Header Dependency Check (hdrs check) Works"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../protobuf_build/" class="btn btn-neutral float-right" title="How proto_library handles multi-language codegen">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../hdrs_check/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../protobuf_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

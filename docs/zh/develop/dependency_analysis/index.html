@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/dependency_analysis/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>依赖分析与 ninja 文件生成 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u4f9d\u8d56\u5206\u6790\u4e0e ninja \u6587\u4ef6\u751f\u6210";
+        var mkdocs_page_input_path = "develop/dependency_analysis.md";
+        var mkdocs_page_url = "/docs/zh/develop/dependency_analysis/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">依赖分析与 ninja 文件生成</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 依赖图</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-per-target-ninja">2. Per-target ninja 生成</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-buildninja">3. 根 build.ninja 的结构</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 增量性</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 技术细节与设计取舍</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 用户体验优化要点</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">依赖分析与 ninja 文件生成</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/dependency_analysis.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ninja">依赖分析与 ninja 文件生成<a class="headerlink" href="#ninja" title="Permanent link">&para;</a></h1>
+<p>BUILD 文件加载、<code>Target</code> 对象注册完成后，blade 把内存中的依赖图翻译成一
+组 ninja 文件：一份根 <code>build.ninja</code>，加上若干由根文件 <code>include</code> 进来的
+per-target <code>&lt;pkg&gt;/&lt;name&gt;.build.ninja</code>。这块实现的大半精力都花在<strong>避免每
+次重复做这些事</strong>上——传递依赖展开与 per-target ninja 生成都被分析期内、
+以及增量构建之间大量缓存。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/dependency_analyzer.py</code></td>
+<td><code>expanded_deps</code>、拓扑排序、环检测</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td>编排；per-target fingerprint 与 ninja 文件缓存</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td>根文件头部、全局 rule、辅助模板</td>
+</tr>
+<tr>
+<td><code>src/blade/target.py</code></td>
+<td><code>generate_build</code> / fingerprint 计算</td>
+</tr>
+<tr>
+<td><code>src/blade/util.py</code></td>
+<td><code>write_if_changed</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 依赖图<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><code>Target.deps</code> 是 BUILD 中<strong>声明</strong>的依赖列表。分析阶段为之填出
+<code>Target.expanded_deps</code>：拓扑稳定、去重后的传递依赖列表。</p>
+<ul>
+<li><code>_expand_target_deps()</code> 沿 <code>deps</code> 递归，维护一个 per-walk 的
+  <code>root_targets</code> 路径集合；再访问到正在展开中的 target 就报
+  <code>Loop dependency</code> fatal，并指出造成环的那条边。</li>
+<li><code>_unique_deps()</code> 去重时保持顺序（保留最后一次出现），保证与链接相关
+  的相对位置不被打乱。</li>
+<li>展开结果<strong>记忆化到 target 上</strong>：之后每个询问 <code>target.expanded_deps</code>
+  的消费者都拿缓存值。反向（<code>expanded_dependents</code>）同一次扫描中同时填
+  好，给少数需要的查询用。</li>
+<li><code>_topological_sort()</code> 对全图跑 Kahn 算法。输出顺序很关键：为某个
+  target 生成 ninja 时，可能需要它的依赖已经产出的信息（例如，一个
+  <code>proto_library</code> 声明出来的生成头必须先可见，依赖它的 <code>cc_library</code> 才能
+  写出 include 行）。</li>
+</ul>
+<h2 id="2-per-target-ninja">2. Per-target ninja 生成<a class="headerlink" href="#2-per-target-ninja" title="Permanent link">&para;</a></h2>
+<p>每个 target 的 <code>generate()</code>（按子类各自实现）通过两个辅助产出 ninja
+<code>build</code>/<code>rule</code> 语句：</p>
+<ul>
+<li><code>Target.generate_build(rule, outputs, inputs, ...)</code>：构造一条 <code>build</code>
+  语句，支持 <code>inputs</code>、<code>implicit_deps</code>（<code>|</code> 之后）、<code>order_only_deps</code>
+  （<code>||</code> 之后）、<code>implicit_outputs</code>、以及 per-edge <code>variables</code>。结果追
+  加到 target 内部的文本缓冲区。</li>
+<li><code>_NinjaFileHeaderGenerator.generate_rule(name, command, ...)</code>（在
+  <code>backend.py</code>）一次性声明全局 rule（cc、cxx、ar、link、proto、
+  cxxhdrs、ccincchk…），带上常用字段（<code>depfile</code>、<code>deps</code>、<code>restat</code>、
+  <code>pool</code>、<code>rspfile</code>）。</li>
+</ul>
+<p>target 缓冲区里累积的文本写到 <code>&lt;build_dir&gt;/&lt;path&gt;/&lt;name&gt;.build.ninja</code>，
+根 <code>build.ninja</code> 用普通 <code>include</code> 引入（不是 <code>subninja</code>——per-target 文件
+是片段、共享全局 rule）。</p>
+<h2 id="3-buildninja">3. 根 <code>build.ninja</code> 的结构<a class="headerlink" href="#3-buildninja" title="Permanent link">&para;</a></h2>
+<p><code>_NinjaFileHeaderGenerator.generate()</code> 按固定顺序写根文件：</p>
+<ol>
+<li><code>ninja_required_version</code> 与 <code>builddir = ...</code>。</li>
+<li>全局 pool（例如一个 depth=1 的 <code>heavy_pool</code>，给某些不擅长并行的规则
+   降速）。</li>
+<li>全部全局 ninja <code>rule</code> 声明——本工作区可能用到的所有 compile/link/
+   codegen 规则，不论是否真的被某个 target 引用。</li>
+<li>一次性的 build 语句，比如 SCM stamp。</li>
+<li>按拓扑序对每个 per-target 文件 <code>include &lt;path&gt;.build.ninja</code>（依赖先
+   于被依赖）。</li>
+</ol>
+<p>被 compile rule 引用的两个 wrapper 脚本（POSIX 的 <code>cc_wrapper.sh</code>、
+MSVC 的 <code>cc_wrapper.py</code>）以及被 <code>ccincchk</code> 消费的 pickle
+<code>inclusion_declaration.data</code>，也是分析过程中按需写入构建目录的副产物，
+首次引用时落盘。</p>
+<h2 id="4">4. 增量性<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>三层缓存协作来避免每次构建都重做：</p>
+<p><strong>(a) Per-target fingerprint</strong>：<code>Target.fingerprint()</code> 是一个 MD5，输入
+熵字典里包含 blade 版本、config digest、srcs、直接 deps 的 fingerprint、
+规则类型与规则的 <code>cmd</code>。每份 per-target ninja 第一行是
+<code>#Fingerprint=&lt;hash&gt;</code>。重写之前 <code>build_manager</code> 读旧 fingerprint，相同
+则<strong>整文件原样复用</strong>，对该 target 不做后续任何事。</p>
+<p><strong>(b) <code>write_if_changed</code></strong>（<code>util.py</code>）：用于 cc wrapper、
+inclusion-declaration pickle、per-target ninja 文件，以及（cc wrapper 内
+部）<code>.incstk</code> 文件。把新字节与磁盘文件比较，<strong>只有变化时才写</strong>，否则保留
+原 mtime。Ninja 的 <code>restat = 1</code> 利用保留下来的 mtime 去<strong>剪掉</strong>那些唯一
+输入是"现在没变的 implicit output"的下游边（关于把这一链用在 <code>.incstk</code>
+上的细节见 <a href="../hdrs_check/">hdrs check</a>）。</p>
+<p><strong>(c) 上文提到的 <code>expanded_deps</code> 记忆化</strong>：传递依赖每个 target 在分析阶
+段只走一次，不是每个消费者各走一次。</p>
+<h2 id="5">5. 技术细节与设计取舍<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>拓扑序是为了生成阶段，不是执行阶段。</strong> ninja 完全按图自己调度执
+  行。blade 排序只是为了在写某个 target 的 rule 前，能拿到来自其依赖
+  的字段（如 <code>declared_genhdrs</code> 从 <code>proto_library</code> 传给 <code>cc_library</code>）。</li>
+<li><strong>生成头的 order-only deps（<code>||</code>）</strong>到处都是。它保证生成器先于任何可
+  能 <code>#include</code> 该生成头的编译运行，但<strong>不</strong>因生成器输出的 mtime 变化
+  而强迫重编。配合生成器规则的 <code>restat</code>，得到"再生成但内容未变 → 不
+  rebuild"的语义；真正基于内容的重新触发由编译器 depfile（<code>-MMD</code>）负
+  责。</li>
+<li><strong>Per-target fingerprint 精确覆盖加载期输入。</strong> 相同 fingerprint 的
+  target 按构造产出相同 <code>.build.ninja</code> 文本，复用文件是安全的。不影响
+  加载期输出的东西（如 <code>cc_test</code> 执行期参数）刻意不进 fingerprint。</li>
+<li><strong>请求集合之外的 target 也照样生成 ninja rule。</strong> blade 需要它们，因
+  为它们可能是请求 target 的传递依赖；<code>--no-test</code>、<code>--generate-package</code>
+  是用于把会被牵涉进来的 test/package target 过滤出去的显式开关。</li>
+<li><strong><code>pool = heavy_pool</code></strong> 取 <code>depth = 1</code>，是给少数对高并行不友好的工具
+  （LTO 链接、大 proto codegen…）准备的：把它们路由到 1 宽的 pool，
+  ninja 自动串行化。</li>
+<li><strong>包含检查也走同一套缓存。</strong> <code>ccincchk</code> rule 的输入是各 compile rule
+  的 <code>.incstk</code> implicit output。<code>write_if_changed</code> 在包含栈未真正变化时
+  保留 mtime，ninja <code>restat</code> 据此在 <code>#include</code> 集合没动的重编上跳过检
+  查——增量构建上一个可观的加速。</li>
+</ul>
+<h2 id="6">6. 用户体验优化要点<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>记忆化一次、多次查询。</strong> <code>expanded_deps</code> / <code>expanded_dependents</code> 一
+  趟算出、各处复用。"这东西依赖谁？"的代价从每次查询 O(图) 降到
+  O(1)。</li>
+<li><strong>处处 <code>write_if_changed</code>。</strong> per-target ninja、包含栈、wrapper 脚
+  本、inclusion-declaration pickle——字节没变就不动盘。配合 ninja
+  <code>restat</code>，"是否变化"的粒度从"文件被重写"细化到"文件内容不同"。</li>
+<li><strong>相同再生成不破坏 per-target ninja。</strong> 对 BUILD 做一次无操作改动
+  （空白、注释）若不改变 fingerprint，加载期之外不会产生额外代价。</li>
+<li><strong>错误指到本因。</strong> <code>Loop dependency</code> 给出造成环的那条边并打印环走
+  向；hdrs 检查中的缺依赖错误带出包含链；偶发的拓扑排序失败会指出无法
+  解析的输入。在多千 target 的图上，一条糟糕的诊断很难调，所以这里在
+  可读诊断上的投入是刻意的。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../custom_rule/" class="btn btn-neutral float-left" title="自定义规则（define_rule）实现原理"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dsl_api/" class="btn btn-neutral float-right" title="内置函数与 blade.* DSL">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../custom_rule/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dsl_api/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

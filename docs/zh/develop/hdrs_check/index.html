@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/hdrs_check/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>C/C++ 头文件依赖检查（hdrs check）实现原理 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "C/C++ \u5934\u6587\u4ef6\u4f9d\u8d56\u68c0\u67e5\uff08hdrs check\uff09\u5b9e\u73b0\u539f\u7406";
+        var mkdocs_page_input_path = "develop/hdrs_check.md";
+        var mkdocs_page_url = "/docs/zh/develop/hdrs_check/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">一、实现机制</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#11">1.1 收集"头文件属于哪个库"的声明</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12-incchk">1.2 为每个目标落盘检查信息（.incchk）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#13-incstk">1.3 编译期产出"包含栈"（.incstk 文件）</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#msvcteeshowincludes">MSVC：旁路（tee）/showIncludes，而非单独预处理</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#14-ccincchk">1.4 检查的触发（ccincchk 规则）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#15-inclusion_checkpy">1.5 检查的执行（inclusion_check.py）</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">二、检查机制：头文件未导出 / 私有头文件被跨库使用</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">三、检查机制：引用头文件但未声明其所属库依赖</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-missing-dependency">3.1 直接依赖缺失（Missing dependency）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32-missing-indirect-dependency">3.2 间接（生成头）依赖缺失（Missing indirect dependency）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">严重性与抑制</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">设计取舍与边界</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">完备性的边界：配置敏感性</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#-h-depfile">为什么用 -H 而不是 depfile</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#-h">直接包含的判定：-H + 朴素源码扫描补丁</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_7">为什么还需要这个补丁</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_8">已知限制</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bazel-layering_check">与 Bazel 沙箱 / layering_check 的关系</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_9">附录：相关产物文件</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">C/C++ 头文件依赖检查（hdrs check）实现原理</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/hdrs_check.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cc-hdrs-check">C/C++ 头文件依赖检查（hdrs check）实现原理<a class="headerlink" href="#cc-hdrs-check" title="Permanent link">&para;</a></h1>
+<p>从 Blade 2.0 起，C/C++ 的头文件也被纳入依赖管理：一个目标 <code>#include</code> 了某个头文件，就必须在 <code>deps</code> 里声明该头文件所属的库，否则 Blade 会在构建结束时报告问题。本篇讲述这套检查的<strong>实现原理</strong>；面向使用者的说明与修复指引见 <a href="../../build_rules/cc/#修复-hdrs-引发的依赖缺失的检查问题">build_rules/cc.md</a>。</p>
+<p>涉及的源码：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td>收集"头文件 → 库"的声明、为每个目标落盘检查信息、生成检查规则</td>
+</tr>
+<tr>
+<td><code>src/blade/build_manager.py</code></td>
+<td>把全局声明写入 <code>inclusion_declaration.data</code></td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td>生成产出包含栈的编译命令（GCC：<code>cc_wrapper.sh</code> 加 <code>-H</code>；MSVC：<code>cc_wrapper.py</code> 旁路 <code>/showIncludes</code>）、<code>cxxhdrs</code> 与 <code>ccincchk</code> 规则</td>
+</tr>
+<tr>
+<td><code>src/blade/inclusion_check.py</code></td>
+<td>真正的检查逻辑（在构建期作为子进程被调用）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_1">一、实现机制<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>整个机制分三个阶段：<strong>声明收集</strong>（加载 BUILD 时）→ <strong>信息落盘</strong>（生成阶段）→ <strong>产出包含栈并检查</strong>（构建阶段）。</p>
+<h3 id="11">1.1 收集"头文件属于哪个库"的声明<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p>加载 BUILD 文件时，每个 <code>cc_library</code> 把自己拥有的头文件登记到三张进程级全局表（<code>cc_targets.py</code>）：</p>
+<ul>
+<li><code>declare_hdrs()</code> → <code>_hdr_targets_map</code>：<strong>公开头文件</strong>（<code>hdrs</code> 属性）→ 拥有它的库集合。</li>
+<li><code>declare_hdr_dir()</code> → <code>_hdr_dir_targets_map</code>：<strong>公开 include 目录</strong>（如 <code>export_incs</code>、生成目录）→ 拥有它的库集合。</li>
+<li><code>declare_private_hdrs()</code> → <code>_private_hdrs_target_map</code>：<strong>私有头文件</strong>（列在 <code>srcs</code> 里的 <code>.h</code>）→ 拥有它的目标集合。</li>
+</ul>
+<p>一个头文件可以同时属于多个库，所以值都是集合。</p>
+<p>所有 BUILD（含全部传递依赖）加载完毕后，<code>build_manager._write_inclusion_declaration_file()</code> 把这三张表连同 <code>allowed_undeclared_hdrs</code> 配置序列化到 <code>&lt;build_dir&gt;/inclusion_declaration.data</code>，供构建期的检查子进程读取。</p>
+<h3 id="12-incchk">1.2 为每个目标落盘检查信息（<code>.incchk</code>）<a class="headerlink" href="#12-incchk" title="Permanent link">&para;</a></h3>
+<p><code>cc_targets._write_inclusion_check_info()</code> 为每个 cc 目标写一个 <code>&lt;target&gt;.incchk</code>（pickle），包含检查所需的局部上下文：</p>
+<ul>
+<li><code>deps</code>、<code>expanded_srcs</code> / <code>expanded_hdrs</code>（展开后的源文件与头文件列表）；</li>
+<li><code>declared_hdrs</code> / <code>declared_incs</code>：本目标自身 <strong>以及其 <code>deps</code></strong> 的公开头文件/公开目录（<code>_collect_declared_headers()</code>）——即"在本目标可见范围内合法的头文件"；</li>
+<li><code>declared_genhdrs</code> / <code>declared_genincs</code>：从 <code>deps</code> 传递收集到的<strong>生成头文件</strong>（<code>_transitive_declared_generated_includes()</code>）；</li>
+<li><code>severity</code>、<code>suppress</code>（来自配置）。</li>
+</ul>
+<p>此外还会写一个 <code>&lt;target&gt;.incchk.extra</code>，内容是 <code>hdrs_deps</code> / <code>private_hdrs_deps</code> / <code>allowed_undeclared_hdrs</code>——这些是全局声明表的<strong>局部子集缓存</strong>，让检查子进程优先从小文件查询、避免每次都加载庞大的全局文件。它单独成文件，是为了不把"首次构建后才有的信息"混入 <code>.incchk</code> 而触发不必要的重复构建（见 <a href="https://github.com/blade-build/blade-build/issues/1034">issue #1034</a>）。</p>
+<p><code>.incchk</code> <strong>仅在内容变化时才重写</strong>，以保持其 mtime 稳定，避免触发无谓的重新检查。</p>
+<h3 id="13-incstk">1.3 编译期产出"包含栈"（<code>.incstk</code> 文件）<a class="headerlink" href="#13-incstk" title="Permanent link">&para;</a></h3>
+<p>检查需要知道每个源文件/头文件<strong>实际</strong>包含了哪些头文件。这一信息由编译器在编译时顺带产出：</p>
+<ul>
+<li><strong>源文件（GCC/Clang）</strong>：每次编译都经由生成的包装脚本 <code>cc_wrapper.sh</code>（见 <code>backend.py</code>），它给编译命令追加 GCC 的 <code>-H</code> 选项，并用一段 awk 把"包含栈"从普通诊断里分离出来，写入 <code>&lt;src&gt;.incstk</code>。该路径通过每个目标文件各自的 <code>inclusion_stack</code> ninja 变量传入，因此与目标文件后缀（<code>.o</code> 还是 <code>.obj</code>）无关。</li>
+<li><strong>源文件（MSVC）</strong>：见下方 MSVC 说明——在正常编译过程中顺带产出同样的 <code>.incstk</code>，无需单独预处理。</li>
+<li><strong>公开头文件（所有工具链）</strong>：头文件从不被编译成目标文件，所以在<strong>每种</strong>工具链上都单独生成 <code>cxxhdrs</code> 规则，用预处理（GCC/Clang <code>-E</code>、MSVC <code>/P</code>）产出 <code>&lt;hdr&gt;.incstk</code>。这与下面的源文件路径无关——它是头文件获得包含栈的唯一途径。</li>
+</ul>
+<p><code>.incstk</code> 文件用<strong>前导点的个数表示包含层级</strong>，例如（GCC 格式）：</p>
+<pre><code class="language-text">. ./app/example/foo.h
+.. build_release/app/example/proto/foo.pb.h
+... build_release/common/rpc/rpc_service.pb.h
+. ./common/rpc/rpc_client.h
+</code></pre>
+<p>MSVC 格式则为 <code>Note: including file:  &lt;路径&gt;</code>，用前导空格数表示层级。两种格式都由 <code>inclusion_check._parse_hdr_level_line()</code> 解析。</p>
+<h4 id="msvcteeshowincludes">MSVC：旁路（tee）<code>/showIncludes</code>，而非单独预处理<a class="headerlink" href="#msvcteeshowincludes" title="Permanent link">&para;</a></h4>
+<p>GCC 的 <code>-H</code> 把包含栈写到 stderr，由 awk 包装脚本分流到 <code>.incstk</code>。MSVC 没有 <code>-H</code>，它输出 <code>/showIncludes</code> 行（<code>Note: including file: &lt;路径&gt;</code>）与诊断信息交织在一起，而 ninja 原生的 <code>deps = msvc</code> 本就要解析这些行来构建依赖图。为避免把每个源文件<strong>编译两遍</strong>（一遍出 <code>.obj</code> + 喂 ninja deps，一遍预处理出包含栈），MSVC 的 <code>cc</code>/<code>cxx</code> 规则用 <code>cc_wrapper.py</code> 包裹编译命令，对编译器输出做<strong>旁路（tee）</strong>：</p>
+<ul>
+<li>把子进程的 stdout 与 stderr 合并到同一个管道（只读其中一侧会有管道缓冲死锁风险），逐行原样转发给 ninja 的 <code>deps = msvc</code> 解析器；</li>
+<li>同时把 <code>Note: including file:</code> 行写入 <code>&lt;src&gt;.incstk</code>，于是同一次编译同时喂饱两个消费者。</li>
+</ul>
+<p>有两类内容会被过滤，但处理方式<strong>不同</strong>：</p>
+<ul>
+<li>编译器回显的<strong>裸文件名</strong>——这是 cl.exe 的怪癖，无法关闭。ninja 的 <code>CLParser::FilterInputFilename</code> 已经会<strong>按扩展名过滤源文件</strong>的回显（匹配 <code>.c/.cc/.cxx/.cpp/.c++</code>），所以 <code>cc</code>/<code>cxx</code> 规则无需我们插手；但它<strong>不</strong>过滤头文件扩展名，于是 <code>cxxhdrs</code> 的 <code>/P</code> 规则回显的 <code>foo.h</code> 会漏出来。因此我们自己丢弃任何单独的文件名 token（这也顺带覆盖 nvcc——它会回显 <code>.cu</code> 源文件名和中间临时文件名）。这类 token <strong>两边都不发</strong>——既不写入 <code>.incstk</code>，也不转发给 ninja——因为它不是 <code>Note: including file:</code> 行，deps 解析器并不需要它；</li>
+<li><strong>workspace 之外的绝对路径</strong>（系统/SDK 头文件）：只从 <code>.incstk</code> 里滤掉（检查器本就会丢弃绝对路径，保留它们只会撑大文件、拖慢检查），<strong>但仍转发给 ninja</strong>——它的 <code>deps = msvc</code> 依赖图需要完整的 include 集合。</li>
+</ul>
+<p>因此在 MSVC 上，包含栈是正常编译的副产物，与 GCC 上的 <code>-H</code> 完全一致——不需要对每个源文件单独预处理。</p>
+<blockquote>
+<p><strong>路径分隔符。</strong> 后端写出的声明数据（<code>declared_hdrs</code>、全局 <code>public_hdrs</code> 表等）用的是操作系统分隔符，即 Windows 上的反斜杠，而 <code>/showIncludes</code> 路径已归一化为正斜杠。<code>inclusion_check.py</code> 在加载时把<strong>所有</strong>声明路径统一归一化为正斜杠（<code>_unix_path_set</code> / <code>_unix_path_dict</code> / <code>_unix_path_pairs</code>）来消除这一差异，使比较与分隔符无关、与产出数据的平台无关。</p>
+</blockquote>
+<h3 id="14-ccincchk">1.4 检查的触发（<code>ccincchk</code> 规则）<a class="headerlink" href="#14-ccincchk" title="Permanent link">&para;</a></h3>
+<p><code>cc_targets._generate_inclusion_check()</code> 为每个目标生成一条 <code>ccincchk</code> 规则：</p>
+<pre><code class="language-text">python -m blade.builtin_tools cc_inclusion_check &lt;target&gt;.incchk.result &lt;target&gt;.incchk
+</code></pre>
+<p>它的 implicit deps 是该目标所有的 <code>.incstk</code> 文件和目标文件，产物是 <code>&lt;target&gt;.incchk.result</code>（检查通过则写入 <code>OK</code>）。该结果文件被挂作链接步骤的 <strong>order-only 依赖</strong>——这样检查通过时不会触发重新链接，检查信息变化也只会重跑检查、不重链。</p>
+<h3 id="15-inclusion_checkpy">1.5 检查的执行（<code>inclusion_check.py</code>）<a class="headerlink" href="#15-inclusion_checkpy" title="Permanent link">&para;</a></h3>
+<p><code>ccincchk</code> 最终调用 <code>inclusion_check.check()</code>：</p>
+<ol>
+<li>载入目标的 <code>.incchk</code>（及 <code>.extra</code>），并按需 lazy 加载全局 <code>inclusion_declaration.data</code>。</li>
+<li>对该目标的每个源文件和头文件，找到对应的 <code>.incstk</code>，用 <code>_parse_inclusion_stacks()</code> 解析出：</li>
+<li><strong>直接包含的头文件</strong>（层级为 1、非绝对路径）；</li>
+<li><strong>生成头文件</strong>（路径位于 <code>build_dir</code> 下）：记录从源文件到该生成头的<strong>完整包含栈</strong>，并在此<strong>停止下钻</strong>——更深层的包含由其生成器（如 <code>proto_library</code>）自己保证；</li>
+<li><strong>绝对路径</strong>（系统头文件）：忽略。</li>
+<li>在解析结果上执行下面两类检查（第二、三节）。</li>
+</ol>
+<hr />
+<h2 id="_2">二、检查机制：头文件未导出 / 私有头文件被跨库使用<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>这一类针对<strong>直接包含</strong>的头文件，在 <code>_check_direct_headers()</code> 中完成。对每个直接包含的头 <code>hdr</code>：</p>
+<ol>
+<li>若 <code>hdr</code> 在本目标的 <code>declared_hdrs</code> 中 → 合法，跳过。</li>
+<li>调用 <code>find_libs_by_header(hdr)</code> 查它属于哪个/哪些<strong>公开</strong>库：先按头文件精确匹配公开头表，匹配不到则<strong>沿父目录逐级</strong>匹配公开 include 目录表。</li>
+<li>
+<p><strong>查不到任何公开库</strong>时，进一步判断它是不是某目标的私有头（<code>find_targets_by_private_hdr()</code>，即被列在某目标的 <code>srcs</code> 里）：</p>
+<ul>
+<li><strong>是别的目标的私有头</strong>（拥有者集合不含本目标）→ 报错：</li>
+</ul>
+<p><code>text
+   "X" is a private header file of "//foo:bar"</code></p>
+<p>即<strong>私有头文件被跨库使用</strong>。私有头只允许其所属库自己包含；别的库要用，应由所属库把它放进 <code>hdrs</code> 导出为公开头。
+ - <strong>不是任何库的私有头</strong>（也没被任何库导出）→ 视为<strong>未声明/未导出</strong>，报错：</p>
+<p><code>text
+   "X" is not declared in any cc target. ...</code></p>
+<p>（除非该头文件在 <code>allowed_undeclared_hdrs</code> 或 <code>suppress</code> 名单中。）即这个头文件没有出现在任何库的 <code>hdrs</code> 或 <code>srcs</code> 里。
+   - 查到了公开库 → 进入第三节的"直接依赖缺失"检查。</p>
+</li>
+</ol>
+<p>错误信息由 <code>_header_undeclared_message()</code>、<code>_hdr_declaration_message()</code>、<code>_or_joined_libs()</code> 拼装；其中 <code>_or_joined_libs()</code> 会把同目录的库简写成 <code>:name</code> 形式、其它写成 <code>//path:name</code>。</p>
+<hr />
+<h2 id="_3">三、检查机制：引用头文件但未声明其所属库依赖<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>这一类是"包含了头文件，却没在 <code>deps</code> 里声明其所属库"，分<strong>直接</strong>与<strong>间接</strong>两种。</p>
+<h3 id="31-missing-dependency">3.1 直接依赖缺失（Missing dependency）<a class="headerlink" href="#31-missing-dependency" title="Permanent link">&para;</a></h3>
+<p>仍在 <code>_check_direct_headers()</code>：当 <code>hdr</code> 找到了公开库拥有者集合 <code>libs</code>，但 <code>libs</code> 与 <code>deps ∪ {自身}</code> 的交集为空时 → 报错：</p>
+<pre><code class="language-text">&lt;target&gt;: Missing dependency declaration:
+  In file included from &quot;src/foo.cc&quot;,
+    For &quot;common/rpc/rpc_client.h&quot;, which belongs to &quot;//common/rpc:rpc_client&quot;
+</code></pre>
+<p>即你直接 <code>#include</code> 了某库的公开头，却没有在 <code>deps</code> 里依赖那个库。修复方法通常是把提示中的库加入本目标的 <code>deps</code>。</p>
+<h3 id="32-missing-indirect-dependency">3.2 间接（生成头）依赖缺失（Missing indirect dependency）<a class="headerlink" href="#32-missing-indirect-dependency" title="Permanent link">&para;</a></h3>
+<p>在 <code>_check_generated_headers()</code> 中完成。对每条包含栈，取末端的<strong>生成头文件</strong> <code>generated_hdr</code>：</p>
+<ul>
+<li>若它已作为直接包含头检查过 → 跳过；</li>
+<li>若它被<strong>传递声明</strong>（在 <code>declared_genhdrs</code> / <code>declared_genincs</code> 中，即来自某个 <code>dep</code> 的 <code>generated_hdrs</code>）→ 合法；</li>
+<li>否则 → 报错 <code>Missing indirect dependency declaration</code>，并打印从源文件一路向上到该生成头的<strong>完整包含链</strong>，方便定位是哪一环缺了依赖。</li>
+</ul>
+<p><strong>为什么只对"生成头文件"做间接检查？</strong> 生成头（<code>proto_library</code>、<code>gen_rule</code> 等的产物）如果依赖缺失，编译当前目标时这些头可能<strong>还没生成</strong>或<strong>是过时版本</strong>，从而造成编译错误，甚至更隐蔽的运行期错误。而非生成的头文件，其传递可见性由编译/链接过程天然保证，无需强制声明，故不做间接检查。</p>
+<h3 id="_4">严重性与抑制<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>cc_config.hdr_dep_missing_severity</code>：检查问题的严重性（<code>error</code> / <code>warning</code>）。仅当为 <code>error</code> 且确有问题时检查才判定失败。</li>
+<li><code>cc_config.hdr_dep_missing_suppress</code>：抑制升级前已存在的问题。</li>
+<li><code>cc_config.allowed_undeclared_hdrs</code>：允许的未声明头文件白名单。</li>
+</ul>
+<p>详见 <a href="../../config/#cc_config">配置文件</a>。</p>
+<hr />
+<h2 id="_5">设计取舍与边界<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="_6">完备性的边界：配置敏感性<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>检查基于"单次构建里编译器实际走到的 <code>#include</code>"。<code>-H</code> / <code>/showIncludes</code> 只报告当前 <code>#ifdef</code> / <code>-D</code> / 目标平台与工具链下被<strong>激活的分支</strong>。因此：只在另一套配置下才需要的依赖（例如仅在 <code>#if defined(__linux__)</code> 或 <code>#ifdef DEBUG</code> 里包含的头），在当前构建中不会被观测到，漏声明也不会被发现。</p>
+<p>这不是本机制独有的局限：Bazel 的沙箱有<strong>完全相同</strong>的盲区——它也只约束当前这次编译 action，没走到的分支同样管不到。任何"单配置观测"都无法做到跨配置完备。实践中的缓解办法是<strong>依赖 CI 构建矩阵</strong>：在 linux/mac、debug/release 等多套配置下各跑一遍，各自的检查叠加，逼近全局覆盖。</p>
+<h3 id="-h-depfile">为什么用 <code>-H</code> 而不是 depfile<a class="headerlink" href="#-h-depfile" title="Permanent link">&para;</a></h3>
+<p>编译器的 <code>-MMD</code> depfile 已经列出一个翻译单元用到的全部头文件，但它是<strong>扁平</strong>的——只有集合、没有包含层级，无法区分"直接包含"与"被某个头间接包含"。而本机制的两类检查（第三节的「直接依赖缺失」与「间接/生成头依赖缺失」）恰恰依赖这个层级信息，所以必须使用能给出<strong>包含树</strong>的 <code>-H</code> / <code>/showIncludes</code>，而不能复用 depfile。</p>
+<h3 id="-h">直接包含的判定：<code>-H</code> + 朴素源码扫描补丁<a class="headerlink" href="#-h" title="Permanent link">&para;</a></h3>
+<p>"直接包含的头"集合驱动了缺失依赖、私有头、未声明头、未用依赖这四个检查。blade 通过两个来源合并得出：</p>
+<ul>
+<li><strong>权威：<code>.incstk</code> 中 <code>-H</code> 的 depth-1 行</strong>（<code>inclusion_check.py</code> 里的 <code>_parse_inclusion_stacks</code>）——编译器从这个源文件出发，在第 1 层实际遍历到的头。</li>
+<li><strong>补丁：正则源码扫描</strong>——把源文件里所有字面 <code>#include "..."</code> / <code>#include &lt;...&gt;</code> 列出来（<code>_scan_source_includes</code>）。</li>
+</ul>
+<p>二者按如下方式合并：</p>
+<pre><code class="language-text">direct_hdrs = depth-1 ∪ (source_scan ∩ all_paths_in_incstk)
+</code></pre>
+<p>与 <code>_read_all_incstk_paths(...)</code>（编译器在<strong>任意</strong>深度实际遍历过的路径）的<strong>交集</strong>是<strong>关键的过滤门</strong>：只要编译器没真正编译过的内容——块注释里的 <code>#include</code>、<code>#if 0</code> 块、未走的 <code>#ifdef</code> 分支、像 <code>#include "stdio.h"</code> 这样用引号误拼的系统头——都会自然在交集处掉出去，因为它们根本没进 <code>.incstk</code>。所以这里的扫描<strong>有意保持朴素</strong>：不剥注释、不解析 <code>#if 0</code>、不跟踪 <code>#ifdef</code>。试图在扫描里"聪明一点"要么是冗余（交集已经做了），要么是引入新的错误（比如盲目剥 <code>#if 0 / ... / #endif</code> 会把活的 <code>#else</code> 分支也吃掉）。</p>
+<h4 id="_7">为什么还需要这个补丁<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p><code>-H</code> 只在头<strong>首次出现</strong>的深度报告它；之后多重包含保护优化（multiple-include-guard optimization）会让后续 <code>#include</code> 不被读、也不在 <code>-H</code> 里出现。所以如果 <code>bar.cc</code> 里更早的 <code>#include</code>（例如它自己的 <code>bar.h</code>）已经传递性地拉入了 <code>foo.h</code>，那么 <code>bar.cc</code> 直接的 <code>#include "foo.h"</code> 在 <code>-H</code> 的 depth-1 上就消失了。没有补丁时，这种情况就被误判为"foo.h 不是直接包含"——未用依赖会出现响亮的误报，另外三个检查出现静默的漏报。详见 issue #1171。</p>
+<h4 id="_8">已知限制<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>"扫描 + 交集"不是真正的预处理器，有两个角落用例无法覆盖：</p>
+<ul>
+<li><strong>宏式包含</strong>（<code>#define MY_HDR "x.h"</code> 后 <code>#include MY_HDR</code>）：正则只看到 <code>MY_HDR</code>，无法解析；<code>-H</code> 能覆盖，<strong>除非</strong>它同时被 guard 抑制——这个"双重小概率"的交集本设计接受。</li>
+<li><strong>既在 <code>#if 0</code> 又被另一条活路径传递包含</strong>：交集会保留扫描结果，把它当成直接包含。效果是一个"冗余声明的"dep 逃过未用依赖检查，影响轻微。</li>
+</ul>
+<p>此外，未用依赖检查会<strong>豁免系统库</strong>（键以 <code>#:NAME</code> 开头的依赖，如 <code>#:dl</code>、<code>#:pthread</code>）。这些系统库其实<strong>也有头文件</strong>（如 <code>&lt;dlfcn.h&gt;</code>、<code>&lt;pthread.h&gt;</code>），但 blade 没有维护一份"系统头 → 系统库"的映射（且这种映射本身就是平台/发行版相关、难以维护），所以基于头文件的检查无从评估它们——若不豁免就总是误报。同样地，<strong>声明了 <code>hdrs = []</code> 的 header-less cc_library</strong> 也会被豁免。</p>
+<p>与上面"完备性边界"一节一致，hdrs 检查的根本依据是<strong>当前这次构建里编译器实际用到的头</strong>——补丁不改变这一原则，它只是修补 <code>-H</code> 自身在 depth-1 上撒谎的那一处（guard 抑制造成的丢失）。</p>
+<h3 id="bazel-layering_check">与 Bazel 沙箱 / <code>layering_check</code> 的关系<a class="headerlink" href="#bazel-layering_check" title="Permanent link">&para;</a></h3>
+<p>Bazel 需要<strong>两套</strong>机制，才覆盖本机制用单一机制做到的事：</p>
+<ul>
+<li><strong>沙箱</strong>在文件系统层面隔离：但一个 <code>.cc</code> 的沙箱必须包含其<strong>传递闭包</strong>的全部头文件（否则合法的传递包含会找不到文件）。因此沙箱只能拦住"包含了根本不在闭包里的头"（完全未声明），却<strong>无法分辨</strong>"直接包含了某个传递依赖（而非直接依赖）的头"这类 strict-deps 违规。</li>
+<li><strong><code>layering_check</code></strong> 补上后者：它基于 Clang 的 module map + <code>-fmodules-decluse</code>（declared uses）——为每个库生成 module map 标注其头文件归属及到<strong>直接依赖</strong>的 <code>use</code> 边，由编译器在编译时强制"被包含的头必须来自已声明 <code>use</code> 的模块"。它是编译期、随普通编译附带（无需真正构建 <code>.pcm</code>），但<strong>依赖工具链支持</strong>：<code>-fmodules-decluse</code> 仅 Clang 提供，gcc 无等价物，故 Bazel 仅在 Unix/macOS 的 clang 上支持该特性。</li>
+</ul>
+<p>本机制用<strong>单一的"观测 + 所有权映射"</strong>同时覆盖这两件事：<code>"... is not declared in any cc target"</code> 对应沙箱拦截的"完全未声明"，<code>libs ∩ (deps ∪ self) == ∅</code> 对应 <code>layering_check</code> 的"直接包含必须来自直接依赖"。而且因为它观测的是 <code>-H</code> / <code>/showIncludes</code> 的输出、而非依赖某个 Clang 专属的强制开关，所以在 <strong>gcc、clang、MSVC</strong> 上都能工作。</p>
+<hr />
+<h2 id="_9">附录：相关产物文件<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;build_dir&gt;/inclusion_declaration.data</code></td>
+<td>全局声明：公开头/公开目录、私有头、<code>allowed_undeclared_hdrs</code></td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk</code></td>
+<td>单目标检查信息（deps、声明的头/目录、生成头声明、严重性等）</td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.extra</code></td>
+<td>全局声明的局部子集缓存（避免加载大文件、避免触发重复构建）</td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.result</code></td>
+<td>检查结果，通过时写入 <code>OK</code></td>
+</tr>
+<tr>
+<td><code>&lt;target&gt;.incchk.details</code></td>
+<td>编译器报告的直接/生成头集合，供下次构建构建 <code>.extra</code> 缓存</td>
+</tr>
+<tr>
+<td><code>&lt;src&gt;.incstk</code> / <code>&lt;hdr&gt;.incstk</code></td>
+<td>源文件/头文件的包含栈（<code>-H</code> / 预处理产出）</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../gen_rule/" class="btn btn-neutral float-left" title="gen_rule：自定义构建步骤与其它 target 如何感知它"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../java_scala_build/" class="btn btn-neutral float-right" title="Java 与 Scala 程序是如何构建的">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../gen_rule/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../java_scala_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/dsl_api/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Built-in functions and the blade.* DSL - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Built-in functions and the blade.* DSL";
+        var mkdocs_page_input_path = "develop/dsl_api.md";
+        var mkdocs_page_url = "/docs/en/develop/dsl_api/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Built-in functions and the blade.* DSL</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-rule-registration">1. Rule registration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-the-blade-module">2. The blade module</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-sandbox">3. Sandbox</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-argument-typing-and-normalization">4. Argument typing and normalization</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-implementation-details-and-extension-points">5. Implementation details and extension points</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">Built-in functions and the blade.* DSL</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/dsl_api.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="built-in-functions-and-the-blade-dsl">Built-in functions and the <code>blade.*</code> DSL<a class="headerlink" href="#built-in-functions-and-the-blade-dsl" title="Permanent link">&para;</a></h1>
+<p>A BUILD file is a Python script run inside a tightly-controlled namespace.
+Two things live in that namespace: the <strong>rule functions</strong> (<code>cc_library</code>,
+<code>proto_library</code>, ...) and an injected <code>blade</code> module that exposes the small
+set of helpers a BUILD file may legitimately need (path manipulation,
+config lookup, logging, environment introspection). Everything else from
+the host Python is either absent or replaced with a safer counterpart.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/build_rules.py</code></td>
+<td>The rule registry (<code>register_function</code>, <code>get_all</code>)</td>
+</tr>
+<tr>
+<td><code>src/blade/dsl_api.py</code></td>
+<td>The <code>blade</code> module exposed to BUILD files</td>
+</tr>
+<tr>
+<td><code>src/blade/restricted.py</code></td>
+<td>The safe builtins set (<code>safe_builtins</code>)</td>
+</tr>
+<tr>
+<td><code>src/blade/blade_types.py</code></td>
+<td>Shared rule-arg type aliases</td>
+</tr>
+<tr>
+<td><code>src/blade/util.py</code></td>
+<td><code>var_to_list</code> / <code>var_to_list_or_none</code> normalizers</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-rule-registration">1. Rule registration<a class="headerlink" href="#1-rule-registration" title="Permanent link">&para;</a></h2>
+<p>Every rule type (<code>cc_library</code>, <code>cc_binary</code>, <code>py_library</code>,
+<code>proto_library</code>, <code>gen_rule</code>, ...) is just a Python function defined in some
+<code>*_targets.py</code> module. At module-import time, the file calls
+<code>build_rules.register_function(cc_library)</code> etc., depositing the name in a
+single global registry.</p>
+<p>The registry is filled once per <code>blade</code> invocation by <code>_load_build_rules()</code>,
+which imports the language modules in a fixed order. After that,
+<code>build_rules.get_all()</code> returns the flat dict that becomes the basis of
+every BUILD file's globals (see <a href="../build_file_loading/">BUILD file loading</a>).</p>
+<p>A "native" wrapper object built from the same dict is also stored, so
+extensions loaded via <code>load()</code> can reach the rules as <code>native.cc_library</code>
+even though <code>cc_library</code> itself isn't a global in extension scope (where it
+shouldn't shadow user-defined functions). This split (BUILD ↔ extension)
+keeps the surface of an extension small without taking the rules away from
+extensions that genuinely need to call them.</p>
+<h2 id="2-the-blade-module">2. The <code>blade</code> module<a class="headerlink" href="#2-the-blade-module" title="Permanent link">&para;</a></h2>
+<p><code>dsl_api.get_blade_module()</code> constructs a small module-like object once per
+BUILD load. It exposes:</p>
+<ul>
+<li><strong><code>blade.config</code></strong> — <code>get_item(section, item)</code> and <code>get_section(name)</code>,
+  the same getters described in <a href="../configuration/">configuration</a>.</li>
+<li><strong><code>blade.console</code></strong> — <code>debug</code> / <code>info</code> / <code>notice</code> / <code>warning</code> / <code>error</code>
+  routed through blade's normal diagnostic plumbing, so messages from a
+  BUILD file get the same formatting and source-location prefix as any
+  other blade output.</li>
+<li><strong><code>blade.path</code></strong> — a curated subset of <code>os.path</code> (<code>abspath</code>, <code>basename</code>,
+  <code>dirname</code>, <code>exists</code>, <code>join</code>, <code>normpath</code>, <code>relpath</code>, <code>splitext</code>). The
+  <em>unsafe</em> <code>os.path</code> members (anything that could mutate or stat outside
+  the workspace by accident) are not exposed.</li>
+<li><strong><code>blade.workspace</code></strong> — <code>root_dir</code> and <code>build_dir</code> of the active
+  workspace. Reading via this fixed handle prevents BUILD files from
+  poking at the workspace singleton through back-channels.</li>
+<li><strong><code>blade.host_os</code> / <code>blade.host_arch</code></strong> — strings describing the machine
+  running blade. Useful for conditional <code>srcs</code> lists.</li>
+<li><strong><code>blade.build_type</code></strong> / <strong><code>blade.build_type_is_debug()</code></strong> — the active
+  profile.</li>
+<li><strong>Build-phase-only handles</strong>:</li>
+<li><code>blade.current_source_dir()</code> / <code>blade.current_target_dir()</code> — the
+    BUILD's own package and its build-dir mirror, populated from the same
+    thread-local that drives target keys.</li>
+<li><code>blade.cc_toolchain</code> — a read-only proxy over the active toolchain
+    (<code>obj_suffix</code>, <code>lib_prefix</code>, <code>tool('cxx')</code>, ...). Lets a BUILD file
+    parameterize names by toolchain without importing internal classes.</li>
+<li><strong>Config-phase-only handles</strong>:</li>
+<li><code>blade.getenv(name, default=None)</code> — read an environment variable
+    from <code>BLADE_ROOT</code>. The only sanctioned env-access channel; calling it
+    from a BUILD file raises a <code>console.fatal</code> pointing at the resolved
+    toolchain (<code>blade.cc_toolchain.tool('cc')</code>) or <code>blade.config</code> as the
+    BUILD-phase equivalent. Keeping env reads at the config layer puts all
+    env dependencies in one auditable file and lets BUILD files stay
+    hermetic.</li>
+</ul>
+<p>A subset of these attributes are marked <code>_BUILD_ONLY_ATTRS</code>: accessing
+them from inside <code>BLADE_ROOT</code> (config phase) raises a clear error pointing
+out that "the toolchain doesn't exist yet — pass a lambda if you need a
+deferred value." This is one of the friction-reducing diagnostics that
+saves a lot of confused bug reports. <code>getenv</code> enforces the symmetric rule
+inside the method body (<code>if not self._config_phase: console.fatal(...)</code>),
+since the BUILD-only attribute path is <code>__getattr__</code>-based and methods on
+<code>_BladeModule</code> don't go through it.</p>
+<h2 id="3-sandbox">3. Sandbox<a class="headerlink" href="#3-sandbox" title="Permanent link">&para;</a></h2>
+<p>When <code>global_config.restricted_dsl</code> is on (default), each BUILD file's
+<code>__builtins__</code> is replaced with <code>restricted.safe_builtins</code>:</p>
+<ul>
+<li><strong>Allowed</strong>: type constructors (<code>int</code>, <code>list</code>, <code>dict</code>, <code>str</code>, <code>set</code>,
+  <code>tuple</code>, <code>bool</code>, ...), the safe end of stdlib helpers (<code>len</code>,
+  <code>isinstance</code>, <code>hasattr</code>, <code>enumerate</code>, <code>zip</code>, <code>sorted</code>, <code>range</code>, ...).</li>
+<li><strong>Blocked</strong>: <code>__import__</code>, <code>exec</code>, <code>eval</code>, <code>compile</code>, <code>execfile</code>,
+  <code>subprocess</code>, <code>os.system</code>, raw file writes. Each blocked name is
+  replaced with a wrapper that raises <code>BuildFileError</code> at call site,
+  carrying the user's BUILD source location.</li>
+<li><strong>Narrowed</strong>: <code>open()</code> is restricted to read mode.</li>
+</ul>
+<p>BUILD files are still Python, so users can write loops, list
+comprehensions, and helper functions; they just can't reach outside the
+sandbox to launch processes, fetch URLs, or import arbitrary modules. The
+result is that loading is fast (no surprise subprocess startup, no global
+side effects) and the BUILD's behaviour is fully reproducible from its
+text plus the workspace tree.</p>
+<h2 id="4-argument-typing-and-normalization">4. Argument typing and normalization<a class="headerlink" href="#4-argument-typing-and-normalization" title="Permanent link">&para;</a></h2>
+<p>Rule args like <code>srcs</code>, <code>hdrs</code>, <code>deps</code>, <code>incs</code> are typed <code>StrOrList</code> /
+<code>StrOrListOpt</code> in <code>blade_types.py</code>. The type aliases serve documentation
+and static analysis; at runtime each rule entry-point routes the value
+through <code>util.var_to_list()</code> (or <code>_or_none</code>), which:</p>
+<ul>
+<li>Accepts a single <code>str</code>, a <code>list</code>/<code>tuple</code>/<code>set</code>, or <code>None</code>.</li>
+<li>Returns a <em>fresh</em> <code>list[str]</code> (so subsequent in-place edits on a target's
+  attributes don't leak back into a user-supplied list).</li>
+<li>Preserves the <code>None</code> ↔ <code>[]</code> distinction: <code>var_to_list(None) -&gt; []</code>,
+  <code>var_to_list_or_none(None) -&gt; None</code>. Several attributes (notably
+  <code>hdrs</code>, <code>visibility</code>) use the latter so blade can distinguish "user
+  didn't say" from "user explicitly said empty" — for example,
+  <code>hdrs = []</code> is the way to declare a "header-less library" and exempt it
+  from the unused-deps check (<a href="../hdrs_check/">see hdrs check</a>).</li>
+</ul>
+<h2 id="5-implementation-details-and-extension-points">5. Implementation details and extension points<a class="headerlink" href="#5-implementation-details-and-extension-points" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Adding a new rule</strong> is mechanically <code>def my_rule(name, ...): ...</code> plus
+  <code>build_rules.register_function(my_rule)</code> at module top level, then
+  having <code>load_build_files._load_build_rules()</code> import the module. The
+  rule body typically constructs a <code>Target</code> subclass that calls
+  <code>register_target</code> on itself.</li>
+<li><strong><code>include()</code> and <code>load()</code></strong> inherit the current BUILD's globals — they
+  do not get a fresh sandbox per call, so an <code>include</code>'d file behaves as
+  if its body were spliced into the caller. <code>load()</code> is stricter: it only
+  re-exports the explicitly named symbols, so extension scopes stay tidy.</li>
+<li><strong>Lazy callable config values</strong> — when an item in <code>cc_config</code> needs the
+  toolchain to resolve, the recommended idiom in <code>BLADE_ROOT</code> is to pass a
+  <code>lambda blade: ...</code> and let <code>_DeferredConfigValue</code> invoke it when
+  <code>cc_targets.py</code> queries the item. Trying to read <code>blade.cc_toolchain</code> at
+  config-phase raises with the lambda hint, so users don't have to figure
+  the pattern out from a stack trace.</li>
+<li><strong>All diagnostics carry source locations.</strong> Restricted-builtin
+  violations, glob() failures, type errors, and registration conflicts go
+  through <code>console.diagnose()</code>, which prefixes the message with the
+  BUILD's path and line. This is why a typo in <code>srcs=['foo.c']</code> (missing
+  file) reports at the BUILD line of the rule call rather than somewhere
+  inside blade.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../dependency_analysis/" class="btn btn-neutral float-left" title="Dependency analysis and ninja file generation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../export_map/" class="btn btn-neutral float-right" title="How export_map (Symbol-Export Control) Works">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../dependency_analysis/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../export_map/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

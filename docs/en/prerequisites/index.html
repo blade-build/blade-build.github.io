@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/prerequisites/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>System Prerequisites and Dependencies - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "System Prerequisites and Dependencies";
+        var mkdocs_page_input_path = "prerequisites.md";
+        var mkdocs_page_url = "/docs/en/prerequisites/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">System Prerequisites and Dependencies</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#required-dependencies">Required Dependencies</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#operating-system-support">Operating System Support</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#core-runtime-dependencies">Core Runtime Dependencies</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#optional-performance-enhancements">Optional Performance Enhancements</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#language-specific-build-requirements">Language-Specific Build Requirements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cc-development">C/C++ Development</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#java-development">Java Development</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scala-development">Scala Development</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#code-generation-tools">Code Generation Tools</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#platform-specific-notes">Platform-Specific Notes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#linux-installation">Linux Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#macos-installation">macOS Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#windows-installation">Windows Installation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#version-compatibility-matrix">Version Compatibility Matrix</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#verification-commands">Verification Commands</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Getting Started</li>
+      <li class="breadcrumb-item active">System Prerequisites and Dependencies</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/prerequisites.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="system-prerequisites-and-dependencies">System Prerequisites and Dependencies<a class="headerlink" href="#system-prerequisites-and-dependencies" title="Permanent link">&para;</a></h1>
+<h2 id="required-dependencies">Required Dependencies<a class="headerlink" href="#required-dependencies" title="Permanent link">&para;</a></h2>
+<p>Blade requires the following core dependencies for basic operation:</p>
+<h3 id="operating-system-support">Operating System Support<a class="headerlink" href="#operating-system-support" title="Permanent link">&para;</a></h3>
+<p>Linux, macOS, and Windows are all fully supported platforms.</p>
+<ul>
+<li><strong>Linux:</strong> All major distributions (Ubuntu, CentOS, Debian, etc.)</li>
+<li><strong>macOS:</strong> macOS 10.12+ with Xcode, or just the Xcode Command Line Tools</li>
+<li><strong>Windows:</strong> Windows 10/11 with Visual Studio, or just the Visual Studio Build Tools (MSVC toolchain)</li>
+<li>Developer Mode is recommended (Settings → Privacy &amp; security → For developers)
+    to enable NTFS symlink support; if not enabled, <code>blade-bin</code> symlink is skipped</li>
+</ul>
+<h3 id="core-runtime-dependencies">Core Runtime Dependencies<a class="headerlink" href="#core-runtime-dependencies" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Python:</strong> Version 3.10 or newer</li>
+<li><strong>Ninja Build System:</strong> Version 1.10+ (required as build backend)</li>
+</ul>
+<h2 id="optional-performance-enhancements">Optional Performance Enhancements<a class="headerlink" href="#optional-performance-enhancements" title="Permanent link">&para;</a></h2>
+<p>Blade integrates with the following tools for enhanced build performance:</p>
+<ul>
+<li><strong>ccache:</strong> Version 3.1+ for compilation caching acceleration</li>
+<li><strong>distcc:</strong> Distributed compilation support for large-scale builds</li>
+</ul>
+<h2 id="language-specific-build-requirements">Language-Specific Build Requirements<a class="headerlink" href="#language-specific-build-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="cc-development">C/C++ Development<a class="headerlink" href="#cc-development" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>GCC:</strong> Version 4.0+ or compatible compiler (Clang supported), Linux/macOS</li>
+<li><strong>MSVC:</strong> Visual Studio 2019/2022 Build Tools, Windows</li>
+<li><strong>Standard Libraries:</strong> C++ standard library development packages</li>
+</ul>
+<h3 id="java-development">Java Development<a class="headerlink" href="#java-development" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>JDK:</strong> Java Development Kit 1.6+ (OpenJDK or Oracle JDK)</li>
+<li><strong>Build Tools:</strong> Maven or Gradle for Java project management</li>
+</ul>
+<h3 id="scala-development">Scala Development<a class="headerlink" href="#scala-development" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Scala:</strong> Version 2.10+ for Scala language support</li>
+<li><strong>SBT:</strong> Scala Build Tool integration capabilities</li>
+</ul>
+<h3 id="code-generation-tools">Code Generation Tools<a class="headerlink" href="#code-generation-tools" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>SWIG:</strong> Version 2.0+ (required for <code>swig_library</code> targets)</li>
+<li><strong>Flex:</strong> Version 2.5+ (required for <code>lex_yacc</code> targets)</li>
+<li><strong>Bison:</strong> Version 3.0+ (required for <code>lex_yacc</code> targets). Bison 2.x is no
+  longer supported: its <code>-d</code> header omits the <code>yyparse</code> prototype, which
+  downstream code needs. See the macOS note below.</li>
+</ul>
+<h2 id="platform-specific-notes">Platform-Specific Notes<a class="headerlink" href="#platform-specific-notes" title="Permanent link">&para;</a></h2>
+<h3 id="linux-installation">Linux Installation<a class="headerlink" href="#linux-installation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Package Manager:</strong> Use system package manager (apt, yum, dnf)</li>
+<li><strong>Development Tools:</strong> Install build-essential or equivalent packages</li>
+<li><strong>Python Packages:</strong> Ensure pip and setuptools are available</li>
+</ul>
+<h3 id="macos-installation">macOS Installation<a class="headerlink" href="#macos-installation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Xcode:</strong> A full Xcode installation works, but the Xcode Command Line Tools alone are sufficient — you do not need the full IDE. Install just the tools with <code>xcode-select --install</code></li>
+<li><strong>Homebrew:</strong> Recommended for package management</li>
+<li><strong>Python:</strong> Use Homebrew Python or system Python with pip</li>
+<li><strong>Bison</strong> <em>(only for <code>lex_yacc_library</code> targets)</em>: macOS ships bison 2.3
+  (frozen at GPLv2 and too old — see above). Install a current one with
+  <code>brew install bison</code>. Homebrew keeps it keg-only (so it does not shadow the
+  system bison), so add it to <code>PATH</code> ahead of <code>/usr/bin</code>:
+  <code>export PATH="$(brew --prefix bison)/bin:$PATH"</code>. <code>flex</code> from Homebrew is fine
+  as-is.</li>
+</ul>
+<h3 id="windows-installation">Windows Installation<a class="headerlink" href="#windows-installation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>MSVC Toolchain:</strong> A full Visual Studio installation works; the standalone <a href="https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022">Visual Studio Build Tools</a> are also sufficient — you do not need the full IDE. Either way, install the "MSVC v143" and "Windows SDK" components</li>
+<li><strong>Developer Mode:</strong> Recommended (Settings → Privacy &amp; security → For developers) to enable NTFS symlink support. When not enabled, the <code>blade-bin</code> symlink is skipped and a warning is emitted; this does not affect normal builds</li>
+<li><strong>Python:</strong> Install Python 3.10+ from <a href="https://www.python.org/downloads/">python.org</a></li>
+<li><strong>Ninja:</strong> Download from <a href="https://ninja-build.org/">ninja-build.org</a> or install via <code>pip install ninja</code></li>
+<li><strong>Git:</strong> Required for SCM integration (revision embedding)</li>
+<li><strong>WinFlexBison</strong> <em>(optional, for <code>lex_yacc_library</code> targets)</em>: Install via <code>winget install -e --id WinFlexBison.win_flex_bison</code></li>
+<li>Add the Blade directory to <code>PATH</code>, or launch via <code>blade.bat</code></li>
+</ul>
+<h2 id="version-compatibility-matrix">Version Compatibility Matrix<a class="headerlink" href="#version-compatibility-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Minimum Version</th>
+<th>Recommended Version</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>3.10</td>
+<td>3.12+</td>
+<td>v3 requires Python 3.10 or newer</td>
+</tr>
+<tr>
+<td>Ninja</td>
+<td>1.10</td>
+<td>1.11+</td>
+<td>Build backend; 1.10+ required for multi-output rules with depslog</td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>4.0</td>
+<td>7.0+</td>
+<td>Clang 6.0+ also supported</td>
+</tr>
+<tr>
+<td>JDK</td>
+<td>1.6</td>
+<td>11+</td>
+<td>LTS versions recommended</td>
+</tr>
+<tr>
+<td>Bison</td>
+<td>3.0</td>
+<td>3.8+</td>
+<td>For <code>lex_yacc</code> targets; macOS stock 2.3 is too old (see macOS notes)</td>
+</tr>
+<tr>
+<td>Flex</td>
+<td>2.5</td>
+<td>2.6+</td>
+<td>For <code>lex_yacc</code> targets</td>
+</tr>
+</tbody>
+</table>
+<h2 id="verification-commands">Verification Commands<a class="headerlink" href="#verification-commands" title="Permanent link">&para;</a></h2>
+<p>Verify installation of key dependencies:</p>
+<pre><code class="language-bash"># Check Python version
+python --version
+
+# Verify Ninja installation
+ninja --version
+
+# Confirm GCC availability
+gcc --version
+
+# Check Java installation
+java -version
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../features/" class="btn btn-neutral float-left" title="Key Features"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../install/" class="btn btn-neutral float-right" title="Installation Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../features/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../install/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

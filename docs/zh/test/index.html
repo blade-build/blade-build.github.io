@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/test/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>测试支持 - Blade Build</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u6d4b\u8bd5\u652f\u6301";
+        var mkdocs_page_input_path = "test.md";
+        var mkdocs_page_url = "/docs/zh/test/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">测试支持</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">增量测试</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">触发重新执行的条件</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">配置选项</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">全量测试</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#always_run">always_run 属性</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">并行测试</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">配置方式</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">互斥执行的测试</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_9">测试覆盖率分析</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cc-gcov-gcovr">C/C++ 覆盖率（gcov + gcovr）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#go-go-test-cover">Go 覆盖率（go test -cover）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#python-coveragepy">Python 覆盖率（coverage.py）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#java-scala-jacoco">Java / Scala 覆盖率（JaCoCo）</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sanitizer">Sanitizer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_10">测试排除</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">使用示例</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">用户指南</li>
+      <li class="breadcrumb-item active">测试支持</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/test.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">测试支持<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Blade 为测试驱动开发（TDD）提供了完善的支持，支持通过命令行自动执行多个测试程序。</p>
+<h2 id="_2">增量测试<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Blade 的 <code>test</code> 子命令默认启用增量测试，以优化测试执行性能。</p>
+<h3 id="_3">触发重新执行的条件<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>之前已通过的测试在后续构建中无需再次执行，除非满足以下任一条件：</p>
+<ul>
+<li><strong>依赖变更：</strong> 测试所依赖的任何目标发生了变化，需要重新生成</li>
+<li><strong>测试数据变更：</strong> 在 BUILD 文件中通过 <code>testdata</code> 属性显式声明的测试数据发生变化</li>
+<li><strong>环境变量变更：</strong> 相关的环境变量被修改</li>
+<li><strong>参数变更：</strong> 测试执行参数发生变化</li>
+<li><strong>测试过期：</strong> 超出了有效期</li>
+</ul>
+<h3 id="_4">配置选项<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>环境变量：</strong> 通过 <code>global_config.test_related_envs</code> 配置与测试相关的环境变量（支持正则表达式）</li>
+<li><strong>过期时间：</strong> 测试默认有效期为 1 天</li>
+<li><strong>失败处理：</strong> 失败的测试在下一次会被再执行一次；再次失败后需等构建变化或有效期过期后才会重新运行</li>
+<li><strong>行为覆盖：</strong> 通过 <code>global_config.run_unchanged_tests</code> 或命令行选项 <code>--run-unchanged-tests</code> 可覆盖默认行为</li>
+</ul>
+<h2 id="_5">全量测试<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>如需无条件执行所有测试，使用 <code>--full-test</code> 选项：</p>
+<pre><code class="language-bash">blade test common/... --full-test
+</code></pre>
+<h3 id="always_run">always_run 属性<a class="headerlink" href="#always_run" title="Permanent link">&para;</a></h3>
+<p><code>cc_test</code> 目标支持 <code>always_run</code> 属性，无论增量测试如何判断，都强制执行：</p>
+<pre><code class="language-python">cc_test(
+    name = 'zookeeper_test',
+    srcs = 'zookeeper_test.cc',
+    always_run = True
+)
+</code></pre>
+<h2 id="_6">并行测试<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>Blade 支持并行执行测试，以最大化测试效率。</p>
+<h3 id="_7">配置方式<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>使用 <code>-t</code> 或 <code>--test-jobs N</code> 指定并发的测试进程数：</p>
+<pre><code class="language-bash">blade test //common... --test-jobs 8
+</code></pre>
+<h3 id="_8">互斥执行的测试<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><code>exclusive</code> 测试会<strong>独占</strong>运行——调度器不会同时运行任何其他测试。两种场景下使用：</p>
+<ol>
+<li><strong>相互干扰 / 共享资源。</strong> 测试与其他测试争用固定资源（绑定知名端口、固定磁盘
+   路径、系统服务、单例守护进程等），同时运行多个实例会不可靠。</li>
+<li><strong>资源过载。</strong> 测试会刻意压满机器（CPU / 内存 / 连接 / fiber 压测，overload 或
+   负载测试）。与整套测试并行运行时可能耗尽资源、非确定性地失败或崩溃，尽管它单独
+   运行是正确的。</li>
+</ol>
+<pre><code class="language-python">cc_test(
+    name = 'zookeeper_test',     # 相互干扰：绑定固定端口
+    srcs = 'zookeeper_test.cc',
+    exclusive = True
+)
+
+cc_test(
+    name = 'server_overload_test',   # 过载：压满整台机器
+    srcs = 'server_overload_test.cc',
+    exclusive = True
+)
+</code></pre>
+<p>独占测试串行运行，因此应优先修复真正的并发 bug，而不是把测试标为独占；仅在上述两种
+情况下使用。</p>
+<h2 id="_9">测试覆盖率分析<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Blade 支持 C++、Java、Scala 测试的覆盖率分析，使用 <code>--coverage</code> 选项即可开启。</p>
+<h3 id="cc-gcov-gcovr">C/C++ 覆盖率（gcov + gcovr）<a class="headerlink" href="#cc-gcov-gcovr" title="Permanent link">&para;</a></h3>
+<p>C/C++ 测试覆盖率基于编译器的 <a href="https://gcc.gnu.org/onlinedocs/gcc/Gcov.html">gcov</a> 插桩（GCC 原生支持，Clang 通过 <code>llvm-cov gcov</code>）：</p>
+<pre><code class="language-bash">blade test //foo/... --coverage
+</code></pre>
+<ul>
+<li>自动加入覆盖率相关的编译/链接选项；测试运行时产生 <code>.gcno</code>/<code>.gcda</code> 数据。</li>
+<li>测试结束后，Blade 调用 <a href="https://gcovr.com/">gcovr</a> 在 <code>&lt;build_dir&gt;/cc_coverage_report/index.html</code> 生成可逐级目录下钻（目录 → 文件 → 逐行）的 HTML 报告（并附带 Cobertura 格式的 <code>coverage.xml</code>）。请先 <code>pip install gcovr</code>；若未安装，Blade 只会告警并跳过报告生成。</li>
+<li>构建目录下的源文件会被排除，报告只反映你自己的代码，而非生成代码（如 <code>*.pb.cc</code>）或第三方依赖（vcpkg 安装在构建目录下）。</li>
+<li><strong>排除更多文件。</strong> 用 <code>coverage_config(exclude=[...])</code> 可从 C/C++ 报告中再剔除一些源文件。模式是 blade 的 <code>**</code> 通配 glob（如 <code>coverage_config(exclude=['thirdparty/**', '**/*_test.cc'])</code>），对所有 C/C++ 工具链生效：gcc/clang/clang-cl 转成 gcovr 的 <code>--exclude</code>（同时影响 HTML 与 XML），原生 MSVC 则按源文件路径过滤合并后的 Cobertura（并重算汇总）。</li>
+<li><strong>平台/工具链：</strong> 上面的 gcov 路径覆盖所有平台的 gcc 与 clang，含 Windows 上的 <strong>clang-cl</strong>（它和 clang 一样产生 <code>.gcda</code>，通过 <code>llvm-cov gcov</code> 生成报告）。<strong>原生 MSVC <code>cl.exe</code></strong> 没有 gcov 风格插桩，因此在 Windows 上 Blade 改为在运行期用 <a href="https://learn.microsoft.com/visualstudio/test/microsoft-code-coverage-console-tool"><code>Microsoft.CodeCoverage.Console.exe</code></a> 采集：每个 <code>cc_test</code> 在 <code>… collect</code> 下运行，它通过 PDB 对测试可执行文件做动态插桩（无需编译标志——默认的 <code>debug_info_level</code> 为 <code>mid</code> 已会生成 PDB），并写出每个测试的 <code>&lt;exe&gt;.cobertura.xml</code>。随后 Blade 用该工具的 <code>merge</code> 合并为 <code>&lt;build_dir&gt;/cc_coverage_report/coverage.cobertura.xml</code>。该工具随 Visual Studio / Build Tools 一起分发；若缺失，Blade 只会告警并跳过报告生成。其 Dynamic Code Coverage 引擎不支持 ARM64 目标（请使用 x64 目标）。</li>
+</ul>
+<h3 id="go-go-test-cover">Go 覆盖率（go test -cover）<a class="headerlink" href="#go-go-test-cover" title="Permanent link">&para;</a></h3>
+<p>Go 测试覆盖率基于 Go 内置的 cover 支持：</p>
+<pre><code class="language-bash">blade test //foo/... --coverage
+</code></pre>
+<ul>
+<li><code>go_test</code> 二进制以 <code>-cover -covermode=count</code> 编译，并以 <code>-test.coverprofile</code> 运行，每个测试产生一份 profile。</li>
+<li>测试结束后，Blade 合并这些 profile 并调用 <code>go tool cover -html</code> 在 <code>&lt;build_dir&gt;/go_coverage_report/index.html</code> 生成报告。</li>
+</ul>
+<h3 id="python-coveragepy">Python 覆盖率（coverage.py）<a class="headerlink" href="#python-coveragepy" title="Permanent link">&para;</a></h3>
+<p>Python 测试覆盖率基于 <a href="https://coverage.readthedocs.io/">coverage.py</a>：</p>
+<pre><code class="language-bash">blade test //foo/... --coverage
+</code></pre>
+<ul>
+<li>每个 <code>py_test</code> 在 <code>coverage run -p</code> 下运行，各自产生一份数据文件。</li>
+<li>测试结束后，Blade 合并它们并调用 <code>coverage html</code> 在 <code>&lt;build_dir&gt;/py_coverage_report/index.html</code> 生成报告。请为测试解释器 <code>pip install coverage</code>；若未安装，Blade 只会告警并跳过报告生成。</li>
+<li>由于测试从打包的 zip 中运行，报告里的文件路径会带有 <code>.zip/</code> 前缀。</li>
+</ul>
+<p><strong>独立的构建目录。</strong> <code>--coverage</code> 构建的插桩方式与普通构建不同，因此 Blade 为它单独使用一个带 <code>_coverage</code> 后缀的兄弟目录——例如 <code>build_release_coverage</code> 而非 <code>build_release</code>。普通构建目录名保持不变，普通构建与覆盖率构建可以并存、互不覆盖、互不触发重新编译，现有工作区与脚本也完全不受影响。</p>
+<h3 id="java-scala-jacoco">Java / Scala 覆盖率（JaCoCo）<a class="headerlink" href="#java-scala-jacoco" title="Permanent link">&para;</a></h3>
+<p>Java / Scala 测试覆盖率需要配置 JaCoCo：</p>
+<ol>
+<li>下载并解压 <a href="https://www.jacoco.org/jacoco/">JaCoCo</a> 发布包</li>
+<li>在 BUILD 文件中配置：</li>
+</ol>
+<pre><code class="language-python">java_test_config(
+    ...
+    jacoco_home = 'path/to/jacoco',
+    ...
+)
+</code></pre>
+<ul>
+<li>覆盖率报告会生成到构建目录下的 <code>jacoco_coverage_report</code> 目录</li>
+<li>若需要行级覆盖率，<code>global_config.debug_info_level</code> 需设置为 <code>mid</code> 或更高（要求编译时带 <code>-g:line</code> 选项）</li>
+</ul>
+<h2 id="sanitizer">Sanitizer<a class="headerlink" href="#sanitizer" title="Permanent link">&para;</a></h2>
+<p>Sanitizer 是基于编译器的<strong>运行时</strong>缺陷检测工具，由 Google 在 LLVM/Clang 中首创（AddressSanitizer，2012 年），随后被 GCC 采纳。它在编译期对代码插桩，在程序运行时捕获那些通常无声无息、难以复现的缺陷：越界访问与释放后使用（ASan）、读取未初始化内存（MSan）、未定义行为（UBSan）、数据竞争（TSan）以及内存泄漏（LSan）。你得到的不再是飘忽不定、依赖运气才能复现的 bug，而是在出错点当场给出的符号化报告。各工具链支持程度不同——Clang 支持全部；GCC 除 MSan 外都支持；MSVC 仅支持 ASan。</p>
+<p>只需一个命令行开关，即可让现有目标树在 sanitizer 下构建并运行，无需改动 BUILD 文件：</p>
+<pre><code class="language-bash">blade test //...                                # 普通
+blade test //... --sanitizer=address            # AddressSanitizer（别名：asan）
+blade test //... --sanitizer=undefined          # UndefinedBehaviorSanitizer（别名：ubsan）
+blade test //... --sanitizer=thread             # ThreadSanitizer（别名：tsan）
+blade test //... --sanitizer=memory             # MemorySanitizer（别名：msan，仅 Clang + Linux）
+blade test //... --sanitizer=address,undefined  # 组合（ASan + UBSan）
+</code></pre>
+<p>sanitizer 是<strong>每次运行的选择</strong>（命令行开关），不是项目配置。<code>--sanitizer</code> 对 <code>build</code>/<code>run</code>/<code>test</code> 均生效，取值是逗号分隔的<strong>集合</strong>：<code>address</code>（<code>asan</code>）、<code>undefined</code>（<code>ubsan</code>）、<code>leak</code>（<code>lsan</code>）、<code>thread</code>（<code>tsan</code>）、<code>memory</code>（<code>msan</code>）——在 gcc / clang / Apple clang 上支持（MSan 仅限 Clang + Linux，见下文）。集合会被规范化（去重并排序），因此 <code>--sanitizer=ubsan,address</code> 与 <code>--sanitizer=address,undefined</code> 是同一个构建。运行时不同的 sanitizer 不能组合——<code>address</code>/<code>leak</code>/<code>undefined</code> 可以共存，但 <code>thread</code> 与 <code>memory</code> 各自与 <code>address</code>/<code>leak</code> 以及彼此互斥（两者仍可与 <code>undefined</code> 共存）。非法组合会在启动时明确报错。</p>
+<ul>
+<li><strong>编译选项：</strong> 给编译和链接都加上 <code>-fsanitize=&lt;集合&gt; -fno-omit-frame-pointer -g</code>（链接以引入 sanitizer 运行时）。UBSan 被设为<strong>致命</strong>（<code>-fno-sanitize-recover=undefined</code>），使其发现问题时让测试失败，而非仅打印。对测试，Blade 还会设置合理的 <code>*_OPTIONS</code> 默认值（如 <code>TSAN_OPTIONS=halt_on_error=1</code>），使检测能可靠地以非零退出——你在环境变量中已设置的值仍然优先。因此 <code>blade test</code> 会把检测判为失败。</li>
+<li><strong>MSVC：</strong> MSVC 工具链<strong>仅</strong>支持 AddressSanitizer——<code>--sanitizer=address</code> 用 <code>/fsanitize=address</code> 编译（并加 <code>/Z7</code> 以便符号化报告），以非增量方式链接（<code>/INCREMENTAL:NO /DEBUG</code>；ASan 运行时由编译器自动引入），并把 ASan 运行时 DLL 加入测试的 <code>PATH</code>。在 MSVC 上请求其它 sanitizer 会在启动时明确报错。</li>
+<li><strong>MemorySanitizer：</strong> <code>--sanitizer=memory</code>（别名 <code>msan</code>）检测对未初始化内存的读取。它<strong>仅限 Clang + Linux</strong>——GCC 没有 MSan，运行时在 macOS 上也不可用，在其它环境请求会在启动时明确报错。Blade 会加上 <code>-fsanitize-memory-track-origins=2</code>，使报告能回溯到未初始化值的来源（origin 跟踪很耗内存——可用 <code>sanitizer_config(compile_flags = {'memory': ['-fsanitize-memory-track-origins=1']})</code> 调低，或 <code>=0</code>，见下文）。MSan 只有在<strong>所有</strong>参与链接的代码都被插桩时才不会误报：你需要自行构建（或提供）一个经 MSan 插桩的 C++ 标准库，并让依赖项也在 MSan 下构建——否则未插桩的系统库会带来大量误报。此外，MSan 没有共享运行时（不存在 <code>libclang_rt.msan*.so</code>），被插桩的共享库在链接期无法解析 <code>__msan_*</code>，因此 Blade 在 <code>--sanitizer=memory</code> 下强制<strong>全静态链接</strong>——关闭 <code>cc_library_config.generate_dynamic</code> 与 <code>cc_test_config.dynamic_link</code>（<code>auto</code> 链接方式的 vcpkg 端口随之静态），并在覆盖你原本已启用的选项时输出提示。</li>
+<li><strong>独立的构建目录：</strong> sanitizer 构建与普通构建在 ABI/代码生成上不兼容，因此使用带 sanitizer 标记的独立兄弟目录——<code>build_release_asan</code>。普通的 <code>build_release</code> 不受影响，两者可并存、互不覆盖、互不触发重新编译。</li>
+<li><strong>按目标退出：</strong> 不应被插桩的目标（有意的 UB、性能热点、对未插桩预编译库的包装）可设置 <code>sanitize = False</code>。它仍参与链接（仍获得运行时），只是自身的编译不再插桩。在 MSVC 上同样有效——由于 <code>cl</code> 没有 <code>-fno-sanitize</code>，Blade 改为将该目标的 <code>/fsanitize</code> 标志置空。</li>
+</ul>
+<p><code>python
+  cc_library(name = 'crc32_hw', srcs = ['crc32_hw.cc'], sanitize = False)</code></p>
+<ul>
+<li><strong>运行时选项与抑制：</strong> 可在 BLADE_ROOT 中为各 sanitizer 设置运行选项，映射到对应的 <code>*_OPTIONS</code> 环境变量。选项值为列表，每个列表元素为一个选项。这些选项追加到 Blade 的默认选项上，且仅当它出现在 <code>--sanitizer</code> 中时才生效。若你已自行设置了该 sanitizer 的环境变量（如 <code>ASAN_OPTIONS</code>），Blade 就会忽略配置中对应的选项。</li>
+</ul>
+<p>要抑制已知良性的泄漏/竞争或者误报，可以通过 <code>suppressions=&lt;抑制文件路径&gt;</code> 选项，文件路径相对工作区根目录解析且文件必须存在。抑制文件采用各 sanitizer <strong>各自</strong>的语法：例如 <code>leak:&lt;名称&gt;</code>（<a href="https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer#suppressions">LeakSanitizer</a>）、<code>race:&lt;名称&gt;</code> / <code>called_from_lib:&lt;库&gt;</code>（<a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerSuppressions">ThreadSanitizer</a>）。</p>
+<p><code>python
+  sanitizer_config(options = {
+      'thread': ['suppressions=etc/tsan.supp', 'history_size=7'],
+      'address': ['detect_stack_use_after_return=1'],
+  })</code></p>
+<ul>
+<li><strong>按 sanitizer 的编译选项：</strong> 那些不能放进 <code>cc_config.cppflags</code> 的 sanitizer 专属<em>编译</em>选项（它们只在该 sanitizer 开启时才合法）。在 <code>sanitizer_config(compile_flags = {...})</code> 里按 sanitizer 配置；它们仅在该 sanitizer 激活时（gcc/clang）加入，且<strong>追加在</strong> Blade 默认之后，因此单值类选项按末位生效覆盖默认。典型场景是把 MSan 的 origin 跟踪从默认 <code>=2</code> 调低以省内存：</li>
+</ul>
+<p><code>python
+  sanitizer_config(compile_flags = {
+      'memory':  ['-fsanitize-memory-track-origins=1'],   # 或 =0 —— 比默认 =2 更省
+      'address': ['-fsanitize-address-use-after-scope'],
+  })</code></p>
+<h2 id="_10">测试排除<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>Blade 支持通过 <code>--exclude-tests</code> 参数在批量执行测试时选择性地排除部分测试。</p>
+<h3 id="_11">使用示例<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">blade test base/... --exclude-tests=base/string,base/encoding:hex_test
+</code></pre>
+<p>该命令会执行 <code>base</code> 目录下的所有测试，但排除 <code>base/string</code> 目录下的所有测试，以及具体的 <code>base/encoding:hex_test</code> 目标。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../command_line/" class="btn btn-neutral float-left" title="命令行参考"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../output/" class="btn btn-neutral float-right" title="构建产物与输出">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../command_line/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../output/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

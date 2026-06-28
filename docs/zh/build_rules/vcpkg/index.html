@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/vcpkg/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>使用 vcpkg 包 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u4f7f\u7528 vcpkg \u5305";
+        var mkdocs_page_input_path = "build_rules/vcpkg.md";
+        var mkdocs_page_url = "/docs/zh/build_rules/vcpkg/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">使用 vcpkg 包</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">快速上手</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vcpkgportlib">引用语法：vcpkg#&lt;port&gt;:&lt;lib&gt;</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">包白名单</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#port">单个 port 的选项</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#linkageauto-static-dynamic">linkage——auto / static / dynamic</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">单例库</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#link_all_symbols-true">link_all_symbols: True——强制运行静态初始化</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#include_prefix">include_prefix——重映射头文件路径</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cmake_options">cmake_options——额外构建选项</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">托管与非托管安装</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#managetrue">托管（manage=True，默认）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#managefalse">非托管（manage=False）</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#port_1">多库 port</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">传递性库依赖</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#proto_library-vcpkg-protoc">为 proto_library 使用 vcpkg 的 protoc</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#port_2">仅头文件 port</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#port-port">查看有哪些 port 及 port 提供哪些库</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#baseline-port">某个 baseline 下有哪些 port、版本是什么</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#port_3">某个 port 提供哪些库</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">版本管理与可复现性</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#triplet">Triplet</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">大型仓库的封装</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_8">配置参考</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_9">排错</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">构建规则</li>
+      <li class="breadcrumb-item active">使用 vcpkg 包</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/vcpkg.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="vcpkg">使用 vcpkg 包<a class="headerlink" href="#vcpkg" title="Permanent link">&para;</a></h1>
+<p>Blade 可以把 <a href="https://github.com/microsoft/vcpkg">vcpkg</a>（微软的跨平台 C/C++
+包管理器，约 2500 个 port）中的库作为一等依赖直接使用，与源码目标、系统库并列。
+在目标的 <code>deps</code> 中用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 引用，在 <code>BLADE_ROOT</code> 中一次性声明允许
+的包，其余的安装与链接交给 Blade。</p>
+<p>这样可以在 Linux、macOS、Windows 上统一管理第三方依赖，省去大量逐包编写
+<code>cmake_build</code> 的样板代码。</p>
+<h2 id="_1">快速上手<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>准备 vcpkg。</strong> 克隆并 bootstrap，然后设置 <code>VCPKG_ROOT</code> 或把 <code>vcpkg</code>
+   可执行文件放进 <code>PATH</code>：</li>
+</ol>
+<p><code>bash
+   git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
+   ~/vcpkg/bootstrap-vcpkg.sh        # Windows 上是 bootstrap-vcpkg.bat
+   export VCPKG_ROOT=~/vcpkg</code></p>
+<ol>
+<li><strong>在 <code>BLADE_ROOT</code> 中声明允许的包</strong>：</li>
+</ol>
+<p><code>python
+   vcpkg_config(
+       baseline = '2024-12-15',          # 固定 ports 树（推荐）
+       packages = {
+           'fmt': '10.2.1',
+           'openssl': '3.2.1',
+       },
+   )</code></p>
+<ol>
+<li><strong>用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 声明依赖</strong>：</li>
+</ol>
+<p><code>python
+   cc_binary(
+       name = 'app',
+       srcs = ['app.cc'],
+       deps = [
+           'vcpkg#fmt:fmt',
+           'vcpkg#openssl:ssl',
+       ],
+   )</code></p>
+<ol>
+<li><strong>构建。</strong> 默认情况下 Blade 会安装所声明的包并完成链接：</li>
+</ol>
+<p><code>bash
+   blade build //:app</code></p>
+<h2 id="vcpkgportlib">引用语法：<code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code><a class="headerlink" href="#vcpkgportlib" title="Permanent link">&para;</a></h2>
+<p>vcpkg 依赖是 Blade <code>#name</code> 系统库家族的扩展。<code>#</code> 本就表示“不在本工作区从源码
+构建的库”（<code>#pthread</code>、<code>#dl</code>）；在 <code>#</code> 前加一个 scheme 表示这个库来自哪里——这里
+是 <code>vcpkg</code>。<code>#</code> 之后是包管理器自身的坐标。</p>
+<table>
+<thead>
+<tr>
+<th>引用形式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code></td>
+<td>某个具体静态库——<code>lib&lt;lib&gt;.a</code>（<code>lib</code> 前缀隐含）。</td>
+</tr>
+<tr>
+<td><code>vcpkg#&lt;port&gt;:hdrs</code></td>
+<td>仅头文件的 port——只暴露 include 目录，不链接归档。</td>
+</tr>
+<tr>
+<td><code>vcpkg#&lt;port&gt;</code></td>
+<td><strong>报错</strong>——port 之后必须指明库名。</td>
+</tr>
+</tbody>
+</table>
+<p>引用始终是完全显式的：没有“一个 port 的全部库”的简写，因此多库 port 不会被
+意外过度链接。</p>
+<p>库的 basename 可能与 port 名不同——vcpkg 的 <code>boost-filesystem</code> port 产出
+<code>libboost_filesystem.a</code>，因此引用为 <code>vcpkg#boost-filesystem:boost_filesystem</code>。</p>
+<h2 id="_2">包白名单<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg_config(packages=...)</code> 是“哪些 port 可被引用”的唯一事实来源。引用未列出的
+port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明、统一管理版本。每个值是版本字符串，
+或带下列键的字典：</p>
+<pre><code class="language-python">vcpkg_config(
+    packages = {
+        'fmt': '10.2.1',                                   # 简写
+        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
+    },
+)
+</code></pre>
+<h2 id="port">单个 port 的选项<a class="headerlink" href="#port" title="Permanent link">&para;</a></h2>
+<p>字典形式的包可带这些键：</p>
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>str</td>
+<td>固定 port 版本（一条 vcpkg <code>overrides</code>）。</td>
+</tr>
+<tr>
+<td><code>features</code></td>
+<td>list[str]</td>
+<td>启用的 vcpkg features。</td>
+</tr>
+<tr>
+<td><code>linkage</code></td>
+<td><code>'auto'</code>（默认）/ <code>'static'</code> / <code>'dynamic'</code></td>
+<td>该 port 如何构建（见下）。</td>
+</tr>
+<tr>
+<td><code>link_all_symbols</code></td>
+<td>bool</td>
+<td>对静态库做 whole-archive。</td>
+</tr>
+<tr>
+<td><code>include_prefix</code></td>
+<td>str / list[str] / dict</td>
+<td>重映射头文件包含路径。</td>
+</tr>
+<tr>
+<td><code>cmake_options</code></td>
+<td>list[str]</td>
+<td>该 port 的额外 CMake 配置选项。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="linkageauto-static-dynamic"><code>linkage</code>——<code>auto</code> / <code>static</code> / <code>dynamic</code><a class="headerlink" href="#linkageauto-static-dynamic" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>'auto'</code></strong>（默认）——与 <code>cc_library</code> 同一规则：静态库（<code>.a</code>）总是构建，<strong>且</strong>
+  共享库<strong>按需</strong>构建——仅当某个 <code>dynamic_link</code> 二进制真正依赖该 port 时才构建
+  （analyze 阶段在 <code>cc_library</code> 依赖上设置的 <code>generate_dynamic</code> 标志同样作用于此）。
+  这样静态链接的二进制拿到自包含的 <code>.a</code>，而 <code>dynamic_link</code> 二进制链接同一份共享库。
+  vcpkg 一个 triplet 只构建一种 linkage，所以 <code>'auto'</code> port 的共享构建落在独立的
+  <code>blade-&lt;triplet&gt;-shared</code> 安装树里，与主静态树并列。只被静态链接的 port 不会构建
+  共享库。</li>
+<li><strong><code>'static'</code></strong>——只构建静态库，两种链接模式共用它。用于没有可用共享构建的 port
+  （此时 <code>'auto'</code> 会构建失败）。</li>
+<li><strong><code>'dynamic'</code></strong>——只构建共享库；<em>所有</em>消费者都链接这唯一一份实例。</li>
+</ul>
+<h3 id="_3">单例库<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>有些库通过静态初始化维护进程级注册表——gflags（flag 注册表）、glog、protobuf
+（descriptor pool）、googletest（测试注册表）。若这类 port 被<strong>静态链接进多个共享库</strong>，
+每个 <code>.so</code>/<code>.dylib</code> 各有一份注册表，运行时冲突——重复注册 flag/测试，或一个模块里
+的 descriptor pool 查不到另一个模块注册的内容（段错误）。默认的 <strong><code>'auto'</code></strong> 已经
+避免了这点：每个 <code>dynamic_link</code> 消费者都链接同一份共享实例。只有要覆盖默认行为时
+才需要显式指定 <code>linkage</code>——例如用 <code>'dynamic'</code> 强制连静态链接的二进制也用共享库：</p>
+<pre><code class="language-python">'protobuf': {'version': '3.21.12'},   # 'auto' 默认：所有 dylib 共享同一份
+                                      # libprotobuf，静态 exe 仍用静态库
+</code></pre>
+<h3 id="link_all_symbols-true"><code>link_all_symbols: True</code>——强制运行静态初始化<a class="headerlink" href="#link_all_symbols-true" title="Permanent link">&para;</a></h3>
+<p>对只被静态链接<strong>一次</strong>的 port，链接器可能丢弃未被引用的目标文件——包括其中做注册
+的静态初始化。<code>link_all_symbols</code> 对该库做 whole-archive，使它们都运行。（上面单例库
+的“多份拷贝”是相反的问题，由默认的 <code>'auto'</code>/<code>'dynamic'</code> linkage 处理，而不是这个。）</p>
+<h3 id="include_prefix"><code>include_prefix</code>——重映射头文件路径<a class="headerlink" href="#include_prefix" title="Permanent link">&para;</a></h3>
+<p>某个 port 可能把头文件装在 <code>include/</code> 顶层（如 <code>snappy.h</code>），而你的代码按子目录
+包含（<code>"snappy/snappy.h"</code>）。<code>include_prefix</code> 把该 port 的 include 目录暴露在你
+使用的路径下，无需手写包装头；port 的原生布局也仍然可用：</p>
+<pre><code class="language-python">'snappy': {'include_prefix': 'snappy'},          # &quot;snappy/h&quot; -&gt; include/h
+'zlib':   {'include_prefix': ['zlib', 'thirdparty/zlib']},  # 两个前缀
+# {前缀: 子目录} 映射到 port include 中已有的子目录：
+'glog':   {'linkage': 'dynamic',
+           'include_prefix': {'thirdparty/glog': 'glog'}},   # -&gt; include/glog/h
+</code></pre>
+<h3 id="cmake_options"><code>cmake_options</code>——额外构建选项<a class="headerlink" href="#cmake_options" title="Permanent link">&para;</a></h3>
+<p>为单个 port 传入 CMake 配置选项（生成为该 port 的
+<code>VCPKG_CMAKE_CONFIGURE_OPTIONS</code>）。例如 vcpkg 的 snappy 默认关闭 RTTI：</p>
+<pre><code class="language-python">'snappy': {'include_prefix': 'snappy',
+           'cmake_options': ['-DSNAPPY_WITH_RTTI=ON']},
+</code></pre>
+<h2 id="_4">托管与非托管安装<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><code>vcpkg_config(manage=...)</code> 决定由谁来执行 <code>vcpkg install</code>。</p>
+<h3 id="managetrue">托管（<code>manage=True</code>，默认）<a class="headerlink" href="#managetrue" title="Permanent link">&para;</a></h3>
+<p>由 Blade 替你驱动 vcpkg。在加载 BUILD 文件之前，Blade 会根据白名单生成 manifest，
+并用一个 <em>overlay triplet</em>（<code>blade-&lt;triplet&gt;</code>）把 <code>vcpkg install</code> 安装到构建目录下
+的隔离目录（<code>&lt;build&gt;/.cache/vcpkg/</code>）中；该 overlay 会 chainload Blade 解析出的
+编译器，使产物与项目其余部分 ABI 兼容。结果可复现、无需手动步骤——直接
+<code>blade build</code> 即可。当相关输入没有变化时会跳过安装。</p>
+<p>注意 <code>vcpkg</code> <strong>工具</strong>仍通过 <code>vcpkg_config.root</code>、<code>$VCPKG_ROOT</code> 或 <code>PATH</code> 定位；
+只有安装产物落在构建目录下。</p>
+<h3 id="managefalse">非托管（<code>manage=False</code>）<a class="headerlink" href="#managefalse" title="Permanent link">&para;</a></h3>
+<p>由你自己执行 <code>vcpkg install</code>，Blade 只从既有安装树
+<code>&lt;root&gt;/installed/&lt;triplet&gt;/</code> 解析路径，其中 <code>&lt;root&gt;</code> 为 <code>vcpkg_config.root</code> 或
+<code>$VCPKG_ROOT</code>：</p>
+<pre><code class="language-bash">vcpkg install fmt openssl          # 自己安装
+</code></pre>
+<pre><code class="language-python">vcpkg_config(manage = False, packages = {'fmt': '10.2.1', 'openssl': '3.2.1'})
+</code></pre>
+<h2 id="port_1">多库 port<a class="headerlink" href="#port_1" title="Permanent link">&para;</a></h2>
+<p><code>openssl</code>、<code>protobuf</code>、<code>icu</code> 等 port 会产出多个归档。每个都是独立目标，按需声明：</p>
+<pre><code class="language-python">deps = [
+    'vcpkg#openssl:ssl',         # libssl.a
+    'vcpkg#openssl:crypto',      # libcrypto.a
+]
+</code></pre>
+<p>裸写 <code>vcpkg#openssl</code> 会被拒绝，因此不会拉入用不到的库。</p>
+<h2 id="_5">传递性库依赖<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>一个 port 可能依赖其他它自身并不打包的 vcpkg 库——典型的是 <code>protobuf</code>（v22+），
+其 <code>protobuf.pc</code> 在 pkg-config 的 <code>Requires:</code> 中列出了数十个 <code>absl_*</code> 以及
+<code>utf8_range</code>。Blade 会顺着这些 <code>Requires:</code> 自动链接所需的兄弟归档，因此单个
+<code>vcpkg#protobuf:protobuf</code> 引用即可解析整套 abseil，你无需自己一一列出。（port
+所需的系统/SDK 库——<code>ws2_32</code>、<code>dbghelp</code> 等——则单独从其 <code>Libs.private</code> / CMake
+链接接口中解析。）</p>
+<h2 id="proto_library-vcpkg-protoc">为 <code>proto_library</code> 使用 vcpkg 的 protoc<a class="headerlink" href="#proto_library-vcpkg-protoc" title="Permanent link">&para;</a></h2>
+<p>protobuf 把 <code>protoc</code> 编译器与其运行时版本强耦合，因此生成的 <code>.pb.cc</code> 必须由与所
+链接 <code>libprotobuf</code> 匹配的 <code>protoc</code> 产生。把 <code>proto_library_config</code> 指向 vcpkg 提供
+的 protoc（与 libprotobuf），让二者来自同一个被 pin 的 port：</p>
+<pre><code class="language-python">proto_library_config(
+    protoc = 'vcpkg#protobuf',                 # 来自 vcpkg protobuf port 的 protoc
+    protobuf_libs = ['vcpkg#protobuf:protobuf'],
+)
+</code></pre>
+<p><code>'vcpkg#&lt;port&gt;'</code> 会解析为安装在 Blade vcpkg 树中的 protoc。解析出的 protoc 二进制
+会被作为构建输入跟踪，因此升级被 pin 的 protobuf 版本会自动重新生成代码（不会残留
+过期的 <code>.pb.*</code>）。</p>
+<h2 id="port_2">仅头文件 port<a class="headerlink" href="#port_2" title="Permanent link">&para;</a></h2>
+<p>仅头文件的 port 用 <code>:hdrs</code> 哨兵——Blade 暴露 include 目录，不链接任何归档：</p>
+<pre><code class="language-python">deps = ['vcpkg#nlohmann-json:hdrs']
+</code></pre>
+<h2 id="port-port">查看有哪些 port 及 port 提供哪些库<a class="headerlink" href="#port-port" title="Permanent link">&para;</a></h2>
+<h3 id="baseline-port">某个 baseline 下有哪些 port、版本是什么<a class="headerlink" href="#baseline-port" title="Permanent link">&para;</a></h3>
+<p>可用的 port 及其默认版本由 <code>baseline</code>（对应 ports 树的某次提交）决定。查看方式：</p>
+<pre><code class="language-bash">vcpkg search            # ports 树中的所有 port 及其版本
+vcpkg search fmt        # 名称/描述匹配 &quot;fmt&quot; 的 port
+</code></pre>
+<p><code>vcpkg search</code> 反映的是 ports 树当前检出的状态。要查看某个具体 <code>baseline</code>，先把
+vcpkg 仓库检出到该提交（<code>git -C $VCPKG_ROOT checkout &lt;baseline&gt;</code>），或直接读版本
+数据库：</p>
+<ul>
+<li><code>$VCPKG_ROOT/versions/baseline.json</code>——每个 port 在 baseline 下的版本。</li>
+<li><code>$VCPKG_ROOT/versions/&lt;x-&gt;/&lt;port&gt;.json</code>——某个 port 发布过的所有版本。</li>
+<li><code>$VCPKG_ROOT/ports/&lt;port&gt;/vcpkg.json</code>——该 port 的版本、可用 <code>features</code> 及其
+  自身依赖。</li>
+</ul>
+<h3 id="port_3">某个 port 提供哪些库<a class="headerlink" href="#port_3" title="Permanent link">&para;</a></h3>
+<p><code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 引用的是归档 <code>lib&lt;lib&gt;.a</code>，其 basename 可能与 port 名不同
+（<code>boost-filesystem</code> → <code>libboost_filesystem.a</code>；<code>openssl</code> → <code>libssl.a</code> +
+<code>libcrypto.a</code>）。从安装树里读取确切的库名：</p>
+<pre><code class="language-bash"># 托管模式（manage=True）：在构建目录下，使用 blade- overlay triplet
+ls build_release/.cache/vcpkg/installed/blade-&lt;triplet&gt;/lib/lib*.a
+
+# 非托管模式（manage=False）：在 vcpkg 根目录下
+ls $VCPKG_ROOT/installed/&lt;triplet&gt;/lib/lib*.a
+</code></pre>
+<p>每个 <code>lib&lt;name&gt;.a</code> 都以 <code>vcpkg#&lt;port&gt;:&lt;name&gt;</code> 引用。另有两个来源：</p>
+<ul>
+<li><code>…/installed/&lt;triplet&gt;/lib/pkgconfig/&lt;pkg&gt;.pc</code>——<code>Libs:</code> 行列出该 port 导出的
+  <code>-l&lt;name&gt;</code>。</li>
+<li><code>…/installed/&lt;triplet&gt;/share/&lt;port&gt;/usage</code>——vcpkg 给出的可读用法提示，通常会
+  列出该 port 提供的库 / CMake target。</li>
+</ul>
+<p>某个 port 安装的完整文件清单（含每个 <code>lib/*.a</code>）在
+<code>…/installed/vcpkg/info/&lt;port&gt;_&lt;version&gt;_&lt;triplet&gt;.list</code>。仅头文件的 port 不会
+安装任何 <code>lib*.a</code>——用 <code>vcpkg#&lt;port&gt;:hdrs</code> 引用。</p>
+<h2 id="_6">版本管理与可复现性<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>vcpkg 的版本模型是按工作区的（每个包一个版本、一组 features），<code>vcpkg_config</code>
+直接映射到它：</p>
+<table>
+<thead>
+<tr>
+<th><code>vcpkg_config</code> 字段</th>
+<th>vcpkg manifest 字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>baseline</code></td>
+<td><code>builtin-baseline</code></td>
+</tr>
+<tr>
+<td><code>packages[pkg]</code> 版本</td>
+<td><code>overrides[].version</code></td>
+</tr>
+<tr>
+<td><code>packages[pkg]['features']</code></td>
+<td><code>dependencies[].features</code></td>
+</tr>
+<tr>
+<td><code>registries</code></td>
+<td><code>registries[]</code>（私有 registry）</td>
+</tr>
+</tbody>
+</table>
+<p>为了可复现，把 <code>baseline</code> 固定到某个 ports 树提交（日期或 git SHA）；把每个声明的
+包都固定到版本可获得最强保证。Blade 会把整个白名单一起安装，保持集合一致。</p>
+<h2 id="triplet">Triplet<a class="headerlink" href="#triplet" title="Permanent link">&para;</a></h2>
+<p>triplet 默认根据 Blade 的工具链自动推导（<code>x64-linux</code>、<code>arm64-osx</code>、
+<code>x64-windows-static</code> 等）。托管模式下 Blade 使用 chainload 编译器的
+<code>blade-&lt;triplet&gt;</code> overlay。需要指定时用 <code>vcpkg_config(triplet='...')</code> 覆盖。</p>
+<h2 id="_7">大型仓库的封装<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>如果你的仓库已经通过 <code>//third_party/</code> 层统一管理第三方代码，可以把 <code>vcpkg#</code>
+引用藏在普通 <code>cc_library</code> 封装之后，业务代码不直接接触：</p>
+<pre><code class="language-python"># //third_party/openssl/BUILD
+cc_library(name='ssl',    deps=['vcpkg#openssl:ssl'],    visibility='PUBLIC')
+cc_library(name='crypto', deps=['vcpkg#openssl:crypto'], visibility='PUBLIC')
+
+# //services/payment/BUILD
+cc_library(name='payment', srcs=['payment.cc'], deps=['//third_party/openssl:ssl'])
+</code></pre>
+<h2 id="_8">配置参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>所有设置都在 <code>BLADE_ROOT</code> 的 <code>vcpkg_config(...)</code> 中。完整字段（<code>manage</code>、
+<code>baseline</code>、<code>packages</code>、<code>registries</code>、<code>root</code>、<code>triplet</code>、<code>install_dir</code>、
+<code>binary_cache</code>、<code>direct_use_allowed</code>）见配置手册的
+<a href="../../config/#vcpkg_config"><code>vcpkg_config</code></a> 一节。</p>
+<h2 id="_9">排错<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>vcpkg port "X" is not in the vcpkg_config.packages whitelist</code></strong>——把该 port
+  加入 <code>vcpkg_config(packages=...)</code>。</li>
+<li><strong><code>the vcpkg tool was not found</code></strong>（托管模式）——设置
+  <code>vcpkg_config(root=...)</code>、<code>$VCPKG_ROOT</code>，或把 <code>vcpkg</code> 放进 <code>PATH</code>。</li>
+<li><strong><code>static library not found at ...</code></strong>——安装树里没有该库的归档。检查库
+  basename（可能与 port 名不同），非托管模式下确认对同一 triplet 跑过
+  <code>vcpkg install</code>。</li>
+<li><strong><code>a port must name a library</code></strong>——引用缺少 <code>:lib</code>；用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>
+  （或 <code>vcpkg#&lt;port&gt;:hdrs</code>）。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../swig/" class="btn btn-neutral float-left" title="构建 SWIG"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../upgrade-to-v3/" class="btn btn-neutral float-right" title="升级到 V3 版">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../swig/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../upgrade-to-v3/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

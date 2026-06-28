@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/develop/protobuf_build/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>proto_library 的多语言代码生成机制 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "proto_library \u7684\u591a\u8bed\u8a00\u4ee3\u7801\u751f\u6210\u673a\u5236";
+        var mkdocs_page_input_path = "develop/protobuf_build.md";
+        var mkdocs_page_url = "/docs/zh/develop/protobuf_build/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">proto_library 的多语言代码生成机制</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 生成什么、怎么控制</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 下游集成</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-protoc">3. protoc 调用</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-proto-include">4. proto 间的依赖与 include</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 技术细节与用户体验优化</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开发文档</li>
+      <li class="breadcrumb-item active">proto_library 的多语言代码生成机制</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/protobuf_build.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="proto_library"><code>proto_library</code> 的多语言代码生成机制<a class="headerlink" href="#proto_library" title="Permanent link">&para;</a></h1>
+<p><code>proto_library</code> 是按语言分发代码生成的入口：同一份 <code>.proto</code> 源可以同时
+产出 C++ 头/源、Python 模块、Java 源并打成 jar、Go 文件以及 descriptor
+set。target 之后<strong>自己以 cc_library 的身份出现</strong>（同时也是 Java、
+Python 库）给下游消费，所以 <code>cc_library</code> 直接 <code>deps = [':my_proto']</code>
+即可，不需要中间包装层。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/proto_library_target.py</code></td>
+<td><code>ProtoLibrary</code>（继承 <code>CcTarget</code> + <code>JavaTargetMixIn</code>）</td>
+</tr>
+<tr>
+<td><code>src/blade/backend.py</code></td>
+<td><code>proto</code> / <code>protojava</code> / <code>protopython</code> / <code>protogo</code> 规则</td>
+</tr>
+<tr>
+<td><code>src/blade/config.py</code></td>
+<td><code>proto_library_config</code>（protoc 路径、插件、well-known protos）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 生成什么、怎么控制<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>一份 proto 文件可能产出多套输出：</p>
+<ul>
+<li><strong>C++</strong>：<code>.pb.h</code> + <code>.pb.cc</code>，始终生成。这是核心产物 —— <code>ProtoLibrary</code>
+  继承 <code>CcTarget</code>，把它们直接编进 <code>cc_library</code>。</li>
+<li><strong>Python</strong>：<code>_pb2.py</code>，由 target 的 <code>target_languages</code> 属性或全局
+  <code>--generate-python</code> 控制。</li>
+<li><strong>Java</strong>：打包成 <code>.jar</code>，受 <code>target_languages='java'</code> / <code>--generate-java</code>
+  控制。protoc 把生成的 <code>.java</code> 写进每个 proto 各自的生成目录，<code>protojava</code>
+  规则再把它打成 <code>&lt;proto&gt;.srcjar</code>（<code>proto_java_srcjar</code> builtin）；<code>javac_compile</code>
+  随后解包并编译。生成的 <code>.java</code> 集合<strong>不再被预测</strong>，因此
+  <code>option java_multiple_files = true;</code>（每个顶层类型一个 <code>.java</code>、无外层类）
+  与默认的单文件布局一样可用。见 issue #1054。</li>
+<li><strong>Go</strong>：<code>.pb.go</code>，类似机制。输出路径来自 <code>option go_package</code>。</li>
+<li><strong>Descriptor set</strong>：<code>.descriptors.pb</code>，按需。</li>
+</ul>
+<p>所有输出落到 <code>build_dir/&lt;pkg&gt;/</code>。各语言输出通过
+<code>_get_target_file('jar' | 'pylib' | …)</code> 暴露，下游用与任何其它 target 主
+产物相同的 getter 读取。</p>
+<h2 id="2">2. 下游集成<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>三条消费路径，全部通过 proto target 自己的生成元数据：</p>
+<p><strong>C++ 消费者</strong> —— 因为 <code>ProtoLibrary</code> 继承 <code>CcTarget</code>，下游
+<code>cc_library</code> 把它列进 <code>deps</code> 即可获得：</p>
+<ul>
+<li><code>.pb.h</code> 的路径通过 <code>declare_hdrs()</code> / <code>declare_hdr_dir()</code> 声明，
+  <a href="../hdrs_check/">hdrs check</a> 因此知道 <code>pkg/foo.pb.h</code> 归哪个 target。</li>
+<li>通过 <code>export_incs</code> 暴露 include 路径，<code>#include "pkg/foo.pb.h"</code> 无需
+  消费者额外加 <code>-I</code>。</li>
+<li>通过 <code>_transitive_declared_generated_includes()</code> 实现传递性生成头可
+  见性：一个 <code>#include</code> 另一个生成头的头文件仍能满足包含检查。</li>
+<li><code>.pb.cc</code> 的 object 直接编入消费者的归档 —— <strong>没有单独的库</strong>可供链
+  接；proto 代码生成与编译被合并到一个 target 里。</li>
+</ul>
+<p><strong>Java 消费者</strong> —— mixin 像普通 Java dep 一样暴露 target 的 <code>.jar</code>，
+proto 代码生成对消费者的 classpath 逻辑透明。</p>
+<p><strong>Python 消费者</strong> —— proto target 的 <code>.pylib</code> 列出 <code>_pb2.py</code>；
+<code>py_binary</code> 通过常规 <code>_get_target_file('pylib')</code> 遍历拾取。</p>
+<h2 id="3-protoc">3. protoc 调用<a class="headerlink" href="#3-protoc" title="Permanent link">&para;</a></h2>
+<p><code>proto</code>/<code>protojava</code>/<code>protopython</code>/<code>protogo</code> 规则各自每语言每源文件调一
+次 <code>protoc</code>。per-language flag 包括 <code>--proto_path=.</code>、<code>-I=&lt;srcdir&gt;</code>、各
+语言输出 flag（<code>--cpp_out=&lt;build_dir&gt;</code>、<code>--python_out=...</code> 等），以及
+从 <code>proto_library_config.protoc_plugin_config</code> 解析出的
+<code>--plugin=protoc-gen-&lt;name&gt;</code> / <code>--&lt;name&gt;_out=&lt;dir&gt;</code>。</p>
+<p>支持按语言使用不同的 protoc 二进制：<code>proto_library_config</code> 留了独立的
+<code>protoc_java</code> 槽，让 Java 代码生成可以钉到与默认 <code>protoc</code> 不同的二进制
+或版本。<code>well_known_protos</code> 也是按语言声明，原因类似，项目可按输出种
+类各钉一份集合而无需 fork 规则定义。</p>
+<h2 id="4-proto-include">4. proto 间的依赖与 include<a class="headerlink" href="#4-proto-include" title="Permanent link">&para;</a></h2>
+<p><code>import "b.proto";</code> 仅当<strong>拥有</strong> <code>b.proto</code> 的 proto-target 在引用方的
+<code>deps</code> 里才能正确解析。blade 走 <code>expanded_deps</code>，收集每个 dep 的
+<code>public_protos</code>，作为 implicit 输入交给 <code>protoc</code>，所以 <code>b.proto</code> 变化
+能重建 <code>a.pb.{h,cc}</code>（尽管它并不字面在 <code>a.proto</code> 的 <code>srcs</code> 里）。</p>
+<p>C++ 这边，生成的 <code>a.pb.h</code> 会 <code>#include "b.pb.h"</code>。该 include 由包含栈
+机制直接处理：<code>b.pb.h</code> 在依赖 proto 的 <code>declared_genhdrs</code> 里，通过常规
+<code>_transitive_declared_generated_includes()</code> 传递可见。用户<strong>不必</strong>为生
+成头做额外声明 —— 把依赖 proto 加进 deps 就够了。</p>
+<h2 id="5">5. 技术细节与用户体验优化<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>一个 proto target 就是一个 cc_library。</strong> 这是这个子系统最关键的设
+  计取舍。其它构建系统有时让你再写
+  <code>cc_proto_library(deps=[':my_proto'])</code> 作为包装；blade 把两者合并。代
+  价是 <code>ProtoLibrary</code> 背了不少 mixin；收益是每个 <code>cc_library</code> 消费者读
+  proto 跟读任何其它 dep 完全一样。</li>
+<li><strong><code>-Ibuild_dir</code> 免费完成 include 解析。</strong> 因为每个 cc target 的编译
+  命令上一直就有 <code>-Ibuild_dir</code>（见 <a href="../cc_build/">C/C++ 构建</a>），
+  <code>#include "pkg/foo.pb.h"</code> 不需要消费者额外 <code>-I</code>。proto target 只需保
+  证文件落到 <code>build_dir/pkg/foo.pb.h</code>。</li>
+<li><strong>按语言门控控制 protoc 工作量。</strong> 项目不用 Java 代码就完全不付 Java
+  代码生成代价；CLI 上加 <code>--generate-java</code> 在某些副构建（如工具）需要
+  时翻转全局默认。</li>
+<li><strong><code>.incstk</code> 与包含检查不知道"这是个 proto 头"。</strong> 生成的 <code>.pb.h</code> 和
+  任何其它头文件一样；检查通过 <code>declared_genhdrs</code> 知道归属。所以新增一
+  种 proto 感知语言并不需要新增检查路径。</li>
+<li><strong>同一工作区里按语言的工具链。</strong> 不同 protoc 二进制（如 C++/Py 用
+  <code>protoc</code>，Java 用 <code>protoc_java</code>）以及按语言独立的插件配置都集中在
+  <code>proto_library_config</code>，需要混用版本的项目无需 fork 规则定义。</li>
+<li><strong>跨 target 的生成可见性共享包含声明缓存。</strong> <a href="../hdrs_check/">hdrs check</a>
+  消费的同一个 <code>inclusion_declaration.data</code> pickle 列出了所有 proto 的
+  生成头，per-target 的检查文件无需再次推导那张表。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../java_scala_build/" class="btn btn-neutral float-left" title="Java 与 Scala 程序是如何构建的"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../python_build/" class="btn btn-neutral float-right" title="Python 目标是如何构建与打包的">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../java_scala_build/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../python_build/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

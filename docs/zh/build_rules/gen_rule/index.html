@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/gen_rule/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>自定义规则构建 - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u81ea\u5b9a\u4e49\u89c4\u5219\u6784\u5efa";
+        var mkdocs_page_input_path = "build_rules/gen_rule.md";
+        var mkdocs_page_url = "/docs/zh/build_rules/gen_rule/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">介绍</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">快速开始</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">用户指南</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">构建规则</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ 构建规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">自定义规则构建</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#gen_rule">gen_rule</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">使用 vcpkg 包</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">升级</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开发文档</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">开发</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">C/C++ 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">配置项是如何加载、分层与读取的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">内置函数与 blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">export_map（符号导出控制）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">Python 目标是如何构建与打包的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">blade-build 自身是如何被测试的</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">blade test 如何运行用户测试</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">vcpkg 支持实现原理</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">Visibility 是如何实现与执行的</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">构建规则</li>
+      <li class="breadcrumb-item active">自定义规则构建</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/gen_rule.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">自定义规则构建<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="gen_rule">gen_rule<a class="headerlink" href="#gen_rule" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Windows 说明。</strong> <code>cmd</code> 由宿主默认 shell 执行（POSIX 上是 <code>/bin/sh</code>，Windows 上是
+<code>cmd.exe</code>），所以按 <code>sh</code> 写的 <code>cmd</code> 在 Windows 上不工作。跨平台请用 <code>cmd_bat</code>（<code>cmd.exe</code>
+命令）和/或 <code>cmd_bash</code>（<code>bash</code> 命令）——会按平台自动选择。blade 自身的输出存在性检查已跨平台。</p>
+<p>gen_rule 的命令应尽量简单。稍复杂的逻辑,建议写一个小 Python 脚本来调用
+（<code>cmd = 'python $SRC_DIR/gen.py $SRCS $OUTS'</code>）：Python 在各平台都在 <code>PATH</code> 上,
+天然跨平台、易调试,也免去各 shell 的引号转义。</p>
+</blockquote>
+<p>用于定制自己的构建规则，参数：</p>
+<ul>
+<li>src_exts: list(str) <code>src</code> 里允许的文件扩展名列表。</li>
+</ul>
+<p>不含 <code>.</code>，比如 <code>['m4']</code> 可以匹配 <code>config.m4</code>，如果为空则表示允许所有类型的文件。注意空字符串匹配无扩展名的文件，比如 <code>['h', '']</code> 匹配 <code>vector.h</code> 和 <code>vector</code>。
+- <code>outs</code>: list，输出的文件列表
+- <code>cmd</code>: str，被调用的命令行。</p>
+<p>可含有如下变量，运行前会被替换为实际的值：
+  - $SRCS 空格分开的源文件名列表，相对 WORKSPACE
+  - $OUTS 空格分开的输出文件列表，相对 WORKSPACE
+  - $SRCS[i] / $SRCS[名字] 按下标（纯数字）或按声明名/basename 取<strong>单个</strong>输入，如 <code>$SRCS[0]</code>、<code>$SRCS[calc.y]</code>
+  - $OUTS[i] / $OUTS[名字] 按下标或名字取<strong>单个</strong>输出，如 <code>$OUTS[0]</code>、<code>$OUTS[parser.h]</code>。
+    只有一个输出时，<code>$OUTS[0]</code> 与 <code>$OUTS</code> 等价。建议优先按名（<code>$OUTS[parser.h]</code>）——按下标在重排 <code>outs</code> 后会错位。
+  - $SRC_DIR 输入文件所在的目录
+  - $OUT_DIR 输出文件所在的目录
+  - $FIRST_SRC 第一个输入文件的路径（<strong>已废弃</strong> — 请用 <code>$SRCS[0]</code>）
+  - $FIRST_OUT 第一个输出文件的路径（<strong>已废弃</strong> — 请用 <code>$OUTS[0]</code>）
+  - $BUILD_DIR 输出的根目录，比如 build[64,32]_[release,debug]
+  - <code>$(location target)</code> / <code>$(location target label)</code> — 被替换为所引用目标的<strong>单个</strong>输出文件路径。可选的 <code>label</code> 指定特定输出（如 <code>$(location //bin:server bin)</code>）。该目标（在该 label 下）须只有一个输出。
+  - <code>$(locations target)</code> — 被替换为所引用目标的<strong>全部</strong>输出文件（空格分隔）。当目标产出多个文件时用，如 <code>cmd = 'cat $(locations //idl:msgs) &gt; $OUTS'</code>。常用于 <code>gen_rule.cmd</code>、<code>testdata</code>、<code>package</code>、<code>sh_test</code> 等场景。示例：</p>
+<pre><code>```python
+gen_rule(
+    name = 'copy_binary',
+    cmd = 'cp $(location //server:server) $OUT_DIR/server',
+    outs = ['server'],
+)
+```
+</code></pre>
+<ul>
+<li><code>cmd_bash</code>: str，通过 <code>bash</code> 执行的命令（带 <code>set -e -o pipefail</code>）。POSIX 上优先。
+  （Windows 上不使用——见下。）变量同 <code>cmd</code>。</li>
+<li><code>cmd_bat</code>: str，通过 <code>cmd.exe /S /E:ON /V:ON /D /c</code> 执行的 Windows 批处理命令。Windows 上优先。变量同 <code>cmd</code>。
+  <code>cmd</code> / <code>cmd_bash</code> / <code>cmd_bat</code> 至少要设一个;按平台自动选（Windows：<code>cmd_bat</code> → <code>cmd</code>；
+  POSIX：<code>cmd_bash</code> → <code>cmd</code>）。在一个跨平台 BUILD 文件里<strong>同时</strong>给出 <code>cmd_bat</code> 和 <code>cmd_bash</code>，
+  blade 会按平台挑对的那个——这样 BUILD 文件<strong>不必自己判断操作系统</strong>（<code>cmd</code> 是已经可移植的命令的通用回退）。
+  Windows 上只用 <code>cmd.exe</code>——不自动探测 bash（探测脆弱、损害可复现性，减少不确定性）。
+  想在 Windows 上用 bash，就在 POSIX 环境（WSL / msys2 / cygwin）下运行 blade，或在 <code>cmd_bat</code> 里自己调 <code>bash -c "..."</code>。</li>
+<li><code>cmd_name</code>: str，命令的名字，用于简略模式下显示，默认为 <code>COMMAND</code></li>
+<li>generate_hdrs bool，指示这个目标是否会生成 outs 里列出的文件名之外的 C/C++ 头文件。
+  如果一个 C/C++ 目标依赖会生成头文件的 gen_rule 目标，那么需要这些头文件生成后才能开始编译。
+  gen_rule 会自动分析 outs 里是否有头文件，就不需要设置。
+  此选项会降低编译的并行度，因为如果一个目标如果可以分为生成源代码（其中包含头文件）和编译以及生成库
+  三个阶段，那么精确给出头文件列表时，在第一阶段的头文件生成后，其他的目标就可以开始构建了，而不用等待
+  该目标全部构建完成。</li>
+<li>export_incs: list，指示生成的头文件的搜索路径，类似于<code>cc_library.export_incs</code>，不过需要注意这里的是相对于目标目录。</li>
+<li>system_export_incs: list，作用与 <code>export_incs</code> 相同，但消费者编译时使用 <code>-isystem</code> 代替 <code>-I</code>。适用于生成的头来自第三方 / vendored 代码、其自身的诊断不应该被消费者的 <code>-Werror</code> 升级为错误的场景。典型用户：自定义 <code>cmake_build</code> / <code>autotools_build</code> 宏。路径语义同 <code>export_incs</code>（相对于目标目录）。</li>
+<li>cleans: list，执行 clean 命令时额外要删除的路径列表，可以是文件或目录，相对于 <code>OUT_DIR</code>。<code>clean</code> 时 <code>outs</code> 里的文件总是会被删除，但是如果会生成一些额外的文件或者目录，将其纳入 <code>cleans</code> 里可以保证 clean 时也能被删除。</li>
+<li>heavy: bool 这是不是一个‘重’目标，也就是会消耗大量的 CPU 或内存，使得不能和其他任务并行或者并行太多。
+  开启本选项会降低构建性能，但是有助于减少资源不足导致的构建失败。</li>
+</ul>
+<pre><code class="language-python">gen_rule(
+    name='test_gen_target',
+    cmd='echo what_a_nice_day;touch test2.c',
+    deps=[':test_gen'],                         # 可以有deps，也可以被别的target依赖
+    outs=['test2.c']
+)
+</code></pre>
+<p>注意：</p>
+<ul>
+<li><code>srcs</code> 可以为空，但是 <code>outs</code> 不能为空，且 <code>cmd</code> / <code>cmd_bash</code> / <code>cmd_bat</code> 至少要设一个。</li>
+<li><code>gen_rule</code> 只应该把输出文件生成在相应的结果输出目录下，不应该污染源代码树。但是你在其他目标中引用
+  <code>gen_rule</code> 生成的源文件时，只需要假设这些文件是生成在源代码目录下，不需要考虑结果目录前缀。</li>
+<li>命令执行后务必返回正确的退出码，0 表示成功，其他值表示失败。</li>
+<li>成功的命令不应该输出无关的信息，失败的命令要输出简练而有用的错误信息。</li>
+<li>命令中需要用到 <code>$</code> 时，比如展开环境变量等场景，需要双写为 <code>$$</code>，比如 <code>$$(pwd)</code>。</li>
+<li>多个重复或者相似的 <code>gen_rule</code>，应该考虑定义为扩展，并在单独的 <code>.bld</code> 文件中维护，
+  通过 <a href="../extension/#load-函数"><code>load</code></a> 函数来引入，以减少代码冗余并更好维护。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../extension/" class="btn btn-neutral float-left" title="扩展"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../go/" class="btn btn-neutral float-right" title="构建 Go 目标">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../extension/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../go/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

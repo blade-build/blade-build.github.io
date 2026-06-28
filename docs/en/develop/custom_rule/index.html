@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/develop/custom_rule/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How Custom Rules (define_rule) Work - Blade Build</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How Custom Rules (define_rule) Work";
+        var mkdocs_page_input_path = "develop/custom_rule.md";
+        var mkdocs_page_url = "/docs/en/develop/custom_rule/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Blade Build
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Blade User Manual</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Introduction to Blade</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../features/">Key Features</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">System Prerequisites and Dependencies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install/">Installation Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">Quick Start Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">Workspace Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">Writing BUILD Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL and API Module</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">Build Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">Command Line Reference</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../test/">Testing Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../output/">Blade Output System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">Build Cache</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/">Configuration System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">Accessibility</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Build Rules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/cc/">C/C++ Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/custom_rule/">Custom Rules (define_rule)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/go/">Build Go Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/idl/">Build Protobuf and Thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/java/">Build Java Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/lexyacc/">Build Lex and Yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/package/">Package Files</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/python/">Build Python Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/scala/">Build Scala Targets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/shell/">Shell Test Rule</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/swig/">SWIG Target</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../build_rules/vcpkg/">Using vcpkg packages</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrade</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">Upgrading to V3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">Upgrade to V2</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Development</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Development</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cc_build/">How C/C++ programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">How configuration is loaded, layered, and consumed</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../console/">The console: the build progress panel and the ninja status pipeline</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">How Custom Rules (define_rule) Work</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-why-a-rule-not-a-macro">1. Why a rule, not a macro</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-bld-only-visibility">2. .bld-only visibility</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-the-attribute-schema-attr">3. The attribute schema (attr)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-the-target-customruletarget">4. The target: CustomRuleTarget</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-the-action-runs-in-the-analysis-phase">5. The action runs in the analysis phase</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-edge-emission-reuses-the-gen_rule-machinery">6. Edge emission reuses the gen_rule machinery</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-fingerprinting-why-the-action-must-be-self-contained">7. Fingerprinting — why the action must be self-contained</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8-limitations-that-fall-out-of-the-design">8. Limitations that fall out of the design</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dependency_analysis/">Dependency analysis and ninja file generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dsl_api/">Built-in functions and the blade.* DSL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_map/">How export_map (Symbol-Export Control) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">gen_rule: custom build steps and how other targets see them</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java_scala_build/">How Java and Scala programs are built</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../protobuf_build/">How proto_library handles multi-language codegen</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python_build/">How Python targets are built and packaged</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../self_testing/">How blade-build itself is tested</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../test_execution/">How blade test runs user tests</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">How vcpkg Support Works</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../visibility/">How target visibility is implemented and enforced</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade Frequently Asked Questions</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Blade Build</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Development</li>
+      <li class="breadcrumb-item active">How Custom Rules (define_rule) Work</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/develop/custom_rule.md">Edit on blade-build/blade-build</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="how-custom-rules-define_rule-work">How Custom Rules (<code>define_rule</code>) Work<a class="headerlink" href="#how-custom-rules-define_rule-work" title="Permanent link">&para;</a></h1>
+<p><code>define_rule</code> lets a <code>.bld</code> extension declare a <strong>new rule type</strong> — typed
+attributes plus a Python <em>action</em> that declares outputs and emits build edges —
+without touching Blade's core. This document explains <strong>how it is implemented</strong>;
+for the user-facing API see <a href="../../build_rules/custom_rule/">build_rules/custom_rule.md</a>.</p>
+<p>It is an <a href="https://github.com/blade-build/blade-build/issues/829">experimental</a>
+feature; the API may still change.</p>
+<p>Source files involved:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/blade/custom_rule_target.py</code></td>
+<td>The whole feature: the <code>attr</code> namespace, the <code>ActionContext</code> / <code>_Actions</code> passed to an action, the generic <code>CustomRuleTarget</code>, and the <code>define_rule</code> builtin</td>
+</tr>
+<tr>
+<td><code>src/blade/build_rules.py</code></td>
+<td><code>register_extension_variable</code> — makes <code>define_rule</code> / <code>attr</code> visible <strong>only in <code>.bld</code> files</strong></td>
+</tr>
+<tr>
+<td><code>src/blade/gen_command.py</code></td>
+<td>Command-template expansion (<code>$SRCS</code> / <code>$OUTS</code> / …) and platform selection, shared with <code>gen_rule</code></td>
+</tr>
+<tr>
+<td><code>src/blade/rule_registry.py</code></td>
+<td><code>register_rule_provider</code> — the shared-ninja-rule slot a <code>ctx.actions.shared_rule</code> writes into</td>
+</tr>
+<tr>
+<td><code>src/blade/cc_targets.py</code></td>
+<td><code>declare_hdrs</code> / <code>declare_hdr_dir</code> — how a <code>provides_cc</code> rule's generated headers flow to <code>cc_*</code> deps</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-why-a-rule-not-a-macro">1. Why a rule, not a macro<a class="headerlink" href="#1-why-a-rule-not-a-macro" title="Permanent link">&para;</a></h2>
+<p>A <a href="../../build_rules/extension/">macro</a> — a plain function in a <code>.bld</code> that calls
+existing rules — covers simple reuse, but it cannot <em>declare new outputs that
+other targets see during analysis</em>. A <code>cc_library</code> that depends on a code
+generator needs the generated header to exist as a declared output <strong>before</strong> its
+own <code>generate()</code> runs, so the header is visible to the inclusion check and the
+include path. <code>define_rule</code> is the mechanism for that: it is modeled on
+<a href="https://bazel.build/extending/rules">Bazel's rules</a> but intentionally smaller —
+one <code>action</code>, no provider system beyond the <code>cc_*</code> header flow.</p>
+<h2 id="2-bld-only-visibility">2. <code>.bld</code>-only visibility<a class="headerlink" href="#2-bld-only-visibility" title="Permanent link">&para;</a></h2>
+<p><code>define_rule</code> and <code>attr</code> are <strong>not</strong> in the BUILD-file globals. They are
+registered as <em>extension</em> variables:</p>
+<pre><code class="language-python">build_rules.register_extension_variable('define_rule', define_rule)
+build_rules.register_extension_variable('attr', attr)
+</code></pre>
+<p><code>build_rules.get_all_for_extension()</code> injects these into the globals of a <code>.bld</code>
+loaded via <code>load</code>, and nowhere else. That single registration site is the entire
+enforcement of "custom rules can only be defined in extensions" — a BUILD file
+that names <code>define_rule</code> simply gets a <code>NameError</code>. The function <code>define_rule</code>
+returns is an ordinary callable, so once <code>load</code>-ed it is called from BUILD like
+any native rule.</p>
+<h2 id="3-the-attribute-schema-attr">3. The attribute schema (<code>attr</code>)<a class="headerlink" href="#3-the-attribute-schema-attr" title="Permanent link">&para;</a></h2>
+<p><code>attr</code> is a singleton <code>_AttrNamespace</code>; each method (<code>attr.string</code>, <code>attr.bool</code>,
+<code>attr.int</code>, <code>attr.string_list</code>, <code>attr.src_list</code>, <code>attr.dep_list</code>, <code>attr.out_list</code>)
+returns a small serializable <code>Attr</code> (<code>kind</code>, <code>default</code>, <code>mandatory</code>, <code>exts</code>).
+<code>Attr</code> deliberately holds <strong>no callables or rich objects</strong> — only the kind
+string, a plain default, and bools — so the schema can go straight into the
+target's fingerprint (see §7) without un-hashable entropy.</p>
+<p>Two kinds are special-cased at construction because they feed Blade's own target
+fields rather than the action's <code>ctx.attrs</code>:</p>
+<ul>
+<li><code>src_list</code> → spliced into the target's <code>srcs</code> (with optional extension
+  filtering via <code>exts</code>).</li>
+<li><code>dep_list</code> → merged into the target's <code>deps</code>.</li>
+</ul>
+<p>Everything else lands in <code>ctx.attrs[name]</code>. <code>name</code> / <code>deps</code> / <code>visibility</code> /
+<code>tags</code> are always available and need not be declared.</p>
+<h2 id="4-the-target-customruletarget">4. The target: <code>CustomRuleTarget</code><a class="headerlink" href="#4-the-target-customruletarget" title="Permanent link">&para;</a></h2>
+<p><code>define_rule</code> returns a thin <code>rule_fn(name, deps, visibility, tags, **kwargs)</code>
+that constructs one <code>CustomRuleTarget</code> per BUILD invocation and registers it with
+<code>build_manager.instance.register_target()</code>.</p>
+<p><code>CustomRuleTarget.__init__</code> does the schema work:</p>
+<ol>
+<li>For each declared attribute, pop the supplied value (or take the default),
+   record a <strong>missing-mandatory</strong> error, and <code>_coerce</code> it to the declared kind —
+   recording a <strong>type-mismatch</strong> error rather than raising, so all schema
+   problems surface together after <code>super().__init__</code>.</li>
+<li>Route <code>src_list</code> / <code>dep_list</code> into <code>srcs</code> / <code>deps</code>; the rest into a <code>custom</code>
+   dict stored as <code>self.attr['custom_attrs']</code>.</li>
+<li>Anything left in <code>attr_values</code> is an <strong>unknown attribute</strong> → error.</li>
+<li>The target type is <code>'custom:' + rule_type</code>, and it is tagged
+   <code>type:custom_rule</code>.</li>
+</ol>
+<h2 id="5-the-action-runs-in-the-analysis-phase">5. The action runs in the analysis phase<a class="headerlink" href="#5-the-action-runs-in-the-analysis-phase" title="Permanent link">&para;</a></h2>
+<p>The crucial design choice mirrors Bazel: <strong>the action runs at construction
+time</strong> (still the analysis phase), not at <code>generate()</code>:</p>
+<pre><code class="language-python">self._action(ActionContext(self))      # in __init__
+if not self._outputs:
+    self.error('custom rule &quot;%s&quot; action declared no outputs' % rule_type)
+</code></pre>
+<p>Why now: an action's <code>declare_header</code> / <code>declare_inc_dir</code> must register the
+generated header into the <code>cc_*</code> header maps <strong>before</strong> any dependent target
+generates — exactly as <code>gen_rule</code> and <code>proto_library</code> do. So the action is split
+in two:</p>
+<ul>
+<li><strong>Output declaration happens immediately.</strong> <code>ctx.declare_output(name)</code> appends
+  to <code>self._outputs</code> and registers the file under an index label via
+  <code>_add_target_file</code>. <code>ctx.declare_header</code> additionally calls
+  <code>cc_targets.declare_hdrs(self, [name])</code> and records <code>generated_hdrs</code>;
+  <code>ctx.declare_inc_dir</code> calls <code>declare_hdr_dir</code> and records
+  <code>generated_incs</code> / <code>export_incs</code> — but only when the rule was defined with
+  <code>provides_cc=True</code>.</li>
+<li><strong>Build edges are only <em>recorded</em> now, flushed later.</strong> <code>ctx.actions.run_shell</code>
+  / <code>ctx.actions.run</code> append a <code>functools.partial</code> to <code>self._pending_edges</code>
+  instead of emitting immediately, because the dep graph is not fully resolved
+  during construction. <code>generate()</code> then replays them:</li>
+</ul>
+<p><code>python
+  def generate(self):
+      for flush in self._pending_edges:
+          flush()</code></p>
+<p>By <code>generate()</code> time <code>expanded_deps</code> and the dep output files are available, so
+  <code>implicit_deps</code> resolves correctly.</p>
+<p><code>ActionContext</code> exposes the read side (<code>ctx.name</code>, <code>ctx.attrs</code>, <code>ctx.toolchain</code>,
+<code>ctx.config(section)</code>, <code>ctx.deps_outputs()</code>,
+<code>ctx.deps_generated_headers()</code>); <code>_Actions</code> (<code>ctx.actions</code>) the emit side.</p>
+<h2 id="6-edge-emission-reuses-the-gen_rule-machinery">6. Edge emission reuses the <code>gen_rule</code> machinery<a class="headerlink" href="#6-edge-emission-reuses-the-gen_rule-machinery" title="Permanent link">&para;</a></h2>
+<p><code>_emit_shell_edge</code> is the heart of <code>run_shell</code> and is deliberately the same
+pipeline <code>gen_rule</code> uses:</p>
+<ol>
+<li><code>gen_command.select_command(command, cmd_bash, cmd_bat)</code> picks the platform
+   variant (generic host shell vs bash vs bat).</li>
+<li><code>gen_command.expand_vars(...)</code> expands <code>$SRCS</code> / <code>$OUTS</code> / <code>$OUTS[i]</code> /
+   <code>$SRC_DIR</code> / <code>$OUT_DIR</code> / <code>$BUILD_DIR</code>. <strong><code>first_vars=False</code></strong> here, so the
+   deprecated <code>$FIRST_SRC</code> / <code>$FIRST_OUT</code> are <em>not</em> available — custom rules use
+   <code>$SRCS[0]</code> / <code>$OUTS[0]</code>.</li>
+<li><code>gen_command.wrap_command(...)</code> wraps it for the chosen shell.</li>
+<li>A uniquely-named per-target ninja rule is written (<code>_rule_name()</code> adds a
+   sequence suffix so multiple edges in one action don't collide), then
+   <code>generate_build(...)</code> emits the build edge. <code>outputs</code> defaults to all
+   outputs declared so far; <code>inputs</code> to the expanded <code>srcs</code>.</li>
+</ol>
+<p><code>ctx.actions.shared_rule(ninja_rule)</code> is the alternative for many edges sharing
+one rule: it registers the rule <strong>once</strong> into the registry's custom slot
+(<code>rule_registry.register_rule_provider(..., name='custom:'+ninja_rule.name)</code>,
+idempotent by name), and <code>ctx.actions.run(rule, ...)</code> emits edges that reference
+it via <code>_emit_edge</code>.</p>
+<h2 id="7-fingerprinting-why-the-action-must-be-self-contained">7. Fingerprinting — why the action must be self-contained<a class="headerlink" href="#7-fingerprinting-why-the-action-must-be-self-contained" title="Permanent link">&para;</a></h2>
+<p>A target's fingerprint decides incremental rebuilds. <code>CustomRuleTarget</code>
+extends <code>_fingerprint_entropy</code> with both the schema and the <strong>action's source</strong>:</p>
+<pre><code class="language-python">entropy['custom_rule_action'] = self._action_fingerprint()
+entropy['custom_rule_schema'] = sorted(
+    (k, a.kind, repr(a.default), a.mandatory, tuple(a.exts or ())) ...)
+</code></pre>
+<p><code>_action_fingerprint</code> hashes <code>inspect.getsource(self._action)</code> plus the md5 of
+the action's defining file. This is why the V1 limitation <strong>"keep the action
+self-contained in its <code>.bld</code>"</strong> exists: helpers the action imports from other
+<code>.py</code> modules are <em>not</em> part of this fingerprint, so editing them would not force
+a rebuild. The schema is serializable precisely so it can join the entropy here
+without special handling.</p>
+<h2 id="8-limitations-that-fall-out-of-the-design">8. Limitations that fall out of the design<a class="headerlink" href="#8-limitations-that-fall-out-of-the-design" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>.bld</code>-only</strong> — a direct consequence of §2 (the builtins aren't in BUILD
+  globals).</li>
+<li><strong>No general providers</strong> — cross-rule data is limited to the
+  <code>generated_hdrs</code> / <code>generated_incs</code> flow of §5, because that is the only
+  channel wired into <code>cc_*</code> consumption.</li>
+<li><strong>Self-contained action</strong> — see §7.</li>
+<li><strong>Generated headers resolve after system/SDK paths</strong>, so an output name that
+  collides with a system header is shadowed; the rule cannot reorder include
+  paths.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../console/" class="btn btn-neutral float-left" title="The console: the build progress panel and the ninja status pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dependency_analysis/" class="btn btn-neutral float-right" title="Dependency analysis and ninja file generation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
+        </span>
+    
+    
+      <span><a href="../console/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dependency_analysis/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
