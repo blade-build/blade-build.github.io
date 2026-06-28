@@ -1,0 +1,66 @@
+name: Build Docs
+
+# Rebuild the MkDocs documentation site from blade-build/blade-build's
+# doc/{en,zh_CN} and publish it under docs/{en,zh}. Self-contained: builds in
+# this repo and commits with the default GITHUB_TOKEN -- no secrets needed.
+# Run manually ("Run workflow") for an immediate refresh, or wait for the
+# nightly schedule.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 5 * * *' # nightly, ~05:23 UTC
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-docs
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site (this repo)
+        uses: actions/checkout@v4
+
+      - name: Checkout blade docs source
+        uses: actions/checkout@v4
+        with:
+          repository: blade-build/blade-build
+          path: blade
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs
+        run: pip install mkdocs
+
+      - name: Build en + zh
+        working-directory: blade/doc
+        run: |
+          mkdocs build -f mkdocs-en.yml
+          mkdocs build -f mkdocs-zh.yml
+
+      - name: Sync into docs/
+        run: |
+          rm -rf docs/en docs/zh
+          mkdir -p docs
+          cp -R blade/_site/en docs/en
+          cp -R blade/_site/zh docs/zh
+          # Drop MkDocs' non-deterministic build-date stamp, so the job only
+          # commits when the documentation actually changes.
+          grep -rl 'Build Date UTC' docs/ | xargs -r sed -i '/Build Date UTC/d'
+
+      - name: Commit if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/
+          if git diff --cached --quiet; then
+            echo 'No documentation changes.'
+          else
+            git commit -m 'docs: rebuild from blade-build/blade-build doc/'
+            git push
+          fi
