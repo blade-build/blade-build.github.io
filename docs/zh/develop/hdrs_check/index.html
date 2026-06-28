@@ -379,6 +379,7 @@
 <li>否则 → 报错 <code>Missing indirect dependency declaration</code>，并打印从源文件一路向上到该生成头的<strong>完整包含链</strong>，方便定位是哪一环缺了依赖。</li>
 </ul>
 <p><strong>为什么只对"生成头文件"做间接检查？</strong> 生成头（<code>proto_library</code>、<code>gen_rule</code> 等的产物）如果依赖缺失，编译当前目标时这些头可能<strong>还没生成</strong>或<strong>是过时版本</strong>，从而造成编译错误，甚至更隐蔽的运行期错误。而非生成的头文件，其传递可见性由编译/链接过程天然保证，无需强制声明，故不做间接检查。</p>
+<p><strong>边界——信任止于生成目标。</strong> 间接检查只验证使用方<strong>声明了对所包含生成头的依赖</strong>，并<strong>不会</strong>下钻到该生成头自身的 <code>#include</code>。后者被信任为由<em>生成它的</em>目标在自身编译时覆盖——例如 <code>proto_library</code> 会编译其 <code>.pb.cc</code>，因此 <code>.pb.h</code> 的包含在那个上下文里已被 <code>-H</code> 检查。于是，一个<strong>只产出裸头文件、却不编译任何翻译单元</strong>的 <code>gen_rule</code> 就是已知的盲点：若这种头自身又 <code>#include</code> 了另一个项目头文件，该传递依赖不会被强制检查。实践中风险很低，因为生成头很少包含项目头文件——它们引入的是自己的运行时（<code>google/protobuf/...</code>、标准库），而非你的库。如果确实遇到这种情况，请在使用方（或 <code>gen_rule</code> 的 <code>deps</code>）显式声明该依赖。</p>
 <h3 id="_4">严重性与抑制<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>cc_config.hdr_dep_missing_severity</code>：检查问题的严重性（<code>error</code> / <code>warning</code>）。仅当为 <code>error</code> 且确有问题时检查才判定失败。</li>
