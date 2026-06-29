@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/build_cache/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/editor_support/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Build Cache - Blade Build</title>
+    <title>Editor Support - Blade Build</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Build Cache";
-        var mkdocs_page_input_path = "build_cache.md";
-        var mkdocs_page_url = "/docs/en/build_cache/";
+        var mkdocs_page_name = "Editor Support";
+        var mkdocs_page_input_path = "editor_support.md";
+        var mkdocs_page_url = "/docs/en/editor_support/";
       </script>
     
     <!--[if lt IE 9]>
@@ -71,27 +71,19 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../editor_support/">Editor Support</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Editor Support</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#visual-studio-code">Visual Studio Code</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cc-intellisense-in-any-editor">C/C++ IntelliSense in any editor</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Build Cache</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#incremental-build-system">Incremental Build System</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ccache-integration">CCache Integration</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#shared-cache-configuration">Shared Cache Configuration</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#performance-benefits">Performance Benefits</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
                   </li>
@@ -198,9 +190,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">User Guide</li>
-      <li class="breadcrumb-item active">Build Cache</li>
+      <li class="breadcrumb-item active">Editor Support</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_cache.md">Edit on blade-build/blade-build</a>
+          <a href="https://github.com/blade-build/blade-build/edit/master/docs/editor_support.md">Edit on blade-build/blade-build</a>
     </li>
   </ul>
   <hr/>
@@ -208,33 +200,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="build-cache">Build Cache<a class="headerlink" href="#build-cache" title="Permanent link">&para;</a></h1>
-<h2 id="incremental-build-system">Incremental Build System<a class="headerlink" href="#incremental-build-system" title="Permanent link">&para;</a></h2>
-<p>Blade employs an incremental build approach that intelligently rebuilds only targets and their dependencies requiring updates. This eliminates the frequent need for <code>clean</code> operations typically associated with traditional build systems.</p>
-<h2 id="ccache-integration">CCache Integration<a class="headerlink" href="#ccache-integration" title="Permanent link">&para;</a></h2>
-<p>Blade integrates with <a href="https://ccache.dev/">ccache</a> to significantly accelerate rebuild performance through intelligent caching mechanisms.</p>
-<h3 id="shared-cache-configuration">Shared Cache Configuration<a class="headerlink" href="#shared-cache-configuration" title="Permanent link">&para;</a></h3>
-<p>For development environments with multiple developers sharing a single machine, Blade supports shared cache configurations to maximize cache hit rates.</p>
-<p><strong>Reference Documentation:</strong> <a href="https://ccache.dev/manual/3.7.9.html#sharing_a_cache">ccache Shared Cache Configuration</a></p>
-<p><strong>Automated Setup:</strong> Blade provides an <a href="https://github.com/blade-build/blade-build/blob/master/tool/setup-shared-ccache.py">auxiliary tool</a> to simplify shared cache configuration.</p>
-<h3 id="performance-benefits">Performance Benefits<a class="headerlink" href="#performance-benefits" title="Permanent link">&para;</a></h3>
+                <h1 id="editor-support">Editor Support<a class="headerlink" href="#editor-support" title="Permanent link">&para;</a></h1>
+<h2 id="visual-studio-code">Visual Studio Code<a class="headerlink" href="#visual-studio-code" title="Permanent link">&para;</a></h2>
+<p>The official <strong><a href="https://marketplace.visualstudio.com/items?itemName=blade-build.vscode-blade">Blade extension</a></strong>
+(<a href="https://github.com/blade-build/vscode-blade">source</a>) gives first-class Blade
+support in VS Code:</p>
 <ul>
-<li><strong>Reduced Compilation Time:</strong> Cached compilation results eliminate redundant compilation</li>
-<li><strong>Optimized Resource Usage:</strong> Shared caches minimize disk space consumption across development teams</li>
-<li><strong>Enhanced Developer Productivity:</strong> Faster iteration cycles through intelligent dependency tracking</li>
+<li>a <strong>targets explorer</strong> (directory tree) with inline <strong>build / run / test /
+  debug</strong>, and recursive build/test of a directory (<code>//path/...</code>);</li>
+<li><strong>build / run / test / clean</strong> through the VS Code Tasks API — compiler errors
+  land in the Problems panel, and a failed build never silently runs a stale
+  binary;</li>
+<li>a <strong>build-profile</strong> (release / debug) selector;</li>
+<li><strong>BUILD-file language features</strong> — syntax highlighting, an outline of targets,
+  go-to-definition on dependency labels (<code>//path:name</code>, <code>:name</code>), completion,
+  hover, and diagnostics;</li>
+<li>one-click <strong>C/C++ IntelliSense</strong> via <code>compile_commands.json</code> and clangd.</li>
 </ul>
-<h3 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Configure appropriate cache size limits based on project scale</li>
-<li>Implement cache cleanup policies for long-term maintenance</li>
-<li>Monitor cache hit rates to optimize configuration parameters</li>
-</ul>
+<p>Targets are read from Blade itself (<code>blade dump --targets</code>), so every rule kind
+(C++, Java, Scala, Python, proto, …) is understood accurately.</p>
+<p>Install it from the Marketplace, open a workspace that contains a <code>BLADE_ROOT</code>,
+and (if <code>blade</code> is not on your <code>PATH</code>) set <code>blade.executable</code>.</p>
+<h2 id="cc-intellisense-in-any-editor">C/C++ IntelliSense in any editor<a class="headerlink" href="#cc-intellisense-in-any-editor" title="Permanent link">&para;</a></h2>
+<p>The extension's IntelliSense is built on a feature you can use from <strong>any</strong>
+editor: Blade can emit a
+<a href="https://clang.llvm.org/docs/JSONCompilationDatabase.html">compilation database</a>.</p>
+<pre><code class="language-bash">blade dump --compdb --to-file compile_commands.json
+</code></pre>
+<p>Point <a href="https://clangd.llvm.org/">clangd</a> at the resulting
+<code>compile_commands.json</code> and you get accurate completion, go-to-definition, and
+diagnostics — in Vim, Emacs, CLion, or any <a href="https://langserver.org/">LSP</a>
+client. Because Blade knows the exact compile command for every translation
+unit, this is more accurate than re-deriving include paths by hand.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Regenerate <code>compile_commands.json</code> after adding sources or changing deps.
+The VS Code extension can do this automatically on every target refresh.</p>
+</div>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../output/" class="btn btn-neutral float-left" title="Blade Output System"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../optimization/" class="btn btn-neutral float-right" title="C/C++ Optimization (PGO / AutoFDO / LTO)">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../command_line/" class="btn btn-neutral float-left" title="Command Line Reference"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../test/" class="btn btn-neutral float-right" title="Testing Support">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -261,10 +269,10 @@
         </span>
     
     
-      <span><a href="../output/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../command_line/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../optimization/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../test/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
