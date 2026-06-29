@@ -98,11 +98,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
                   </li>
@@ -110,19 +106,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
-                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">升级</span></p>
@@ -224,6 +224,7 @@
 </ul>
 <h2 id="blade_1">Blade 的企业级解决方案<a class="headerlink" href="#blade_1" title="Permanent link">&para;</a></h2>
 <p>Blade 诞生于腾讯<a href="http://storage.it168.com/a2011/1203/1283/000001283196.shtml">「台风」云计算平台</a>的研发过程，是一套面向企业级大规模开发打造的新一代构建系统。</p>
+<p>此后，Blade 在数千万行规模的代码库上经受了实战检验。关于在这种规模下用 Blade 进行主干开发的实战经验，可参阅<a href="https://cloud.tencent.com/developer/article/1804858">《腾讯广告 3000+万行大代码库主干开发实战》</a>。</p>
 <p><strong>核心设计理念：</strong></p>
 <ul>
 <li><strong>声明式配置：</strong> BUILD 文件只声明「构建什么」，而不描述「如何构建」</li>

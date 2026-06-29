@@ -82,11 +82,13 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_10">故障排查</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#_11">常见问题</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_10">编辑器集成</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_12">支持资源</a>
+    <li class="toctree-l2"><a class="reference internal" href="#_11">故障排查</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">常见问题</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_13">支持资源</a>
     </li>
         </ul>
     </li>
@@ -126,11 +128,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
                   </li>
@@ -138,19 +136,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
-                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">升级</span></p>
@@ -282,14 +284,17 @@ Blade(error): Failure
 <li><strong>ccache：</strong> 通过缓存加速构建</li>
 <li><strong>argcomplete：</strong> 提供增强的命令行补全</li>
 </ul>
-<h2 id="_10">故障排查<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
-<h3 id="_11">常见问题<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h2 id="_10">编辑器集成<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>安装官方 <strong><a href="https://marketplace.visualstudio.com/items?itemName=blade-build.vscode-blade">Blade VS Code 扩展</a></strong>（<a href="https://github.com/blade-build/vscode-blade">源码</a>），即可获得目标浏览器、构建/运行/测试、BUILD 文件语言特性，以及基于 clangd 的 C/C++ 智能感知。</p>
+<p>详情，以及在 Vim、Emacs 等其他编辑器中通过 clangd 获得 C/C++ 智能感知的方法，见<a href="../editor_support/">编辑器支持</a>。</p>
+<h2 id="_11">故障排查<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<h3 id="_12">常见问题<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>命令未找到：</strong> 检查 <code>PATH</code> 配置与符号链接是否创建成功</li>
 <li><strong>权限错误：</strong> 确认 <code>~/bin</code> 目录拥有合适的权限</li>
 <li><strong>Python 版本冲突：</strong> 确认系统中存在兼容的 Python 版本</li>
 </ul>
-<h3 id="_12">支持资源<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<h3 id="_13">支持资源<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>文档：</strong> 参考 Blade 文档中的详细排错章节</li>
 <li><strong>社区支持：</strong> 在 GitHub Issues 中寻求社区帮助</li>

@@ -82,6 +82,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#editor-integration">Editor Integration</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a>
@@ -126,11 +128,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
                   </li>
@@ -138,19 +136,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
-                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrade</span></p>
@@ -276,6 +278,9 @@ Blade(error): Failure
 <li><strong>ccache:</strong> For build acceleration through caching</li>
 <li><strong>argcomplete:</strong> Enhanced command-line completion support</li>
 </ul>
+<h2 id="editor-integration">Editor Integration<a class="headerlink" href="#editor-integration" title="Permanent link">&para;</a></h2>
+<p>Install the official <strong><a href="https://marketplace.visualstudio.com/items?itemName=blade-build.vscode-blade">Blade VS Code extension</a></strong> (<a href="https://github.com/blade-build/vscode-blade">source</a>) for a targets explorer, build/run/test, BUILD-file language features, and clangd-based C/C++ IntelliSense.</p>
+<p>See <a href="../editor_support/">Editor Support</a> for details, including how to get C/C++ IntelliSense via clangd in other editors such as Vim and Emacs.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
 <ul>

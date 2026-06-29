@@ -90,6 +90,30 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ 构建规则</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">使用 vcpkg 包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">自定义规则构建</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
+                  </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">自定义规则（define_rule）</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#_1">快速示例</a>
@@ -103,30 +127,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#v1">局限（V1）</a>
     </li>
     </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">自定义规则构建</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">使用 vcpkg 包</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">升级</span></p>
@@ -346,8 +346,8 @@ cc_binary(name='app', srcs=['main.cc'], deps=[':demo'])   # 自动拿到 demo.h 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../cc/" class="btn btn-neutral float-left" title="C/C++ 构建规则"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../extension/" class="btn btn-neutral float-right" title="扩展">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../extension/" class="btn btn-neutral float-left" title="扩展"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../upgrade-to-v3/" class="btn btn-neutral float-right" title="升级到 V3 版">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -374,10 +374,10 @@ cc_binary(name='app', srcs=['main.cc'], deps=[':demo'])   # 自动拿到 demo.h 
         </span>
     
     
-      <span><a href="../cc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../extension/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../extension/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../upgrade-to-v3/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

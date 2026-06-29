@@ -98,11 +98,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
                   </li>
@@ -110,19 +106,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
-                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrade</span></p>
@@ -218,6 +218,7 @@
 - Lack of standardized conventions across projects</p>
 <h2 id="blades-enterprise-solution">Blade's Enterprise Solution<a class="headerlink" href="#blades-enterprise-solution" title="Permanent link">&para;</a></h2>
 <p>Developed during Tencent's <a href="http://storage.it168.com/a2011/1203/1283/000001283196.shtml">"Typhoon" cloud computing platform</a> initiative, Blade represents a next-generation build system engineered for enterprise-scale development.</p>
+<p>It has since been battle-tested on codebases of tens of millions of lines. For a real-world account of using Blade for trunk-based development at that scale, see <a href="https://cloud.tencent.com/developer/article/1804858"><em>Tencent Ads: Trunk-Based Development on a 30-Million-Line Codebase</em></a> (in Chinese).</p>
 <p><strong>Key Design Principles:</strong>
 - <strong>Declarative Configuration:</strong> BUILD files specify what to build, not how to build
 - <strong>Automatic Dependency Management:</strong> Comprehensive dependency tracking without manual specification
