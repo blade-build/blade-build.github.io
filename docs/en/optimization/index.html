@@ -1,211 +1,2470 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/en/optimization/" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>C/C++ Optimization (PGO / AutoFDO / LTO) - Blade Build</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../css/extra.css" rel="stylesheet" />
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "C/C++ Optimization (PGO / AutoFDO / LTO)";
-        var mkdocs_page_input_path = "optimization.md";
-        var mkdocs_page_url = "/docs/en/optimization/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Blade build system">
+      
+      
+      
+        <link rel="canonical" href="https://blade-build.github.io/docs/en/optimization/">
+      
+      
+        <link rel="prev" href="../build_cache/">
+      
+      
+        <link rel="next" href="../config/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>C/C++ Optimization (PGO / AutoFDO / LTO) - Blade Build</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Blade Build
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Blade User Manual</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction to Blade</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../features/">Key Features</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">System Prerequisites and Dependencies</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../install/">Installation Guide</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start Guide</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">User Guide</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">Workspace Configuration</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">Writing BUILD Files</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL and API Module</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../functions/">Build Functions</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">Command Line Reference</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../editor_support/">Editor Support</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../test/">Testing Support</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../output/">Blade Output System</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">Build Cache</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ Optimization (PGO / AutoFDO / LTO)</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#sample-based-pgo-autofdo">Sample-based PGO (AutoFDO)</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#link-time-optimization-lto">Link-Time Optimization (LTO)</a>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../config/">Configuration System</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../misc/">Accessibility</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Build Rules</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ Build Rules</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">Using vcpkg packages</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">Build Go Targets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">Build Protobuf and Thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">Build Java Targets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">Build Scala Targets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">Build Lex and Yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">Package Files</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">Build Python Targets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test Rule</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">SWIG Target</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">Custom Build Rules</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">Extension</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">Custom Rules (define_rule)</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Upgrade</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">Upgrading to V3</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">Upgrade to V2</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Development</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Development</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">How BUILD files are discovered, loaded, and registered</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">How C/C++ programs are built</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">How the Static Undefined-Symbol Check (check_undefined) Works</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">How configuration is loaded, layered, and consumed</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">The console: the build progress panel and the ninja status pipeline</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">How Custom Rules (define_rule) Work</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">Dependency analysis and ninja file generation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">Built-in functions and the blade.* DSL</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">How export_map (Symbol-Export Control) Works</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule: custom build steps and how other targets see them</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">How the C/C++ Header Dependency Check (hdrs check) Works</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">How Java and Scala programs are built</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">How proto_library handles multi-language codegen</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">How Python targets are built and packaged</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">How blade-build itself is tested</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">How blade test runs user tests</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">How vcpkg Support Works</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">How target visibility is implemented and enforced</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade Frequently Asked Questions</a>
-                </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cc-optimization-pgo-autofdo-lto" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Blade Build" class="md-header__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blade Build
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              C/C++ Optimization (PGO / AutoFDO / LTO)
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Blade Build</a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">User Guide</li>
-      <li class="breadcrumb-item active">C/C++ Optimization (PGO / AutoFDO / LTO)</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/optimization.md">Edit on blade-build/blade-build</a>
-    </li>
-  </ul>
-  <hr/>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blade-build/blade-build" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade User Manual
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../intro/" class="md-tabs__link">
+          
+  
+  
+  Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../prerequisites/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../build_rules/cc/" class="md-tabs__link">
+          
+  
+  
+  Build Rules
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../upgrade-to-v3/" class="md-tabs__link">
+          
+  
+  
+  Upgrade
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../develop/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade Frequently Asked Questions
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="cc-optimization-pgo-autofdo-lto">C/C++ Optimization (PGO / AutoFDO / LTO)<a class="headerlink" href="#cc-optimization-pgo-autofdo-lto" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Blade Build" class="md-nav__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Blade Build
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blade-build/blade-build" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade User Manual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Blade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Key Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Prerequisites and Dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workspace Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing BUILD Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DSL and API Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Line Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor_support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Editor Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade Output System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ Optimization (PGO / AutoFDO / LTO)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ Optimization (PGO / AutoFDO / LTO)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#profile-guided-optimization-pgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile-Guided Optimization (PGO)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profile-Guided Optimization (PGO)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-based-pgo-autofdo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample-based PGO (AutoFDO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#link-time-optimization-lto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Link-Time Optimization (LTO)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Rules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Build Rules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/cc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ Build Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using vcpkg packages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Go Targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/idl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Protobuf and Thrift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Java Targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/scala/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Scala Targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/lexyacc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Lex and Yacc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Python Targets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shell Test Rule
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/swig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SWIG Target
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Build Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/extension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Rules (define_rule)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Upgrade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrading to V3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrade to V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/build_file_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How BUILD files are discovered, loaded, and registered
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/cc_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How C/C++ programs are built
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/check_undefined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the Static Undefined-Symbol Check (check_undefined) Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How configuration is loaded, layered, and consumed
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The console: the build progress panel and the ninja status pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Custom Rules (define_rule) Work
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dependency_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency analysis and ninja file generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dsl_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Built-in functions and the blade.* DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/export_map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How export_map (Symbol-Export Control) Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_rule: custom build steps and how other targets see them
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/hdrs_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the C/C++ Header Dependency Check (hdrs check) Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/java_scala_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Java and Scala programs are built
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/protobuf_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How proto_library handles multi-language codegen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/python_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Python targets are built and packaged
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/self_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How blade-build itself is tested
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/test_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How blade test runs user tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How vcpkg Support Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How target visibility is implemented and enforced
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade Frequently Asked Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#profile-guided-optimization-pgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile-Guided Optimization (PGO)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profile-Guided Optimization (PGO)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-based-pgo-autofdo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample-based PGO (AutoFDO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#link-time-optimization-lto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Link-Time Optimization (LTO)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cc-optimization-pgo-autofdo-lto">C/C++ Optimization (PGO / AutoFDO / LTO)<a class="headerlink" href="#cc-optimization-pgo-autofdo-lto" title="Permanent link">&para;</a></h1>
 <p>Advanced, opt-in techniques for squeezing more performance out of <strong>release</strong> C/C++ builds:</p>
 <ul>
 <li><strong><a href="#profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)</a></strong> — instrument, run a representative workload, rebuild with the collected profile.</li>
@@ -216,13 +2475,13 @@
 <h2 id="profile-guided-optimization-pgo">Profile-Guided Optimization (PGO)<a class="headerlink" href="#profile-guided-optimization-pgo" title="Permanent link">&para;</a></h2>
 <p>Profile-Guided Optimization (PGO), also known as Feedback-Directed Optimization (FDO), is a technique that uses profile data collected from a program's real execution to guide the compiler's optimizations.</p>
 <p>PGO is a <strong>global build mode</strong> (not a per-target attribute): you instrument the whole build, run a representative workload, then rebuild using the collected profile. It is wired for <strong>gcc, clang, and native MSVC</strong>; both phases use a dedicated <code>build_*_pgo</code> directory so they never clobber your normal <code>build_*</code> objects.</p>
-<pre><code class="language-bash"># Phase 1 — instrument, then run a representative workload to collect data
-blade build //foo:server --profile-generate=/tmp/pgo
-./build_release_pgo/foo/server   # exercise the hot paths
-
-# Phase 2 — rebuild optimized, using the profile
-blade build //foo:server --profile-use=/tmp/pgo
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Phase 1 — instrument, then run a representative workload to collect data</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--profile-generate<span class="o">=</span>/tmp/pgo
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./build_release_pgo/foo/server<span class="w">   </span><span class="c1"># exercise the hot paths</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Phase 2 — rebuild optimized, using the profile</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--profile-use<span class="o">=</span>/tmp/pgo
+</code></pre></div>
 <p>Toolchain differences blade handles for you:</p>
 <ul>
 <li><strong>gcc</strong> reads the <code>.gcda</code> files directly and adds <code>-fprofile-correction</code> (tolerates the count skew of multithreaded programs). Both phases <strong>must</strong> share the build dir — gcc keys its <code>.gcda</code> lookup by object path — which the dedicated <code>build_*_pgo</code> dir guarantees.</li>
@@ -236,22 +2495,22 @@ blade build //foo:server --profile-use=/tmp/pgo
 <h3 id="sample-based-pgo-autofdo">Sample-based PGO (AutoFDO)<a class="headerlink" href="#sample-based-pgo-autofdo" title="Permanent link">&para;</a></h3>
 <p>The instrumentation-based PGO above needs two builds — instrument, then optimize — which is cumbersome, and the instrumented run carries real overhead.</p>
 <p>AutoFDO is the <strong>no-instrumentation</strong> flavor of PGO: instead of an instrumented build, you sample a <em>normal optimized</em> binary and rebuild with the result. The collection runs at ~1% overhead (vs ~2× for instrumentation), so the profile can come from real production traffic. Works on <strong>gcc/clang</strong> (sample with <code>perf</code>) and <strong>native MSVC</strong> (sample with <code>xperf</code> — see SPGO below). Uses a dedicated <code>build_*_autofdo</code> dir.</p>
-<pre><code class="language-bash"># Phase 1 — build with AutoFDO-friendly debug info, then sample under perf
-blade build //foo:server --autofdo-generate
-perf record -b -- ./build_release_autofdo/foo/server     # -b = LBR branch records
-
-# Convert perf.data -&gt; a sample profile yourself (it needs the collected binary):
-#   clang: llvm-profgen --perfdata=perf.data --binary=build_release_autofdo/foo/server --output=foo.prof
-#   gcc:   create_gcov  --binary=build_release_autofdo/foo/server --profile=perf.data --gcov=foo.afdo
-
-# Phase 2 — rebuild using the converted profile
-blade build //foo:server --autofdo-use=foo.prof
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Phase 1 — build with AutoFDO-friendly debug info, then sample under perf</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-generate
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>perf<span class="w"> </span>record<span class="w"> </span>-b<span class="w"> </span>--<span class="w"> </span>./build_release_autofdo/foo/server<span class="w">     </span><span class="c1"># -b = LBR branch records</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Convert perf.data -&gt; a sample profile yourself (it needs the collected binary):</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">#   clang: llvm-profgen --perfdata=perf.data --binary=build_release_autofdo/foo/server --output=foo.prof</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">#   gcc:   create_gcov  --binary=build_release_autofdo/foo/server --profile=perf.data --gcov=foo.afdo</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Phase 2 — rebuild using the converted profile</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-use<span class="o">=</span>foo.prof
+</code></pre></div>
 <p><strong>Typical usage — one build per release (steady state).</strong> Unlike instrumentation PGO (which always needs a separate <em>slow instrumented</em> build), AutoFDO's collection binary is a <em>normal</em> binary, so once you have a profile you combine both phases into <strong>a single build that is both optimized and collectable</strong>:</p>
-<pre><code class="language-bash"># Each release: optimize with last cycle's profile AND stay sample-able for the next.
-blade build //foo:server --autofdo-generate --autofdo-use=foo.prof
-# ship it -&gt; sample it in production -&gt; convert -&gt; feeds the *next* release's --autofdo-use
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Each release: optimize with last cycle&#39;s profile AND stay sample-able for the next.</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-generate<span class="w"> </span>--autofdo-use<span class="o">=</span>foo.prof
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># ship it -&gt; sample it in production -&gt; convert -&gt; feeds the *next* release&#39;s --autofdo-use</span>
+</code></pre></div>
 <p><code>--autofdo-generate</code> + <code>--autofdo-use</code> compose on all three toolchains (gcc/clang add the debug info alongside <code>-fprofile-sample-use</code>/<code>-fauto-profile</code>; MSVC links <code>/spgo</code> alongside <code>/spdin:</code> — verified legal on MSVC 14.51, x64 + ARM64). So in steady state every build is simultaneously "optimize with last profile" and "collect for next" — no dedicated extra build. (The very first time, run <code>--autofdo-generate</code> alone to bootstrap a profile.) The AutoFDO debug flags are cheap, so you can also bake them into your release config and pass just <code>--autofdo-use</code> daily.</p>
 <ul>
 <li><strong>clang</strong> → <code>-fprofile-sample-use=&lt;profile&gt;</code>; the collection build adds <code>-fdebug-info-for-profiling</code> + <code>-funique-internal-linkage-names</code> (better sample-to-source mapping).</li>
@@ -266,10 +2525,10 @@ blade build //foo:server --autofdo-generate --autofdo-use=foo.prof
 </blockquote>
 <h2 id="link-time-optimization-lto">Link-Time Optimization (LTO)<a class="headerlink" href="#link-time-optimization-lto" title="Permanent link">&para;</a></h2>
 <p>LTO performs cross-module optimization (inlining, devirtualization, dead-code elimination) at link time. Whether a project ships with LTO is a <strong>stable decision</strong>, so the primary control is the project intrinsic <a href="../config/#cc_config"><code>cc_config(lto='thin')</code></a>; the <code>--lto</code> flags only override it per invocation.</p>
-<pre><code class="language-bash">blade build //foo:server -p release --lto          # ThinLTO for this build
-blade build //foo:server -p release --lto=full     # monolithic LTO
-blade build //foo:server -p release --lto=no       # off (skip LTO's link cost while iterating)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="w">          </span><span class="c1"># ThinLTO for this build</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="o">=</span>full<span class="w">     </span><span class="c1"># monolithic LTO</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="o">=</span>no<span class="w">       </span><span class="c1"># off (skip LTO&#39;s link cost while iterating)</span>
+</code></pre></div>
 <ul>
 <li><strong>thin</strong> (default for <code>--lto</code>) maps to clang <code>-flto=thin</code> / gcc <code>-flto=auto</code>; clang additionally keeps a persistent ThinLTO cache under <code>&lt;build_dir&gt;/.cache/thinlto/</code> when the linker supports it (ld64 / lld / gold; GNU <code>bfd</code> is detected and the cache omitted). <strong>full</strong> is monolithic <code>-flto</code>.</li>
 <li><strong>Release only:</strong> debug builds never use LTO unless <code>--lto</code> is given explicitly. <strong>No separate build dir</strong> (unlike PGO/coverage) — LTO ships and is stable, so it rides <code>build_release</code>; toggling triggers a normal full rebuild.</li>
@@ -279,60 +2538,73 @@ blade build //foo:server -p release --lto=no       # off (skip LTO's link cost w
 <p><strong>Toolchain notes / robustness.</strong> clang and clang-cl <code>thin</code> is true ThinLTO (incremental, cached). gcc has no ThinLTO, so thin maps to gcc's parallel WHOPR (<code>-flto=auto</code>) — a different model with no persistent cache. Native MSVC's <code>/GL</code>+<code>/LTCG</code> keeps objects COFF (so <code>cc_check_undefined</code> reads them with <code>dumpbin</code>); clang-cl LTO emits bitcode, so the check routes to <code>llvm-nm</code> instead — both keep working. gcc's whole-program LTO is also <strong>less robust on large C++ binaries</strong>: gcc 15.x has been observed to ICE (<code>internal compiler error: in odr_types_equivalent_p, at ipa-devirt.cc</code>) when linking heavy protobuf/RPC binaries. An ICE is a compiler bug, not a code error — if you hit one, drop LTO for that binary with <code>--lto=no</code> (a per-TU <code>lto=False</code> won't help, since the failure is in the whole-program link). In short: clang ThinLTO is the well-trodden path; treat <strong>gcc full-program LTO as experimental</strong>. Runtime gains are also workload- and toolchain-dependent — concentrated on genuinely cross-module hot paths, often negligible elsewhere — so measure on your own hot paths before committing a project to it.</p>
 <p><strong>Self-registration / plugin patterns (a common gotcha).</strong> LTO's whole-program dead-code elimination can drop <strong>static-initializer registrations that are only reached by name at runtime</strong> — factory / plugin / dependency-injection registries, and self-registering objects in general (the <code>[[gnu::constructor]]</code> + register-into-a-map idiom). From LTO's whole-program view the registrar is unreferenced, so it — and its <code>Register(...)</code> side effect — is stripped; the runtime lookup then fails (<code>… not found</code> / a registry <code>CHECK</code>) even though the program builds and passes <strong>without</strong> LTO. (Note that "force-load the archive" tricks — <code>link_all_symbols</code> / <code>-Wl,--whole-archive</code> / <code>-Wl,-force_load</code> — do <strong>not</strong> save you here: they force the <em>object</em> to be linked, but LTO still internalizes and dead-strips the registrar. LTO does not honor force-load for symbol retention.) This is a property of the <em>code pattern</em>, not a blade or compiler defect, but it can fail a lot of tests at once if a project's DI mechanism uses it.</p>
 <p><strong>Make the registration survive LTO</strong> by keeping the registrar — mark it <code>[[gnu::used, gnu::retain]]</code> (<code>used</code> keeps it through LTO's DCE, <code>retain</code> through the linker's <code>--gc-sections</code>):</p>
-<pre><code class="language-cpp">[[gnu::constructor, gnu::used, gnu::retain]] static void register_foo() { registry.Register(&quot;foo&quot;, …); }
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">constructor</span><span class="p">,</span><span class="w"> </span><span class="n">gnu</span><span class="o">::</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">gnu</span><span class="o">::</span><span class="n">retain</span><span class="p">]]</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">register_foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
 <p><strong>When <code>used</code> + <code>retain</code> is not enough.</strong> Keeping the registrar only helps if the registry it writes into is a <strong>single instance</strong>. If the registry is reached through a vague-/COMDAT-linkage singleton — e.g. a <em>template function-local</em> <code>static</code> (<code>template&lt;class T&gt; T&amp; Get() { static T r; return r; }</code>) — <strong>ThinLTO can internalize it per translation unit</strong>: the registrar runs, but registers into <em>its</em> TU's copy while the lookup reads a <em>different</em> copy → still <code>not found</code>. The fix then is to make the registry <strong>one strong-linkage global</strong>, defined in a single <code>.cc</code> (not synthesized per-TU via a template/inline local static).</p>
 <p><strong>If you can't (or won't) fix the source, turn LTO off for that binary</strong> — <code>lto = False</code> on the target, or build it with <code>--lto=no</code>. That is the reliable resolution when the registry can't be made LTO-safe.</p>
 <p>Either way, <strong>run your test suite under LTO before shipping</strong> such a binary.</p>
-              
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../build_cache/" class="btn btn-neutral float-left" title="Build Cache"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../config/" class="btn btn-neutral float-right" title="Configuration System">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
-        </span>
-    
-    
-      <span><a href="../build_cache/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../config/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>

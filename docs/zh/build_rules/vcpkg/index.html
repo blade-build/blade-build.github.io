@@ -1,257 +1,2956 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/vcpkg/" />
-      <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>使用 vcpkg 包 - Blade Build</title>
-    <link rel="stylesheet" href="../../css/theme.css" />
-    <link rel="stylesheet" href="../../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../../css/extra.css" rel="stylesheet" />
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "\u4f7f\u7528 vcpkg \u5305";
-        var mkdocs_page_input_path = "build_rules/vcpkg.md";
-        var mkdocs_page_url = "/docs/zh/build_rules/vcpkg/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Blade 构建系统文档">
+      
+      
+      
+        <link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/vcpkg/">
+      
+      
+        <link rel="prev" href="../cc/">
+      
+      
+        <link rel="next" href="../go/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
-    <!--[if lt IE 9]>
-      <script src="../../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>使用 vcpkg 包 - Blade Build</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="../.." class="icon icon-home"> Blade Build
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">介绍</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">快速开始</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">用户指南</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../editor_support/">编辑器支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">构建规则</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../cc/">C/C++ 构建规则</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">使用 vcpkg 包</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_1">快速上手</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#vcpkgportlib">引用语法：vcpkg#&lt;port&gt;:&lt;lib&gt;</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">包白名单</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#port">单个 port 的选项</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#linkageauto-static-dynamic">linkage——auto / static / dynamic</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_3">单例库</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#link_all_symbols-true">link_all_symbols: True——强制运行静态初始化</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#include_prefix">include_prefix——重映射头文件路径</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cmake_options">cmake_options——额外构建选项</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_4">托管与非托管安装</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#managetrue">托管（manage=True，默认）</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#managefalse">非托管（manage=False）</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#port_1">多库 port</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_5">传递性库依赖</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#proto_library-vcpkg-protoc">为 proto_library 使用 vcpkg 的 protoc</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#port_2">仅头文件 port</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#port-port">查看有哪些 port 及 port 提供哪些库</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#baseline-port">某个 baseline 下有哪些 port、版本是什么</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#port_3">某个 port 提供哪些库</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_6">版本管理与可复现性</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#triplet">Triplet</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_7">大型仓库的封装</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_8">配置参考</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_9">排错</a>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">自定义规则构建</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">升级</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">开发文档</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">开发</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">C/C++ 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">配置项是如何加载、分层与读取的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">内置函数与 blade.* DSL</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">export_map（符号导出控制）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">Python 目标是如何构建与打包的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">blade-build 自身是如何被测试的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">blade test 如何运行用户测试</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">vcpkg 支持实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">Visibility 是如何实现与执行的</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
-                </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vcpkg" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Blade Build" class="md-header__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blade Build
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              使用 vcpkg 包
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../..">Blade Build</a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">构建规则</li>
-      <li class="breadcrumb-item active">使用 vcpkg 包</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/vcpkg.md">Edit on blade-build/blade-build</a>
-    </li>
-  </ul>
-  <hr/>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 用户手册
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../intro/" class="md-tabs__link">
+          
+  
+  
+  介绍
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prerequisites/" class="md-tabs__link">
+          
+  
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../workspace/" class="md-tabs__link">
+          
+  
+  
+  用户指南
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../cc/" class="md-tabs__link">
+          
+  
+  
+  构建规则
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../upgrade-to-v3/" class="md-tabs__link">
+          
+  
+  
+  升级
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../develop/" class="md-tabs__link">
+          
+  
+  
+  开发文档
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 常见问题
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="vcpkg">使用 vcpkg 包<a class="headerlink" href="#vcpkg" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Blade Build" class="md-nav__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Blade Build
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 用户手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    介绍
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 简介
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心特性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统前置要求与依赖
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速上手
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户指南
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    用户指南
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工作空间配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编写 BUILD 文件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DSL 和 API 模块
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行参考
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editor_support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编辑器支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    测试支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建产物与输出
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建缓存
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 优化（PGO / AutoFDO / LTO）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    辅助功能
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建规则
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    构建规则
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 构建规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用 vcpkg 包
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用 vcpkg 包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        快速上手
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vcpkgportlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引用语法：vcpkg#&lt;port&gt;:&lt;lib&gt;
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        包白名单
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单个 port 的选项
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单个 port 的选项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linkageauto-static-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkage——auto / static / dynamic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单例库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link_all_symbols-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        link_all_symbols: True——强制运行静态初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        include_prefix——重映射头文件路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmake_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cmake_options——额外构建选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        托管与非托管安装
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="托管与非托管安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managetrue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        托管（manage=True，默认）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managefalse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        非托管（manage=False）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多库 port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        传递性库依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proto_library-vcpkg-protoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为 proto_library 使用 vcpkg 的 protoc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅头文件 port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        查看有哪些 port 及 port 提供哪些库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看有哪些 port 及 port 提供哪些库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#baseline-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        某个 baseline 下有哪些 port、版本是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        某个 port 提供哪些库
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        版本管理与可复现性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triplet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triplet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        大型仓库的封装
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置参考
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        排错
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Go 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../idl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 protobuf 和 thrift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Java 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scala/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Scala 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lexyacc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 lex 和 yacc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件打包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Python 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shell Test 规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../swig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 SWIG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    升级
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrade-to-v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V3 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrade-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V2 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发文档
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/build_file_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BUILD 文件是如何被发现、加载与注册的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cc_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/check_undefined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    静态未定义符号检查（check_undefined）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项是如何加载、分层与读取的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    console：构建进度面板与 ninja 状态流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/dependency_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    依赖分析与 ninja 文件生成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/dsl_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内置函数与 blade.* DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/export_map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    export_map（符号导出控制）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_rule：自定义构建步骤与其它 target 如何感知它
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/hdrs_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 头文件依赖检查（hdrs check）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/java_scala_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java 与 Scala 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/protobuf_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proto_library 的多语言代码生成机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python 目标是如何构建与打包的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/self_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade-build 自身是如何被测试的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/test_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade test 如何运行用户测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vcpkg 支持实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visibility 是如何实现与执行的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 常见问题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        快速上手
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vcpkgportlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引用语法：vcpkg#&lt;port&gt;:&lt;lib&gt;
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        包白名单
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单个 port 的选项
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单个 port 的选项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linkageauto-static-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkage——auto / static / dynamic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单例库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link_all_symbols-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        link_all_symbols: True——强制运行静态初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        include_prefix——重映射头文件路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmake_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cmake_options——额外构建选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        托管与非托管安装
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="托管与非托管安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managetrue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        托管（manage=True，默认）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managefalse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        非托管（manage=False）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多库 port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        传递性库依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proto_library-vcpkg-protoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为 proto_library 使用 vcpkg 的 protoc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅头文件 port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        查看有哪些 port 及 port 提供哪些库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看有哪些 port 及 port 提供哪些库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#baseline-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        某个 baseline 下有哪些 port、版本是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        某个 port 提供哪些库
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        版本管理与可复现性
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triplet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triplet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        大型仓库的封装
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置参考
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        排错
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="vcpkg">使用 vcpkg 包<a class="headerlink" href="#vcpkg" title="Permanent link">&para;</a></h1>
 <p>Blade 可以把 <a href="https://github.com/microsoft/vcpkg">vcpkg</a>（微软的跨平台 C/C++
 包管理器，约 2500 个 port）中的库作为一等依赖直接使用，与源码目标、系统库并列。
 在目标的 <code>deps</code> 中用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 引用，在 <code>BLADE_ROOT</code> 中一次性声明允许
@@ -263,38 +2962,38 @@
 <li><strong>准备 vcpkg。</strong> 克隆并 bootstrap，然后设置 <code>VCPKG_ROOT</code> 或把 <code>vcpkg</code>
    可执行文件放进 <code>PATH</code>：</li>
 </ol>
-<p><code>bash
-   git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
-   ~/vcpkg/bootstrap-vcpkg.sh        # Windows 上是 bootstrap-vcpkg.bat
-   export VCPKG_ROOT=~/vcpkg</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/microsoft/vcpkg.git<span class="w"> </span>~/vcpkg
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>~/vcpkg/bootstrap-vcpkg.sh<span class="w">        </span><span class="c1"># Windows 上是 bootstrap-vcpkg.bat</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VCPKG_ROOT</span><span class="o">=</span>~/vcpkg
+</code></pre></div>
 <ol>
 <li><strong>在 <code>BLADE_ROOT</code> 中声明允许的包</strong>：</li>
 </ol>
-<p><code>python
-   vcpkg_config(
-       baseline = '2024-12-15',          # 固定 ports 树（推荐）
-       packages = {
-           'fmt': '10.2.1',
-           'openssl': '3.2.1',
-       },
-   )</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">baseline</span> <span class="o">=</span> <span class="s1">&#39;2024-12-15&#39;</span><span class="p">,</span>          <span class="c1"># 固定 ports 树（推荐）</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">},</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+</code></pre></div>
 <ol>
 <li><strong>用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 声明依赖</strong>：</li>
 </ol>
-<p><code>python
-   cc_binary(
-       name = 'app',
-       srcs = ['app.cc'],
-       deps = [
-           'vcpkg#fmt:fmt',
-           'vcpkg#openssl:ssl',
-       ],
-   )</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cc_binary</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;app.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">&#39;vcpkg#fmt:fmt&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="p">],</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+</code></pre></div>
 <ol>
 <li><strong>构建。</strong> 默认情况下 Blade 会安装所声明的包并完成链接：</li>
 </ol>
-<p><code>bash
-   blade build //:app</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>blade<span class="w"> </span>build<span class="w"> </span>//:app
+</code></pre></div>
 <h2 id="vcpkgportlib">引用语法：<code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code><a class="headerlink" href="#vcpkgportlib" title="Permanent link">&para;</a></h2>
 <p>vcpkg 依赖是 Blade <code>#name</code> 系统库家族的扩展。<code>#</code> 本就表示“不在本工作区从源码
 构建的库”（<code>#pthread</code>、<code>#dl</code>）；在 <code>#</code> 前加一个 scheme 表示这个库来自哪里——这里
@@ -329,13 +3028,13 @@
 <p><code>vcpkg_config(packages=...)</code> 是“哪些 port 可被引用”的唯一事实来源。引用未列出的
 port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明、统一管理版本。每个值是版本字符串，
 或带下列键的字典：</p>
-<pre><code class="language-python">vcpkg_config(
-    packages = {
-        'fmt': '10.2.1',                                   # 简写
-        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
-    },
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>                                   <span class="c1"># 简写</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;curl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;8.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span> <span class="s1">&#39;http2&#39;</span><span class="p">]},</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">},</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="port">单个 port 的选项<a class="headerlink" href="#port" title="Permanent link">&para;</a></h2>
 <p>字典形式的包可带这些键：</p>
 <table>
@@ -399,9 +3098,9 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 的 descriptor pool 查不到另一个模块注册的内容（段错误）。默认的 <strong><code>'auto'</code></strong> 已经
 避免了这点：每个 <code>dynamic_link</code> 消费者都链接同一份共享实例。只有要覆盖默认行为时
 才需要显式指定 <code>linkage</code>——例如用 <code>'dynamic'</code> 强制连静态链接的二进制也用共享库：</p>
-<pre><code class="language-python">'protobuf': {'version': '3.21.12'},   # 'auto' 默认：所有 dylib 共享同一份
-                                      # libprotobuf，静态 exe 仍用静态库
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s1">&#39;protobuf&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;3.21.12&#39;</span><span class="p">},</span>   <span class="c1"># &#39;auto&#39; 默认：所有 dylib 共享同一份</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                      <span class="c1"># libprotobuf，静态 exe 仍用静态库</span>
+</code></pre></div>
 <h3 id="link_all_symbols-true"><code>link_all_symbols: True</code>——强制运行静态初始化<a class="headerlink" href="#link_all_symbols-true" title="Permanent link">&para;</a></h3>
 <p>对只被静态链接<strong>一次</strong>的 port，链接器可能丢弃未被引用的目标文件——包括其中做注册
 的静态初始化。<code>link_all_symbols</code> 对该库做 whole-archive，使它们都运行。（上面单例库
@@ -410,18 +3109,18 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 <p>某个 port 可能把头文件装在 <code>include/</code> 顶层（如 <code>snappy.h</code>），而你的代码按子目录
 包含（<code>"snappy/snappy.h"</code>）。<code>include_prefix</code> 把该 port 的 include 目录暴露在你
 使用的路径下，无需手写包装头；port 的原生布局也仍然可用：</p>
-<pre><code class="language-python">'snappy': {'include_prefix': 'snappy'},          # &quot;snappy/h&quot; -&gt; include/h
-'zlib':   {'include_prefix': ['zlib', 'thirdparty/zlib']},  # 两个前缀
-# {前缀: 子目录} 映射到 port include 中已有的子目录：
-'glog':   {'linkage': 'dynamic',
-           'include_prefix': {'thirdparty/glog': 'glog'}},   # -&gt; include/glog/h
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">},</span>          <span class="c1"># &quot;snappy/h&quot; -&gt; include/h</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">&#39;zlib&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span> <span class="s1">&#39;thirdparty/zlib&#39;</span><span class="p">]},</span>  <span class="c1"># 两个前缀</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># {前缀: 子目录} 映射到 port include 中已有的子目录：</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">&#39;glog&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;linkage&#39;</span><span class="p">:</span> <span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>           <span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;thirdparty/glog&#39;</span><span class="p">:</span> <span class="s1">&#39;glog&#39;</span><span class="p">}},</span>   <span class="c1"># -&gt; include/glog/h</span>
+</code></pre></div>
 <h3 id="cmake_options"><code>cmake_options</code>——额外构建选项<a class="headerlink" href="#cmake_options" title="Permanent link">&para;</a></h3>
 <p>为单个 port 传入 CMake 配置选项（生成为该 port 的
 <code>VCPKG_CMAKE_CONFIGURE_OPTIONS</code>）。例如 vcpkg 的 snappy 默认关闭 RTTI：</p>
-<pre><code class="language-python">'snappy': {'include_prefix': 'snappy',
-           'cmake_options': ['-DSNAPPY_WITH_RTTI=ON']},
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           <span class="s1">&#39;cmake_options&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-DSNAPPY_WITH_RTTI=ON&#39;</span><span class="p">]},</span>
+</code></pre></div>
 <h2 id="_4">托管与非托管安装<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p><code>vcpkg_config(manage=...)</code> 决定由谁来执行 <code>vcpkg install</code>。</p>
 <h3 id="managetrue">托管（<code>manage=True</code>，默认）<a class="headerlink" href="#managetrue" title="Permanent link">&para;</a></h3>
@@ -436,17 +3135,17 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 <p>由你自己执行 <code>vcpkg install</code>，Blade 只从既有安装树
 <code>&lt;root&gt;/installed/&lt;triplet&gt;/</code> 解析路径，其中 <code>&lt;root&gt;</code> 为 <code>vcpkg_config.root</code> 或
 <code>$VCPKG_ROOT</code>：</p>
-<pre><code class="language-bash">vcpkg install fmt openssl          # 自己安装
-</code></pre>
-<pre><code class="language-python">vcpkg_config(manage = False, packages = {'fmt': '10.2.1', 'openssl': '3.2.1'})
-</code></pre>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vcpkg<span class="w"> </span>install<span class="w"> </span>fmt<span class="w"> </span>openssl<span class="w">          </span><span class="c1"># 自己安装</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">vcpkg_config</span><span class="p">(</span><span class="n">manage</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span> <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">})</span>
+</code></pre></div></p>
 <h2 id="port_1">多库 port<a class="headerlink" href="#port_1" title="Permanent link">&para;</a></h2>
 <p><code>openssl</code>、<code>protobuf</code>、<code>icu</code> 等 port 会产出多个归档。每个都是独立目标，按需声明：</p>
-<pre><code class="language-python">deps = [
-    'vcpkg#openssl:ssl',         # libssl.a
-    'vcpkg#openssl:crypto',      # libcrypto.a
-]
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>         <span class="c1"># libssl.a</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">,</span>      <span class="c1"># libcrypto.a</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">]</span>
+</code></pre></div>
 <p>裸写 <code>vcpkg#openssl</code> 会被拒绝，因此不会拉入用不到的库。</p>
 <h2 id="_5">传递性库依赖<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>一个 port 可能依赖其他它自身并不打包的 vcpkg 库——典型的是 <code>protobuf</code>（v22+），
@@ -459,24 +3158,24 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 <p>protobuf 把 <code>protoc</code> 编译器与其运行时版本强耦合，因此生成的 <code>.pb.cc</code> 必须由与所
 链接 <code>libprotobuf</code> 匹配的 <code>protoc</code> 产生。把 <code>proto_library_config</code> 指向 vcpkg 提供
 的 protoc（与 libprotobuf），让二者来自同一个被 pin 的 port：</p>
-<pre><code class="language-python">proto_library_config(
-    protoc = 'vcpkg#protobuf',                 # 来自 vcpkg protobuf port 的 protoc
-    protobuf_libs = ['vcpkg#protobuf:protobuf'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">proto_library_config</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;vcpkg#protobuf&#39;</span><span class="p">,</span>                 <span class="c1"># 来自 vcpkg protobuf port 的 protoc</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#protobuf:protobuf&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">)</span>
+</code></pre></div>
 <p><code>'vcpkg#&lt;port&gt;'</code> 会解析为安装在 Blade vcpkg 树中的 protoc。解析出的 protoc 二进制
 会被作为构建输入跟踪，因此升级被 pin 的 protobuf 版本会自动重新生成代码（不会残留
 过期的 <code>.pb.*</code>）。</p>
 <h2 id="port_2">仅头文件 port<a class="headerlink" href="#port_2" title="Permanent link">&para;</a></h2>
 <p>仅头文件的 port 用 <code>:hdrs</code> 哨兵——Blade 暴露 include 目录，不链接任何归档：</p>
-<pre><code class="language-python">deps = ['vcpkg#nlohmann-json:hdrs']
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#nlohmann-json:hdrs&#39;</span><span class="p">]</span>
+</code></pre></div>
 <h2 id="port-port">查看有哪些 port 及 port 提供哪些库<a class="headerlink" href="#port-port" title="Permanent link">&para;</a></h2>
 <h3 id="baseline-port">某个 baseline 下有哪些 port、版本是什么<a class="headerlink" href="#baseline-port" title="Permanent link">&para;</a></h3>
 <p>可用的 port 及其默认版本由 <code>baseline</code>（对应 ports 树的某次提交）决定。查看方式：</p>
-<pre><code class="language-bash">vcpkg search            # ports 树中的所有 port 及其版本
-vcpkg search fmt        # 名称/描述匹配 &quot;fmt&quot; 的 port
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>vcpkg<span class="w"> </span>search<span class="w">            </span><span class="c1"># ports 树中的所有 port 及其版本</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>vcpkg<span class="w"> </span>search<span class="w"> </span>fmt<span class="w">        </span><span class="c1"># 名称/描述匹配 &quot;fmt&quot; 的 port</span>
+</code></pre></div>
 <p><code>vcpkg search</code> 反映的是 ports 树当前检出的状态。要查看某个具体 <code>baseline</code>，先把
 vcpkg 仓库检出到该提交（<code>git -C $VCPKG_ROOT checkout &lt;baseline&gt;</code>），或直接读版本
 数据库：</p>
@@ -490,12 +3189,12 @@ vcpkg 仓库检出到该提交（<code>git -C $VCPKG_ROOT checkout &lt;baseline&
 <p><code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 引用的是归档 <code>lib&lt;lib&gt;.a</code>，其 basename 可能与 port 名不同
 （<code>boost-filesystem</code> → <code>libboost_filesystem.a</code>；<code>openssl</code> → <code>libssl.a</code> +
 <code>libcrypto.a</code>）。从安装树里读取确切的库名：</p>
-<pre><code class="language-bash"># 托管模式（manage=True）：在构建目录下，使用 blade- overlay triplet
-ls build_release/.cache/vcpkg/installed/blade-&lt;triplet&gt;/lib/lib*.a
-
-# 非托管模式（manage=False）：在 vcpkg 根目录下
-ls $VCPKG_ROOT/installed/&lt;triplet&gt;/lib/lib*.a
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># 托管模式（manage=True）：在构建目录下，使用 blade- overlay triplet</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ls<span class="w"> </span>build_release/.cache/vcpkg/installed/blade-&lt;triplet&gt;/lib/lib*.a
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># 非托管模式（manage=False）：在 vcpkg 根目录下</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>ls<span class="w"> </span><span class="nv">$VCPKG_ROOT</span>/installed/&lt;triplet&gt;/lib/lib*.a
+</code></pre></div>
 <p>每个 <code>lib&lt;name&gt;.a</code> 都以 <code>vcpkg#&lt;port&gt;:&lt;name&gt;</code> 引用。另有两个来源：</p>
 <ul>
 <li><code>…/installed/&lt;triplet&gt;/lib/pkgconfig/&lt;pkg&gt;.pc</code>——<code>Libs:</code> 行列出该 port 导出的
@@ -544,13 +3243,13 @@ ls $VCPKG_ROOT/installed/&lt;triplet&gt;/lib/lib*.a
 <h2 id="_7">大型仓库的封装<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <p>如果你的仓库已经通过 <code>//third_party/</code> 层统一管理第三方代码，可以把 <code>vcpkg#</code>
 引用藏在普通 <code>cc_library</code> 封装之后，业务代码不直接接触：</p>
-<pre><code class="language-python"># //third_party/openssl/BUILD
-cc_library(name='ssl',    deps=['vcpkg#openssl:ssl'],    visibility='PUBLIC')
-cc_library(name='crypto', deps=['vcpkg#openssl:crypto'], visibility='PUBLIC')
-
-# //services/payment/BUILD
-cc_library(name='payment', srcs=['payment.cc'], deps=['//third_party/openssl:ssl'])
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># //third_party/openssl/BUILD</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">],</span>    <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;crypto&#39;</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">],</span> <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># //services/payment/BUILD</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span> <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;payment.cc&#39;</span><span class="p">],</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;//third_party/openssl:ssl&#39;</span><span class="p">])</span>
+</code></pre></div>
 <h2 id="_8">配置参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <p>所有设置都在 <code>BLADE_ROOT</code> 的 <code>vcpkg_config(...)</code> 中。完整字段（<code>manage</code>、
 <code>baseline</code>、<code>packages</code>、<code>registries</code>、<code>root</code>、<code>triplet</code>、<code>install_dir</code>、
@@ -568,55 +3267,68 @@ cc_library(name='payment', srcs=['payment.cc'], deps=['//third_party/openssl:ssl
 <li><strong><code>a port must name a library</code></strong>——引用缺少 <code>:lib</code>；用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>
   （或 <code>vcpkg#&lt;port&gt;:hdrs</code>）。</li>
 </ul>
-              
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../cc/" class="btn btn-neutral float-left" title="C/C++ 构建规则"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../go/" class="btn btn-neutral float-right" title="构建 Go 目标">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
-        </span>
-    
-    
-      <span><a href="../cc/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../go/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "../..";</script>
-    <script src="../../js/theme_extra.js"></script>
-    <script src="../../js/theme.js"></script>
-      <script src="../../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>

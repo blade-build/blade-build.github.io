@@ -1,211 +1,2470 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/optimization/" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>C/C++ 优化（PGO / AutoFDO / LTO） - Blade Build</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../css/extra.css" rel="stylesheet" />
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "C/C++ \u4f18\u5316\uff08PGO / AutoFDO / LTO\uff09";
-        var mkdocs_page_input_path = "optimization.md";
-        var mkdocs_page_url = "/docs/zh/optimization/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Blade 构建系统文档">
+      
+      
+      
+        <link rel="canonical" href="https://blade-build.github.io/docs/zh/optimization/">
+      
+      
+        <link rel="prev" href="../build_cache/">
+      
+      
+        <link rel="next" href="../config/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>C/C++ 优化（PGO / AutoFDO / LTO） - Blade Build</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Blade Build
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">介绍</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">快速开始</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">用户指南</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">编写 BUILD 文件</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../editor_support/">编辑器支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../test/">测试支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ 优化（PGO / AutoFDO / LTO）</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#pgo">按性能剖析引导优化（PGO）</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#pgoautofdo">采样式 PGO（AutoFDO）</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lto">链接期优化（LTO）</a>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../config/">配置系统</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">构建规则</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">升级</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">开发文档</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/">开发</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">C/C++ 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">配置项是如何加载、分层与读取的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">内置函数与 blade.* DSL</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">export_map（符号导出控制）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">Python 目标是如何构建与打包的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">blade-build 自身是如何被测试的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">blade test 如何运行用户测试</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">vcpkg 支持实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">Visibility 是如何实现与执行的</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
-                </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cc-pgo-autofdo-lto" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Blade Build" class="md-header__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blade Build
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              C/C++ 优化（PGO / AutoFDO / LTO）
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Blade Build</a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">用户指南</li>
-      <li class="breadcrumb-item active">C/C++ 优化（PGO / AutoFDO / LTO）</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/optimization.md">Edit on blade-build/blade-build</a>
-    </li>
-  </ul>
-  <hr/>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 用户手册
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../intro/" class="md-tabs__link">
+          
+  
+  
+  介绍
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../prerequisites/" class="md-tabs__link">
+          
+  
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+  用户指南
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../build_rules/cc/" class="md-tabs__link">
+          
+  
+  
+  构建规则
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../upgrade-to-v3/" class="md-tabs__link">
+          
+  
+  
+  升级
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../develop/" class="md-tabs__link">
+          
+  
+  
+  开发文档
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 常见问题
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="cc-pgo-autofdo-lto">C/C++ 优化（PGO / AutoFDO / LTO）<a class="headerlink" href="#cc-pgo-autofdo-lto" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Blade Build" class="md-nav__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Blade Build
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 用户手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    介绍
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 简介
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心特性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统前置要求与依赖
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速上手
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户指南
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    用户指南
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工作空间配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编写 BUILD 文件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DSL 和 API 模块
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行参考
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor_support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编辑器支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    测试支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建产物与输出
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建缓存
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 优化（PGO / AutoFDO / LTO）
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 优化（PGO / AutoFDO / LTO）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        按性能剖析引导优化（PGO）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="按性能剖析引导优化（PGO）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pgoautofdo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        采样式 PGO（AutoFDO）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        链接期优化（LTO）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    辅助功能
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建规则
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    构建规则
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/cc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 构建规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用 vcpkg 包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Go 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/idl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 protobuf 和 thrift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Java 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/scala/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Scala 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/lexyacc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 lex 和 yacc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件打包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Python 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shell Test 规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/swig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 SWIG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/extension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    升级
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V3 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V2 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发文档
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/build_file_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BUILD 文件是如何被发现、加载与注册的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/cc_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/check_undefined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    静态未定义符号检查（check_undefined）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项是如何加载、分层与读取的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    console：构建进度面板与 ninja 状态流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dependency_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    依赖分析与 ninja 文件生成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dsl_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内置函数与 blade.* DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/export_map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    export_map（符号导出控制）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_rule：自定义构建步骤与其它 target 如何感知它
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/hdrs_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 头文件依赖检查（hdrs check）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/java_scala_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java 与 Scala 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/protobuf_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proto_library 的多语言代码生成机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/python_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python 目标是如何构建与打包的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/self_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade-build 自身是如何被测试的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/test_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade test 如何运行用户测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vcpkg 支持实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visibility 是如何实现与执行的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 常见问题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        按性能剖析引导优化（PGO）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="按性能剖析引导优化（PGO）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pgoautofdo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        采样式 PGO（AutoFDO）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        链接期优化（LTO）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cc-pgo-autofdo-lto">C/C++ 优化（PGO / AutoFDO / LTO）<a class="headerlink" href="#cc-pgo-autofdo-lto" title="Permanent link">&para;</a></h1>
 <p>为 <strong>release</strong> C/C++ 构建榨取更多性能的进阶、可选技术：</p>
 <ul>
 <li><strong><a href="#按性能剖析引导优化pgo">按性能剖析引导优化（PGO）</a></strong> —— 插桩、跑代表性负载、用采集到的 profile 重建。</li>
@@ -216,13 +2475,13 @@
 <h2 id="pgo">按性能剖析引导优化（PGO）<a class="headerlink" href="#pgo" title="Permanent link">&para;</a></h2>
 <p>PGO(Profile-guided optimization)又称 FDO(feedback-directed optimization) 是指利用程序真实运行过程中采集到的 profile 数据，来指导编译器优化的技术。</p>
 <p>PGO 是一个<strong>全局构建模式</strong>（不是 per-target 属性）：先对整个构建插桩，跑一遍代表性负载，再用采集到的 profile 重新构建。目前接入了 <strong>gcc、clang 与原生 MSVC</strong>；两个阶段都使用独立的 <code>build_*_pgo</code> 目录，绝不污染普通的 <code>build_*</code> 对象。</p>
-<pre><code class="language-bash"># 第一阶段——插桩，然后跑代表性负载采集数据
-blade build //foo:server --profile-generate=/tmp/pgo
-./build_release_pgo/foo/server   # 充分跑热点路径
-
-# 第二阶段——用 profile 做优化重建
-blade build //foo:server --profile-use=/tmp/pgo
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 第一阶段——插桩，然后跑代表性负载采集数据</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--profile-generate<span class="o">=</span>/tmp/pgo
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./build_release_pgo/foo/server<span class="w">   </span><span class="c1"># 充分跑热点路径</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 第二阶段——用 profile 做优化重建</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--profile-use<span class="o">=</span>/tmp/pgo
+</code></pre></div>
 <p>blade 替你处理的工具链差异：</p>
 <ul>
 <li><strong>gcc</strong> 直接读 <code>.gcda</code> 文件，并加 <code>-fprofile-correction</code>（容忍多线程程序的计数偏差）。两阶段<strong>必须</strong>共用构建目录——gcc 按对象文件路径定位 <code>.gcda</code>——独立的 <code>build_*_pgo</code> 目录正好保证了这一点。</li>
@@ -236,22 +2495,22 @@ blade build //foo:server --profile-use=/tmp/pgo
 <h3 id="pgoautofdo">采样式 PGO（AutoFDO）<a class="headerlink" href="#pgoautofdo" title="Permanent link">&para;</a></h3>
 <p>上面那套插桩式 PGO 要"插桩构建 → 跑负载 → 优化构建"两遍构建，比较繁琐，且插桩本身有运行开销。</p>
 <p>AutoFDO 是 PGO 的<strong>免插桩</strong>形态：不做插桩构建，而是对一个<strong>普通优化</strong>二进制采样，再用结果重建。采集开销约 1%（插桩约 2×），因此 profile 可以直接取自线上真实流量。<strong>gcc/clang</strong>（用 <code>perf</code> 采样）和<strong>原生 MSVC</strong>（用 <code>xperf</code> 采样——见下面的 SPGO）都支持。使用独立的 <code>build_*_autofdo</code> 目录。</p>
-<pre><code class="language-bash"># 第一阶段——带 AutoFDO 友好的调试信息构建，再用 perf 采样
-blade build //foo:server --autofdo-generate
-perf record -b -- ./build_release_autofdo/foo/server     # -b 开启 LBR 分支记录
-
-# 自己把 perf.data 转成 sample profile（转换需要被采集的二进制）：
-#   clang: llvm-profgen --perfdata=perf.data --binary=build_release_autofdo/foo/server --output=foo.prof
-#   gcc:   create_gcov  --binary=build_release_autofdo/foo/server --profile=perf.data --gcov=foo.afdo
-
-# 第二阶段——用转换后的 profile 重建
-blade build //foo:server --autofdo-use=foo.prof
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 第一阶段——带 AutoFDO 友好的调试信息构建，再用 perf 采样</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-generate
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>perf<span class="w"> </span>record<span class="w"> </span>-b<span class="w"> </span>--<span class="w"> </span>./build_release_autofdo/foo/server<span class="w">     </span><span class="c1"># -b 开启 LBR 分支记录</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># 自己把 perf.data 转成 sample profile（转换需要被采集的二进制）：</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">#   clang: llvm-profgen --perfdata=perf.data --binary=build_release_autofdo/foo/server --output=foo.prof</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">#   gcc:   create_gcov  --binary=build_release_autofdo/foo/server --profile=perf.data --gcov=foo.afdo</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># 第二阶段——用转换后的 profile 重建</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-use<span class="o">=</span>foo.prof
+</code></pre></div>
 <p><strong>典型用法——每个版本一次构建（稳态）。</strong> 与插桩式 PGO（总要一个单独的<em>慢速插桩</em>构建）不同，AutoFDO 的采集二进制是<strong>普通</strong>二进制,所以一旦有了 profile,就把两个阶段合成<strong>一次既优化又可采集的构建</strong>：</p>
-<pre><code class="language-bash"># 每个版本：用上一轮的 profile 做优化,同时保持可被采样以供下一轮。
-blade build //foo:server --autofdo-generate --autofdo-use=foo.prof
-# 发布 -&gt; 线上采样 -&gt; 转换 -&gt; 喂给*下一个*版本的 --autofdo-use
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 每个版本：用上一轮的 profile 做优化,同时保持可被采样以供下一轮。</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>--autofdo-generate<span class="w"> </span>--autofdo-use<span class="o">=</span>foo.prof
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># 发布 -&gt; 线上采样 -&gt; 转换 -&gt; 喂给*下一个*版本的 --autofdo-use</span>
+</code></pre></div>
 <p><code>--autofdo-generate</code> 与 <code>--autofdo-use</code> 在三套工具链上都能<strong>叠加</strong>（gcc/clang 在 <code>-fprofile-sample-use</code>/<code>-fauto-profile</code> 之外再加调试信息；MSVC 在 <code>/spdin:</code> 之外再链接 <code>/spgo</code>——已在 MSVC 14.51、x64 与 ARM64 上验证合法）。于是稳态下每次构建都同时是"用上轮 profile 优化"和"为下轮采集",<strong>没有额外的专门构建</strong>。（第一次先单独跑 <code>--autofdo-generate</code> 引导出首个 profile。）AutoFDO 的调试标志开销很小,你也可以把它们固化进 release 配置,日常只传 <code>--autofdo-use</code>。</p>
 <ul>
 <li><strong>clang</strong> → <code>-fprofile-sample-use=&lt;profile&gt;</code>；采集构建额外加 <code>-fdebug-info-for-profiling</code> + <code>-funique-internal-linkage-names</code>（采样到源码的映射更准）。</li>
@@ -266,10 +2525,10 @@ blade build //foo:server --autofdo-generate --autofdo-use=foo.prof
 </blockquote>
 <h2 id="lto">链接期优化（LTO）<a class="headerlink" href="#lto" title="Permanent link">&para;</a></h2>
 <p>LTO 在链接期做跨模块优化（内联、去虚化、死代码消除）。一个项目是否带 LTO 发布是一个<strong>稳定决策</strong>，所以主控是项目内禀属性 <a href="../config/#cc_config"><code>cc_config(lto='thin')</code></a>，<code>--lto</code> 标志只是逐次覆盖它。</p>
-<pre><code class="language-bash">blade build //foo:server -p release --lto          # 本次构建用 ThinLTO
-blade build //foo:server -p release --lto=full     # 单体 LTO
-blade build //foo:server -p release --lto=no       # 关闭（开发迭代时跳过 LTO 的链接耗时）
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="w">          </span><span class="c1"># 本次构建用 ThinLTO</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="o">=</span>full<span class="w">     </span><span class="c1"># 单体 LTO</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo:server<span class="w"> </span>-p<span class="w"> </span>release<span class="w"> </span>--lto<span class="o">=</span>no<span class="w">       </span><span class="c1"># 关闭（开发迭代时跳过 LTO 的链接耗时）</span>
+</code></pre></div>
 <ul>
 <li><strong>thin</strong>（<code>--lto</code> 的默认）映射到 clang <code>-flto=thin</code> / gcc <code>-flto=auto</code>；clang 在链接器支持时还会在 <code>&lt;build_dir&gt;/.cache/thinlto/</code> 下维护一个持久 ThinLTO 缓存（ld64 / lld / gold 支持；检测到 GNU <code>bfd</code> 时省略缓存）。<strong>full</strong> 是单体 <code>-flto</code>。</li>
 <li><strong>仅 release：</strong> debug 构建除非显式给 <code>--lto</code>，否则永不启用 LTO。<strong>无独立构建目录</strong>（与 PGO/coverage 不同）—— LTO 会发布且稳定，沿用 <code>build_release</code>；开关它会触发一次正常的全量重建。</li>
@@ -279,60 +2538,73 @@ blade build //foo:server -p release --lto=no       # 关闭（开发迭代时跳
 <p><strong>工具链说明 / 健壮性。</strong> clang 与 clang-cl 的 thin 是真正的 ThinLTO（增量、带缓存）。gcc 没有 ThinLTO,所以 thin 映射到 gcc 的并行 WHOPR（<code>-flto=auto</code>）——另一套模型,没有持久缓存。原生 MSVC 的 <code>/GL</code>+<code>/LTCG</code> 让对象保持 COFF（故 <code>cc_check_undefined</code> 用 <code>dumpbin</code> 读取）；clang-cl LTO 产出 bitcode,检查改走 <code>llvm-nm</code>——两者都照常工作。gcc 的整程序 LTO 在<strong>大型 C++ 二进制上也不够健壮</strong>:已观察到 gcc 15.x 在链接重度 protobuf/RPC 二进制时 ICE(<code>internal compiler error: in odr_types_equivalent_p, at ipa-devirt.cc</code>)。ICE 是编译器 bug,不是代码错误——遇到时用 <code>--lto=no</code> 对那个二进制关掉 LTO(按 TU 的 <code>lto=False</code> 救不了,因为失败发生在整程序链接)。一句话:clang ThinLTO 是成熟路径,<strong>gcc 整程序 LTO 当作实验性对待</strong>。运行时收益也依赖工作负载与工具链——集中在真正跨模块的热路径上,其它地方往往可忽略——所以把项目切到 LTO 前,先在你自己的热路径上实测。</p>
 <p><strong>自注册 / 插件模式（常见坑）。</strong> LTO 的整程序死代码消除会<strong>删掉那些只在运行期按名字查找的静态初始化注册</strong>——工厂 / 插件 / 依赖注入（DI）注册表，以及一般的自注册对象（<code>[[gnu::constructor]]</code> + 注册进 map 的惯用法）。从 LTO 的整程序视角看，注册器无人引用，于是它连同 <code>Register(...)</code> 的副作用一起被删除；运行期查找随即失败（<code>… not found</code> 或注册表 <code>CHECK</code> 失败），尽管<strong>不开 LTO</strong> 时构建与测试都通过。（注意：靠"强制加载归档"的招数——<code>link_all_symbols</code> / <code>-Wl,--whole-archive</code> / <code>-Wl,-force_load</code>——<strong>救不了</strong>：它们只强制把<em>对象</em>链接进来，LTO 仍会把注册器内部化并死剥离。LTO 并不为保留符号而尊重 force-load。）这是<em>代码模式</em>的性质，不是 blade 或编译器的缺陷；但当项目的 DI 机制用到它时，会一次性挂掉大量测试。</p>
 <p><strong>让注册在 LTO 下存活</strong>的办法是保住注册器——给它加 <code>[[gnu::used, gnu::retain]]</code>（<code>used</code> 让它躲过 LTO 的 DCE，<code>retain</code> 让它躲过链接器的 <code>--gc-sections</code>）：</p>
-<pre><code class="language-cpp">[[gnu::constructor, gnu::used, gnu::retain]] static void register_foo() { registry.Register(&quot;foo&quot;, …); }
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">constructor</span><span class="p">,</span><span class="w"> </span><span class="n">gnu</span><span class="o">::</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">gnu</span><span class="o">::</span><span class="n">retain</span><span class="p">]]</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">register_foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
 <p><strong><code>used</code> + <code>retain</code> 仍不够的情形。</strong> 保住注册器，只有在它写入的注册表是<strong>单一实例</strong>时才有用。如果注册表是经由 vague-/COMDAT 链接的单例访问的——例如一个<em>模板函数内的局部</em> <code>static</code>（<code>template&lt;class T&gt; T&amp; Get() { static T r; return r; }</code>）——<strong>ThinLTO 可能把它按 TU 内部化</strong>：注册器跑了，但注册进<em>它那个</em> TU 的副本，而查找读的是<em>另一个</em>副本 → 仍然 <code>not found</code>。这时的修法是把注册表做成<strong>单个强链接的全局</strong>，在单个 <code>.cc</code> 里定义（而不是经由模板/inline 局部 static 按 TU 合成）。</p>
 <p><strong>如果无法（或不想）改源码，就对该二进制关掉 LTO</strong> —— 在目标上设 <code>lto = False</code>，或用 <code>--lto=no</code> 构建。当注册表无法被改造为 LTO-safe 时，这是可靠的解决办法。</p>
 <p>无论哪种，发布这类二进制前<strong>务必在 LTO 下跑一遍测试套件</strong>。</p>
-              
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../build_cache/" class="btn btn-neutral float-left" title="构建缓存"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../config/" class="btn btn-neutral float-right" title="配置系统">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
-        </span>
-    
-    
-      <span><a href="../build_cache/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../config/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>

@@ -1,291 +1,3280 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/cc/" />
-      <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>C/C++ 构建规则 - Blade Build</title>
-    <link rel="stylesheet" href="../../css/theme.css" />
-    <link rel="stylesheet" href="../../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../../css/extra.css" rel="stylesheet" />
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "C/C++ \u6784\u5efa\u89c4\u5219";
-        var mkdocs_page_input_path = "build_rules/cc.md";
-        var mkdocs_page_url = "/docs/zh/build_rules/cc/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Blade 构建系统文档">
+      
+      
+      
+        <link rel="canonical" href="https://blade-build.github.io/docs/zh/build_rules/cc/">
+      
+      
+        <link rel="prev" href="../../misc/">
+      
+      
+        <link rel="next" href="../vcpkg/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
-    <!--[if lt IE 9]>
-      <script src="../../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>C/C++ 构建规则 - Blade Build</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="../.." class="icon icon-home"> Blade Build
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../..">Blade 用户手册</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">介绍</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../intro/">Blade 简介</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../features/">核心特性</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">快速开始</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../prerequisites/">系统前置要求与依赖</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../install/">安装指南</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../quick_start/">快速上手</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">用户指南</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../workspace/">工作空间配置</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../build_file/">编写 BUILD 文件</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../dsl/">DSL 和 API 模块</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../functions/">构建函数</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../command_line/">命令行参考</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../editor_support/">编辑器支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../test/">测试支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../output/">构建产物与输出</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../build_cache/">构建缓存</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../config/">配置系统</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../misc/">辅助功能</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">构建规则</span></p>
-              <ul class="current">
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">C/C++ 构建规则</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_1">源语言</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">第三方库</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc_1">C/C++ 通用属性</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#warningstring-yes-no">warning：string = ['yes', 'no']</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#defsstring">defs：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#incsstring">incs：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#optimizestring">optimize：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#extra_cppflagsstring">extra_cppflags：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#extra_cflags-extra_cxxflags-extra_asflagsstring">extra_cflags / extra_cxxflags / extra_asflags：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#extra_linkflagsstring">extra_linkflags：string[] = []</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#linkflagsstring-none">linkflags：string[] = None</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc_library">cc_library</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#hdrs">修复 hdrs 引发的依赖缺失的检查问题</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_3">检查未使用的依赖</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#keep_deps">keep_deps 何时该用、何时不该用</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_4">自动被豁免的情况</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#keep_deps_1">何时真的需要 keep_deps</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_5">常见的误用模式（看起来像多余依赖、其实不是）</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#static-undefined-symbol-check">Static undefined-symbol check</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#prebuilt_cc_library">prebuilt_cc_library</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#foreign_cc_library">foreign_cc_library</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1zlib">示例 1，zlib</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2openssl">示例 2，openssl</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc_binary">cc_binary</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#dwp">使用 dwp 文件</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc_test">cc_test</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc_plugin">cc_plugin</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#_6">控制共享库导出哪些符号</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#c">C++ 示例</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#windows-dll">Windows DLL 支持</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#_7">使用侧的限制</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#windows_resources">windows_resources</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#resource_library">resource_library</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cu_library">cu_library</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cu_binary">cu_binary</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cu_test">cu_test</a>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../vcpkg/">使用 vcpkg 包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../go/">构建 Go 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../idl/">构建 protobuf 和 thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../java/">构建 Java 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../scala/">构建 Scala 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../lexyacc/">构建 lex 和 yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../package/">文件打包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../python/">构建 Python 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell Test 规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../swig/">构建 SWIG</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gen_rule/">自定义规则构建</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">升级</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v3/">升级到 V3 版</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../upgrade-to-v2/">升级到 V2 版</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">开发文档</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/">开发</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/cc_build/">C/C++ 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/configuration/">配置项是如何加载、分层与读取的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/dsl_api/">内置函数与 blade.* DSL</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/export_map/">export_map（符号导出控制）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/python_build/">Python 目标是如何构建与打包的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/self_testing/">blade-build 自身是如何被测试的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/test_execution/">blade test 如何运行用户测试</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/vcpkg/">vcpkg 支持实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../develop/visibility/">Visibility 是如何实现与执行的</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">Blade 常见问题</a>
-                </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cc" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Blade Build" class="md-header__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blade Build
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              C/C++ 构建规则
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../..">Blade Build</a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">构建规则</li>
-      <li class="breadcrumb-item active">C/C++ 构建规则</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/build_rules/cc.md">Edit on blade-build/blade-build</a>
-    </li>
-  </ul>
-  <hr/>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 用户手册
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../intro/" class="md-tabs__link">
+          
+  
+  
+  介绍
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prerequisites/" class="md-tabs__link">
+          
+  
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../workspace/" class="md-tabs__link">
+          
+  
+  
+  用户指南
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  构建规则
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../upgrade-to-v3/" class="md-tabs__link">
+          
+  
+  
+  升级
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../develop/" class="md-tabs__link">
+          
+  
+  
+  开发文档
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 常见问题
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="cc">C/C++ 构建规则<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Blade Build" class="md-nav__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Blade Build
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 用户手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    介绍
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 简介
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心特性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统前置要求与依赖
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速上手
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户指南
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    用户指南
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工作空间配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编写 BUILD 文件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DSL 和 API 模块
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行参考
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editor_support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编辑器支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    测试支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建产物与输出
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建缓存
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 优化（PGO / AutoFDO / LTO）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    辅助功能
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建规则
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    构建规则
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 构建规则
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 构建规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        源语言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三方库
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C/C++ 通用属性
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C/C++ 通用属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#warningstring-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warning：string = ['yes', 'no']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        defs：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        incs：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_cppflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_cppflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_cflags-extra_cxxflags-extra_asflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_cflags / extra_cxxflags / extra_asflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_linkflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_linkflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagsstring-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：string[] = None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hdrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复 hdrs 引发的依赖缺失的检查问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        检查未使用的依赖
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="检查未使用的依赖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep_deps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        keep_deps 何时该用、何时不该用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动被豁免的情况
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep_deps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        何时真的需要 keep_deps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见的误用模式（看起来像多余依赖、其实不是）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-undefined-symbol-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static undefined-symbol check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prebuilt_cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prebuilt_cc_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foreign_cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        foreign_cc_library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="foreign_cc_library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1zlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例 1，zlib
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2openssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例 2，openssl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_binary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_binary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dwp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用 dwp 文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_plugin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        控制共享库导出哪些符号
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="控制共享库导出哪些符号">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ 示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows DLL 支持
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Windows DLL 支持">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用侧的限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        windows_resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resource_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_test
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用 vcpkg 包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Go 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../idl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 protobuf 和 thrift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Java 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scala/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Scala 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lexyacc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 lex 和 yacc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件打包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Python 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shell Test 规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../swig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 SWIG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    升级
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrade-to-v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V3 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrade-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V2 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发文档
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/build_file_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BUILD 文件是如何被发现、加载与注册的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cc_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/check_undefined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    静态未定义符号检查（check_undefined）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项是如何加载、分层与读取的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    console：构建进度面板与 ninja 状态流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/dependency_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    依赖分析与 ninja 文件生成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/dsl_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内置函数与 blade.* DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/export_map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    export_map（符号导出控制）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_rule：自定义构建步骤与其它 target 如何感知它
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/hdrs_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 头文件依赖检查（hdrs check）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/java_scala_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java 与 Scala 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/protobuf_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proto_library 的多语言代码生成机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python 目标是如何构建与打包的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/self_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade-build 自身是如何被测试的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/test_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade test 如何运行用户测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vcpkg 支持实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visibility 是如何实现与执行的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 常见问题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        源语言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三方库
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C/C++ 通用属性
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C/C++ 通用属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#warningstring-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warning：string = ['yes', 'no']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        defs：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        incs：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_cppflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_cppflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_cflags-extra_cxxflags-extra_asflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_cflags / extra_cxxflags / extra_asflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_linkflagsstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_linkflags：string[] = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagsstring-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：string[] = None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hdrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修复 hdrs 引发的依赖缺失的检查问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        检查未使用的依赖
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="检查未使用的依赖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep_deps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        keep_deps 何时该用、何时不该用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动被豁免的情况
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keep_deps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        何时真的需要 keep_deps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见的误用模式（看起来像多余依赖、其实不是）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-undefined-symbol-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static undefined-symbol check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prebuilt_cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prebuilt_cc_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foreign_cc_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        foreign_cc_library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="foreign_cc_library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1zlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例 1，zlib
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2openssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        示例 2，openssl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_binary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_binary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dwp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用 dwp 文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc_plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_plugin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        控制共享库导出哪些符号
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="控制共享库导出哪些符号">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ 示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows DLL 支持
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Windows DLL 支持">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        使用侧的限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        windows_resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resource_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cu_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_test
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cc">C/C++ 构建规则<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h1>
 <p>C/C++ 的编译过程分为三个阶段：预处理、编译（将预处理后的源文件转换为 <code>.o</code> 文件）、链接（将 <code>.o</code>、<code>.a</code> 链接为可执行文件或动态库）。各阶段使用各自的编译器选项。</p>
 <h2 id="_1">源语言<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p><code>srcs</code> 接受 C（<code>.c</code>）、C++（<code>.cc</code>/<code>.cpp</code>/<code>.cxx</code>）、汇编（<code>.s</code>/<code>.S</code>/<code>.asm</code>），以及
@@ -342,14 +3331,14 @@ MSVC 工具链不支持 Objective-C，因此在 Windows 上要把 <code>.m</code
 <p>cc_library 生成的动态链接库里不包含其依赖的代码，而是包含了对所依赖的库的路径。这些库主要是为了开发环境本地使用（比如运行测试），并不适合部署到生产环境。
 如果你需要生成需要在运行时动态加载或者在其他语言中作为扩展调用的动态库，应该使用 <code>cc_plugin</code> 构建规则，这样生成的动态库已经以静态链接的方式包含了其依赖。</p>
 <p>示例：</p>
-<pre><code class="language-python">cc_library(
-    name='lowercase',
-    srcs=['lower/plowercase.cpp'],
-    hdrs=['lower/plowercase.h'],
-    deps=['#pthread'],
-    link_all_symbols=False
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lowercase&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lower/plowercase.cpp&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">hdrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lower/plowercase.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">link_all_symbols</span><span class="o">=</span><span class="kc">False</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</code></pre></div>
 <p>属性：</p>
 <ul>
 <li><code>hdrs</code>: list(string) = []，声明库的公开接口头文件。</li>
@@ -382,25 +3371,25 @@ MSVC 工具链不支持 Objective-C，因此在 Windows 上要把 <code>.m</code
 <li>
 <p><strong>X-macro / 列表展开</strong>——一个文件以不同的宏定义被反复 <code>#include</code> 以展开一张表
     （没有 include guard，无法独立编译）：</p>
-<p><code>python
-cc_library(
-    name = 'opcodes',
-    srcs = ['vm.cc'],          # vm.cc: #define OP(x) ...; #include "opcodes.def"
-    hdrs = ['vm.h'],
-    textual_hdrs = ['opcodes.def'],
-)</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;opcodes&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vm.cc&#39;</span><span class="p">],</span>          <span class="c1"># vm.cc: #define OP(x) ...; #include &quot;opcodes.def&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vm.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;opcodes.def&#39;</span><span class="p">],</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
+</code></pre></div>
 </li>
 <li>
 <p><strong>按平台分发的实现片段</strong>——某个源文件按平台 <code>#include</code> 对应的实现片段，因此这些
     片段不会被直接编译：</p>
-<p><code>python
-cc_library(
-    name = 'event_loop',
-    # event_loop.cc: #if __linux__  #include "event_loop_epoll.inc" ...
-    srcs = ['event_loop.cc'],
-    hdrs = ['event_loop.h'],
-    textual_hdrs = ['event_loop_epoll.inc', 'event_loop_kqueue.inc'],
-)</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;event_loop&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="c1"># event_loop.cc: #if __linux__  #include &quot;event_loop_epoll.inc&quot; ...</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop_epoll.inc&#39;</span><span class="p">,</span> <span class="s1">&#39;event_loop_kqueue.inc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
+</code></pre></div>
 </li>
 </ul>
 <p>若把这种被文本包含的文件错误地列入 <code>hdrs</code>，则会失败：blade 会拒绝非头文件扩展名，
@@ -451,18 +3440,18 @@ cc_library(
   能再选择 <code>jemalloc</code> 库，否则会造成链接冲突。通过把 <code>tcmalloc</code> 和 <code>jemalloc</code> 都设置这个属性，使得其只能作为可执行文件的目标的依赖，从而避免这类问题。</p>
 <p>'binary_link_only' 库可以依赖其他 'binary_link_only' 库。</p>
 <p>示例：</p>
-<p>```python
-  cc_library(
-      name = 'tcmaloc',
-      binary_link_only = True,
-      ...
-  )</p>
-<p>cc_library(
-      name = 'jemaloc',
-      binary_link_only = True,
-      ...
-  )
-  ```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;tcmaloc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">binary_link_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="o">...</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;jemaloc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">binary_link_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="o">...</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">)</span>
+</code></pre></div>
 <ul>
 <li><code>always_optimize</code> : bool，是否不管 debug 还是 release 都开启优化。</li>
 </ul>
@@ -509,27 +3498,27 @@ cc_library(
 <li><strong>这个 <code>#include</code> 本身是多余的，直接删掉就行。</strong> Blade 的 missing-dep 检查不看你的代码内容，只看你 <code>#include</code> 了什么。如果你的源文件并没有真的用到那个头里定义的任何名字（include 是早年复制粘贴留下的、重构后变成 dead code、或者你以为需要的类型其实通过你已经 include 的另一个头传递性可达），正确解法是<strong>删掉这一行 <code>#include</code></strong>，而不是加一个 dep。快速判断：在源文件里 grep 一下可疑头里定义的类型/函数名；如果一个都没匹配到，include 就是死的。</li>
 <li>
 <p><strong>跨越 visibility 边界的合法 "facade" 再导出场景。</strong> 当一个 umbrella 目标的公共头通过 <code>#include</code> 把内层私库的头导出，使得 umbrella 的消费者能用到那些类型时，blade 会对 umbrella 报 missing-dep——因为内层私库的 <code>visibility</code> 把 umbrella 锁在外面。但 umbrella 本来就是合法消费者——它是这些类型的规范再导出点——情形 (2) 那条「私头禁止直接用」太绝对，没给这种合法 facade 留口子。把 umbrella 当成 C++ 的 <code>friend</code>：在内层私库的 <code>visibility</code> 列表里把它加进去（一个窄而具名的开放），然后在 umbrella 的 <code>deps</code> 里声明该私库。visibility 行和 deps 行都附上注释说明再导出关系，让意图自文档。</p>
-<p><code>``python
- # 内层私库：
- cc_library(
-     name = 'http_filter',
-     hdrs = 'http_filter.h',
-     ...,
-     #</code>friend` 式白名单：只允许下面两个 umbrella facade 直接依赖；
-     # 其它消费者必须走 facade。
-     visibility = ['//flare/rpc:http', '//flare/rpc:rpc'],
- )</p>
-<p># 在公共头里再导出该私库的 umbrella：
- cc_library(
-     name = 'rpc',
-     hdrs = ['http_filter.h', ...],  # 透传 include 内层头
-     deps = [
-         ...,
-         '//flare/rpc/protocol/http:http_filter',  # 我们再导出
-     ],
-     visibility = 'PUBLIC',
- )
- ```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 内层私库：</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;http_filter&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="s1">&#39;http_filter.h&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="o">...</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="c1"># `friend` 式白名单：只允许下面两个 umbrella facade 直接依赖；</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="c1"># 其它消费者必须走 facade。</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//flare/rpc:http&#39;</span><span class="p">,</span> <span class="s1">&#39;//flare/rpc:rpc&#39;</span><span class="p">],</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># 在公共头里再导出该私库的 umbrella：</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http_filter.h&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># 透传 include 内层头</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>        <span class="o">...</span><span class="p">,</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="s1">&#39;//flare/rpc/protocol/http:http_filter&#39;</span><span class="p">,</span>  <span class="c1"># 我们再导出</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="p">],</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="s1">&#39;PUBLIC&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="p">)</span>
+</code></pre></div>
 <p>如果 umbrella 只是「消费者」（用了内层库的公共接口，但<strong>不</strong>通过自己的 hdrs 再导出），并且 <code>unused_deps</code> 报了这个 dep，那其实是反方向的 <a href="#检查未使用的依赖">Header re-export 自动豁免</a> 场景——把内层私库的头列入 umbrella 自己的 <code>hdrs</code> 即可，无需放开 visibility。</p>
 </li>
 <li>
@@ -592,14 +3581,14 @@ cc_library(
 </ul>
 <p>为副作用（自注册全局对象等）被链接的库，本身应当声明 <code>link_all_symbols = True</code>，以避免链接器丢弃。</p>
 <p>只有当以上情况都不适用时，<code>keep_deps</code> 才合适 —— 例如，一个伞库聚合了若干个「纯链接注册、自身也没有可再导出的公开头文件」的子目标。</p>
-<pre><code class="language-python">cc_library(
-    name = 'foo',
-    srcs = ['foo.cc'],
-    hdrs = ['foo.h'],
-    deps = [':bar'],          # 通过头文件使用
-    keep_deps = [':baz'],     # 真正的纯链接、不属于自动豁免的情形
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:bar&#39;</span><span class="p">],</span>          <span class="c1"># 通过头文件使用</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">keep_deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:baz&#39;</span><span class="p">],</span>     <span class="c1"># 真正的纯链接、不属于自动豁免的情形</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="_5">常见的误用模式（看起来像多余依赖、其实不是）<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>私有头文件被错误地列入 <code>hdrs</code></strong>。如果一个库的 <code>.h</code> 只被自身 <code>.cc</code> 和它的 <code>*_test.cc</code> 使用，根本不需要公开头文件。把 <code>.h</code> 移到 <code>srcs</code>、<code>hdrs = []</code>，所有消费者通过 (1) 自动豁免。测试目标仍可按名 <code>#include</code> 私有头。</li>
@@ -693,30 +3682,30 @@ cc_library(
   设置任一显式路径时，至少需要一个，命名约定不再生效，<code>libpath_pattern</code> 也会被忽略（给出告警）。与约定模式一致，当只存在一种库时，它同时用于静态链接与动态链接。</li>
 </ul>
 <p>示例：</p>
-<pre><code class="language-python"># 按命名约定（在 lib{32,64} 子目录下查找 lib&lt;name&gt;）：
-prebuilt_cc_library(
-    name = 'mysql',
-    deps = [':mystring', '#pthread']
-)
-
-# 按显式路径：
-prebuilt_cc_library(
-    name = 'foo',
-    hdrs = ['foo.h'],
-    static_library = 'lib/libfoo.a',
-    dynamic_library = 'lib/libfoo.so',
-    export_incs = ['include'],
-)
-
-# Windows：链接导入库，DLL 作为运行期产物：
-prebuilt_cc_library(
-    name = 'bar',
-    hdrs = ['bar.h'],
-    import_library = 'lib/bar.lib',
-    dynamic_library = 'bin/bar.dll',
-    export_incs = ['include'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 按命名约定（在 lib{32,64} 子目录下查找 lib&lt;name&gt;）：</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:mystring&#39;</span><span class="p">,</span> <span class="s1">&#39;#pthread&#39;</span><span class="p">]</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># 按显式路径：</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">static_library</span> <span class="o">=</span> <span class="s1">&#39;lib/libfoo.a&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">&#39;lib/libfoo.so&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="p">)</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># Windows：链接导入库，DLL 作为运行期产物：</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bar.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="n">import_library</span> <span class="o">=</span> <span class="s1">&#39;lib/bar.lib&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">&#39;bin/bar.dll&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="foreign_cc_library">foreign_cc_library<a class="headerlink" href="#foreign_cc_library" title="Permanent link">&para;</a></h2>
 <p>注意：本特性目前还处于实验状态。</p>
 <p>世界上已经有大量已经存在的库，它们用一些不同的构建系统构建，如果要增加 Blade 构建，需要投入大量的时间成本和维护。
@@ -737,83 +3726,83 @@ foreign_cc_library 和 prebuilt_cc_library 的主要区别是其描述的库是 
 </ul>
 <h3 id="1zlib">示例 1，zlib<a class="headerlink" href="#1zlib" title="Permanent link">&para;</a></h3>
 <p>zlib 是最简单的 autotools 包，假设 zlib-1.2.11.tar.gz 在 thirdparty/zlib 目录下，其 BUILD 文件则是 thirdparty/zlib/BUILD：</p>
-<pre><code class="language-python"># 假设执行本规则后，会把构建好的包安装到 `build_release/thirdparty/zlib` 下，那么头文件在 `include` 下，库文件则在 `lib` 下。
-# 我们为 autotools 和 cmake 开发了通用的构建规则，不过还处于实验状态，这里还是假设用 gen_rule 来构建。
-gen_rule(
-    name = 'zlib_build',
-    srcs = ['zlib-1.2.11.tar.gz'],
-    outs = ['lib/libz.a', 'include/zlib.h', 'include/zconf.h'],
-    cmd = '...',  # tar xf，configure, make, make install...
-    export_incs = 'include',
-)
-
-# 描述 zlib 安装后的库
-
-foreign_cc_library(
-    name = 'z',  # 库的名字为 libz.a，在 `lib` 子目录下
-    install_dir = '', # 包的安装目录是 `build_release/thirdparty/zlib`
-    # lib_dir= 'lib', # 默认值满足要求，因此可以不写
-    deps = [':zlib_build'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 假设执行本规则后，会把构建好的包安装到 `build_release/thirdparty/zlib` 下，那么头文件在 `include` 下，库文件则在 `lib` 下。</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># 我们为 autotools 和 cmake 开发了通用的构建规则，不过还处于实验状态，这里还是假设用 gen_rule 来构建。</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">gen_rule</span><span class="p">(</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;zlib_build&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zlib-1.2.11.tar.gz&#39;</span><span class="p">],</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lib/libz.a&#39;</span><span class="p">,</span> <span class="s1">&#39;include/zlib.h&#39;</span><span class="p">,</span> <span class="s1">&#39;include/zconf.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>  <span class="c1"># tar xf，configure, make, make install...</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="s1">&#39;include&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">)</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1"># 描述 zlib 安装后的库</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span>  <span class="c1"># 库的名字为 libz.a，在 `lib` 子目录下</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1"># 包的安装目录是 `build_release/thirdparty/zlib`</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="c1"># lib_dir= &#39;lib&#39;, # 默认值满足要求，因此可以不写</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:zlib_build&#39;</span><span class="p">],</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="p">)</span>
+</code></pre></div>
 <p>使用上述库</p>
-<pre><code class="language-python">cc_binary(
-    name = 'use_zlib',
-    srcs = ['use_zlib.cc'],
-    deps = ['//thirdparty/zlib:z'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cc_binary</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;use_zlib&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;use_zlib.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//thirdparty/zlib:z&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>use_zlib.cc：</p>
-<pre><code class="language-cpp">#include &quot;thirdparty/zlib/include/zlib.h&quot;
-// 或
-#include &quot;zlib.h&quot;
-// 因为 thirdparty/zlib/include/ 已经被导出
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;thirdparty/zlib/include/zlib.h&quot;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1">// 或</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;zlib.h&quot;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">// 因为 thirdparty/zlib/include/ 已经被导出</span>
+</code></pre></div>
 <h3 id="2openssl">示例 2，openssl<a class="headerlink" href="#2openssl" title="Permanent link">&para;</a></h3>
 <p>严格说来，openssl 并非用 autotools 构建的，不过它大致兼容 autotools，他的对应 autotools configure 的文件是 Config，安装后的目录布局则兼容。
 不过其头文件带包名，也就是不是直接在 <code>include</code> 下 而是在 <code>include/openssl</code> 子目录下。
 假设 openssl-1.1.0.tar.gz 在 thirparty/openssl 目录下，其 BUILD 文件则是 thirdparty/openssl/BUILD：</p>
-<pre><code class="language-python"># 假设执行本规则后，会把构建好的包安装到 `build_release/thirdparty/openssl` 下，那么头文件在 `include/openssl` 下，库文件则在 `lib` 下。
-gen_rule(
-    name = 'openssl_build',
-    srcs = ['openssl-1.1.0.tar.gz'],
-    outs = ['lib/libcrypto.a', 'lib/libssl.a'],
-    cmd = '...',  # tar xf，Config, make, make install...
-    export_incs = 'include', # 让编译器能找到 include 下的 openssl 子目录
-)
-
-# 描述 openssl 里包含的两个库
-
-foreign_cc_library(
-    name = 'crypto',  # 库的名字为 libcrypto.a，在 `lib` 子目录下
-    install_dir = '', # 包的安装目录是 `build_release/thirdparty/openssl`
-    deps = [':openssl_build'],
-)
-
-foreign_cc_library(
-    name = 'ssl',  # 库的名字为 libssl.a，在 `lib` 子目录下
-    install_dir = '', # 包的安装目录是 `build_release/thirdparty/openssl`
-    deps = [':openssl_build', ':crypto'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># 假设执行本规则后，会把构建好的包安装到 `build_release/thirdparty/openssl` 下，那么头文件在 `include/openssl` 下，库文件则在 `lib` 下。</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">gen_rule</span><span class="p">(</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;openssl_build&#39;</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;openssl-1.1.0.tar.gz&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lib/libcrypto.a&#39;</span><span class="p">,</span> <span class="s1">&#39;lib/libssl.a&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>  <span class="c1"># tar xf，Config, make, make install...</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="c1"># 让编译器能找到 include 下的 openssl 子目录</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># 描述 openssl 里包含的两个库</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;crypto&#39;</span><span class="p">,</span>  <span class="c1"># 库的名字为 libcrypto.a，在 `lib` 子目录下</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1"># 包的安装目录是 `build_release/thirdparty/openssl`</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:openssl_build&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="p">)</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ssl&#39;</span><span class="p">,</span>  <span class="c1"># 库的名字为 libssl.a，在 `lib` 子目录下</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1"># 包的安装目录是 `build_release/thirdparty/openssl`</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:openssl_build&#39;</span><span class="p">,</span> <span class="s1">&#39;:crypto&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="p">)</span>
+</code></pre></div>
 <p>使用上述库：</p>
-<pre><code class="language-python">cc_binary(
-    name = 'use_openssl',
-    srcs = ['use_openssl.cc'],
-    deps = ['//thirdparty/openssl:ssl'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">cc_binary</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;use_openssl&#39;</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;use_openssl.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//thirdparty/openssl:ssl&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>use_openssl.cc：</p>
-<pre><code class="language-cpp">#include &quot;openssl/ssl.h&quot;  // 路径带包名
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;openssl/ssl.h&quot;</span><span class="c1">  // 路径带包名</span>
+</code></pre></div>
 <h2 id="cc_binary">cc_binary<a class="headerlink" href="#cc_binary" title="Permanent link">&para;</a></h2>
 <p>定义 C++可执行文件目标：</p>
-<pre><code class="language-python">cc_binary(
-    name='prstr',
-    srcs=['./src/mystr_main/mystring.cpp'],
-    deps=['#pthread',':lowercase',':uppercase','#dl'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">cc_binary</span><span class="p">(</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;prstr&#39;</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./src/mystr_main/mystring.cpp&#39;</span><span class="p">],</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">,</span><span class="s1">&#39;:lowercase&#39;</span><span class="p">,</span><span class="s1">&#39;:uppercase&#39;</span><span class="p">,</span><span class="s1">&#39;#dl&#39;</span><span class="p">],</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>属性：</p>
 <ul>
 <li><code>dynamic_link</code>: bool= True</li>
@@ -842,8 +3831,8 @@ foreign_cc_library(
   倾向于精选集合而非全部导出（否则会触及 PE 64K 导出上限并暴露内部实现）；若只导出个别符号，用
   <code>linkflags = ['/EXPORT:&lt;symbol&gt;']</code> 无需导出文件即可。</li>
 </ul>
-<p><code>python
-  cc_binary(name = 'host', srcs = ['host.cc'], export_map = 'host_api.map')</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">cc_binary</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;host.cc&#39;</span><span class="p">],</span> <span class="n">export_map</span> <span class="o">=</span> <span class="s1">&#39;host_api.map&#39;</span><span class="p">)</span>
+</code></pre></div>
 <ul>
 <li><code>strip</code>: bool = False</li>
 </ul>
@@ -862,18 +3851,18 @@ foreign_cc_library(
 然后这些文件会被打包成单个 <code>.dwp</code> 文件（每个 binary target 对应一个）。</p>
 <p>如果你需要在生产环境或其他环境中部署带有调试信息的二进制文件以便调试，
 可以通过 binary target 来引用 dwp 文件，将其包含在 package 中：</p>
-<pre><code class="language-python">package(
-    name = 'server_package',
-    ...,
-    srcs = [
-        # executable
-        ('$(location //server:server)', 'bin/server'),
-        # Include the dwp file for server binary
-        ('$(location //server:server dwp)', 'bin/server.dwp'),
-        ...,
-    ],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">package</span><span class="p">(</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;server_package&#39;</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="o">...</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="c1"># executable</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="p">(</span><span class="s1">&#39;$(location //server:server)&#39;</span><span class="p">,</span> <span class="s1">&#39;bin/server&#39;</span><span class="p">),</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="c1"># Include the dwp file for server binary</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="p">(</span><span class="s1">&#39;$(location //server:server dwp)&#39;</span><span class="p">,</span> <span class="s1">&#39;bin/server.dwp&#39;</span><span class="p">),</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>        <span class="o">...</span><span class="p">,</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="p">],</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="p">)</span>
+</code></pre></div>
 <p><code>$(location :target dwp)</code> 语法允许你引用特定 binary target 生成的 dwp 文件。</p>
 <h2 id="cc_test">cc_test<a class="headerlink" href="#cc_test" title="Permanent link">&para;</a></h2>
 <p>相当于 cc_binary，再加上自动链接 gtest 和 gtest_main。</p>
@@ -884,8 +3873,8 @@ foreign_cc_library(
 </ul>
 <p>在 name.runfiles 里建立 symbolic link 指向工程目录的文件，目前支持以下几种形式：
   - <code>'file'</code></p>
-<pre><code>在测试程序中使用这个名字本身的形式来访问
-</code></pre>
+<div class="highlight"><pre><span></span><code>在测试程序中使用这个名字本身的形式来访问
+</code></pre></div>
 <ul>
 <li>
 <p><code>'//your_proj/path/file'</code></p>
@@ -897,28 +3886,28 @@ foreign_cc_library(
 </li>
 </ul>
 <p>可以根据需要自行选择，这些路径都也可以是目录。</p>
-<pre><code class="language-python">cc_test(
-    name = 'textfile_test',
-    srcs = 'textfile_test.cpp',
-    deps = ':io',
-    testdata = [
-        'test_dos.txt',
-        '//your_proj/path/file',
-        ('//your_proj/path/file', 'new_name')
-    ]
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">cc_test</span><span class="p">(</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;textfile_test&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;textfile_test.cpp&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:io&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">testdata</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        <span class="s1">&#39;test_dos.txt&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        <span class="s1">&#39;//your_proj/path/file&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        <span class="p">(</span><span class="s1">&#39;//your_proj/path/file&#39;</span><span class="p">,</span> <span class="s1">&#39;new_name&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="p">]</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="cc_plugin">cc_plugin<a class="headerlink" href="#cc_plugin" title="Permanent link">&para;</a></h2>
 <p>生成一个通过静态链接方式包含了其所有依赖的动态链接库，用于在其他语言环境中动态加载。</p>
-<pre><code class="language-python">cc_plugin(
-    name='mystring',
-    srcs=['./src/mystr/mystring.cpp'],
-    deps=['#pthread',':lowercase',':uppercase','#dl'],
-    warning='no',
-    defs=['_MT'],
-    optimize=['O3']
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">cc_plugin</span><span class="p">(</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mystring&#39;</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./src/mystr/mystring.cpp&#39;</span><span class="p">],</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">,</span><span class="s1">&#39;:lowercase&#39;</span><span class="p">,</span><span class="s1">&#39;:uppercase&#39;</span><span class="p">,</span><span class="s1">&#39;#dl&#39;</span><span class="p">],</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">warning</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">defs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_MT&#39;</span><span class="p">],</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">optimize</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;O3&#39;</span><span class="p">]</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="p">)</span>
+</code></pre></div>
 <p>属性：</p>
 <ul>
 <li><code>prefix</code>: str | None, 生成的动态库的文件名前缀。默认为 <code>None</code>，表示沿用当前工具链的平台默认前缀（Linux/macOS 为 <code>lib</code>，Windows 为空）。</li>
@@ -949,51 +3938,51 @@ foreign_cc_library(
 <p>要控制链接结果中符号是否对外可见，可以通过<a href="https://gcc.gnu.org/wiki/Visibility">源代码中的 GCC 扩展属性或者命令行选项</a>来进行。当你不想（或无法）改动源码时，<code>export_map</code> 能在链接阶段做同样的事：列出要保持 <code>global</code>（导出）的符号，其余落入 <code>local</code> 的一律隐藏。</p>
 <h4 id="c">C++ 示例<a class="headerlink" href="#c" title="Permanent link">&para;</a></h4>
 <p>假设某个库只想对外暴露 <code>mylib::Api</code> 类和工厂函数 <code>mylib::Create()</code>，而隐藏其余一切（辅助函数、被静态链入的第三方符号等）：</p>
-<pre><code class="language-cpp">// api.h
-namespace mylib {
-class Api {
- public:
-    void Run();
-};
-Api* Create();
-}  // namespace mylib
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">// api.h</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">namespace</span><span class="w"> </span><span class="nn">mylib</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">Api</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Run</span><span class="p">();</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="p">};</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">Api</span><span class="o">*</span><span class="w"> </span><span class="nf">Create</span><span class="p">();</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="p">}</span><span class="w">  </span><span class="c1">// namespace mylib</span>
+</code></pre></div>
 <p>由于 C++ 符号会被名字修饰（mangle），需要把<em>反修饰后</em>的名字写在 <code>extern "C++"</code> 块里。编写 <code>export_map</code> 文件（如 <code>api.map</code>）：</p>
-<pre><code class="language-ld">{
-global:
-    extern &quot;C++&quot; {
-        # 加引号表示按字面精确匹配（不走通配符）——用于在意确切签名、
-        # 或避免误匹配重载的场合。
-        &quot;mylib::Create()&quot;;
-
-        # 不加引号则可用通配符：导出 mylib::Api 的全部成员
-        # （构造函数、Run() ……）。
-        mylib::Api::*;
-
-        # 跨库继承或 dynamic_cast 时需要 vtable / typeinfo。反修饰器在此
-        # 处会打印一个空格，用单字符通配符 '?' 去匹配它。
-        typeinfo?for?mylib::Api;
-        vtable?for?mylib::Api;
-    };
-local:
-    *;  # 隐藏上面未列出的一切
-};
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>{
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>global:
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    extern &quot;C++&quot; {
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        # 加引号表示按字面精确匹配（不走通配符）——用于在意确切签名、
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        # 或避免误匹配重载的场合。
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        &quot;mylib::Create()&quot;;
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        # 不加引号则可用通配符：导出 mylib::Api 的全部成员
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        # （构造函数、Run() ……）。
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        mylib::Api::*;
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        # 跨库继承或 dynamic_cast 时需要 vtable / typeinfo。反修饰器在此
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>        # 处会打印一个空格，用单字符通配符 &#39;?&#39; 去匹配它。
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>        typeinfo?for?mylib::Api;
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>        vtable?for?mylib::Api;
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    };
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>local:
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>    *;  # 隐藏上面未列出的一切
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>};
+</code></pre></div>
 <p>在 BUILD 文件中接上（只影响共享库，静态库不变）：</p>
-<pre><code class="language-python">cc_library(
-    name = 'mylib',
-    srcs = ['api.cc'],
-    hdrs = ['api.h'],
-    export_map = 'api.map',
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cc_library</span><span class="p">(</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;api.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;api.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">export_map</span> <span class="o">=</span> <span class="s1">&#39;api.map&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="p">)</span>
+</code></pre></div>
 <p>要查看库中的符号的可见性，可以用 nm 命令：</p>
-<pre><code class="language-console">000000000000010c t _init
-                 U puts@@GLIBC_2.2.5
-0000000000000060 t register_tm_clones
-00000000000000f0 T hello
-0000000000000100 t world
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="go">000000000000010c t _init</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="go">                 U puts@@GLIBC_2.2.5</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="go">0000000000000060 t register_tm_clones</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="go">00000000000000f0 T hello</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="go">0000000000000100 t world</span>
+</code></pre></div>
 <p>第二列为符号的类别，大写字母为全局符号，小写字母为局部符号。<code>U</code> 为库依赖的未定义的外部符号，不用关心。</p>
 <p><code>cc_plugin</code> 主要是为 <code>JNI</code>，python 扩展等需要运行期间通过调用某些函数动态加载的场合而设计的，不应该用于其他目的。
 即使它出现在其他 cc 目标的 <code>deps</code> 里，链接时也会被忽略。</p>
@@ -1023,13 +4012,13 @@ local:
 <p>使用 Windows SDK 资源编译器 (<code>rc.exe</code>) 将 <code>.rc</code> 资源脚本文件编译为 <code>.res</code> 目标文件。
 生成的 <code>.res</code> 文件会自动链接到任何通过 <code>deps</code> 依赖此目标的 <code>cc_binary</code> 中。</p>
 <p>在非 Windows 平台上，此规则是<strong>空操作</strong>：它不产生任何构建输出，对构建没有影响。</p>
-<pre><code class="language-python">windows_resources(
-    name = 'hello_res',
-    rc_files = ['hello_gui.rc', 'version.rc'],
-    hdrs = ['resource.h'],
-    resources = ['image/blade.ico'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">windows_resources</span><span class="p">(</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hello_res&#39;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">rc_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hello_gui.rc&#39;</span><span class="p">,</span> <span class="s1">&#39;version.rc&#39;</span><span class="p">],</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;resource.h&#39;</span><span class="p">],</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;image/blade.ico&#39;</span><span class="p">],</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">)</span>
+</code></pre></div>
 <p>参数：</p>
 <ul>
 <li><code>rc_files</code> (必选): <strong>string[]</strong> — 要编译的资源脚本文件 (<code>.rc</code>)。</li>
@@ -1037,36 +4026,36 @@ local:
 <li><code>resources</code> (可选): <strong>string[]</strong> — <code>.rc</code> 脚本引用的二进制资源文件 (如 <code>.ico</code>, <code>.bmp</code>)。这些文件的变化会触发重建。</li>
 </ul>
 <p>此目标生成的 <code>.res</code> 文件会像目标文件和库文件一样出现在链接器的输入中。与 <code>cc_binary</code> 配合使用：</p>
-<pre><code class="language-python">cc_binary(
-    name = 'hello_gui',
-    srcs = ['hello_gui.c'],
-    extra_linkflags = ['/SUBSYSTEM:WINDOWS', 'user32.lib'],
-    deps = [':hello_res'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">cc_binary</span><span class="p">(</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hello_gui&#39;</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hello_gui.c&#39;</span><span class="p">],</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">extra_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/SUBSYSTEM:WINDOWS&#39;</span><span class="p">,</span> <span class="s1">&#39;user32.lib&#39;</span><span class="p">],</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:hello_res&#39;</span><span class="p">],</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="resource_library">resource_library<a class="headerlink" href="#resource_library" title="Permanent link">&para;</a></h2>
 <p>把数据文件编译成静态资源，可以在程序中读取。</p>
 <p>我们经常会遇到部署一个可执行程序，还需要附带一堆辅助文件才能运行起来的情况。</p>
 <p>blade 通过 resource_library，支持把程序运行所需要的数据文件也打包到可执行文件里，这样单个可执行文件即可用于部署。</p>
 <p>比如 poppy 下的 BUILD 文件里用的静态资源：</p>
-<pre><code class="language-python">resource_library(
-    name = 'static_resource',
-    srcs = [
-        'static/favicon.ico',
-        'static/forms.html',
-        'static/forms.js',
-        'static/jquery-1.4.2.min.js',
-        'static/jquery.json-2.2.min.js',
-        'static/methods.html',
-        'static/poppy.html'
-    ]
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">resource_library</span><span class="p">(</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;static_resource&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>        <span class="s1">&#39;static/favicon.ico&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>        <span class="s1">&#39;static/forms.html&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>        <span class="s1">&#39;static/forms.js&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>        <span class="s1">&#39;static/jquery-1.4.2.min.js&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>        <span class="s1">&#39;static/jquery.json-2.2.min.js&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>        <span class="s1">&#39;static/methods.html&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>        <span class="s1">&#39;static/poppy.html&#39;</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>    <span class="p">]</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="p">)</span>
+</code></pre></div>
 <p>构建后会生成一个头文件 static_resource.h 及相应的库文件 libstatic_resource.a 或 libstatic_resource.so。</p>
 <p>在程序中使用时以完整路径包含进来即可使用。需要包含 static_resource.h（带上相对于 BLADE_ROOT 的路径）和 <code>common/base/static_resource.h</code>，
 用 STATIC_RESOURCE 宏来引用数据：</p>
-<pre><code class="language-c">StringPiece data = STATIC_RESOURCE(poppy_static_favicon_ico);
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">StringPiece</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATIC_RESOURCE</span><span class="p">(</span><span class="n">poppy_static_favicon_ico</span><span class="p">);</span>
+</code></pre></div>
 <p>STATIC_RESOURCE 的参数是从 BLADE_ROOT 目录开始的数据文件的文件名，把所有非字母数字和下划线的字符都替换为_。</p>
 <p>得到的 data 在程序运行期间一直存在，只可读取，不可写入。</p>
 <p>用 static resource 在某些情况下也有一点不方便：就是不能在运行期间更新，因此是否使用，需要根据具体场景自己权衡。</p>
@@ -1078,82 +4067,95 @@ local:
 <p>编译 cu_library 需要使用 <code>NVCC</code> 环境变量指向 <code>nvcc binary</code> ，例如 <code>NVCC=/usr/local/cuda/bin/nvcc blade build</code>。<br />
 使用 <code>CUDA_PATH</code> 环境变量指向本地 cuda 的安装路径，<code>CUDA_PATH/include</code> 和 <code>{CUDA_PATH}/samples/common/inc</code> 会自动加到 include search path。</p>
 <p>作用优先级： <code>cuda_path</code> &gt; <code>NVCC</code>/<code>CUDA_PATH</code> 。</p>
-<pre><code class="language-python">cu_library(
-    name = 'template_gpu',
-    srcs = ['template_gpu.cu'],
-    hdrs = [],
-    # cuda_path = '//thirdparty/cuda',
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">cu_library</span><span class="p">(</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;template_gpu&#39;</span><span class="p">,</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;template_gpu.cu&#39;</span><span class="p">],</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[],</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="cu_binary">cu_binary<a class="headerlink" href="#cu_binary" title="Permanent link">&para;</a></h2>
 <p>使用 nvcc 编译器编译包含 CUDA 代码的 C++ binary</p>
 <p>语法同 <code>cc_binary</code> ，命令环境变量参考 <code>cu_library</code></p>
-<pre><code class="language-python">cu_binary(
-    name = 'template',
-    srcs = ['template.cu'],
-    deps = [':template_cpu'],
-    # cuda_path = '//thirdparty/cuda',
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">cu_binary</span><span class="p">(</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;template&#39;</span><span class="p">,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;template.cu&#39;</span><span class="p">],</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:template_cpu&#39;</span><span class="p">],</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="p">)</span>
+</code></pre></div>
 <h2 id="cu_test">cu_test<a class="headerlink" href="#cu_test" title="Permanent link">&para;</a></h2>
 <p>使用 nvcc 编译器编译包含 CUDA 代码的 C++ UT</p>
 <p>语法同 <code>cc_test</code> ，命令环境变量参考 <code>cu_library</code></p>
-<pre><code class="language-python">cu_test(
-    name = 'cu_test',
-    srcs = ['cu_test.cu'],
-    deps = [':template_cpu'],
-    # cuda_path = '//thirdparty/cuda',
-)
-</code></pre>
-              
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">cu_test</span><span class="p">(</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;cu_test&#39;</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cu_test.cu&#39;</span><span class="p">],</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:template_cpu&#39;</span><span class="p">],</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../misc/" class="btn btn-neutral float-left" title="辅助功能"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../vcpkg/" class="btn btn-neutral float-right" title="使用 vcpkg 包">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
-        </span>
-    
-    
-      <span><a href="../../misc/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../vcpkg/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "../..";</script>
-    <script src="../../js/theme_extra.js"></script>
-    <script src="../../js/theme.js"></script>
-      <script src="../../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>

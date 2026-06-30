@@ -1,423 +1,4712 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://blade-build.github.io/docs/zh/config/" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>配置系统 - Blade Build</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../css/extra.css" rel="stylesheet" />
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "\u914d\u7f6e\u7cfb\u7edf";
-        var mkdocs_page_input_path = "config.md";
-        var mkdocs_page_url = "/docs/zh/config/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Blade 构建系统文档">
+      
+      
+      
+        <link rel="canonical" href="https://blade-build.github.io/docs/zh/config/">
+      
+      
+        <link rel="prev" href="../optimization/">
+      
+      
+        <link rel="next" href="../misc/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>配置系统 - Blade Build</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Blade Build
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Blade 用户手册</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">介绍</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../intro/">Blade 简介</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../features/">核心特性</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">快速开始</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../prerequisites/">系统前置要求与依赖</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../install/">安装指南</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../quick_start/">快速上手</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">用户指南</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../workspace/">工作空间配置</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_file/">编写 BUILD 文件</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dsl/">DSL 和 API 模块</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../functions/">构建函数</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../command_line/">命令行参考</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../editor_support/">编辑器支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../test/">测试支持</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../output/">构建产物与输出</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_cache/">构建缓存</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../optimization/">C/C++ 优化（PGO / AutoFDO / LTO）</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">配置系统</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_2">配置文件层级</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_3">配置语法</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#_4">关键特性</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_5">查看当前配置</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#global_config">global_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#backend_builderstring-ninja">backend_builder：string = "ninja"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#duplicated_source_actionstring-warning">duplicated_source_action：string = "warning"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#test_timeoutint-600">test_timeout：int = 600</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#debug_info_levelstring-mid">debug_info_level：string = "mid"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#build_jobsint-0">build_jobs：int = 0</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#test_jobsint-0">test_jobs：int = 0</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#test_related_envslist">test_related_envs：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#run_unrepaired_testsbool-false">run_unrepaired_tests：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#legacy_public_targetslist">legacy_public_targets：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#default_visibilitylist">default_visibility：list = []</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cc_config">cc_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#toolchainstr">toolchain：str = ""</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#extra_incslist">extra_incs：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cppflagslist">cppflags：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cflagslist">cflags：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cxxflagslist">cxxflags：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#linkflagslist">linkflags：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#warningslist">warnings：list = 内置</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#c_warningslist">c_warnings：list = 内置</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cxx_warningslist">cxx_warnings：list = 内置</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#optimizelist-o2">optimize：list = ['-O2']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#ltostr-thin-full">lto：str = '' | 'thin' | 'full'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#fissionbool-false">fission：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#dwpbool-false">dwp：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#piestr-auto-yes-no">pie：str = 'auto' | 'yes' | 'no'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#no_semantic_interpositionbool-true">no_semantic_interposition：bool = True</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#hdr_dep_missing_severitystring-warning">hdr_dep_missing_severity：string = 'warning'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#hdr_dep_missing_ignoredict">hdr_dep_missing_ignore：dict = {}</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#allowed_undeclared_hdrslist">allowed_undeclared_hdrs：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#unused_deps_severitystring-debug">unused_deps_severity：string = 'debug'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#unused_deps_suppressdict">unused_deps_suppress：dict = {}</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cc_library_config">cc_library_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#prebuilt_libpath_patternstring-libbits">prebuilt_libpath_pattern：string = 'lib${bits}'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#generate_dynamicbool-false">generate_dynamic：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#check_undefinedbool-true">check_undefined：bool = True （实验性）</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#check_undefined_severitystr-warning">check_undefined_severity：str = 'warning'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#allow_undefinedlist">allow_undefined：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#deterministicbool-false">deterministic：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#thinbool-false">thin：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#arflagslist-rcs">arflags：list = ['rcs'] ~~（已废弃）~~</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#hdrs_missing_severitystring-error">hdrs_missing_severity：string = 'error'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#hdrs_missing_suppresslist">hdrs_missing_suppress：list = []</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cc_test_config">cc_test_config</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#coverage_config">coverage_config</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#msvc_config">msvc_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#target_archstring-auto">target_arch：string = 'auto'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#msvc_versionstring-auto">msvc_version：string = 'auto'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#use_clangbool-false">use_clang：bool = False</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cppflagslist-md-ehsc">cppflags：list = ['/MD', '/EHsc']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cflagslist_1">cflags：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cxxflagslist-stdc17">cxxflags：list = ['/std:c++17']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#linkflagslist-subsystemconsole">linkflags：list = ['/SUBSYSTEM:CONSOLE']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#warningslist-w3">warnings：list = ['/W3']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#optimizedict">optimize：dict</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#debug_info_levelsdict">debug_info_levels：dict</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cuda_config">cuda_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#cuda_pathstring">cuda_path：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cu_warningslist">cu_warnings：list = 内置</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cuflagslist">cuflags：list = []</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#java_config">java_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#java_homestring">java_home：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#versionstring">version：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#source_versionstring">source_version：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#target_versionstring">target_version：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#source_encodingstring-none">source_encoding：string = None</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#warningslist-werror-xlintall">warnings：list = ['-Werror', '-Xlint:all']</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#fat_jar_conflict_severitystring-warning">fat_jar_conflict_severity：string = 'warning'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#mavenstring-mvn">maven：string = 'mvn'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_centralstring">maven_central：string = ''</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_jar_allowed_dirslist">maven_jar_allowed_dirs：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_jar_allowed_dirs_exemptslist">maven_jar_allowed_dirs_exempts：list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_snapshot_update_policystring-daily">maven_snapshot_update_policy：string = 'daily'</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_snapshot_update_intervalint-86400">maven_snapshot_update_interval：int = 86400</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#maven_download_concurrencyint-0">maven_download_concurrency：int = 0</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#proto_library_config">proto_library_config</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#thrift_library_config">thrift_library_config</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_6">追加配置项的值</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#load_value">load_value 函数</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cc">C/C++ 工具链配置</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#kind">kind — 工具链家族</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#prefix">prefix — 安装前缀</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_7">配置参考</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_8">多工具链配置</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_9">选择优先级</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#windows-clang-cl">在 Windows 上使用 clang-cl</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#vcpkg_config">vcpkg_config</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#manage-bool-true">manage: bool = True</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#packages-dict">packages: dict = {}</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#baseline-str">baseline: str = ""</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#registries-list">registries: list = []</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#root-str">root: str = ""</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#triplet-str-auto">triplet: str = "auto"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#install_dir-str-cachevcpkg">install_dir: str = ".cache/vcpkg"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#binary_cache-str-auto">binary_cache: str = "auto"</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#direct_use_allowed-list">direct_use_allowed: list = []</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../misc/">辅助功能</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">构建规则</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/cc/">C/C++ 构建规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/vcpkg/">使用 vcpkg 包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/go/">构建 Go 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/idl/">构建 protobuf 和 thrift</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/java/">构建 Java 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/scala/">构建 Scala 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/lexyacc/">构建 lex 和 yacc</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/package/">文件打包</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/python/">构建 Python 目标</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/shell/">Shell Test 规则</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/swig/">构建 SWIG</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/gen_rule/">自定义规则构建</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/extension/">扩展</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../build_rules/custom_rule/">自定义规则（define_rule）</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">升级</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v3/">升级到 V3 版</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../upgrade-to-v2/">升级到 V2 版</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">开发文档</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/">开发</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/build_file_loading/">BUILD 文件是如何被发现、加载与注册的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/cc_build/">C/C++ 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/check_undefined/">静态未定义符号检查（check_undefined）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/configuration/">配置项是如何加载、分层与读取的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/console/">console：构建进度面板与 ninja 状态流水线</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/custom_rule/">自定义规则（define_rule）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dependency_analysis/">依赖分析与 ninja 文件生成</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/dsl_api/">内置函数与 blade.* DSL</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/export_map/">export_map（符号导出控制）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/gen_rule/">gen_rule：自定义构建步骤与其它 target 如何感知它</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/hdrs_check/">C/C++ 头文件依赖检查（hdrs check）实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/java_scala_build/">Java 与 Scala 程序是如何构建的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/protobuf_build/">proto_library 的多语言代码生成机制</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/python_build/">Python 目标是如何构建与打包的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/self_testing/">blade-build 自身是如何被测试的</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/test_execution/">blade test 如何运行用户测试</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/vcpkg/">vcpkg 支持实现原理</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../develop/visibility/">Visibility 是如何实现与执行的</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../FAQ/">Blade 常见问题</a>
-                </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Blade Build" class="md-header__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blade Build
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              配置系统
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Blade Build</a>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">用户指南</li>
-      <li class="breadcrumb-item active">配置系统</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/blade-build/blade-build/edit/master/docs/config.md">Edit on blade-build/blade-build</a>
-    </li>
-  </ul>
-  <hr/>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 用户手册
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../intro/" class="md-tabs__link">
+          
+  
+  
+  介绍
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../prerequisites/" class="md-tabs__link">
+          
+  
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+  用户指南
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../build_rules/cc/" class="md-tabs__link">
+          
+  
+  
+  构建规则
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../upgrade-to-v3/" class="md-tabs__link">
+          
+  
+  
+  升级
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../develop/" class="md-tabs__link">
+          
+  
+  
+  开发文档
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blade 常见问题
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="_1">配置系统<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Blade Build" class="md-nav__button md-logo" aria-label="Blade Build" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Blade Build
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blade-build/blade-build" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    blade-build/blade-build
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 用户手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    介绍
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    介绍
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 简介
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    核心特性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统前置要求与依赖
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速上手
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户指南
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    用户指南
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工作空间配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编写 BUILD 文件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DSL 和 API 模块
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建函数
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行参考
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor_support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编辑器支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    测试支持
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建产物与输出
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建缓存
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 优化（PGO / AutoFDO / LTO）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置系统
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置文件层级
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置语法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="配置语法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        查看当前配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看当前配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        global_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="global_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend_builderstring-ninja" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backend_builder：string = "ninja"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duplicated_source_actionstring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        duplicated_source_action：string = "warning"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_timeoutint-600" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_timeout：int = 600
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug_info_levelstring-mid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_info_level：string = "mid"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build_jobsint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_jobs：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_jobsint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_jobs：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_related_envslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_related_envs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run_unrepaired_testsbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_unrepaired_tests：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacy_public_targetslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        legacy_public_targets：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default_visibilitylist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default_visibility：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toolchainstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        toolchain：str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_incslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_incs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cppflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cppflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxxflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxxflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxx_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxx_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizelist-o2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：list = ['-O2']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ltostr-thin-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lto：str = '' | 'thin' | 'full'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fissionbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fission：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dwpbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dwp：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#piestr-auto-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pie：str = 'auto' | 'yes' | 'no'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no_semantic_interpositionbool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        no_semantic_interposition：bool = True
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdr_dep_missing_severitystring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdr_dep_missing_severity：string = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdr_dep_missing_ignoredict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdr_dep_missing_ignore：dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allowed_undeclared_hdrslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        allowed_undeclared_hdrs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unused_deps_severitystring-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unused_deps_severity：string = 'debug'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unused_deps_suppressdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unused_deps_suppress：dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_library_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_library_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prebuilt_libpath_patternstring-libbits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prebuilt_libpath_pattern：string = 'lib${bits}'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_dynamicbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_dynamic：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_undefinedbool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_undefined：bool = True （实验性）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_undefined_severitystr-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_undefined_severity：str = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow_undefinedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        allow_undefined：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deterministicbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deterministic：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thin：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arflagslist-rcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        arflags：list = ['rcs'] ~~（已废弃）~~
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdrs_missing_severitystring-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdrs_missing_severity：string = 'error'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdrs_missing_suppresslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdrs_missing_suppress：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_test_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_test_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coverage_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msvc_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        msvc_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="msvc_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#target_archstring-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_arch：string = 'auto'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msvc_versionstring-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        msvc_version：string = 'auto'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_clangbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        use_clang：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cppflagslist-md-ehsc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cppflags：list = ['/MD', '/EHsc']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cflagslist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxxflagslist-stdc17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxxflags：list = ['/std:c++17']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagslist-subsystemconsole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：list = ['/SUBSYSTEM:CONSOLE']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist-w3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = ['/W3']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizedict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug_info_levelsdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_info_levels：dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuda_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuda_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cuda_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda_pathstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuda_path：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cu_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="java_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java_homestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java_home：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source_versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target_versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source_encodingstring-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_encoding：string = None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist-werror-xlintall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = ['-Werror', '-Xlint:all']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fat_jar_conflict_severitystring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fat_jar_conflict_severity：string = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mavenstring-mvn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven：string = 'mvn'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_centralstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_central：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_jar_allowed_dirslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_jar_allowed_dirs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_jar_allowed_dirs_exemptslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_jar_allowed_dirs_exempts：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_snapshot_update_policystring-daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_snapshot_update_policy：string = 'daily'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_snapshot_update_intervalint-86400" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_snapshot_update_interval：int = 86400
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_download_concurrencyint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_download_concurrency：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proto_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proto_library_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thrift_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thrift_library_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        追加配置项的值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_value 函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C/C++ 工具链配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C/C++ 工具链配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kind — 工具链家族
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prefix — 安装前缀
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置参考
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多工具链配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        选择优先级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-clang-cl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        在 Windows 上使用 clang-cl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vcpkg_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vcpkg_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="vcpkg_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manage-bool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        manage: bool = True
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packages-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        packages: dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        baseline: str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registries-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        registries: list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        root: str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triplet-str-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        triplet: str = "auto"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install_dir-str-cachevcpkg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        install_dir: str = ".cache/vcpkg"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary_cache-str-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        binary_cache: str = "auto"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#direct_use_allowed-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        direct_use_allowed: list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../misc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    辅助功能
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建规则
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    构建规则
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/cc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 构建规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用 vcpkg 包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/go/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Go 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/idl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 protobuf 和 thrift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Java 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/scala/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Scala 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/lexyacc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 lex 和 yacc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文件打包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 Python 目标
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/shell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shell Test 规则
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/swig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    构建 SWIG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/extension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_rules/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    升级
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V3 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrade-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级到 V2 版
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发文档
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/build_file_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BUILD 文件是如何被发现、加载与注册的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/cc_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/check_undefined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    静态未定义符号检查（check_undefined）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项是如何加载、分层与读取的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    console：构建进度面板与 ninja 状态流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/custom_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    自定义规则（define_rule）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dependency_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    依赖分析与 ninja 文件生成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/dsl_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内置函数与 blade.* DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/export_map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    export_map（符号导出控制）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/gen_rule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_rule：自定义构建步骤与其它 target 如何感知它
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/hdrs_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/C++ 头文件依赖检查（hdrs check）实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/java_scala_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java 与 Scala 程序是如何构建的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/protobuf_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proto_library 的多语言代码生成机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/python_build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python 目标是如何构建与打包的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/self_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade-build 自身是如何被测试的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/test_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    blade test 如何运行用户测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/vcpkg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vcpkg 支持实现原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../develop/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visibility 是如何实现与执行的
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blade 常见问题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置文件层级
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置语法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="配置语法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        查看当前配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="查看当前配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        global_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="global_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend_builderstring-ninja" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backend_builder：string = "ninja"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duplicated_source_actionstring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        duplicated_source_action：string = "warning"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_timeoutint-600" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_timeout：int = 600
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug_info_levelstring-mid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_info_level：string = "mid"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build_jobsint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_jobs：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_jobsint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_jobs：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_related_envslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test_related_envs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run_unrepaired_testsbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_unrepaired_tests：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacy_public_targetslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        legacy_public_targets：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default_visibilitylist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default_visibility：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#toolchainstr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        toolchain：str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extra_incslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_incs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cppflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cppflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxxflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxxflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxx_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxx_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizelist-o2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：list = ['-O2']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ltostr-thin-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lto：str = '' | 'thin' | 'full'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fissionbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fission：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dwpbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dwp：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#piestr-auto-yes-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pie：str = 'auto' | 'yes' | 'no'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no_semantic_interpositionbool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        no_semantic_interposition：bool = True
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdr_dep_missing_severitystring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdr_dep_missing_severity：string = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdr_dep_missing_ignoredict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdr_dep_missing_ignore：dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allowed_undeclared_hdrslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        allowed_undeclared_hdrs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unused_deps_severitystring-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unused_deps_severity：string = 'debug'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unused_deps_suppressdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unused_deps_suppress：dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_library_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cc_library_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prebuilt_libpath_patternstring-libbits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prebuilt_libpath_pattern：string = 'lib${bits}'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_dynamicbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_dynamic：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_undefinedbool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_undefined：bool = True （实验性）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_undefined_severitystr-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_undefined_severity：str = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow_undefinedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        allow_undefined：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deterministicbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deterministic：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thin：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arflagslist-rcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        arflags：list = ['rcs'] ~~（已废弃）~~
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdrs_missing_severitystring-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdrs_missing_severity：string = 'error'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdrs_missing_suppresslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hdrs_missing_suppress：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cc_test_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cc_test_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coverage_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msvc_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        msvc_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="msvc_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#target_archstring-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_arch：string = 'auto'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msvc_versionstring-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        msvc_version：string = 'auto'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_clangbool-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        use_clang：bool = False
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cppflagslist-md-ehsc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cppflags：list = ['/MD', '/EHsc']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cflagslist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cxxflagslist-stdc17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cxxflags：list = ['/std:c++17']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkflagslist-subsystemconsole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linkflags：list = ['/SUBSYSTEM:CONSOLE']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist-w3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = ['/W3']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimizedict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize：dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug_info_levelsdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_info_levels：dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuda_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuda_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="cuda_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda_pathstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuda_path：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cu_warningslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cu_warnings：list = 内置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuflagslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cuflags：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="java_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java_homestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java_home：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source_versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target_versionstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        target_version：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source_encodingstring-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source_encoding：string = None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warningslist-werror-xlintall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        warnings：list = ['-Werror', '-Xlint:all']
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fat_jar_conflict_severitystring-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fat_jar_conflict_severity：string = 'warning'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mavenstring-mvn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven：string = 'mvn'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_centralstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_central：string = ''
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_jar_allowed_dirslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_jar_allowed_dirs：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_jar_allowed_dirs_exemptslist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_jar_allowed_dirs_exempts：list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_snapshot_update_policystring-daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_snapshot_update_policy：string = 'daily'
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_snapshot_update_intervalint-86400" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_snapshot_update_interval：int = 86400
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maven_download_concurrencyint-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maven_download_concurrency：int = 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proto_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proto_library_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thrift_library_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thrift_library_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        追加配置项的值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_value 函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C/C++ 工具链配置
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C/C++ 工具链配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kind — 工具链家族
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prefix — 安装前缀
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        配置参考
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多工具链配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        选择优先级
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-clang-cl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        在 Windows 上使用 clang-cl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vcpkg_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vcpkg_config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="vcpkg_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manage-bool-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        manage: bool = True
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packages-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        packages: dict = {}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        baseline: str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registries-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        registries: list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        root: str = ""
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triplet-str-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        triplet: str = "auto"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install_dir-str-cachevcpkg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        install_dir: str = ".cache/vcpkg"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary_cache-str-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        binary_cache: str = "auto"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#direct_use_allowed-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        direct_use_allowed: list = []
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">配置系统<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">配置文件层级<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>Blade 采用多层级配置体系，按以下优先级顺序加载配置文件，后加载的配置会覆盖前面的同名配置项：</p>
 <ul>
@@ -428,10 +4717,10 @@
 </ul>
 <h2 id="_3">配置语法<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>配置文件采用与 BUILD 文件一致的函数调用式语法：</p>
-<pre><code class="language-python">global_config(
-    test_timeout = 600,
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">global_config</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">test_timeout</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</code></pre></div>
 <h3 id="_4">关键特性<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>配置项之间没有顺序要求</li>
@@ -440,12 +4729,12 @@
 </ul>
 <h2 id="_5">查看当前配置<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>查看当前实际生效的配置：</p>
-<pre><code class="language-bash"># 将配置导出到文件
-blade dump --config --to-file my.config
-
-# 将配置打印到标准输出
-blade dump --config
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 将配置导出到文件</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>blade<span class="w"> </span>dump<span class="w"> </span>--config<span class="w"> </span>--to-file<span class="w"> </span>my.config
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 将配置打印到标准输出</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>blade<span class="w"> </span>dump<span class="w"> </span>--config
+</code></pre></div>
 <h3 id="global_config">global_config<a class="headerlink" href="#global_config" title="Permanent link">&para;</a></h3>
 <p>构建系统的全局配置项：</p>
 <h4 id="backend_builderstring-ninja"><code>backend_builder</code>：string = "ninja"<a class="headerlink" href="#backend_builderstring-ninja" title="Permanent link">&para;</a></h4>
@@ -483,10 +4772,10 @@ blade dump --config
 <p><strong>目标可见性的向后兼容配置</strong></p>
 <p><strong>用途：</strong> 对于未显式设置 <code>visibility</code> 的目标，该列表中列出的目标默认可见性为 <code>PUBLIC</code>。</p>
 <p><strong>迁移工具：</strong> 对于存量项目，可使用 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>tool/collect-missing-visibility.py</code></a> 生成该列表：</p>
-<pre><code class="language-python">global_config(
-    legacy_public_targets = load_value('legacy_public_targets.conf')
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">global_config</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">legacy_public_targets</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;legacy_public_targets.conf&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="default_visibilitylist"><code>default_visibility</code>：list = []<a class="headerlink" href="#default_visibilitylist" title="Permanent link">&para;</a></h4>
 <p><strong>默认的目标可见性</strong></p>
 <p><strong>合法取值：</strong> <code>[]</code>（私有）或 <code>['PUBLIC']</code>
@@ -585,34 +4874,34 @@ blade dump --config
 <h4 id="hdr_dep_missing_ignoredict"><code>hdr_dep_missing_ignore</code>：dict = {}<a class="headerlink" href="#hdr_dep_missing_ignoredict" title="Permanent link">&para;</a></h4>
 <p><strong>头文件依赖缺失的忽略列表</strong></p>
 <p>格式为字典：<code>{ 目标 : { 源文件 : [头文件列表] } }</code>。例如：</p>
-<pre><code class="language-python">{
-    'common:rpc' : {'rpc_server.cc':['common/base64.h', 'common/list.h']},
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s1">&#39;common:rpc&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;rpc_server.cc&#39;</span><span class="p">:[</span><span class="s1">&#39;common/base64.h&#39;</span><span class="p">,</span> <span class="s1">&#39;common/list.h&#39;</span><span class="p">]},</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+</code></pre></div>
 <p>表示对于 <code>common:rpc</code>，若在 <code>rpc_server.cc</code> 中引用了 <code>common/base64.h</code> 和 <code>common/list.h</code>，即便其所属库未在 <code>deps</code> 中声明，也不会报错。</p>
 <p>对于构建过程中生成的头文件，路径无需带构建目录前缀（例如 <code>build_release</code>），最好也不要带，以便在不同构建类型下通用。</p>
 <p>该功能用于帮助升级未正确声明和遵守头文件依赖的存量项目。为简化升级过程，我们还提供了<a href="https://github.com/blade-build/blade-build/tree/master/tool">辅助工具</a>，可在构建后自动生成此类信息：</p>
-<pre><code class="language-bash">blade build ...
-path/to/collect-inclusion-errors.py --missing &gt; hdr_dep_missing_suppress.conf
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>blade<span class="w"> </span>build<span class="w"> </span>...
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>path/to/collect-inclusion-errors.py<span class="w"> </span>--missing<span class="w"> </span>&gt;<span class="w"> </span>hdr_dep_missing_suppress.conf
+</code></pre></div>
 <p>然后在 <code>BLADE_ROOT</code> 中加载：</p>
-<pre><code class="language-python">cc_config(
-    hdr_dep_missing_ignore = load_value('hdr_dep_missing_suppress.conf'),
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">hdr_dep_missing_ignore</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;hdr_dep_missing_suppress.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">)</span>
+</code></pre></div>
 <p>这样，存量的头文件依赖缺失错误会被抑制，但新增的依然会正常报告。</p>
 <h4 id="allowed_undeclared_hdrslist"><code>allowed_undeclared_hdrs</code>：list = []<a class="headerlink" href="#allowed_undeclared_hdrslist" title="Permanent link">&para;</a></h4>
 <p><strong>允许的未声明头文件列表</strong></p>
 <p>在 Blade 2 中，头文件也被纳入依赖管理，所有头文件都必须显式声明。对于存量代码库，未声明的头文件数量庞大，短期难以彻底清理。该选项允许在检查时忽略这些头文件。</p>
 <p>构建完成后，可使用 <code>tool/collect-inclusion-errors.py</code> 生成未声明头文件列表：</p>
-<pre><code class="language-bash">blade build ...
-path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.conf
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>blade<span class="w"> </span>build<span class="w"> </span>...
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>path/to/collect-inclusion-errors.py<span class="w"> </span>--undeclared<span class="w"> </span>&gt;<span class="w"> </span>allowed_undeclared_hdrs.conf
+</code></pre></div>
 <p>然后加载：</p>
-<pre><code class="language-python">cc_config(
-    allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;allowed_undeclared_hdrs.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">)</span>
+</code></pre></div>
 <p>从代码库长期健康的角度，最终还是应当把这些问题彻底修正。</p>
 <h4 id="unused_deps_severitystring-debug"><code>unused_deps_severity</code>：string = 'debug'<a class="headerlink" href="#unused_deps_severitystring-debug" title="Permanent link">&para;</a></h4>
 <p><strong>未使用依赖检查的严重性</strong></p>
@@ -626,22 +4915,22 @@ path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.co
 <h4 id="unused_deps_suppressdict"><code>unused_deps_suppress</code>：dict = {}<a class="headerlink" href="#unused_deps_suppressdict" title="Permanent link">&para;</a></h4>
 <p><strong>未使用依赖检查的抑制列表</strong></p>
 <p><strong>用途：</strong> 形如 <code>{target: [deps]}</code> 的映射，把「有意保留」的依赖从未使用依赖检查中豁免，主要用于存量代码库的逐步治理。</p>
-<pre><code class="language-python">cc_config(
-    unused_deps_severity = 'warning',
-    unused_deps_suppress = {
-        '//app/foo:bar': ['//common/baz:qux'],
-    },
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">unused_deps_severity</span> <span class="o">=</span> <span class="s1">&#39;warning&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">unused_deps_suppress</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="s1">&#39;//app/foo:bar&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;//common/baz:qux&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="p">},</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span>
+</code></pre></div>
 <p>示例：</p>
-<pre><code class="language-python">cc_config(
-    extra_incs = ['thirdparty'],         # 额外的 -I，比如 thirdparty
-    warnings = ['-Wall', '-Wextra'...],  # C/C++ 公共警告
-    c_warnings = ['-Wall', '-Wextra'...],# C 专用警告
-    cxx_warnings = ['-Wall', '-Wextra'...], # C++ 专用警告
-    optimize = ['-O2'],                  # 优化级别
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">extra_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thirdparty&#39;</span><span class="p">],</span>         <span class="c1"># 额外的 -I，比如 thirdparty</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span>  <span class="c1"># C/C++ 公共警告</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">c_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span><span class="c1"># C 专用警告</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">cxx_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span> <span class="c1"># C++ 专用警告</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">optimize</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-O2&#39;</span><span class="p">],</span>                  <span class="c1"># 优化级别</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="p">)</span>
+</code></pre></div>
 <h3 id="cc_library_config">cc_library_config<a class="headerlink" href="#cc_library_config" title="Permanent link">&para;</a></h3>
 <p>C/C++ 库的配置：</p>
 <h4 id="prebuilt_libpath_patternstring-libbits"><code>prebuilt_libpath_pattern</code>：string = 'lib${bits}'<a class="headerlink" href="#prebuilt_libpath_patternstring-libbits" title="Permanent link">&para;</a></h4>
@@ -677,14 +4966,14 @@ path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.co
 <h4 id="allow_undefinedlist"><code>allow_undefined</code>：list = []<a class="headerlink" href="#allow_undefinedlist" title="Permanent link">&para;</a></h4>
 <p><strong>项目级正则白名单</strong>：列出允许保留为未定义状态的 mangled 符号名（按 <code>nm -u</code> 的输出，用 <code>re.fullmatch</code> 匹配）。</p>
 <p>系统符号（libc、libstdc++、弱引用）由内置基线处理，本清单仅用于项目级别的例外（例如代码生成器注入的符号、或者尚未建模的工具链特性提供的符号）。若只需在某个库内放行，可在 <code>cc_library</code> 上直接设 <code>allow_undefined = [r'pattern', …]</code>。</p>
-<pre><code class="language-python">cc_library_config(
-    check_undefined = True,
-    allow_undefined = [
-        r'__gcov_.*',         # gcov 运行时，由最终链接的 --coverage 提供
-        r'_ZN3foo3barEv',     # 已知由外部 codegen 注入的符号
-    ],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">cc_library_config</span><span class="p">(</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">check_undefined</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">allow_undefined</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="sa">r</span><span class="s1">&#39;__gcov_.*&#39;</span><span class="p">,</span>         <span class="c1"># gcov 运行时，由最终链接的 --coverage 提供</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        <span class="sa">r</span><span class="s1">&#39;_ZN3foo3barEv&#39;</span><span class="p">,</span>     <span class="c1"># 已知由外部 codegen 注入的符号</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="p">],</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="deterministicbool-false"><code>deterministic</code>：bool = False<a class="headerlink" href="#deterministicbool-false" title="Permanent link">&para;</a></h4>
 <p><strong>生成可重复构建（deterministic）的静态库。</strong></p>
 <p>默认情况下，<code>ar</code> 在打包 <code>.o</code> 文件时会嵌入文件的时间戳、UID、GID 等元数据，
@@ -709,21 +4998,21 @@ path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.co
 <p><strong><code>hdrs</code> 缺失检查的抑制列表</strong></p>
 <p>格式为目标列表（不带 <code>//</code> 前缀），用于抑制存量代码中的 <code>hdrs</code> 属性缺失问题。</p>
 <p>我们提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-hdrs-missing.py</code></a> 用于生成该列表。条目过多时建议独立保存、集中加载：</p>
-<pre><code class="language-python">cc_library_config(
-    hdrs_missing_suppress = load_value('blade_hdr_missing_spppress'),
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">cc_library_config</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">hdrs_missing_suppress</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;blade_hdr_missing_spppress&#39;</span><span class="p">),</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">)</span>
+</code></pre></div>
 <h3 id="cc_test_config">cc_test_config<a class="headerlink" href="#cc_test_config" title="Permanent link">&para;</a></h3>
 <p>构建和运行测试所需的配置：</p>
-<pre><code class="language-python">cc_test_config(
-    dynamic_link = True,  # 测试程序默认动态链接，可减少磁盘占用，默认值为 False
-    heap_check = 'strict', # 开启 gperftools 的 HEAPCHECK，详见 gperftools 文档
-    gperftools_libs = '//thirdparty/perftools:tcmalloc',           # tcmalloc 库，Blade deps 格式
-    gperftools_debug_libs = '//thirdparty/perftools:tcmalloc_debug', # tcmalloc_debug 库
-    gtest_libs = '//thirdparty/gtest:gtest',       # gtest 库
-    gtest_main_libs = '//thirdparty/gtest:gtest_main' # gtest_main 库
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">cc_test_config</span><span class="p">(</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">dynamic_link</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># 测试程序默认动态链接，可减少磁盘占用，默认值为 False</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">heap_check</span> <span class="o">=</span> <span class="s1">&#39;strict&#39;</span><span class="p">,</span> <span class="c1"># 开启 gperftools 的 HEAPCHECK，详见 gperftools 文档</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">gperftools_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/perftools:tcmalloc&#39;</span><span class="p">,</span>           <span class="c1"># tcmalloc 库，Blade deps 格式</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">gperftools_debug_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/perftools:tcmalloc_debug&#39;</span><span class="p">,</span> <span class="c1"># tcmalloc_debug 库</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">gtest_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/gtest:gtest&#39;</span><span class="p">,</span>       <span class="c1"># gtest 库</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">gtest_main_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/gtest:gtest_main&#39;</span> <span class="c1"># gtest_main 库</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">)</span>
+</code></pre></div>
 <p>注意：</p>
 <ul>
 <li>从 gtest 1.6 起移除了 <code>make install</code>，但可以绕过。</li>
@@ -732,25 +5021,25 @@ path/to/collect-inclusion-errors.py --undeclared &gt; allowed_undeclared_hdrs.co
 </ul>
 <h3 id="coverage_config">coverage_config<a class="headerlink" href="#coverage_config" title="Permanent link">&para;</a></h3>
 <p>代码覆盖率报告配置（<code>blade test --coverage</code>）：</p>
-<pre><code class="language-python">coverage_config(
-    # 要从覆盖率报告中剔除的 C/C++ 源文件 glob 模式。
-    # `**` 跨目录匹配（blade glob 语义），`*`/`?` 不跨 `/`。
-    exclude=['thirdparty/**', '**/*_test.cc'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">coverage_config</span><span class="p">(</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="c1"># 要从覆盖率报告中剔除的 C/C++ 源文件 glob 模式。</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="c1"># `**` 跨目录匹配（blade glob 语义），`*`/`?` 不跨 `/`。</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;thirdparty/**&#39;</span><span class="p">,</span> <span class="s1">&#39;**/*_test.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>对所有 C/C++ 工具链生效：gcc/clang/clang-cl 转给 gcovr 的 <code>--exclude</code>（同时影响 HTML 与 XML）；原生 MSVC <code>cl.exe</code> 按源文件路径过滤合并后的 Cobertura 并重算汇总。构建目录下的源文件（生成代码、第三方依赖）无论此项如何设置都始终被排除。</p>
 <h3 id="msvc_config">msvc_config<a class="headerlink" href="#msvc_config" title="Permanent link">&para;</a></h3>
 <p>MSVC 专有配置，仅在 Windows 下生效：</p>
-<pre><code class="language-python">msvc_config(
-    target_arch = 'x64',
-    msvc_version = 'auto',
-    use_clang = False,
-    cppflags = ['/MD', '/EHsc'],
-    cxxflags = ['/std:c++17'],
-    linkflags = ['/SUBSYSTEM:CONSOLE'],
-    warnings = ['/W3'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">msvc_config</span><span class="p">(</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">target_arch</span> <span class="o">=</span> <span class="s1">&#39;x64&#39;</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">use_clang</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">cppflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/MD&#39;</span><span class="p">,</span> <span class="s1">&#39;/EHsc&#39;</span><span class="p">],</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">cxxflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/std:c++17&#39;</span><span class="p">],</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/SUBSYSTEM:CONSOLE&#39;</span><span class="p">],</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/W3&#39;</span><span class="p">],</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="target_archstring-auto"><code>target_arch</code>：string = 'auto'<a class="headerlink" href="#target_archstring-auto" title="Permanent link">&para;</a></h4>
 <p><strong>目标架构</strong></p>
 <p><strong>合法取值：</strong> <code>'auto'</code>（自动检测宿主机架构）、<code>'x64'</code>、<code>'x86'</code>、<code>'arm64'</code>、<code>'arm64ec'</code></p>
@@ -797,21 +5086,21 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <h4 id="optimizedict"><code>optimize</code>：dict<a class="headerlink" href="#optimizedict" title="Permanent link">&para;</a></h4>
 <p><strong>MSVC Debug / Release 优化选项</strong></p>
 <p>默认：</p>
-<pre><code class="language-python">{
-    'debug': ['/Od'],
-    'release': ['/O2'],
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/Od&#39;</span><span class="p">],</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="s1">&#39;release&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/O2&#39;</span><span class="p">],</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">}</span>
+</code></pre></div>
 <h4 id="debug_info_levelsdict"><code>debug_info_levels</code>：dict<a class="headerlink" href="#debug_info_levelsdict" title="Permanent link">&para;</a></h4>
 <p><strong>MSVC 各调试级别的调试信息选项</strong></p>
 <p>默认：</p>
-<pre><code class="language-python">{
-    'no':   [],
-    'low':  ['/Zi'],
-    'mid':  ['/Zi', '/DEBUG'],
-    'high': ['/Zi', '/DEBUG', '/RTC1'],
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="s1">&#39;no&#39;</span><span class="p">:</span>   <span class="p">[],</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="s1">&#39;low&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="s1">&#39;mid&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">,</span> <span class="s1">&#39;/DEBUG&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">,</span> <span class="s1">&#39;/DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;/RTC1&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">}</span>
+</code></pre></div>
 <h3 id="cuda_config">cuda_config<a class="headerlink" href="#cuda_config" title="Permanent link">&para;</a></h3>
 <p>所有 CUDA 目标的公共配置：</p>
 <h4 id="cuda_pathstring"><code>cuda_path</code>：string = ''<a class="headerlink" href="#cuda_pathstring" title="Permanent link">&para;</a></h4>
@@ -853,10 +5142,10 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <p>为避免代码库中重复描述同一 id 的 Maven 制品、以及由此引发的版本冗余与冲突，建议通过 <code>maven_jar_allowed_dirs</code> 限制 <code>maven_jar</code> 只能在这些目录及其子目录中调用。</p>
 <p>对于已经散落在允许目录之外的存量 <code>maven_jar</code> 目标，可通过 <code>maven_jar_allowed_dirs_exempts</code> 豁免。
 我们还提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-disallowed-maven-jars.py</code></a> 用于生成此列表：</p>
-<pre><code class="language-python">java_config(
-    maven_jar_allowed_dirs_exempts = load_value('exempted_maven_jars.conf'),
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">java_config</span><span class="p">(</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">maven_jar_allowed_dirs_exempts</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;exempted_maven_jars.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="maven_jar_allowed_dirs_exemptslist"><code>maven_jar_allowed_dirs_exempts</code>：list = []<a class="headerlink" href="#maven_jar_allowed_dirs_exemptslist" title="Permanent link">&para;</a></h4>
 <p><strong>豁免 <code>maven_jar_allowed_dirs</code> 检查的目标列表</strong></p>
 <h4 id="maven_snapshot_update_policystring-daily"><code>maven_snapshot_update_policy</code>：string = 'daily'<a class="headerlink" href="#maven_snapshot_update_policystring-daily" title="Permanent link">&para;</a></h4>
@@ -871,16 +5160,16 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <p>设置大于 1 可加速下载，但由于 <a href="https://issues.apache.org/jira/browse/MNG-2802">Maven 本地仓库默认并非并发安全</a>，建议安装 <a href="http://takari.io/book/30-team-maven.html#concurrent-safe-local-repository">takari</a> 来保证安全。注意该插件有多个版本，文档示例中的并非最新版。</p>
 <h3 id="proto_library_config">proto_library_config<a class="headerlink" href="#proto_library_config" title="Permanent link">&para;</a></h3>
 <p>编译 protobuf 所需的配置：</p>
-<pre><code class="language-python">proto_library_config(
-    protoc = 'protoc',                                   # protoc 编译器路径
-    protobuf_libs = '//thirdparty/protobuf:protobuf',    # protobuf 库，Blade deps 格式
-    protobuf_path = 'thirdparty',                        # import 时的 proto 搜索路径，相对 BLADE_ROOT
-    protobuf_cc_warning = '',                            # 编译 pb.cc 时是否开启 warning，yes 或 no
-    protobuf_include_path = 'thirdparty',                # 编译 pb.cc 时额外的 -I 路径
-    protoc_direct_dependencies = False,                  # 是否给 protoc 传 --direct_dependencies
-    well_known_protos = [],                              # 见下方说明
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">proto_library_config</span><span class="p">(</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;protoc&#39;</span><span class="p">,</span>                                   <span class="c1"># protoc 编译器路径</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/protobuf:protobuf&#39;</span><span class="p">,</span>    <span class="c1"># protobuf 库，Blade deps 格式</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">protobuf_path</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                        <span class="c1"># import 时的 proto 搜索路径，相对 BLADE_ROOT</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">protobuf_cc_warning</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>                            <span class="c1"># 编译 pb.cc 时是否开启 warning，yes 或 no</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">protobuf_include_path</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                <span class="c1"># 编译 pb.cc 时额外的 -I 路径</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">protoc_direct_dependencies</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>                  <span class="c1"># 是否给 protoc 传 --direct_dependencies</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="n">well_known_protos</span> <span class="o">=</span> <span class="p">[],</span>                              <span class="c1"># 见下方说明</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">)</span>
+</code></pre></div>
 <p><code>well_known_protos</code> 是 protobuf 自带的 <code>.proto</code> 文件列表
 （<code>google/protobuf/*.proto</code>），在开启 <code>protoc_direct_dependencies</code> 时作为
 允许的 import 白名单传给 protoc。留空（默认）时，blade 会在 protobuf 的头
@@ -891,40 +5180,40 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 自动发现结果时才显式设置该列表。</p>
 <h3 id="thrift_library_config">thrift_library_config<a class="headerlink" href="#thrift_library_config" title="Permanent link">&para;</a></h3>
 <p>编译 thrift 所需的配置：</p>
-<pre><code class="language-python">thrift_library_config(
-    thrift = 'thrift',                              # thrift 编译器路径
-    thrift_libs = '//thirdparty/thrift:thrift',     # thrift 库，Blade deps 格式
-    thrift_path = 'thrift',                         # thrift 文件的搜索路径，相对 BLADE_ROOT
-    thrift_incs = 'thirdparty',                     # 编译 thrift 生成的 .cpp 时额外的 -I 路径
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">thrift_library_config</span><span class="p">(</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">thrift</span> <span class="o">=</span> <span class="s1">&#39;thrift&#39;</span><span class="p">,</span>                              <span class="c1"># thrift 编译器路径</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">thrift_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/thrift:thrift&#39;</span><span class="p">,</span>     <span class="c1"># thrift 库，Blade deps 格式</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">thrift_path</span> <span class="o">=</span> <span class="s1">&#39;thrift&#39;</span><span class="p">,</span>                         <span class="c1"># thrift 文件的搜索路径，相对 BLADE_ROOT</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">thrift_incs</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                     <span class="c1"># 编译 thrift 生成的 .cpp 时额外的 -I 路径</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span>
+</code></pre></div>
 <h3 id="_6">追加配置项的值<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>所有 <code>list</code> 和 <code>set</code> 类型的配置项都支持追加，其中 <code>list</code> 还支持在前面插入。用法是在配置项名前加 <code>append_</code> 或 <code>prepend_</code> 前缀：</p>
-<pre><code class="language-python">cc_config(
-    append_linkflags = ['-fuse-ld=gold'],
-    prepend_warnings = ['-Wfloat-compare'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">prepend_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wfloat-compare&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="p">)</span>
+</code></pre></div>
 <p>同一个配置项不能同时直接赋值和追加：</p>
-<pre><code class="language-python"># 错误！
-cc_config(
-    linkflags = ['-fuse-ld=gold'],
-    append_linkflags = ['-fuse-ld=gold'],
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># 错误！</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>此外还有一种旧的 <code>append</code> 写法，已废弃：</p>
-<pre><code class="language-python">cc_config(
-    append = config_items(
-        warnings = [...]
-    )
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">append</span> <span class="o">=</span> <span class="n">config_items</span><span class="p">(</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>        <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="p">)</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="p">)</span>
+</code></pre></div>
 <h3 id="load_value">load_value 函数<a class="headerlink" href="#load_value" title="Permanent link">&para;</a></h3>
 <p><code>load_value</code> 函数可以从文件中加载一个表达式并作为值使用：</p>
-<pre><code class="language-python">cc_config(
-    allowed_undeclared_hdrs = load_value('allowed_undeclared_hdrs.conf'),
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;allowed_undeclared_hdrs.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="p">)</span>
+</code></pre></div>
 <p>加载的值必须符合 Python 字面量规范，不能包含可执行语句。</p>
 <h2 id="cc">C/C++ 工具链配置<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h2>
 <p><code>cc_toolchain_config()</code> 函数用于选择 C/C++ 编译工具链。支持定义多个命名工具链，并通过 <code>--cc-toolchain</code> 命令行参数选择。</p>
@@ -980,27 +5269,27 @@ cc_config(
 </ul>
 <p>这确保已配置的工具链始终固定使用其自带的安装版本，不会意外从系统 PATH 中获取其他版本。</p>
 <h3 id="_7">配置参考<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">cc_toolchain_config(
-    name   = 'gcc-13',      # 可选 — 配合 --cc-toolchain=gcc-13 选择此配置
-    kind   = 'gcc',         # 'gcc' | 'clang' | 'msvc' | 'mingw' | 'cygwin'（参见上表）
-
-    target = 'linux',       # 可选 — 目标平台: 'linux' | 'darwin' | 'windows'
-                            # 默认: 由 host 推导 (mingw/cygwin/msvc 始终为 'windows')
-
-    prefix     = '/opt/gcc-13',   # 可选 — 安装前缀，限定工具查找范围（不搜索 PATH）
-    tool_prefix = '',             # 可选 — 交叉编译工具名前缀
-                                  # 例如 'arm-linux-gnueabihf-' → arm-linux-gnueabihf-gcc
-
-    cc     = '/usr/bin/gcc-13',   # 可选 — 单独覆盖各工具路径
-    cxx    = '/usr/bin/g++-13',
-    ld     = ...,                 # 可选 — 默认由 kind/target 推导
-    ar     = ...,
-
-    # 仅 MSVC (kind='msvc' 时)
-    msvc_version = '14.44',       # 'auto' 或 MSVC 版本前缀，如 '14.44'
-    target_arch  = 'x64',         # 'auto' | 'x64' | 'x86' | 'arm64' | 'arm64ec'
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;gcc-13&#39;</span><span class="p">,</span>      <span class="c1"># 可选 — 配合 --cc-toolchain=gcc-13 选择此配置</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;gcc&#39;</span><span class="p">,</span>         <span class="c1"># &#39;gcc&#39; | &#39;clang&#39; | &#39;msvc&#39; | &#39;mingw&#39; | &#39;cygwin&#39;（参见上表）</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>       <span class="c1"># 可选 — 目标平台: &#39;linux&#39; | &#39;darwin&#39; | &#39;windows&#39;</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>                            <span class="c1"># 默认: 由 host 推导 (mingw/cygwin/msvc 始终为 &#39;windows&#39;)</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="n">prefix</span>     <span class="o">=</span> <span class="s1">&#39;/opt/gcc-13&#39;</span><span class="p">,</span>   <span class="c1"># 可选 — 安装前缀，限定工具查找范围（不搜索 PATH）</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>    <span class="n">tool_prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>             <span class="c1"># 可选 — 交叉编译工具名前缀</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>                                  <span class="c1"># 例如 &#39;arm-linux-gnueabihf-&#39; → arm-linux-gnueabihf-gcc</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>    <span class="n">cc</span>     <span class="o">=</span> <span class="s1">&#39;/usr/bin/gcc-13&#39;</span><span class="p">,</span>   <span class="c1"># 可选 — 单独覆盖各工具路径</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="n">cxx</span>    <span class="o">=</span> <span class="s1">&#39;/usr/bin/g++-13&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>    <span class="n">ld</span>     <span class="o">=</span> <span class="o">...</span><span class="p">,</span>                 <span class="c1"># 可选 — 默认由 kind/target 推导</span>
+<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a>    <span class="n">ar</span>     <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a>
+<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>    <span class="c1"># 仅 MSVC (kind=&#39;msvc&#39; 时)</span>
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">&#39;14.44&#39;</span><span class="p">,</span>       <span class="c1"># &#39;auto&#39; 或 MSVC 版本前缀，如 &#39;14.44&#39;</span>
+<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>    <span class="n">target_arch</span>  <span class="o">=</span> <span class="s1">&#39;x64&#39;</span><span class="p">,</span>         <span class="c1"># &#39;auto&#39; | &#39;x64&#39; | &#39;x86&#39; | &#39;arm64&#39; | &#39;arm64ec&#39;</span>
+<a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="p">)</span>
+</code></pre></div>
 <blockquote>
 <p><strong>MSVC 版本号</strong>指的是 C/C++ 编译器工具链版本（如 <code>14.44</code>、<code>14.38</code>、<code>14.28</code>），
 而非 Visual Studio 产品年份。完整说明参见
@@ -1009,24 +5298,24 @@ cc_config(
 </blockquote>
 <h3 id="_8">多工具链配置<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <p>定义多个工具链，构建时选择：</p>
-<pre><code class="language-python">cc_toolchain_config(
-    name   = 'gcc-13',
-    kind   = 'gcc',
-    prefix = '/opt/gcc-13',
-)
-
-cc_toolchain_config(
-    name   = 'clang-17',
-    kind   = 'clang',
-    prefix = '/opt/clang-17',
-)
-</code></pre>
-<pre><code class="language-bash">blade build --cc-toolchain=gcc-13    # 按名称选择
-blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;gcc-13&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;gcc&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;/opt/gcc-13&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">)</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;clang-17&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;clang&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;/opt/clang-17&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>blade<span class="w"> </span>build<span class="w"> </span>--cc-toolchain<span class="o">=</span>gcc-13<span class="w">    </span><span class="c1"># 按名称选择</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>blade<span class="w"> </span>build<span class="w"> </span>--cc-toolchain<span class="o">=</span>clang<span class="w">     </span><span class="c1"># 按类型选择（自动检测路径）</span>
+</code></pre></div>
 <p>不带 <code>name</code> 的配置作为默认工具链（未指定 <code>--cc-toolchain</code> 时使用）：</p>
-<pre><code class="language-python">cc_toolchain_config(kind='clang')   # 默认工具链
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;clang&#39;</span><span class="p">)</span>   <span class="c1"># 默认工具链</span>
+</code></pre></div>
 <h3 id="_9">选择优先级<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
 <ol>
 <li><code>--cc-toolchain=</code> 命令行参数（先按名称匹配，再按类型匹配）</li>
@@ -1036,8 +5325,8 @@ blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
 <h3 id="windows-clang-cl">在 Windows 上使用 clang-cl<a class="headerlink" href="#windows-clang-cl" title="Permanent link">&para;</a></h3>
 <p><code>clang-cl</code> 不是独立的 <code>kind</code>，而是用 LLVM 的 cl 兼容驱动编译的 MSVC 工具链。保持
 <code>kind='msvc'</code>（或直接依赖 Windows 自动检测），在 <code>msvc_config</code> 中开启即可：</p>
-<pre><code class="language-python">msvc_config(use_clang = True)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">msvc_config</span><span class="p">(</span><span class="n">use_clang</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
 <p>它完整复用 MSVC 路径——ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的
 <code>*-windows*</code> triplet——但用 <code>clang-cl</code> 编译，并在可用时用 <code>lld-link</code> / <code>llvm-lib</code>
 链接和打包（否则回退到 MSVC 的 <code>link</code> / <code>lib</code>）。LLVM 工具会从 Visual Studio
@@ -1058,13 +5347,13 @@ blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
 等键，见<a href="../build_rules/vcpkg/#单个-port-的选项">单个 port 的选项</a>）。<code>linkage</code>
 默认为 <code>'auto'</code>（与 <code>cc_library</code> 一致：静态链接消费者用静态库，动态链接消费者按需
 用共享库）：</p>
-<pre><code class="language-python">vcpkg_config(
-    packages = {
-        'fmt': '10.2.1',
-        'curl': {'version': '8.5.0', 'features': ['ssl', 'http2']},
-    },
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>        <span class="s1">&#39;curl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;8.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span> <span class="s1">&#39;http2&#39;</span><span class="p">]},</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="p">},</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="p">)</span>
+</code></pre></div>
 <h4 id="baseline-str"><code>baseline</code>: str = ""<a class="headerlink" href="#baseline-str" title="Permanent link">&para;</a></h4>
 <p><strong>作用：</strong> 把 ports 树固定到某个日期或 git SHA（vcpkg.json <code>builtin-baseline</code>）。
 留空则不可复现；固定它以获得一致的版本。</p>
@@ -1083,12 +5372,12 @@ blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
 保留 vcpkg 内置默认（用户缓存目录下的本地缓存）；其他任何值都会原样传给
 <code>vcpkg install --binarysource=&lt;value&gt;</code>，因此支持完整的
 <a href="https://learn.microsoft.com/vcpkg/users/binarycaching">vcpkg 二进制缓存</a>源语法，例如：</p>
-<pre><code class="language-python">vcpkg_config(
-    # 共享目录缓存（读写）。
-    binary_cache = 'files,/path/to/cache,readwrite',
-    # ……也可以是 NuGet feed、GitHub Actions 缓存、x-azblob、x-gcs 等。
-)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>    <span class="c1"># 共享目录缓存（读写）。</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="n">binary_cache</span> <span class="o">=</span> <span class="s1">&#39;files,/path/to/cache,readwrite&#39;</span><span class="p">,</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="c1"># ……也可以是 NuGet feed、GitHub Actions 缓存、x-azblob、x-gcs 等。</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="p">)</span>
+</code></pre></div>
 <p>设为 <code>'clear'</code> 可完全禁用缓存。仅在托管模式（<code>manage = True</code>）下生效。</p>
 <h4 id="direct_use_allowed-list"><code>direct_use_allowed</code>: list = []<a class="headerlink" href="#direct_use_allowed-list" title="Permanent link">&para;</a></h4>
 <p><strong>作用：</strong> 治理项——允许直接依赖裸 <code>vcpkg#port:lib</code> 引用的源码子树列表（如
@@ -1096,60 +5385,73 @@ blade build --cc-toolchain=clang     # 按类型选择（自动检测路径）
 <strong>发起依赖的</strong>目标位于列表中某个子树内，<code>vcpkg#...</code> 依赖才被接受；否则 Blade 报错。
 借此可将所有第三方用法收敛到 <code>thirdparty/</code> 下精心维护的包装 <code>cc_library</code> 目标，
 业务代码只依赖这些包装而非直接依赖 vcpkg port。</p>
-<pre><code class="language-python">vcpkg_config(
-    # 仅 thirdparty/ 下的 BUILD 可以写 `deps = ['vcpkg#fmt:fmt']`。
-    direct_use_allowed = ['thirdparty'],
-)
-</code></pre>
-              
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="c1"># 仅 thirdparty/ 下的 BUILD 可以写 `deps = [&#39;vcpkg#fmt:fmt&#39;]`。</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    <span class="n">direct_use_allowed</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thirdparty&#39;</span><span class="p">],</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../optimization/" class="btn btn-neutral float-left" title="C/C++ 优化（PGO / AutoFDO / LTO）"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../misc/" class="btn btn-neutral float-right" title="辅助功能">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/blade-build/blade-build" class="fa fa-code-fork" style="color: #fcfcfc"> blade-build/blade-build</a>
-        </span>
-    
-    
-      <span><a href="../optimization/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../misc/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>
