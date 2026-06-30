@@ -105,6 +105,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#go_package">go_package</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">依赖</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#protobuf">与 Protobuf 集成</a>
     </li>
     </ul>
@@ -293,6 +295,18 @@
 <li>如果有文件包含 <code>package main</code>，则创建 <code>go_binary</code>。</li>
 <li>否则创建 <code>go_library</code>。</li>
 <li>如果有 <code>*_test.go</code> 文件，自动创建 <code>go_test</code>。</li>
+</ul>
+<h2 id="_2">依赖<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>go 目标的 <code>deps</code> 列出它所依赖的<strong>其他 Blade 目标</strong>——<code>go_library</code> 目标，以及生成
+Go 代码的 <code>proto_library</code> 目标。Blade 会先构建它们，并使其可被 import。</p>
+<p>如何引入<strong>第三方包</strong>（如 <code>github.com/...</code>）取决于 <code>go_config</code> 中配置的模式：</p>
+<ul>
+<li><strong>Go modules</strong>（<code>go_module_enabled = True</code>，推荐）：像平常一样在 <code>go.mod</code> 中声明
+  第三方包。Blade 会在模块目录（<code>go_module_relpath</code>）下调用 <code>go</code>，由 <code>go</code> 负责解析、
+  下载并构建这些依赖——你<strong>无需</strong>在 Blade 的 <code>deps</code> 中列出它们。</li>
+<li><strong>GOPATH 模式</strong>（默认）：包从 <code>$go_home/src/&lt;导入路径&gt;</code> 解析。把第三方源码放到
+  例如 <code>$go_home/src/github.com/golang/glog</code> 下，再让 <code>go</code> 从 <code>GOPATH</code> 中找到它，
+  或将其构建为独立的 <code>go_library</code> 并加以依赖。</li>
 </ul>
 <h2 id="protobuf">与 Protobuf 集成<a class="headerlink" href="#protobuf" title="Permanent link">&para;</a></h2>
 <p>在 deps 中添加 <code>proto_library</code> 即可自动生成 Go protobuf 代码：</p>

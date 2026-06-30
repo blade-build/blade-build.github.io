@@ -105,6 +105,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#go_package">go_package</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#using-protobuf-with-go">Using Protobuf with Go</a>
     </li>
     </ul>
@@ -294,6 +296,22 @@ There is also a <code>go_package</code> convenience wrapper that auto-detects th
 <li>If any file has <code>package main</code>, a <code>go_binary</code> is created.</li>
 <li>Otherwise, a <code>go_library</code> is created.</li>
 <li>If <code>*_test.go</code> files exist, a <code>go_test</code> is created automatically.</li>
+</ul>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<p>A go target's <code>deps</code> lists <strong>other Blade targets</strong> it depends on — <code>go_library</code>
+targets and <code>proto_library</code> targets that emit Go code. Blade builds those first
+and makes them importable.</p>
+<p>How you pull in <strong>third-party packages</strong> (e.g. <code>github.com/...</code>) depends on the
+mode configured in <code>go_config</code>:</p>
+<ul>
+<li><strong>Go modules</strong> (<code>go_module_enabled = True</code>, recommended): declare third-party
+  packages in your <code>go.mod</code> as usual. Blade invokes <code>go</code> inside the module
+  directory (<code>go_module_relpath</code>), so <code>go</code> resolves, downloads, and builds those
+  dependencies — you do <strong>not</strong> list them in Blade <code>deps</code>.</li>
+<li><strong>GOPATH mode</strong> (the default): packages are resolved from
+  <code>$go_home/src/&lt;import-path&gt;</code>. Place the third-party source under, for example,
+  <code>$go_home/src/github.com/golang/glog</code>, then either let <code>go</code> pick it up from
+  <code>GOPATH</code> or build it as its own <code>go_library</code> and depend on that target.</li>
 </ul>
 <h2 id="using-protobuf-with-go">Using Protobuf with Go<a class="headerlink" href="#using-protobuf-with-go" title="Permanent link">&para;</a></h2>
 <p>Add a <code>proto_library</code> dependency to generate Go protobuf code:</p>
