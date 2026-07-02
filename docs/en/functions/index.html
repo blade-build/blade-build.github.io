@@ -927,6 +927,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#fail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fail
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2388,6 +2399,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#fail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fail
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2422,6 +2444,17 @@ You can use <code>exclude</code> to exclude some files.</p>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">...</span>
 </code></pre></div>
 <p>Usually, it is an error for glob to return an empty result, but you can specify <code>allow_empty=True</code> to eliminate this error if it is surely you expected.</p>
+<h2 id="fail">fail<a class="headerlink" href="#fail" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">fail</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Aborts loading the current <code>BUILD</code> (or extension) file with a fatal,
+source-located error. Use it to reject invalid input — it is how a <code>BUILD</code> file
+raises a hard error (the sandbox has no <code>assert</code> / <code>raise</code>). Positional args are
+joined by <code>sep</code>.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">srcs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">fail</span><span class="p">(</span><span class="s1">&#39;this rule accepts exactly one source, got&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">srcs</span><span class="p">))</span>
+</code></pre></div>
 
 
 

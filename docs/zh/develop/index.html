@@ -2902,7 +2902,7 @@
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   └── inclusion_check.py  # C/C++ 头文件依赖检查
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>├── tests/
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   └── unit/           # 单元测试（pytest，无需工具链）
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└── test/               # 集成/端到端测试（pytest，需要工具链）
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└── test/               # 集成/端到端测试（runall.sh / blade_main_test.py，需要工具链）
 </code></pre></div>
 <p><strong>规则模块</strong>（<code>*_targets.py</code>）各自定义一个或多个构建规则：</p>
 <table>
@@ -2979,7 +2979,7 @@
 <h3 id="_6">生成后端构建文件<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>各目标逐一生成后端构建动作（Ninja 规则），写入后端构建文件（如 <code>build.ninja</code>）。</p>
 <h3 id="_7">执行后端构建系统<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
-<p>Blade 调用后端构建工具（Ninja）执行实际构建，完成后删除生成的构建文件。</p>
+<p>Blade 调用后端构建工具（Ninja）执行实际构建。生成的构建文件（如 <code>build.ninja</code>）会保留在 build 目录里，供增量构建和调试使用；只有 <code>blade clean</code> 才会清理它。</p>
 <h3 id="_8">运行测试<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <p>测试目标先被构建，然后在沙箱环境中并行执行。所有测试完毕后汇总结果并输出报告。</p>
 <h2 id="_9">实现专题<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
@@ -3024,7 +3024,7 @@
 <li><strong>创建目标类</strong> — 在新增或已有的 <code>*_targets.py</code> 模块中创建目标类，继承 <code>Target</code>（或合适的子类）并实现 <code>generate()</code> 方法。</li>
 <li><strong>定义规则入口函数</strong>（如 <code>windows_resources()</code>）—— 此函数负责将 BUILD 友好的类型（<code>StrOrListOpt</code>）通过 <code>var_to_list</code> / <code>var_to_list_or_none</code> 规范化为 <code>list[str]</code>，创建目标实例，通过 <code>build_manager.instance.register_target()</code> 注册。</li>
 <li><strong>暴露到 DSL</strong> — 将规则函数加入 <code>blade/__init__.py</code> 和 <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/dsl_api.py">dsl_api.py</a>。</li>
-<li><strong>添加集成测试数据</strong> — 在 <code>src/test/testdata/&lt;rule_name&gt;/</code> 下放置 BUILD 文件和源文件夹具，在 <code>src/test/&lt;rule_name&gt;_test.py</code> 添加测试类。</li>
+<li><strong>添加集成测试数据</strong> — 在 <code>src/test/testdata/&lt;rule_name&gt;/</code> 下放置 BUILD 文件和源文件夹具，在 <code>src/test/&lt;rule_name&gt;_test.py</code> 添加测试类，并把该测试类注册到 <code>src/test/blade_main_test.py</code> 的 <code>TEST_CASES</code> 列表（CI 只运行列在其中的用例；<code>src/tests/unit/integration_suite_coverage_test.py</code> 会校验没有遗漏）。</li>
 <li><strong>更新文档</strong> — 在 <a href="../build_rules/cc/">build_rules/cc.md</a>（或新规则类别对应的新文件）中添加说明。</li>
 </ol>
 <h3 id="_13">核心设计模式<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
@@ -3048,7 +3048,7 @@
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">&quot;-v&quot;</span>
 </code></pre></div>
 <p><code>-d explain</code> 会为每条将要执行的 edge 打印它被判定为“脏”的<em>原因</em>——输入更新、输出比输入旧、命令行变化、或记录的依赖（<code>deps</code>/depfile）已不存在。当构建不增量（尤其是每次都重建）时，这是首先要用的工具。</p>
-<p>也可以直接对生成的构建文件运行 ninja（在 <code>blade build --stop-after generate</code> 之后很方便，该选项会保留而非删除它）。blade 从工作区根目录运行 ninja，所以用相对 build 目录的路径；加 <code>-n</code> 做只解释不构建的 dry-run：</p>
+<p>也可以直接对生成的构建文件运行 ninja（在 <code>blade build --stop-after generate</code> 之后尤其方便——此时只生成了构建文件、尚未运行 ninja）。blade 从工作区根目录运行 ninja，所以用相对 build 目录的路径；加 <code>-n</code> 做只解释不构建的 dry-run：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ninja<span class="w"> </span>-f<span class="w"> </span>build_release/build.ninja<span class="w"> </span>-d<span class="w"> </span>explain<span class="w"> </span>-n
 </code></pre></div>
 <p>提示：ninja 只会作为 <code>deps = msvc</code> 的副作用从控制台输出中剥掉它的 <code>msvc_deps_prefix</code>（<code>Note: including file:</code>）行；其余工具输出都原样回显。在 MSVC 上，blade 的 <code>cc_wrapper.py</code> / <code>link_wrapper.py</code>（生成在 build 目录里）会过滤 ninja 不处理的编译器/链接器噪音。</p>
@@ -3064,11 +3064,15 @@
 <tbody>
 <tr>
 <td><strong>Python package</strong></td>
-<td>Ubuntu 上的单元测试 + 集成测试 + pyright（Python 3.10–3.14）</td>
+<td>Ubuntu 上的单元测试 + 集成测试 + E2E smoke + pyright（Python 3.10–3.14）</td>
+</tr>
+<tr>
+<td><strong>macOS CI</strong></td>
+<td>macOS 上的平台相关单元测试子集 + in-process smoke + E2E smoke</td>
 </tr>
 <tr>
 <td><strong>Windows CI</strong></td>
-<td>Windows 上的单元测试 + smoke 测试 + E2E（Python 3.10–3.13）</td>
+<td>Windows 上的平台相关单元测试子集 + in-process smoke + E2E smoke</td>
 </tr>
 <tr>
 <td><strong>CodeQL</strong></td>

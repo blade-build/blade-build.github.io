@@ -1360,6 +1360,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#using-cc-with-cgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using C/C++ with cgo
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2520,6 +2531,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#using-cc-with-cgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using C/C++ with cgo
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2546,29 +2568,27 @@ There is also a <code>go_package</code> convenience wrapper that auto-detects th
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Before using go targets, configure the Go toolchain in <code>BLADE_ROOT</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">go_config</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">go</span> <span class="o">=</span> <span class="s1">&#39;/usr/local/go/bin/go&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">go_home</span> <span class="o">=</span> <span class="s1">&#39;/usr/local/go&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">go</span> <span class="o">=</span> <span class="s1">&#39;/usr/local/go/bin/go&#39;</span><span class="p">,</span>   <span class="c1"># required</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">go_home</span> <span class="o">=</span> <span class="s1">&#39;/usr/local/go&#39;</span><span class="p">,</span>     <span class="c1"># GOPATH / build cache; optional (empty = go default)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
 </code></pre></div>
-<p>When Go modules are enabled, set <code>go_module_enabled = True</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">go_config</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">go_home</span> <span class="o">=</span> <span class="s1">&#39;/usr/local/go&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">go_module_enabled</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">go_module_relpath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
-</code></pre></div>
+<p>Blade builds Go in <strong>module mode only</strong>: each target's package must sit under a
+<code>go.mod</code> (the nearest one at or above the target's directory is its module).
+GOPATH-mode projects are not supported. A workspace may contain multiple modules;
+for local cross-module imports use a <a href="https://go.dev/ref/mod#workspaces"><code>go.work</code></a>
+file or <code>replace</code> directives, which <code>go</code> resolves.</p>
 <h2 id="go_library">go_library<a class="headerlink" href="#go_library" title="Permanent link">&para;</a></h2>
 <p>Build a Go package as a library.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">go_library</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="s1">&#39;mylib.go&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">&#39;helper.go&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="p">],</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="s1">&#39;//common/go:base&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="p">],</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">go_library</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">&#39;mylib.go&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">&#39;helper.go&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">],</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="s1">&#39;//common/go:base&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">],</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">)</span>
 </code></pre></div>
 <p>Attributes:</p>
 <ul>
@@ -2578,34 +2598,42 @@ There is also a <code>go_package</code> convenience wrapper that auto-detects th
 <li><code>visibility</code>: Visibility specification.</li>
 <li><code>tags</code>: Build tags.</li>
 </ul>
-<p>Output: a <code>.a</code> archive file placed under <code>$go_home/pkg/$GOOS_$GOARCH/</code>.</p>
+<p>A <code>go_library</code> has <strong>no linkable artifact</strong> (the Go build cache replaced the
+GOPATH archive). Building one compile-checks the package (<code>go build</code>) and emits a
+stamp; consumers depend on it for ordering and visibility and let <code>go</code> recompile
+the package. A <code>go_library</code> is optional — a pure-Go package with no cross-language
+dependency needs no Blade target, since <code>go build</code> of a consuming <code>go_binary</code>/
+<code>go_test</code> pulls it in.</p>
 <h2 id="go_binary">go_binary<a class="headerlink" href="#go_binary" title="Permanent link">&para;</a></h2>
 <p>Build a Go executable.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">go_binary</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;myserver&#39;</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">go_binary</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;myserver&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="s1">&#39;main.go&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="s1">&#39;:mylib&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="p">],</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
+</code></pre></div>
+<p>Attributes are the same as <code>go_library</code>.</p>
+<p>A <code>go_binary</code> is built from its <code>srcs</code> in <strong>file mode</strong> (<code>go build &lt;srcs...&gt;</code>), not
+by whole package. This means a single directory holding several <code>main</code> files can
+be split into separate <code>go_binary</code> targets — one per program.</p>
+<h2 id="go_test">go_test<a class="headerlink" href="#go_test" title="Permanent link">&para;</a></h2>
+<p>Build and run a Go test binary.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">go_test</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib_test&#39;</span><span class="p">,</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="s1">&#39;main.go&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="s1">&#39;mylib_test.go&#39;</span><span class="p">,</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="p">],</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="s1">&#39;:mylib&#39;</span><span class="p">,</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="p">],</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
-</code></pre></div>
-<p>Attributes are the same as <code>go_library</code>.</p>
-<h2 id="go_test">go_test<a class="headerlink" href="#go_test" title="Permanent link">&para;</a></h2>
-<p>Build and run a Go test binary.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">go_test</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib_test&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;mylib_test.go&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">],</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="s1">&#39;:mylib&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="p">],</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">testdata</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="s1">&#39;testdata/config.json&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="p">],</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">testdata</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="s1">&#39;testdata/config.json&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="p">],</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">)</span>
 </code></pre></div>
 <p>Additional attributes:</p>
 <ul>
@@ -2613,12 +2641,12 @@ There is also a <code>go_package</code> convenience wrapper that auto-detects th
 </ul>
 <h2 id="go_package">go_package<a class="headerlink" href="#go_package" title="Permanent link">&para;</a></h2>
 <p>Convenience wrapper that automatically detects whether a directory contains a library or a command.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">go_package</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mypackage&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="s1">&#39;//common/go:base&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="p">],</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">go_package</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mypackage&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;//common/go:base&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">],</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>Blade scans the current directory for <code>.go</code> files:</p>
 <ul>
@@ -2626,35 +2654,90 @@ There is also a <code>go_package</code> convenience wrapper that auto-detects th
 <li>Otherwise, a <code>go_library</code> is created.</li>
 <li>If <code>*_test.go</code> files exist, a <code>go_test</code> is created automatically.</li>
 </ul>
+<p>The generated targets are named after <code>name</code>: the <code>go_binary</code>/<code>go_library</code> takes
+<code>name</code>, and the auto-created test is <code>&lt;name&gt;_test</code>.</p>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
-<p>A go target's <code>deps</code> lists <strong>other Blade targets</strong> it depends on — <code>go_library</code>
-targets and <code>proto_library</code> targets that emit Go code. Blade builds those first
-and makes them importable.</p>
-<p>How you pull in <strong>third-party packages</strong> (e.g. <code>github.com/...</code>) depends on the
-mode configured in <code>go_config</code>:</p>
-<ul>
-<li><strong>Go modules</strong> (<code>go_module_enabled = True</code>, recommended): declare third-party
-  packages in your <code>go.mod</code> as usual. Blade invokes <code>go</code> inside the module
-  directory (<code>go_module_relpath</code>), so <code>go</code> resolves, downloads, and builds those
-  dependencies — you do <strong>not</strong> list them in Blade <code>deps</code>.</li>
-<li><strong>GOPATH mode</strong> (the default): packages are resolved from
-  <code>$go_home/src/&lt;import-path&gt;</code>. Place the third-party source under, for example,
-  <code>$go_home/src/github.com/golang/glog</code>, then either let <code>go</code> pick it up from
-  <code>GOPATH</code> or build it as its own <code>go_library</code> and depend on that target.</li>
-</ul>
+<p>A go target's <code>deps</code> lists <strong>other Blade targets</strong> it must be built with — other
+<code>go_library</code> targets and <code>proto_library</code> targets that emit Go code. Blade builds
+those first.</p>
+<p>Within one module you generally <strong>don't need to declare Go→Go <code>deps</code></strong>: <code>go build</code>
+resolves intra-module imports from the source itself. Declare a dep when it
+crosses a language/build boundary Blade must order — a <code>proto_library</code> (generated
+code) or a <code>cc_library</code> (cgo) — or when you want visibility / dependency
+governance on it.</p>
+<p>Pull in <strong>third-party packages</strong> (e.g. <code>github.com/...</code>) the normal Go way:
+declare them in <code>go.mod</code> (or a <code>go.work</code> for multiple local modules). Blade
+delegates to <code>go</code>, which resolves, downloads, and builds them — you do <strong>not</strong>
+list them in Blade <code>deps</code>.</p>
 <h2 id="using-protobuf-with-go">Using Protobuf with Go<a class="headerlink" href="#using-protobuf-with-go" title="Permanent link">&para;</a></h2>
-<p>Add a <code>proto_library</code> dependency to generate Go protobuf code:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">go_library</span><span class="p">(</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;service&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;service.go&#39;</span><span class="p">],</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="s1">&#39;//proto:myproto&#39;</span><span class="p">,</span>  <span class="c1"># proto_library target</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="p">],</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">)</span>
+<p>Depend on a <code>proto_library</code> to generate and import Go protobuf code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">go_binary</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;service&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;service.go&#39;</span><span class="p">],</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="s1">&#39;//proto:myproto&#39;</span><span class="p">,</span>  <span class="c1"># proto_library target</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="p">],</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span>
 </code></pre></div>
-<p>The proto file must contain a <code>go_package</code> option:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">option</span><span class="w"> </span><span class="na">go_package</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;github.com/example/myproto&quot;</span><span class="p">;</span>
+<p>The <code>.proto</code> must set <code>option go_package</code> to its <strong>in-module import path</strong> — the
+import path of the <code>.proto</code>'s own directory within the Go module:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">option</span><span class="w"> </span><span class="na">go_package</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;example.com/mymodule/proto&quot;</span><span class="p">;</span>
 </code></pre></div>
+<p>Blade generates the <code>.pb.go</code> <strong>into the build directory</strong> — not the source tree —
+and builds consuming go targets with <code>go build -overlay</code>, which maps the generated
+file into its in-module location just for the build. The source tree stays clean:
+nothing to commit, and <code>blade build</code> regenerates the <code>.pb.go</code> when the <code>.proto</code>
+changes, ordered before the consuming go target.</p>
+<p>Because the generated file lives only in the build directory, it is visible <strong>only
+to Blade's build</strong>. A plain <code>go build</code>, <code>gopls</code>/IDEs, and external importers of your
+module do not see it — which is fine for Go that is internal to your Blade build.
+For a package you <strong>publish</strong> (imported outside your Blade build), generate the
+<code>.pb.go</code> yourself, check it in beside the <code>.proto</code>, and build it as an ordinary
+<code>go_library</code> — a real source file that tooling and external importers resolve
+normally. Don't route external consumers through the overlay-generated Go.</p>
+<p>Requires the protoc-gen-go plugin — <code>proto_library_config(protoc_go_plugin=...)</code>
+in <code>BLADE_ROOT</code>. (<code>proto_library</code> also emits C++, so the C++ protobuf toolchain
+must be configured as usual.)</p>
+<h2 id="using-cc-with-cgo">Using C/C++ with cgo<a class="headerlink" href="#using-cc-with-cgo" title="Permanent link">&para;</a></h2>
+<p>A go target can call into a Blade <code>cc_library</code> through Go's
+<a href="https://pkg.go.dev/cmd/cgo">cgo</a>. List the <code>cc_library</code> in <code>deps</code> and use
+<code>import "C"</code> in the Go source:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">go_binary</span><span class="p">(</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;main.go&#39;</span><span class="p">],</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="s1">&#39;//greeter:greeter&#39;</span><span class="p">,</span>  <span class="c1"># a cc_library</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="p">],</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="cm">/*</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="cm">#include &quot;greeter/greeter.h&quot;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="cm">*/</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;C&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;fmt&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nx">GoString</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nx">greet</span><span class="p">()))</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>Blade wires the dependency into the cgo build: the cc_library's exported include
+dirs become <code>CGO_CFLAGS</code>, and its static archive plus its transitive libraries
+and system libs become <code>CGO_LDFLAGS</code> — so the C preamble's <code>#include</code> resolves
+and the linker finds the C symbols. The archive is built before the go link.</p>
+<p>Notes:</p>
+<ul>
+<li>The C preamble sees the <strong>workspace root</strong> and the <strong>build dir</strong> on its include
+  path, so headers are included by their workspace-relative path (e.g.
+  <code>#include "greeter/greeter.h"</code>), matching how cc targets include headers.</li>
+<li>cgo can only call the <strong>C ABI</strong>. A C++ <code>cc_library</code> must expose <code>extern "C"</code>
+  entry points; Blade adds the C++ runtime (<code>-lstdc++</code> / <code>-lc++</code>) to the link, so
+  a C++ archive links cleanly.</li>
+<li>Only <code>cc_library</code> deps are linked. A <code>proto_library</code> dep contributes its <strong>Go</strong>
+  (§ Protobuf), never its C++ archive.</li>
+<li>This is the only supported direction — a Go target <em>using</em> C/C++. The reverse (a
+  <code>cc_binary</code> embedding Go) is a non-goal: each Go archive carries a whole Go
+  runtime, and a process can't host two.</li>
+</ul>
 
 
 

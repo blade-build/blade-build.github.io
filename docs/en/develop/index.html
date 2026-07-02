@@ -2903,7 +2903,7 @@
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>├── tests/
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   ├── unit/           # Unit tests (pytest, fast, offline)
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   └── (integration)   # See src/test/
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>└── test/               # Integration / end-to-end tests (pytest, require toolchain)
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>└── test/               # Integration / end-to-end tests (runall.sh / blade_main_test.py, require toolchain)
 </code></pre></div>
 <p><strong>Rule-target modules</strong> (<code>*_targets.py</code>) each define one or more build rule types:</p>
 <table>
@@ -2980,7 +2980,7 @@
 <h3 id="generating-backend-build-files">Generating Backend Build Files<a class="headerlink" href="#generating-backend-build-files" title="Permanent link">&para;</a></h3>
 <p>Each target generates backend actions (Ninja rules) which are written to a backend build file (e.g. <code>build.ninja</code>).</p>
 <h3 id="executing-the-backend-build">Executing the Backend Build<a class="headerlink" href="#executing-the-backend-build" title="Permanent link">&para;</a></h3>
-<p>Blade invokes the backend build tool (Ninja) to perform the actual build, then removes the generated build file.</p>
+<p>Blade invokes the backend build tool (Ninja) to perform the actual build. The generated build file (e.g. <code>build.ninja</code>) is kept in the build directory for incremental builds and debugging; only <code>blade clean</code> removes it.</p>
 <h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h3>
 <p>Test targets are built, then executed in parallel within sandbox environments. Results are collected and reported.</p>
 <h2 id="implementation-topics">Implementation Topics<a class="headerlink" href="#implementation-topics" title="Permanent link">&para;</a></h2>
@@ -3026,7 +3026,7 @@ roughly the order they appear in a <code>blade build</code> invocation:</p>
 <li><strong>Create a target class</strong> in a new or existing <code>*_targets.py</code> module. Inherit from <code>Target</code> (or a suitable subclass) and implement <code>generate()</code>.</li>
 <li><strong>Define the rule-entry function</strong> (e.g., <code>windows_resources()</code>) — this function normalizes BUILD-file-friendly types (<code>StrOrListOpt</code>) into <code>list[str]</code> via <code>var_to_list</code> / <code>var_to_list_or_none</code>, creates the target instance, and registers it via <code>build_manager.instance.register_target()</code>.</li>
 <li><strong>Expose it in the DSL</strong> by adding the function to <code>blade/__init__.py</code> and <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/dsl_api.py">dsl_api.py</a>.</li>
-<li><strong>Add integration test data</strong> under <code>src/test/testdata/&lt;rule_name&gt;/</code> with a <code>BUILD</code> file and source fixtures, then add a test class in <code>src/test/&lt;rule_name&gt;_test.py</code>.</li>
+<li><strong>Add integration test data</strong> under <code>src/test/testdata/&lt;rule_name&gt;/</code> with a <code>BUILD</code> file and source fixtures, add a test class in <code>src/test/&lt;rule_name&gt;_test.py</code>, and register that class in the <code>TEST_CASES</code> list in <code>src/test/blade_main_test.py</code> (CI runs only the classes listed there; <code>src/tests/unit/integration_suite_coverage_test.py</code> guards against omissions).</li>
 <li><strong>Update documentation</strong> in <a href="../build_rules/cc/">build_rules/cc.md</a> (or a new file for a new category).</li>
 </ol>
 <h3 id="key-design-patterns">Key design patterns<a class="headerlink" href="#key-design-patterns" title="Permanent link">&para;</a></h3>
@@ -3051,7 +3051,7 @@ roughly the order they appear in a <code>blade build</code> invocation:</p>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">&quot;-v&quot;</span>
 </code></pre></div>
 <p><code>-d explain</code> prints, for every edge it would run, <em>why</em> it is considered dirty — a newer input, an output older than an input, a changed command line, or a recorded dependency (<code>deps</code>/depfile) that no longer exists. It is the first tool to reach for when a build isn't incremental.</p>
-<p>You can also run ninja directly against the generated build file (handy after <code>blade build --stop-after generate</code>, which keeps it instead of deleting it). Blade runs ninja from the workspace root, so use the build-dir-relative path; add <code>-n</code> for a dry run that explains without building:</p>
+<p>You can also run ninja directly against the generated build file (handy after <code>blade build --stop-after generate</code>, which stops once the file is written, before ninja runs). Blade runs ninja from the workspace root, so use the build-dir-relative path; add <code>-n</code> for a dry run that explains without building:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ninja<span class="w"> </span>-f<span class="w"> </span>build_release/build.ninja<span class="w"> </span>-d<span class="w"> </span>explain<span class="w"> </span>-n
 </code></pre></div>
 <p>Tip: ninja only strips its <code>msvc_deps_prefix</code> (<code>Note: including file:</code>) lines from console output as a side effect of <code>deps = msvc</code>; all other tool chatter is echoed verbatim. On MSVC, Blade's <code>cc_wrapper.py</code> / <code>link_wrapper.py</code> (written into the build dir) filter compiler/linker noise that ninja won't.</p>
@@ -3067,11 +3067,15 @@ roughly the order they appear in a <code>blade build</code> invocation:</p>
 <tbody>
 <tr>
 <td><strong>Python package</strong></td>
-<td>Unit tests + integration tests + pyright on Ubuntu (Python 3.10–3.14)</td>
+<td>Unit tests + integration tests + E2E smoke + pyright on Ubuntu (Python 3.10–3.14)</td>
+</tr>
+<tr>
+<td><strong>macOS CI</strong></td>
+<td>Platform unit subset + in-process smoke + E2E smoke on macOS</td>
 </tr>
 <tr>
 <td><strong>Windows CI</strong></td>
-<td>Unit tests + smoke tests + E2E on Windows (Python 3.10–3.13)</td>
+<td>Platform unit subset + in-process smoke + E2E smoke on Windows</td>
 </tr>
 <tr>
 <td><strong>CodeQL</strong></td>

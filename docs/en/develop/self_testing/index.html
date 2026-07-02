@@ -2592,6 +2592,12 @@ whole suite). On CI, integration is one of the longer-running jobs in
 <code>python-package.yml</code>. The blade subprocess uses the in-tree code
 (invoked as <code>../../../blade</code>), so a change in <code>src/blade/...</code> is
 exercised the same run.</p>
+<p>The suite <code>runall.sh</code> runs is built from the explicit <code>TEST_CASES</code> list
+in <code>blade_main_test.py</code>, so a new integration test class must be added
+there to run in CI. <code>tests/unit/integration_suite_coverage_test.py</code>
+guards this: it fails if any <code>src/test/*_test.py</code> class that defines a
+<code>test*</code> method is missing from <code>TEST_CASES</code>, so a test can no longer be
+silently dropped from CI.</p>
 <h2 id="3-smoke-tests">3. Smoke tests<a class="headerlink" href="#3-smoke-tests" title="Permanent link">&para;</a></h2>
 <p>Two distinct things both go by "smoke":</p>
 <ul>

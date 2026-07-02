@@ -2582,6 +2582,11 @@ hdr_dep_check、guard_suppression、header_only_incstk…）分子目录。每�
 成测试是 <code>python-package.yml</code> 里耗时较长的作业之一。blade 子进程跑的
 是树内代码（以 <code>../../../blade</code> 调用），同一次运行就能验证
 <code>src/blade/...</code> 的改动。</p>
+<p><code>runall.sh</code> 运行的用例集来自 <code>blade_main_test.py</code> 里显式的 <code>TEST_CASES</code>
+列表，因此新增的集成测试类必须加进去才会在 CI 里运行。
+<code>tests/unit/integration_suite_coverage_test.py</code> 会守护这一点：只要有
+<code>src/test/*_test.py</code> 里定义了 <code>test*</code> 方法的类没被登记进 <code>TEST_CASES</code>，
+它就会失败——集成测试不会再被悄悄漏掉。</p>
 <h2 id="3-smoke">3. Smoke<a class="headerlink" href="#3-smoke" title="Permanent link">&para;</a></h2>
 <p>两个东西都叫 "smoke"：</p>
 <ul>
