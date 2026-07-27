@@ -2572,9 +2572,17 @@
 <li><strong>仅配置期可用的句柄</strong>：</li>
 <li><code>blade.getenv(name, default=None)</code> —— 在 <code>BLADE_ROOT</code> 中读取环境变量。
     全 blade 唯一被授权的 env 访问入口；BUILD 文件调用会以 <code>console.fatal</code>
-    终止并指向 BUILD 期等价物（<code>blade.cc_toolchain.tool('cc')</code> 或
-    <code>blade.config</code>）。把 env 读取收敛到配置层，所有 env 依赖集中在一个
-    可审计文件里，BUILD 文件保持 hermetic。</li>
+    终止并指向 BUILD 期等价物（构建变量 <code>blade.set_variable</code>/<code>get_variable</code>，
+    或 <code>blade.cc_toolchain.tool('cc')</code>）。把 env 读取收敛到配置层，所有 env
+    依赖集中在一个可审计文件里，BUILD 文件保持 hermetic。</li>
+<li><code>blade.set_variable(name, value, override=False)</code> —— 声明构建变量。这是
+    从环境变量（经 <code>getenv</code>）或任意配置期计算通向 BUILD 文件的受控桥梁：
+    BLADE_ROOT 设,BUILD 读。不带 <code>override</code> 的重复声明报错。解析后的变量折进
+    <code>config.digest()</code>,因此值变化（env 或 <code>--define</code> 驱动）会让 per-target 指纹
+    失效——这正是 env 驱动配置能增量正确、而裸 env 读取做不到的原因。
+    <code>blade.get_variable(name, default=...)</code> 读取,两个阶段均可用,读未声明且无
+    default 报错。命令行 <code>--define name=value</code> 覆盖已声明的变量（仅已声明的,
+    在 BLADE_ROOT 运行后校验）。</li>
 </ul>
 <p>其中一部分属性被标为 <code>_BUILD_ONLY_ATTRS</code>：在 <code>BLADE_ROOT</code>（配置阶段）里
 读它们会触发清晰报错，提示"此时工具链还不存在，若想延后求值请传一个

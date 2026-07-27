@@ -945,6 +945,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#both-phase-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Both-phase Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#bladeconfig-submodule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1004,6 +1015,17 @@
     <span class="md-ellipsis">
       
         blade.getenv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Variables
       
     </span>
   </a>
@@ -2611,6 +2633,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#both-phase-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Both-phase Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#bladeconfig-submodule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2670,6 +2703,17 @@
     <span class="md-ellipsis">
       
         blade.getenv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Variables
       
     </span>
   </a>
@@ -2805,6 +2849,11 @@ to disable DSL restriction globally, set the <code>global_config.restricted_dsl 
 <p>These attributes are only callable during <code>BLADE_ROOT</code> config parsing. Calling them from a BUILD file will abort with an error:</p>
 <ul>
 <li><code>getenv(name, default=None)</code> function: Read an environment variable. See <a href="#bladegetenv"><code>blade.getenv</code></a> below.</li>
+<li><code>set_variable(name, value, override=False)</code> function: Declare a build variable that BUILD files can read. See <a href="#build-variables">Build Variables</a> below.</li>
+</ul>
+<h3 id="both-phase-functions">Both-phase Functions<a class="headerlink" href="#both-phase-functions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>get_variable(name, default=...)</code> function: Read a build variable declared with <code>set_variable</code>. Available in <strong>both</strong> <code>BLADE_ROOT</code> and BUILD files. See <a href="#build-variables">Build Variables</a> below.</li>
 </ul>
 <hr />
 <h3 id="bladeconfig-submodule"><code>blade.config</code> Submodule<a class="headerlink" href="#bladeconfig-submodule" title="Permanent link">&para;</a></h3>
@@ -2859,12 +2908,51 @@ to disable DSL restriction globally, set the <code>global_config.restricted_dsl 
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
 </code></pre></div>
 <p>Then a CI workflow's <code>CC=gcc-10 CXX=g++-10 ./blade build ...</code> selects the right toolchain. Any string-valued config field can be sourced this way.</p>
-<p><strong>Why config-only?</strong> Restricting env access to the global config layer keeps all env dependencies in one auditable file (BLADE_ROOT) and lets BUILD files stay hermetic -- the same source tree produces the same artifacts at the same target regardless of env. If a BUILD-phase rule needs the env-derived value (e.g. <code>foreign_cc_library</code> passing CC/CXX to a Makefile), read it from the resolved toolchain or config instead:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># BUILD or *.bld file</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">cc</span> <span class="o">=</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;cc&#39;</span><span class="p">)</span>   <span class="c1"># already folded from env at config time</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">cxx</span> <span class="o">=</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;cxx&#39;</span><span class="p">)</span>
+<p><strong>Why config-only? Why can't BUILD files (and <code>.bld</code> extensions) read the environment at all?</strong> Two reasons, both about keeping builds reproducible:</p>
+<ol>
+<li><strong>Auditability.</strong> If any BUILD file could call <code>getenv</code>, the set of environment variables that influence the build would be scattered across the whole tree and effectively unknowable. Confining env access to <code>BLADE_ROOT</code> keeps every env dependency in one file you can read top-to-bottom.</li>
+<li><strong>Hermeticity + correct incrementality.</strong> A BUILD file that silently branches on <code>$SOMEVAR</code> produces a different build graph for different developers, and -- worse -- a change to that env var would <strong>not</strong> invalidate the cached per-target build, because the env value never enters the build fingerprint. You would get stale artifacts with no rebuild.</li>
+</ol>
+<p>So BUILD files never read the environment directly. To let an env-derived value influence a BUILD file, <strong>fold it into a build variable</strong> in <code>BLADE_ROOT</code> and read that variable in BUILD:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># BLADE_ROOT (config phase): read the env once, publish it as a named variable</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">blade</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;use_jemalloc&#39;</span><span class="p">,</span> <span class="n">blade</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;USE_JEMALLOC&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">))</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># any BUILD or *.bld file: read the variable -- never the env</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:core&#39;</span><span class="p">]</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;use_jemalloc&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">deps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/jemalloc:jemalloc&#39;</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Limitation:</strong> <code>blade.getenv()</code> returns the env value at the moment <code>BLADE_ROOT</code> loads. Changing the env between two runs of the same workspace does not by itself invalidate per-target build caches -- if you rely on env-driven config for incremental correctness, list the variable names in <code>global_config.test_related_envs</code> or otherwise include them in your configuration fingerprint.</p>
+<p>This keeps the env dependency explicit (one <code>getenv</code> in <code>BLADE_ROOT</code>) <strong>and</strong> correct for incremental builds: the resolved variable is part of the configuration fingerprint, so a change to <code>$USE_JEMALLOC</code> (or a <code>--define use_jemalloc=1</code> override) regenerates the affected targets. See <a href="#build-variables">Build Variables</a>. For toolchain fields specifically, you can also read the resolved value from <code>blade.cc_toolchain.tool('cc')</code>, which is already env-folded at config time.</p>
+<h3 id="build-variables">Build Variables<a class="headerlink" href="#build-variables" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Phase:</strong> <code>set_variable</code> is <code>BLADE_ROOT</code> config only; <code>get_variable</code> works in both <code>BLADE_ROOT</code> and BUILD/<code>.bld</code>.</p>
+</blockquote>
+<p>Build variables are named values that <code>BLADE_ROOT</code> publishes and BUILD files read. They are the sanctioned bridge from the environment -- or from any config-time computation -- into otherwise-hermetic BUILD files (which <a href="#bladegetenv">cannot read the environment</a>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">set_variable</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>   <span class="c1"># BLADE_ROOT only</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="o">...</span><span class="p">)</span>                           <span class="c1"># both phases</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># BLADE_ROOT: declare variables (from env, host info, or plain constants)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">blade</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;use_jemalloc&#39;</span><span class="p">,</span> <span class="n">blade</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;USE_JEMALLOC&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">))</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">blade</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;max_shards&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># any BUILD / *.bld: read them</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;use_jemalloc&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">deps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/jemalloc:jemalloc&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">n</span> <span class="o">=</span> <span class="n">blade</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;max_shards&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Semantics</strong></p>
+<ul>
+<li><strong><code>set_variable</code> is config-phase only.</strong> BUILD files declare nothing; they only read. Calling it from a BUILD file aborts.</li>
+<li><strong>Reading an undeclared variable is an error</strong> unless you pass a <code>default</code>. A typo'd or never-declared name fails loudly instead of silently yielding <code>None</code>. Pass <code>default</code> to make a variable optional: <code>blade.get_variable('opt', 'off')</code>.</li>
+<li><strong>Re-declaring a name is an error</strong> unless <code>override=True</code>. An accidental double-set (e.g. across an included config file) is caught rather than silently taking the last value. Use <code>override=True</code> for intentional layering (a base config sets a default; a machine-specific include overrides it).</li>
+<li><strong>Values can be any type</strong> (<code>str</code>, <code>int</code>, <code>list</code>, ...), not just strings.</li>
+<li><strong>The resolved variables are part of the configuration fingerprint.</strong> Changing a value -- via <code>set_variable</code>, the env feeding it, or a <code>--define</code> override -- regenerates the affected per-target builds. This is what makes env-driven configuration incrementally correct.</li>
+</ul>
+<p><strong>Command-line override: <code>--define</code></strong></p>
+<p><code>blade build|test|run -D NAME=VALUE</code> (repeatable) overrides a declared variable from the command line -- handy for CI to pin a value or for a local experiment without editing <code>BLADE_ROOT</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>blade<span class="w"> </span>build<span class="w"> </span>--define<span class="w"> </span><span class="nv">use_jemalloc</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>//...
+</code></pre></div>
+<p><code>--define</code> may only override a variable that <code>BLADE_ROOT</code> already declared with <code>set_variable</code> (overriding an undeclared name is an error), so the variable namespace stays defined solely by <code>BLADE_ROOT</code>. <code>--define</code> values are strings; if the declared variable is non-string, the override is taken verbatim as a string, so use <code>--define</code> for string/scalar variables.</p>
 <h3 id="bladecc_toolchain-object"><code>blade.cc_toolchain</code> Object<a class="headerlink" href="#bladecc_toolchain-object" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Phase:</strong> BUILD only</p>
@@ -2891,35 +2979,35 @@ to disable DSL restriction globally, set the <code>global_config.restricted_dsl 
   Returns <code>None</code> when the tool is unavailable (e.g. <code>tool('rc')</code> is <code>None</code> on Linux).</li>
 </ul>
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">cc</span> <span class="o">=</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Compose output file names</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">src</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">obj_suffix</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">static_lib</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">lib_prefix</span> <span class="o">+</span> <span class="s1">&#39;foo&#39;</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">static_lib_suffix</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">binary</span> <span class="o">=</span> <span class="s1">&#39;myapp&#39;</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">exe_suffix</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># Query tool availability</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">if</span> <span class="n">cc</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">):</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Resource compiler:&#39;</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">))</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Cross-compilation-aware dependency selection</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">if</span> <span class="n">cc</span><span class="o">.</span><span class="n">target_os</span> <span class="o">==</span> <span class="s1">&#39;linux&#39;</span><span class="p">:</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">libs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/linux_only:lib&#39;</span><span class="p">)</span>
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="k">elif</span> <span class="n">cc</span><span class="o">.</span><span class="n">target_os</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span><span class="p">:</span>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    <span class="n">libs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/mac_only:lib&#39;</span><span class="p">)</span>
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c1"># Host platform (the machine running the build)</span>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;tools/protoc-</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">blade</span><span class="o">.</span><span class="n">host_os</span><span class="p">,</span> <span class="n">blade</span><span class="o">.</span><span class="n">host_arch</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">cc</span> <span class="o">=</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Compose output file names</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">src</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">obj_suffix</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">static_lib</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">lib_prefix</span> <span class="o">+</span> <span class="s1">&#39;foo&#39;</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">static_lib_suffix</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">binary</span> <span class="o">=</span> <span class="s1">&#39;myapp&#39;</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">exe_suffix</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># Query tool availability</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="k">if</span> <span class="n">cc</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">):</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Resource compiler:&#39;</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">))</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># Cross-compilation-aware dependency selection</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="k">if</span> <span class="n">cc</span><span class="o">.</span><span class="n">target_os</span> <span class="o">==</span> <span class="s1">&#39;linux&#39;</span><span class="p">:</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="n">libs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/linux_only:lib&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="k">elif</span> <span class="n">cc</span><span class="o">.</span><span class="n">target_os</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span><span class="p">:</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    <span class="n">libs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;//thirdparty/mac_only:lib&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="c1"># Host platform (the machine running the build)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;tools/protoc-</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">blade</span><span class="o">.</span><span class="n">host_os</span><span class="p">,</span> <span class="n">blade</span><span class="o">.</span><span class="n">host_arch</span><span class="p">)</span>
 </code></pre></div>
 <hr />
 <h2 id="function-valued-config-items">Function-valued Config Items<a class="headerlink" href="#function-valued-config-items" title="Permanent link">&para;</a></h2>
 <p>Config item values can be functions (including lambdas) that are evaluated lazily during the BUILD phase, allowing access to <code>blade</code> attributes that are only available at that stage (e.g. <code>cc_toolchain</code>).</p>
 <h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">cc_test_config</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="c1"># Dynamically determine config values based on build type and target architecture</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">dynamic_link</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="ow">not</span> <span class="n">blade</span><span class="o">.</span><span class="n">build_type_is_debug</span><span class="p">()</span> <span class="ow">and</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;ppc64le&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">heap_check</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="s1">&#39;strict&#39;</span> <span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;aarch64&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">cc_test_config</span><span class="p">(</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="c1"># Dynamically determine config values based on build type and target architecture</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">dynamic_link</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="ow">not</span> <span class="n">blade</span><span class="o">.</span><span class="n">build_type_is_debug</span><span class="p">()</span> <span class="ow">and</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;ppc64le&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">heap_check</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="s1">&#39;strict&#39;</span> <span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;aarch64&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2929,15 +3017,15 @@ to disable DSL restriction globally, set the <code>global_config.restricted_dsl 
 <li>The <code>append_</code> / <code>prepend_</code> prefixes cannot be used with function-valued items.</li>
 <li>Regular functions work, not just lambdas:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_extra_incs</span><span class="p">(</span><span class="n">blade</span><span class="p">):</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="k">return</span> <span class="p">[</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        <span class="s1">&#39;thirdparty/&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="s1">&#39;thirdparty/</span><span class="si">%s</span><span class="s1">/&#39;</span> <span class="o">%</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="p">]</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">extra_incs</span><span class="o">=</span><span class="n">my_extra_incs</span><span class="p">,</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_extra_incs</span><span class="p">(</span><span class="n">blade</span><span class="p">):</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="k">return</span> <span class="p">[</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        <span class="s1">&#39;thirdparty/&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="s1">&#39;thirdparty/</span><span class="si">%s</span><span class="s1">/&#39;</span> <span class="o">%</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="p">]</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">cc_config</span><span class="p">(</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">extra_incs</span><span class="o">=</span><span class="n">my_extra_incs</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
 <h2 id="build_target-deprecation"><code>build_target</code> Deprecation<a class="headerlink" href="#build_target-deprecation" title="Permanent link">&para;</a></h2>
@@ -2974,19 +3062,19 @@ to disable DSL restriction globally, set the <code>global_config.restricted_dsl 
 </tbody>
 </table>
 <p><strong>Migration example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Old (in BLADE_ROOT)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_build_dir</span><span class="p">():</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="k">return</span> <span class="s1">&#39;build</span><span class="si">%d</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">build_target</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="s1">&#39;debug&#39;</span> <span class="k">if</span> <span class="n">build_target</span><span class="o">.</span><span class="n">is_debug</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;release&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="p">)</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># New</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Config-phase attributes can be used directly</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># BUILD-phase-only attributes (e.g. cc_toolchain) require function-valued config items</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">cc_test_config</span><span class="p">(</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">dynamic_link</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="ow">not</span> <span class="n">blade</span><span class="o">.</span><span class="n">build_type_is_debug</span><span class="p">()</span> <span class="ow">and</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;ppc64le&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Old (in BLADE_ROOT)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_build_dir</span><span class="p">():</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="k">return</span> <span class="s1">&#39;build</span><span class="si">%d</span><span class="s1">_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        <span class="n">build_target</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        <span class="s1">&#39;debug&#39;</span> <span class="k">if</span> <span class="n">build_target</span><span class="o">.</span><span class="n">is_debug</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;release&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># New</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># Config-phase attributes can be used directly</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># BUILD-phase-only attributes (e.g. cc_toolchain) require function-valued config items</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="n">cc_test_config</span><span class="p">(</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="n">dynamic_link</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="ow">not</span> <span class="n">blade</span><span class="o">.</span><span class="n">build_type_is_debug</span><span class="p">()</span> <span class="ow">and</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">target_arch</span> <span class="o">!=</span> <span class="s1">&#39;ppc64le&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="p">)</span>
 </code></pre></div>
 
 
