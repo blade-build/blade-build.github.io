@@ -2468,9 +2468,9 @@
 <h2 id="proto_library">proto_library<a class="headerlink" href="#proto_library" title="Permanent link">&para;</a></h2>
 <p>Build protobuf targets</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
 </code></pre></div>
 <p><code>deps</code> are other proto_library which are imported.
@@ -2485,10 +2485,10 @@ it is also similar to other target languages,such as python. so we only need one
 multiple target languages.</p>
 <p>If you want to generate code for specified languages unconditionly, you can use the <code>target_languages</code> argument:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;java&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">],</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'python'</span><span class="p">],</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>The <code>cpp</code> target code is always generated.</p>
@@ -2497,14 +2497,14 @@ The default value is <code>['.pb']</code>. For example, if you want to use grpc 
 <p>Besides, use <code>plugin_opts</code> to pass some options to plugins, like <code>plugin_opts={"plugin_name":["option1", "option2.."]},</code>.
 Blade will pass <code>--plugin_name_opt=option1 --plugin_name_opt=option2</code> to grpc plugin.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;java&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;grpc&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">cpp_outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.pb&#39;</span><span class="p">,</span> <span class="s1">&#39;.grpc.pb&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'python'</span><span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'grpc'</span><span class="p">],</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">cpp_outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.pb'</span><span class="p">,</span> <span class="s1">'.grpc.pb'</span><span class="p">],</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">plugin_opts</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="s1">&#39;grpc&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;option1&quot;</span><span class="p">,</span> <span class="s2">&quot;option2&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="s1">'grpc'</span><span class="p">:</span> <span class="p">[</span><span class="s2">"option1"</span><span class="p">,</span> <span class="s2">"option2"</span><span class="p">],</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="p">},</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">)</span>
 </code></pre></div>
@@ -2519,9 +2519,9 @@ the BUILD package) so Blade compiles with <code>--proto_path=&lt;package&gt;/&lt
 both the <code>import</code>s and the generated <code>#include</code>s resolve there instead of at the
 workspace root:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;options_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;src/foo/bar/x.proto&#39;</span><span class="p">,</span>   <span class="c1"># imports &quot;bar/y.proto&quot;; code #includes &quot;bar/x.pb.h&quot;</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">strip_import_prefix</span> <span class="o">=</span> <span class="s1">&#39;src/foo&#39;</span><span class="p">,</span> <span class="c1"># -&gt; proto compiles with --proto_path=src/foo</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'options_proto'</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'src/foo/bar/x.proto'</span><span class="p">,</span>   <span class="c1"># imports "bar/y.proto"; code #includes "bar/x.pb.h"</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">strip_import_prefix</span> <span class="o">=</span> <span class="s1">'src/foo'</span><span class="p">,</span> <span class="c1"># -&gt; proto compiles with --proto_path=src/foo</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>This is the analog of Bazel's <code>proto_library(strip_import_prefix=...)</code>. It
@@ -2532,14 +2532,14 @@ deps is the other thrift_library which are imported.
 thrift runtime will be depended automatically, needn't to be specified explicitly.
 The generated result is a c++ linrary with with corresponding header files.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">thrift_library</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;shared_thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;shared.thrift&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'shared_thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'shared.thrift'</span><span class="p">,</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">)</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">thrift_library</span><span class="p">(</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;tutorial_thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;tutorial.thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:shared_thrift&#39;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'tutorial_thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'tutorial.thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':shared_thrift'</span>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">)</span>
 </code></pre></div>
 <p>Similay to proto_library, to include generated header files, the full path is also required.</p>

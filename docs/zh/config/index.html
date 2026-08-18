@@ -4773,7 +4773,7 @@
 <p><strong>用途：</strong> 对于未显式设置 <code>visibility</code> 的目标，该列表中列出的目标默认可见性为 <code>PUBLIC</code>。</p>
 <p><strong>迁移工具：</strong> 对于存量项目，可使用 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>tool/collect-missing-visibility.py</code></a> 生成该列表：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">global_config</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">legacy_public_targets</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;legacy_public_targets.conf&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">legacy_public_targets</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'legacy_public_targets.conf'</span><span class="p">)</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">)</span>
 </code></pre></div>
 <h4 id="default_visibilitylist"><code>default_visibility</code>：list = []<a class="headerlink" href="#default_visibilitylist" title="Permanent link">&para;</a></h4>
@@ -4875,7 +4875,7 @@
 <p><strong>头文件依赖缺失的忽略列表</strong></p>
 <p>格式为字典：<code>{ 目标 : { 源文件 : [头文件列表] } }</code>。例如：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s1">&#39;common:rpc&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;rpc_server.cc&#39;</span><span class="p">:[</span><span class="s1">&#39;common/base64.h&#39;</span><span class="p">,</span> <span class="s1">&#39;common/list.h&#39;</span><span class="p">]},</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s1">'common:rpc'</span> <span class="p">:</span> <span class="p">{</span><span class="s1">'rpc_server.cc'</span><span class="p">:[</span><span class="s1">'common/base64.h'</span><span class="p">,</span> <span class="s1">'common/list.h'</span><span class="p">]},</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
 </code></pre></div>
 <p>表示对于 <code>common:rpc</code>，若在 <code>rpc_server.cc</code> 中引用了 <code>common/base64.h</code> 和 <code>common/list.h</code>，即便其所属库未在 <code>deps</code> 中声明，也不会报错。</p>
@@ -4886,7 +4886,7 @@
 </code></pre></div>
 <p>然后在 <code>BLADE_ROOT</code> 中加载：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">hdr_dep_missing_ignore</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;hdr_dep_missing_suppress.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">hdr_dep_missing_ignore</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'hdr_dep_missing_suppress.conf'</span><span class="p">),</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">)</span>
 </code></pre></div>
 <p>这样，存量的头文件依赖缺失错误会被抑制，但新增的依然会正常报告。</p>
@@ -4899,7 +4899,7 @@
 </code></pre></div>
 <p>然后加载：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;allowed_undeclared_hdrs.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'allowed_undeclared_hdrs.conf'</span><span class="p">),</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">)</span>
 </code></pre></div>
 <p>从代码库长期健康的角度，最终还是应当把这些问题彻底修正。</p>
@@ -4916,19 +4916,19 @@
 <p><strong>未使用依赖检查的抑制列表</strong></p>
 <p><strong>用途：</strong> 形如 <code>{target: [deps]}</code> 的映射，把「有意保留」的依赖从未使用依赖检查中豁免，主要用于存量代码库的逐步治理。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">unused_deps_severity</span> <span class="o">=</span> <span class="s1">&#39;warning&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">unused_deps_severity</span> <span class="o">=</span> <span class="s1">'warning'</span><span class="p">,</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">unused_deps_suppress</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="s1">&#39;//app/foo:bar&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;//common/baz:qux&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="s1">'//app/foo:bar'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'//common/baz:qux'</span><span class="p">],</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="p">},</span>
 <a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>示例：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">extra_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thirdparty&#39;</span><span class="p">],</span>         <span class="c1"># 额外的 -I，比如 thirdparty</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span>  <span class="c1"># C/C++ 公共警告</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">c_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span><span class="c1"># C 专用警告</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">cxx_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wall&#39;</span><span class="p">,</span> <span class="s1">&#39;-Wextra&#39;</span><span class="o">...</span><span class="p">],</span> <span class="c1"># C++ 专用警告</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">optimize</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-O2&#39;</span><span class="p">],</span>                  <span class="c1"># 优化级别</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">extra_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'thirdparty'</span><span class="p">],</span>         <span class="c1"># 额外的 -I，比如 thirdparty</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-Wall'</span><span class="p">,</span> <span class="s1">'-Wextra'</span><span class="o">...</span><span class="p">],</span>  <span class="c1"># C/C++ 公共警告</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">c_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-Wall'</span><span class="p">,</span> <span class="s1">'-Wextra'</span><span class="o">...</span><span class="p">],</span><span class="c1"># C 专用警告</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">cxx_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-Wall'</span><span class="p">,</span> <span class="s1">'-Wextra'</span><span class="o">...</span><span class="p">],</span> <span class="c1"># C++ 专用警告</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">optimize</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-O2'</span><span class="p">],</span>                  <span class="c1"># 优化级别</span>
 <a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="cc_library_config">cc_library_config<a class="headerlink" href="#cc_library_config" title="Permanent link">&para;</a></h3>
@@ -4969,8 +4969,8 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">cc_library_config</span><span class="p">(</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">check_undefined</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">allow_undefined</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="sa">r</span><span class="s1">&#39;__gcov_.*&#39;</span><span class="p">,</span>         <span class="c1"># gcov 运行时，由最终链接的 --coverage 提供</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        <span class="sa">r</span><span class="s1">&#39;_ZN3foo3barEv&#39;</span><span class="p">,</span>     <span class="c1"># 已知由外部 codegen 注入的符号</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="sa">r</span><span class="s1">'__gcov_.*'</span><span class="p">,</span>         <span class="c1"># gcov 运行时，由最终链接的 --coverage 提供</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        <span class="sa">r</span><span class="s1">'_ZN3foo3barEv'</span><span class="p">,</span>     <span class="c1"># 已知由外部 codegen 注入的符号</span>
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="p">],</span>
 <a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">)</span>
 </code></pre></div>
@@ -4999,18 +4999,18 @@
 <p>格式为目标列表（不带 <code>//</code> 前缀），用于抑制存量代码中的 <code>hdrs</code> 属性缺失问题。</p>
 <p>我们提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-hdrs-missing.py</code></a> 用于生成该列表。条目过多时建议独立保存、集中加载：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">cc_library_config</span><span class="p">(</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">hdrs_missing_suppress</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;blade_hdr_missing_spppress&#39;</span><span class="p">),</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">hdrs_missing_suppress</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'blade_hdr_missing_spppress'</span><span class="p">),</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="cc_test_config">cc_test_config<a class="headerlink" href="#cc_test_config" title="Permanent link">&para;</a></h3>
 <p>构建和运行测试所需的配置：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">cc_test_config</span><span class="p">(</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">dynamic_link</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># 测试程序默认动态链接，可减少磁盘占用，默认值为 False</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">heap_check</span> <span class="o">=</span> <span class="s1">&#39;strict&#39;</span><span class="p">,</span> <span class="c1"># 开启 gperftools 的 HEAPCHECK，详见 gperftools 文档</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">gperftools_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/perftools:tcmalloc&#39;</span><span class="p">,</span>           <span class="c1"># tcmalloc 库，Blade deps 格式</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">gperftools_debug_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/perftools:tcmalloc_debug&#39;</span><span class="p">,</span> <span class="c1"># tcmalloc_debug 库</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">gtest_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/gtest:gtest&#39;</span><span class="p">,</span>       <span class="c1"># gtest 库</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">gtest_main_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/gtest:gtest_main&#39;</span> <span class="c1"># gtest_main 库</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">heap_check</span> <span class="o">=</span> <span class="s1">'strict'</span><span class="p">,</span> <span class="c1"># 开启 gperftools 的 HEAPCHECK，详见 gperftools 文档</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">gperftools_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/perftools:tcmalloc'</span><span class="p">,</span>           <span class="c1"># tcmalloc 库，Blade deps 格式</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">gperftools_debug_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/perftools:tcmalloc_debug'</span><span class="p">,</span> <span class="c1"># tcmalloc_debug 库</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">gtest_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/gtest:gtest'</span><span class="p">,</span>       <span class="c1"># gtest 库</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">gtest_main_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/gtest:gtest_main'</span> <span class="c1"># gtest_main 库</span>
 <a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">)</span>
 </code></pre></div>
 <p>注意：</p>
@@ -5024,20 +5024,20 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">coverage_config</span><span class="p">(</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="c1"># 要从覆盖率报告中剔除的 C/C++ 源文件 glob 模式。</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="c1"># `**` 跨目录匹配（blade glob 语义），`*`/`?` 不跨 `/`。</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;thirdparty/**&#39;</span><span class="p">,</span> <span class="s1">&#39;**/*_test.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">'thirdparty/**'</span><span class="p">,</span> <span class="s1">'**/*_test.cc'</span><span class="p">],</span>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>对所有 C/C++ 工具链生效：gcc/clang/clang-cl 转给 gcovr 的 <code>--exclude</code>（同时影响 HTML 与 XML）；原生 MSVC <code>cl.exe</code> 按源文件路径过滤合并后的 Cobertura 并重算汇总。构建目录下的源文件（生成代码、第三方依赖）无论此项如何设置都始终被排除。</p>
 <h3 id="msvc_config">msvc_config<a class="headerlink" href="#msvc_config" title="Permanent link">&para;</a></h3>
 <p>MSVC 专有配置，仅在 Windows 下生效：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">msvc_config</span><span class="p">(</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">target_arch</span> <span class="o">=</span> <span class="s1">&#39;x64&#39;</span><span class="p">,</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">target_arch</span> <span class="o">=</span> <span class="s1">'x64'</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">'auto'</span><span class="p">,</span>
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">use_clang</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">cppflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/MD&#39;</span><span class="p">,</span> <span class="s1">&#39;/EHsc&#39;</span><span class="p">],</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">cxxflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/std:c++17&#39;</span><span class="p">],</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/SUBSYSTEM:CONSOLE&#39;</span><span class="p">],</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/W3&#39;</span><span class="p">],</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">cppflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/MD'</span><span class="p">,</span> <span class="s1">'/EHsc'</span><span class="p">],</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">cxxflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/std:c++17'</span><span class="p">],</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/SUBSYSTEM:CONSOLE'</span><span class="p">],</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/W3'</span><span class="p">],</span>
 <a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">)</span>
 </code></pre></div>
 <h4 id="target_archstring-auto"><code>target_arch</code>：string = 'auto'<a class="headerlink" href="#target_archstring-auto" title="Permanent link">&para;</a></h4>
@@ -5087,18 +5087,18 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <p><strong>MSVC Debug / Release 优化选项</strong></p>
 <p>默认：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/Od&#39;</span><span class="p">],</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="s1">&#39;release&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/O2&#39;</span><span class="p">],</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="s1">'debug'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'/Od'</span><span class="p">],</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="s1">'release'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'/O2'</span><span class="p">],</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">}</span>
 </code></pre></div>
 <h4 id="debug_info_levelsdict"><code>debug_info_levels</code>：dict<a class="headerlink" href="#debug_info_levelsdict" title="Permanent link">&para;</a></h4>
 <p><strong>MSVC 各调试级别的调试信息选项</strong></p>
 <p>默认：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="s1">&#39;no&#39;</span><span class="p">:</span>   <span class="p">[],</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="s1">&#39;low&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">],</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="s1">&#39;mid&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">,</span> <span class="s1">&#39;/DEBUG&#39;</span><span class="p">],</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/Zi&#39;</span><span class="p">,</span> <span class="s1">&#39;/DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;/RTC1&#39;</span><span class="p">],</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="s1">'no'</span><span class="p">:</span>   <span class="p">[],</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="s1">'low'</span><span class="p">:</span>  <span class="p">[</span><span class="s1">'/Zi'</span><span class="p">],</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="s1">'mid'</span><span class="p">:</span>  <span class="p">[</span><span class="s1">'/Zi'</span><span class="p">,</span> <span class="s1">'/DEBUG'</span><span class="p">],</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="s1">'high'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'/Zi'</span><span class="p">,</span> <span class="s1">'/DEBUG'</span><span class="p">,</span> <span class="s1">'/RTC1'</span><span class="p">],</span>
 <a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">}</span>
 </code></pre></div>
 <h3 id="cuda_config">cuda_config<a class="headerlink" href="#cuda_config" title="Permanent link">&para;</a></h3>
@@ -5143,7 +5143,7 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <p>对于已经散落在允许目录之外的存量 <code>maven_jar</code> 目标，可通过 <code>maven_jar_allowed_dirs_exempts</code> 豁免。
 我们还提供了辅助工具 <a href="https://github.com/blade-build/blade-build/tree/master/tool"><code>collect-disallowed-maven-jars.py</code></a> 用于生成此列表：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">java_config</span><span class="p">(</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">maven_jar_allowed_dirs_exempts</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;exempted_maven_jars.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">maven_jar_allowed_dirs_exempts</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'exempted_maven_jars.conf'</span><span class="p">),</span>
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">)</span>
 </code></pre></div>
 <h4 id="maven_jar_allowed_dirs_exemptslist"><code>maven_jar_allowed_dirs_exempts</code>：list = []<a class="headerlink" href="#maven_jar_allowed_dirs_exemptslist" title="Permanent link">&para;</a></h4>
@@ -5161,11 +5161,11 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <h3 id="proto_library_config">proto_library_config<a class="headerlink" href="#proto_library_config" title="Permanent link">&para;</a></h3>
 <p>编译 protobuf 所需的配置：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">proto_library_config</span><span class="p">(</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;protoc&#39;</span><span class="p">,</span>                                   <span class="c1"># protoc 编译器路径</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/protobuf:protobuf&#39;</span><span class="p">,</span>    <span class="c1"># protobuf 库，Blade deps 格式</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">protobuf_path</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                        <span class="c1"># import 时的 proto 搜索路径，相对 BLADE_ROOT</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">protobuf_cc_warning</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>                            <span class="c1"># 编译 pb.cc 时是否开启 warning，yes 或 no</span>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">protobuf_include_path</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                <span class="c1"># 编译 pb.cc 时额外的 -I 路径</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">'protoc'</span><span class="p">,</span>                                   <span class="c1"># protoc 编译器路径</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/protobuf:protobuf'</span><span class="p">,</span>    <span class="c1"># protobuf 库，Blade deps 格式</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">protobuf_path</span> <span class="o">=</span> <span class="s1">'thirdparty'</span><span class="p">,</span>                        <span class="c1"># import 时的 proto 搜索路径，相对 BLADE_ROOT</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">protobuf_cc_warning</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span>                            <span class="c1"># 编译 pb.cc 时是否开启 warning，yes 或 no</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">protobuf_include_path</span> <span class="o">=</span> <span class="s1">'thirdparty'</span><span class="p">,</span>                <span class="c1"># 编译 pb.cc 时额外的 -I 路径</span>
 <a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">protoc_direct_dependencies</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>                  <span class="c1"># 是否给 protoc 传 --direct_dependencies</span>
 <a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="n">well_known_protos</span> <span class="o">=</span> <span class="p">[],</span>                              <span class="c1"># 见下方说明</span>
 <a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">)</span>
@@ -5181,24 +5181,24 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <h3 id="thrift_library_config">thrift_library_config<a class="headerlink" href="#thrift_library_config" title="Permanent link">&para;</a></h3>
 <p>编译 thrift 所需的配置：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">thrift_library_config</span><span class="p">(</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">thrift</span> <span class="o">=</span> <span class="s1">&#39;thrift&#39;</span><span class="p">,</span>                              <span class="c1"># thrift 编译器路径</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">thrift_libs</span> <span class="o">=</span> <span class="s1">&#39;//thirdparty/thrift:thrift&#39;</span><span class="p">,</span>     <span class="c1"># thrift 库，Blade deps 格式</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">thrift_path</span> <span class="o">=</span> <span class="s1">&#39;thrift&#39;</span><span class="p">,</span>                         <span class="c1"># thrift 文件的搜索路径，相对 BLADE_ROOT</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">thrift_incs</span> <span class="o">=</span> <span class="s1">&#39;thirdparty&#39;</span><span class="p">,</span>                     <span class="c1"># 编译 thrift 生成的 .cpp 时额外的 -I 路径</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">thrift</span> <span class="o">=</span> <span class="s1">'thrift'</span><span class="p">,</span>                              <span class="c1"># thrift 编译器路径</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">thrift_libs</span> <span class="o">=</span> <span class="s1">'//thirdparty/thrift:thrift'</span><span class="p">,</span>     <span class="c1"># thrift 库，Blade deps 格式</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">thrift_path</span> <span class="o">=</span> <span class="s1">'thrift'</span><span class="p">,</span>                         <span class="c1"># thrift 文件的搜索路径，相对 BLADE_ROOT</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">thrift_incs</span> <span class="o">=</span> <span class="s1">'thirdparty'</span><span class="p">,</span>                     <span class="c1"># 编译 thrift 生成的 .cpp 时额外的 -I 路径</span>
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="_6">追加配置项的值<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>所有 <code>list</code> 和 <code>set</code> 类型的配置项都支持追加，其中 <code>list</code> 还支持在前面插入。用法是在配置项名前加 <code>append_</code> 或 <code>prepend_</code> 前缀：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">prepend_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-Wfloat-compare&#39;</span><span class="p">],</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-fuse-ld=gold'</span><span class="p">],</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">prepend_warnings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-Wfloat-compare'</span><span class="p">],</span>
 <a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="p">)</span>
 </code></pre></div>
 <p>同一个配置项不能同时直接赋值和追加：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># 错误！</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-fuse-ld=gold&#39;</span><span class="p">],</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-fuse-ld=gold'</span><span class="p">],</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">append_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-fuse-ld=gold'</span><span class="p">],</span>
 <a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>此外还有一种旧的 <code>append</code> 写法，已废弃：</p>
@@ -5211,7 +5211,7 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <h3 id="load_value">load_value 函数<a class="headerlink" href="#load_value" title="Permanent link">&para;</a></h3>
 <p><code>load_value</code> 函数可以从文件中加载一个表达式并作为值使用：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">&#39;allowed_undeclared_hdrs.conf&#39;</span><span class="p">),</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">allowed_undeclared_hdrs</span> <span class="o">=</span> <span class="n">load_value</span><span class="p">(</span><span class="s1">'allowed_undeclared_hdrs.conf'</span><span class="p">),</span>
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="p">)</span>
 </code></pre></div>
 <p>加载的值必须符合 Python 字面量规范，不能包含可执行语句。</p>
@@ -5270,24 +5270,24 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <p>这确保已配置的工具链始终固定使用其自带的安装版本，不会意外从系统 PATH 中获取其他版本。</p>
 <h3 id="_7">配置参考<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;gcc-13&#39;</span><span class="p">,</span>      <span class="c1"># 可选 — 配合 --cc-toolchain=gcc-13 选择此配置</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;gcc&#39;</span><span class="p">,</span>         <span class="c1"># &#39;gcc&#39; | &#39;clang&#39; | &#39;msvc&#39; | &#39;mingw&#39; | &#39;cygwin&#39;（参见上表）</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">'gcc-13'</span><span class="p">,</span>      <span class="c1"># 可选 — 配合 --cc-toolchain=gcc-13 选择此配置</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">'gcc'</span><span class="p">,</span>         <span class="c1"># 'gcc' | 'clang' | 'msvc' | 'mingw' | 'cygwin'（参见上表）</span>
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>       <span class="c1"># 可选 — 目标平台: &#39;linux&#39; | &#39;darwin&#39; | &#39;windows&#39;</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>                            <span class="c1"># 默认: 由 host 推导 (mingw/cygwin/msvc 始终为 &#39;windows&#39;)</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">target</span> <span class="o">=</span> <span class="s1">'linux'</span><span class="p">,</span>       <span class="c1"># 可选 — 目标平台: 'linux' | 'darwin' | 'windows'</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>                            <span class="c1"># 默认: 由 host 推导 (mingw/cygwin/msvc 始终为 'windows')</span>
 <a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="n">prefix</span>     <span class="o">=</span> <span class="s1">&#39;/opt/gcc-13&#39;</span><span class="p">,</span>   <span class="c1"># 可选 — 安装前缀，限定工具查找范围（不搜索 PATH）</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>    <span class="n">tool_prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>             <span class="c1"># 可选 — 交叉编译工具名前缀</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>                                  <span class="c1"># 例如 &#39;arm-linux-gnueabihf-&#39; → arm-linux-gnueabihf-gcc</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="n">prefix</span>     <span class="o">=</span> <span class="s1">'/opt/gcc-13'</span><span class="p">,</span>   <span class="c1"># 可选 — 安装前缀，限定工具查找范围（不搜索 PATH）</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>    <span class="n">tool_prefix</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span>             <span class="c1"># 可选 — 交叉编译工具名前缀</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>                                  <span class="c1"># 例如 'arm-linux-gnueabihf-' → arm-linux-gnueabihf-gcc</span>
 <a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>
-<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>    <span class="n">cc</span>     <span class="o">=</span> <span class="s1">&#39;/usr/bin/gcc-13&#39;</span><span class="p">,</span>   <span class="c1"># 可选 — 单独覆盖各工具路径</span>
-<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="n">cxx</span>    <span class="o">=</span> <span class="s1">&#39;/usr/bin/g++-13&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>    <span class="n">cc</span>     <span class="o">=</span> <span class="s1">'/usr/bin/gcc-13'</span><span class="p">,</span>   <span class="c1"># 可选 — 单独覆盖各工具路径</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="n">cxx</span>    <span class="o">=</span> <span class="s1">'/usr/bin/g++-13'</span><span class="p">,</span>
 <a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>    <span class="n">ld</span>     <span class="o">=</span> <span class="o">...</span><span class="p">,</span>                 <span class="c1"># 可选 — 默认由 kind/target 推导</span>
 <a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a>    <span class="n">ar</span>     <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
 <a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a>
-<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>    <span class="c1"># 仅 MSVC (kind=&#39;msvc&#39; 时)</span>
-<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">&#39;14.44&#39;</span><span class="p">,</span>       <span class="c1"># &#39;auto&#39; 或 MSVC 版本前缀，如 &#39;14.44&#39;</span>
-<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>    <span class="n">target_arch</span>  <span class="o">=</span> <span class="s1">&#39;x64&#39;</span><span class="p">,</span>         <span class="c1"># &#39;auto&#39; | &#39;x64&#39; | &#39;x86&#39; | &#39;arm64&#39; | &#39;arm64ec&#39;</span>
+<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>    <span class="c1"># 仅 MSVC (kind='msvc' 时)</span>
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>    <span class="n">msvc_version</span> <span class="o">=</span> <span class="s1">'14.44'</span><span class="p">,</span>       <span class="c1"># 'auto' 或 MSVC 版本前缀，如 '14.44'</span>
+<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>    <span class="n">target_arch</span>  <span class="o">=</span> <span class="s1">'x64'</span><span class="p">,</span>         <span class="c1"># 'auto' | 'x64' | 'x86' | 'arm64' | 'arm64ec'</span>
 <a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="p">)</span>
 </code></pre></div>
 <blockquote>
@@ -5299,22 +5299,22 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <h3 id="_8">多工具链配置<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <p>定义多个工具链，构建时选择：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;gcc-13&#39;</span><span class="p">,</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;gcc&#39;</span><span class="p">,</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;/opt/gcc-13&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">'gcc-13'</span><span class="p">,</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">'gcc'</span><span class="p">,</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">'/opt/gcc-13'</span><span class="p">,</span>
 <a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">)</span>
 <a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>
 <a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="n">cc_toolchain_config</span><span class="p">(</span>
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;clang-17&#39;</span><span class="p">,</span>
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">&#39;clang&#39;</span><span class="p">,</span>
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;/opt/clang-17&#39;</span><span class="p">,</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>    <span class="n">name</span>   <span class="o">=</span> <span class="s1">'clang-17'</span><span class="p">,</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="n">kind</span>   <span class="o">=</span> <span class="s1">'clang'</span><span class="p">,</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">'/opt/clang-17'</span><span class="p">,</span>
 <a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>blade<span class="w"> </span>build<span class="w"> </span>--cc-toolchain<span class="o">=</span>gcc-13<span class="w">    </span><span class="c1"># 按名称选择</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>blade<span class="w"> </span>build<span class="w"> </span>--cc-toolchain<span class="o">=</span>clang<span class="w">     </span><span class="c1"># 按类型选择（自动检测路径）</span>
 </code></pre></div>
 <p>不带 <code>name</code> 的配置作为默认工具链（未指定 <code>--cc-toolchain</code> 时使用）：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;clang&#39;</span><span class="p">)</span>   <span class="c1"># 默认工具链</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">cc_toolchain_config</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'clang'</span><span class="p">)</span>   <span class="c1"># 默认工具链</span>
 </code></pre></div>
 <h3 id="_9">选择优先级<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
 <ol>
@@ -5349,8 +5349,8 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 用共享库）：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>        <span class="s1">&#39;curl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;8.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span> <span class="s1">&#39;http2&#39;</span><span class="p">]},</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>        <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>        <span class="s1">'curl'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'version'</span><span class="p">:</span> <span class="s1">'8.5.0'</span><span class="p">,</span> <span class="s1">'features'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'ssl'</span><span class="p">,</span> <span class="s1">'http2'</span><span class="p">]},</span>
 <a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="p">},</span>
 <a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="p">)</span>
 </code></pre></div>
@@ -5374,7 +5374,7 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 <a href="https://learn.microsoft.com/vcpkg/users/binarycaching">vcpkg 二进制缓存</a>源语法，例如：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>    <span class="c1"># 共享目录缓存（读写）。</span>
-<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="n">binary_cache</span> <span class="o">=</span> <span class="s1">&#39;files,/path/to/cache,readwrite&#39;</span><span class="p">,</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="n">binary_cache</span> <span class="o">=</span> <span class="s1">'files,/path/to/cache,readwrite'</span><span class="p">,</span>
 <a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="c1"># ……也可以是 NuGet feed、GitHub Actions 缓存、x-azblob、x-gcs 等。</span>
 <a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="p">)</span>
 </code></pre></div>
@@ -5386,8 +5386,8 @@ ABI、cl 风格选项、Windows SDK 查找以及 vcpkg 的 <code>*-windows*</cod
 借此可将所有第三方用法收敛到 <code>thirdparty/</code> 下精心维护的包装 <code>cc_library</code> 目标，
 业务代码只依赖这些包装而非直接依赖 vcpkg port。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="c1"># 仅 thirdparty/ 下的 BUILD 可以写 `deps = [&#39;vcpkg#fmt:fmt&#39;]`。</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    <span class="n">direct_use_allowed</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thirdparty&#39;</span><span class="p">],</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="c1"># 仅 thirdparty/ 下的 BUILD 可以写 `deps = ['vcpkg#fmt:fmt']`。</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    <span class="n">direct_use_allowed</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'thirdparty'</span><span class="p">],</span>
 <a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="p">)</span>
 </code></pre></div>
 

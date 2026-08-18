@@ -2992,11 +2992,11 @@
 <ul>
 <li><strong>是别的目标的私有头</strong>（拥有者集合不含本目标）→ 报错：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&quot;X&quot; is a private header file of &quot;//foo:bar&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>"X" is a private header file of "//foo:bar"
 </code></pre></div>
 <p>即<strong>私有头文件被跨库使用</strong>。私有头只允许其所属库自己包含；别的库要用，应由所属库把它放进 <code>hdrs</code> 导出为公开头。
  - <strong>不是任何库的私有头</strong>（也没被任何库导出）→ 视为<strong>未声明/未导出</strong>，报错：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&quot;X&quot; is not declared in any cc target. ...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>"X" is not declared in any cc target. ...
 </code></pre></div>
 <p>（除非该头文件在 <code>allowed_undeclared_hdrs</code> 或 <code>suppress</code> 名单中。）即这个头文件没有出现在任何库的 <code>hdrs</code> 或 <code>srcs</code> 里。
    - 查到了公开库 → 进入第三节的"直接依赖缺失"检查。</p>
@@ -3009,8 +3009,8 @@
 <h3 id="31-missing-dependency">3.1 直接依赖缺失（Missing dependency）<a class="headerlink" href="#31-missing-dependency" title="Permanent link">&para;</a></h3>
 <p>仍在 <code>_check_direct_headers()</code>：当 <code>hdr</code> 找到了公开库拥有者集合 <code>libs</code>，但 <code>libs</code> 与 <code>deps ∪ {自身}</code> 的交集为空时 → 报错：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;target&gt;: Missing dependency declaration:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  In file included from &quot;src/foo.cc&quot;,
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    For &quot;common/rpc/rpc_client.h&quot;, which belongs to &quot;//common/rpc:rpc_client&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  In file included from "src/foo.cc",
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    For "common/rpc/rpc_client.h", which belongs to "//common/rpc:rpc_client"
 </code></pre></div>
 <p>即你直接 <code>#include</code> 了某库的公开头，却没有在 <code>deps</code> 里依赖那个库。修复方法通常是把提示中的库加入本目标的 <code>deps</code>。</p>
 <h3 id="32-missing-indirect-dependency">3.2 间接（生成头）依赖缺失（Missing indirect dependency）<a class="headerlink" href="#32-missing-indirect-dependency" title="Permanent link">&para;</a></h3>

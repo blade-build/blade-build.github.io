@@ -2537,25 +2537,25 @@ Maven/Buck/Bazel 的实现和 Java 语言项目构建习惯和运行场景，重
 <h2 id="java_library">java_library<a class="headerlink" href="#java_library" title="Permanent link">&para;</a></h2>
 <p>把 java 源代码编译为库（jar 包）。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc'</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">&#39;src/main/java/**/*.java&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">'src/main/java/**/*.java'</span><span class="p">,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">&#39;*Test.java&#39;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'*Test.java'</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="p">]),</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">&#39;src/main/resources/log4j.properties&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">&#39;resources/rpc.conf&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">&#39;resources/services.xml&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">'src/main/resources/log4j.properties'</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">'resources/rpc.conf'</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">'resources/services.xml'</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">],</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s1">&#39;//common/rpc:rpc_error_code_proto&#39;</span><span class="p">,</span>        <span class="c1"># 可以依赖proto_library生成的java文件一起编译打包</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="s1">&#39;//common/rpc:rpc_options_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="s1">&#39;//poppy:poppy_client&#39;</span><span class="p">,</span>                     <span class="c1"># 可以依赖swig_library生成的java文件一起编译打包</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="s1">&#39;//common/net/http/java:http_utilities&#39;</span><span class="p">,</span>    <span class="c1"># 可以依赖别的 java_library 目标</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="s1">&#39;//thirdparty/java/deps:slf4j&#39;</span><span class="p">,</span>             <span class="c1"># 依赖第三方包</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="s1">&#39;//thirdparty/java/deps:guava&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="s1">&#39;//thirdparty/java/deps:netty-4.0.36.final&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s1">'//common/rpc:rpc_error_code_proto'</span><span class="p">,</span>        <span class="c1"># 可以依赖proto_library生成的java文件一起编译打包</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="s1">'//common/rpc:rpc_options_proto'</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="s1">'//poppy:poppy_client'</span><span class="p">,</span>                     <span class="c1"># 可以依赖swig_library生成的java文件一起编译打包</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="s1">'//common/net/http/java:http_utilities'</span><span class="p">,</span>    <span class="c1"># 可以依赖别的 java_library 目标</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="s1">'//thirdparty/java/deps:slf4j'</span><span class="p">,</span>             <span class="c1"># 依赖第三方包</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="s1">'//thirdparty/java/deps:guava'</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="s1">'//thirdparty/java/deps:netty-4.0.36.final'</span><span class="p">,</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="p">]</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="p">)</span>
 </code></pre></div>
@@ -2596,9 +2596,9 @@ Maven/Buck/Bazel 的实现和 Java 语言项目构建习惯和运行场景，重
 </ul>
 <p>主要应用在已经编译打包好的 jar 包，作为一种变通的解决依赖的方式，通常对于外部依赖还是推荐使用 maven_jar 的方式。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;parquet-column-gdt&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'parquet-column-gdt'</span><span class="p">,</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">prebuilt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">binary_jar</span> <span class="o">=</span> <span class="s1">&#39;parquet-column-1.9.1-SNAPSHOT.jar&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">binary_jar</span> <span class="o">=</span> <span class="s1">'parquet-column-1.9.1-SNAPSHOT.jar'</span><span class="p">,</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
 </code></pre></div>
 <ul>
@@ -2610,9 +2610,9 @@ Maven/Buck/Bazel 的实现和 Java 语言项目构建习惯和运行场景，重
 需要强调的是 java_library 进行编译生成 class（jar 包）的时候<strong>依赖不传递</strong>，即如下 BUILD 文件中的
 C.java 中定义的符号对 A.java 不可见，即在写 java_library 的 deps 时，应按需添加，与源文件中的
 import 能够对应起来：deps what you imports。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;A.java&#39;</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:B&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;B.java&#39;</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:C&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;C.java&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'A'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'A.java'</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">':B'</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'B'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'B.java'</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">':C'</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'C'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'C.java'</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li>exported_deps 属性</li>
@@ -2623,7 +2623,7 @@ import 能够对应起来：deps what you imports。</p>
 <p>比如上述例子中的 B.java，如果在其某个方法的参数中引入了 C.java 定义的符号，会导致依赖 B 的
 java_library 也不得不依赖 C，否则编译报错，这个时候可以将 C 作为 B 的导出依赖（exported_deps），
 这样依赖 B 的目标会自动传递依赖到 C。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;B.java&#39;</span><span class="p">,</span> <span class="n">exported_deps</span> <span class="o">=</span> <span class="s1">&#39;:C&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'B'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'B.java'</span><span class="p">,</span> <span class="n">exported_deps</span> <span class="o">=</span> <span class="s1">':C'</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li>provided_deps 属性</li>
@@ -2634,8 +2634,8 @@ java_library 的编译，但是当这个 java_library 直接或者间接被 java
 <h2 id="maven_jar">maven_jar<a class="headerlink" href="#maven_jar" title="Permanent link">&para;</a></h2>
 <p>从 maven 仓库获取第三方发布包（release/snapshot），这里的第三方是相对的概念，泛指本项目（java_library）的外部依赖。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">maven_jar</span> <span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hadoop-common-2.7.2-tdw&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;org.apache.hadoop:hadoop-common:2.7.2-tdw-1.0.1&#39;</span><span class="p">,</span>  <span class="c1"># 完整的maven artifact id</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="n">name</span> <span class="o">=</span> <span class="s1">'hadoop-common-2.7.2-tdw'</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="nb">id</span> <span class="o">=</span> <span class="s1">'org.apache.hadoop:hadoop-common:2.7.2-tdw-1.0.1'</span><span class="p">,</span>  <span class="c1"># 完整的maven artifact id</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">)</span>
 </code></pre></div>
 <p>除了 name 和 id 属性，maven_jar 也提供了如下属性，兼容 maven 仓库中选取依赖的多种方式。</p>
@@ -2651,37 +2651,37 @@ java_library 的编译，但是当这个 java_library 直接或者间接被 java
 <h2 id="java_fat_library">java_fat_library<a class="headerlink" href="#java_fat_library" title="Permanent link">&para;</a></h2>
 <p>聚合所有依赖的 java_library/maven_jar，生成一个 fatjar 用于部署，类似 maven 的 jar-with-dependencies 功能。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;log_process&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">&#39;**/*.java&#39;</span><span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*Test.java&#39;</span><span class="p">]),</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">&#39;resources/*&#39;</span><span class="p">]),</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'log_process'</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">'**/*.java'</span><span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'*Test.java'</span><span class="p">]),</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">'resources/*'</span><span class="p">]),</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s1">&#39;:log_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="s1">&#39;//log/com/tencent/monitor:monitor&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="s1">&#39;//log/com/tencent/monitor:schema&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="s1">&#39;//thirdparty/java/deps:hbase-client&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="s1">&#39;//thirdparty/java/deps:snappy&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s1">':log_proto'</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="s1">'//log/com/tencent/monitor:monitor'</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="s1">'//log/com/tencent/monitor:schema'</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="s1">'//thirdparty/java/deps:hbase-client'</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="s1">'//thirdparty/java/deps:snappy'</span><span class="p">,</span>
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="p">],</span>
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">provided_deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="s1">&#39;//thirdparty/java/deps:hadoop-common&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="s1">&#39;//thirdparty/java/deps:hadoop-mapreduce&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="s1">&#39;//thirdparty/java/deps:log4j&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="s1">&#39;//thirdparty/java/deps:slf4j&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="s1">'//thirdparty/java/deps:hadoop-common'</span><span class="p">,</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="s1">'//thirdparty/java/deps:hadoop-mapreduce'</span><span class="p">,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="s1">'//thirdparty/java/deps:log4j'</span><span class="p">,</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="s1">'//thirdparty/java/deps:slf4j'</span><span class="p">,</span>
 <a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="p">],</span>
 <a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="p">)</span>
 <a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">java_fat_library</span><span class="p">(</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;log_process_main&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'log_process_main'</span><span class="p">,</span>
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>        <span class="s1">&#39;:log_process&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="s1">&#39;//thirdparty/java/deps:guava&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>        <span class="s1">':log_process'</span><span class="p">,</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="s1">'//thirdparty/java/deps:guava'</span><span class="p">,</span>
 <a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="p">],</span>
 <a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="p">(</span><span class="s1">&#39;//log/configuration/log4j.properties&#39;</span><span class="p">,</span> <span class="s1">&#39;log4j.properties&#39;</span><span class="p">),</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>        <span class="p">(</span><span class="s1">&#39;//log/configuration/sites.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;conf/sites.xml&#39;</span><span class="p">),</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="p">(</span><span class="s1">'//log/configuration/log4j.properties'</span><span class="p">,</span> <span class="s1">'log4j.properties'</span><span class="p">),</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>        <span class="p">(</span><span class="s1">'//log/configuration/sites.xml'</span><span class="p">,</span> <span class="s1">'conf/sites.xml'</span><span class="p">),</span>
 <a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="p">],</span>
 <a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="n">exclusions</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="s1">&#39;com.google.protobuf:*:*&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="s1">&#39;org.apache.spark:*:*&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="s1">'com.google.protobuf:*:*'</span><span class="p">,</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="s1">'org.apache.spark:*:*'</span><span class="p">,</span>
 <a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    <span class="p">]</span>
 <a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="p">)</span>
 </code></pre></div>
@@ -2698,13 +2698,13 @@ java_library 的编译，但是当这个 java_library 直接或者间接被 java
 <h2 id="java_binary">java_binary<a class="headerlink" href="#java_binary" title="Permanent link">&para;</a></h2>
 <p>把 java 源代码编译为可执行文件</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">java_binary</span><span class="p">(</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;poppy_java_example&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'poppy_java_example'</span><span class="p">,</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;src/com/soso/poppy/tool/*.java&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">'src/com/soso/poppy/tool/*.java'</span><span class="p">)</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="p">],</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="s1">&#39;//poppy:poppy_java_client&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="s1">&#39;//poppy:rpc_example_proto&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="s1">'//poppy:poppy_java_client'</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="s1">'//poppy:rpc_example_proto'</span><span class="p">,</span>
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="p">]</span>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">)</span>
 </code></pre></div>
@@ -2712,13 +2712,13 @@ java_library 的编译，但是当这个 java_library 直接或者间接被 java
 <h2 id="java_test">java_test<a class="headerlink" href="#java_test" title="Permanent link">&para;</a></h2>
 <p>编译和运行 java 测试代码。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">java_test</span><span class="p">(</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;poppy_java_test&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'poppy_java_test'</span><span class="p">,</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;test/com/soso/poppy/**/*Test.java&#39;</span><span class="p">)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">'test/com/soso/poppy/**/*Test.java'</span><span class="p">)</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="p">],</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="s1">&#39;//poppy:poppy_java&#39;</span><span class="p">,</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="s1">&#39;//thirdparty/junit:junit&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="s1">'//poppy:poppy_java'</span><span class="p">,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="s1">'//thirdparty/junit:junit'</span><span class="p">,</span>
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="p">],</span>
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">)</span>
 </code></pre></div>

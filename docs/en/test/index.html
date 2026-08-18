@@ -2825,8 +2825,8 @@
 <h3 id="always-run-attribute">Always Run Attribute<a class="headerlink" href="#always-run-attribute" title="Permanent link">&para;</a></h3>
 <p><code>cc_test</code> targets support the <code>always_run</code> attribute, which forces execution during incremental testing regardless of previous results:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">cc_test</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;zookeeper_test&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;zookeeper_test.cc&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'zookeeper_test'</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'zookeeper_test.cc'</span><span class="p">,</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">always_run</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
 </code></pre></div>
@@ -2850,14 +2850,14 @@ test at the same time. Use it in two situations:</p>
    nondeterministically, even though it is correct in isolation.</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">cc_test</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;zookeeper_test&#39;</span><span class="p">,</span>     <span class="c1"># interference: binds a fixed port</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;zookeeper_test.cc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'zookeeper_test'</span><span class="p">,</span>     <span class="c1"># interference: binds a fixed port</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'zookeeper_test.cc'</span><span class="p">,</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">exclusive</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">cc_test</span><span class="p">(</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;server_overload_test&#39;</span><span class="p">,</span>   <span class="c1"># overload: stresses the whole machine</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;server_overload_test.cc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'server_overload_test'</span><span class="p">,</span>   <span class="c1"># overload: stresses the whole machine</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'server_overload_test.cc'</span><span class="p">,</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">exclusive</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">)</span>
 </code></pre></div>
@@ -2902,7 +2902,7 @@ marking tests exclusive; reserve it for the two cases above.</p>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">java_test_config</span><span class="p">(</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="o">...</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">jacoco_home</span> <span class="o">=</span> <span class="s1">&#39;path/to/jacoco&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">jacoco_home</span> <span class="o">=</span> <span class="s1">'path/to/jacoco'</span><span class="p">,</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="o">...</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">)</span>
 </code></pre></div>
@@ -2928,23 +2928,23 @@ marking tests exclusive; reserve it for the two cases above.</p>
 <li><strong>Isolated build directory:</strong> a sanitized build is ABI/codegen-incompatible with a normal one, so it gets its own sibling dir with a sanitizer tag — <code>build_release_asan</code>. The plain <code>build_release</code> is untouched, so the two coexist without clobbering or rebuilding each other.</li>
 <li><strong>Per-target opt-out:</strong> a target that must not be instrumented (intentional UB, a hot path, a wrapper around a non-instrumented prebuilt) sets <code>sanitize = False</code>. It still links (and still gets the runtime); only its own compiles drop the instrumentation. This works on MSVC too — since <code>cl</code> has no <code>-fno-sanitize</code>, Blade blanks the per-file <code>/fsanitize</code> flag for that target instead.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;crc32_hw&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;crc32_hw.cc&#39;</span><span class="p">],</span> <span class="n">sanitize</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'crc32_hw'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'crc32_hw.cc'</span><span class="p">],</span> <span class="n">sanitize</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li><strong>Runtime options &amp; suppressions:</strong> set per-sanitizer run options from BLADE_ROOT, mapped onto the matching <code>*_OPTIONS</code> environment variable. Each value is a list, one option per element. These options are appended to Blade's defaults, and take effect only when that sanitizer is in <code>--sanitizer</code>. If you've already set that sanitizer's environment variable yourself (e.g. <code>ASAN_OPTIONS</code>), Blade uses it as-is and ignores the corresponding options from the config.</li>
 </ul>
 <p>To suppress a known-benign leak/race or a false positive, use the <code>suppressions=&lt;file path&gt;</code> option; the path is resolved relative to the workspace root and the file must exist. Suppression files use each sanitizer's <strong>own</strong> syntax: e.g. <code>leak:&lt;name&gt;</code> (<a href="https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer#suppressions">LeakSanitizer</a>), <code>race:&lt;name&gt;</code> / <code>called_from_lib:&lt;lib&gt;</code> (<a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerSuppressions">ThreadSanitizer</a>).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">sanitizer_config</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">&#39;thread&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;suppressions=etc/tsan.supp&#39;</span><span class="p">,</span> <span class="s1">&#39;history_size=7&#39;</span><span class="p">],</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;detect_stack_use_after_return=1&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">'thread'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'suppressions=etc/tsan.supp'</span><span class="p">,</span> <span class="s1">'history_size=7'</span><span class="p">],</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">'address'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'detect_stack_use_after_return=1'</span><span class="p">],</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">})</span>
 </code></pre></div>
 <ul>
 <li><strong>Per-sanitizer compile flags:</strong> sanitizer-specific <em>compile</em> knobs that can't live in <code>cc_config.cppflags</code> (they're only valid while that sanitizer is on). Set them in <code>sanitizer_config(compile_flags = {...})</code>, keyed by sanitizer; they are added (gcc/clang) only when that sanitizer is active, <strong>appended after</strong> Blade's defaults so a single-value flag wins by last occurrence. The motivating case is dialing MSan origin tracking down from the default <code>=2</code> to save memory:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">sanitizer_config</span><span class="p">(</span><span class="n">compile_flags</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="s1">&#39;memory&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;-fsanitize-memory-track-origins=1&#39;</span><span class="p">],</span>   <span class="c1"># or =0 — cheaper than the default =2</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-fsanitize-address-use-after-scope&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="s1">'memory'</span><span class="p">:</span>  <span class="p">[</span><span class="s1">'-fsanitize-memory-track-origins=1'</span><span class="p">],</span>   <span class="c1"># or =0 — cheaper than the default =2</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="s1">'address'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'-fsanitize-address-use-after-scope'</span><span class="p">],</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">})</span>
 </code></pre></div>
 <h2 id="test-exclusion">Test Exclusion<a class="headerlink" href="#test-exclusion" title="Permanent link">&para;</a></h2>

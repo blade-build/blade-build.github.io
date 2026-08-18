@@ -2970,10 +2970,10 @@
 <li><strong>在 <code>BLADE_ROOT</code> 中声明允许的包</strong>：</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">baseline</span> <span class="o">=</span> <span class="s1">&#39;2024-12-15&#39;</span><span class="p">,</span>          <span class="c1"># 固定 ports 树（推荐）</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">baseline</span> <span class="o">=</span> <span class="s1">'2024-12-15'</span><span class="p">,</span>          <span class="c1"># 固定 ports 树（推荐）</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">'openssl'</span><span class="p">:</span> <span class="s1">'3.2.1'</span><span class="p">,</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">},</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
 </code></pre></div>
@@ -2981,11 +2981,11 @@
 <li><strong>用 <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code> 声明依赖</strong>：</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;app.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'app'</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'app.cc'</span><span class="p">],</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">&#39;vcpkg#fmt:fmt&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">'vcpkg#fmt:fmt'</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s1">'vcpkg#openssl:ssl'</span><span class="p">,</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="p">],</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
 </code></pre></div>
@@ -3030,8 +3030,8 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 或带下列键的字典：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>                                   <span class="c1"># 简写</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;curl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;8.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span> <span class="s1">&#39;http2&#39;</span><span class="p">]},</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span>                                   <span class="c1"># 简写</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">'curl'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'version'</span><span class="p">:</span> <span class="s1">'8.5.0'</span><span class="p">,</span> <span class="s1">'features'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'ssl'</span><span class="p">,</span> <span class="s1">'http2'</span><span class="p">]},</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">},</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
 </code></pre></div>
@@ -3098,7 +3098,7 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 的 descriptor pool 查不到另一个模块注册的内容（段错误）。默认的 <strong><code>'auto'</code></strong> 已经
 避免了这点：每个 <code>dynamic_link</code> 消费者都链接同一份共享实例。只有要覆盖默认行为时
 才需要显式指定 <code>linkage</code>——例如用 <code>'dynamic'</code> 强制连静态链接的二进制也用共享库：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s1">&#39;protobuf&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;3.21.12&#39;</span><span class="p">},</span>   <span class="c1"># &#39;auto&#39; 默认：所有 dylib 共享同一份</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s1">'protobuf'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'version'</span><span class="p">:</span> <span class="s1">'3.21.12'</span><span class="p">},</span>   <span class="c1"># 'auto' 默认：所有 dylib 共享同一份</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                      <span class="c1"># libprotobuf，静态 exe 仍用静态库</span>
 </code></pre></div>
 <h3 id="link_all_symbols-true"><code>link_all_symbols: True</code>——强制运行静态初始化<a class="headerlink" href="#link_all_symbols-true" title="Permanent link">&para;</a></h3>
@@ -3109,17 +3109,17 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 <p>某个 port 可能把头文件装在 <code>include/</code> 顶层（如 <code>snappy.h</code>），而你的代码按子目录
 包含（<code>"snappy/snappy.h"</code>）。<code>include_prefix</code> 把该 port 的 include 目录暴露在你
 使用的路径下，无需手写包装头；port 的原生布局也仍然可用：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">},</span>          <span class="c1"># &quot;snappy/h&quot; -&gt; include/h</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">&#39;zlib&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span> <span class="s1">&#39;thirdparty/zlib&#39;</span><span class="p">]},</span>  <span class="c1"># 两个前缀</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">'snappy'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="s1">'snappy'</span><span class="p">},</span>          <span class="c1"># "snappy/h" -&gt; include/h</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">'zlib'</span><span class="p">:</span>   <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'zlib'</span><span class="p">,</span> <span class="s1">'thirdparty/zlib'</span><span class="p">]},</span>  <span class="c1"># 两个前缀</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># {前缀: 子目录} 映射到 port include 中已有的子目录：</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">&#39;glog&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;linkage&#39;</span><span class="p">:</span> <span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>           <span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;thirdparty/glog&#39;</span><span class="p">:</span> <span class="s1">&#39;glog&#39;</span><span class="p">}},</span>   <span class="c1"># -&gt; include/glog/h</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">'glog'</span><span class="p">:</span>   <span class="p">{</span><span class="s1">'linkage'</span><span class="p">:</span> <span class="s1">'dynamic'</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>           <span class="s1">'include_prefix'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'thirdparty/glog'</span><span class="p">:</span> <span class="s1">'glog'</span><span class="p">}},</span>   <span class="c1"># -&gt; include/glog/h</span>
 </code></pre></div>
 <h3 id="cmake_options"><code>cmake_options</code>——额外构建选项<a class="headerlink" href="#cmake_options" title="Permanent link">&para;</a></h3>
 <p>为单个 port 传入 CMake 配置选项（生成为该 port 的
 <code>VCPKG_CMAKE_CONFIGURE_OPTIONS</code>）。例如 vcpkg 的 snappy 默认关闭 RTTI：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">,</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           <span class="s1">&#39;cmake_options&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-DSNAPPY_WITH_RTTI=ON&#39;</span><span class="p">]},</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s1">'snappy'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="s1">'snappy'</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           <span class="s1">'cmake_options'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'-DSNAPPY_WITH_RTTI=ON'</span><span class="p">]},</span>
 </code></pre></div>
 <h2 id="_4">托管与非托管安装<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p><code>vcpkg_config(manage=...)</code> 决定由谁来执行 <code>vcpkg install</code>。</p>
@@ -3137,13 +3137,13 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 <code>$VCPKG_ROOT</code>：</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vcpkg<span class="w"> </span>install<span class="w"> </span>fmt<span class="w"> </span>openssl<span class="w">          </span><span class="c1"># 自己安装</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">vcpkg_config</span><span class="p">(</span><span class="n">manage</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span> <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">})</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">vcpkg_config</span><span class="p">(</span><span class="n">manage</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span> <span class="s1">'openssl'</span><span class="p">:</span> <span class="s1">'3.2.1'</span><span class="p">})</span>
 </code></pre></div></p>
 <h2 id="port_1">多库 port<a class="headerlink" href="#port_1" title="Permanent link">&para;</a></h2>
 <p><code>openssl</code>、<code>protobuf</code>、<code>icu</code> 等 port 会产出多个归档。每个都是独立目标，按需声明：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>         <span class="c1"># libssl.a</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">,</span>      <span class="c1"># libcrypto.a</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">'vcpkg#openssl:ssl'</span><span class="p">,</span>         <span class="c1"># libssl.a</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">'vcpkg#openssl:crypto'</span><span class="p">,</span>      <span class="c1"># libcrypto.a</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">]</span>
 </code></pre></div>
 <p>裸写 <code>vcpkg#openssl</code> 会被拒绝，因此不会拉入用不到的库。</p>
@@ -3159,8 +3159,8 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 链接 <code>libprotobuf</code> 匹配的 <code>protoc</code> 产生。把 <code>proto_library_config</code> 指向 vcpkg 提供
 的 protoc（与 libprotobuf），让二者来自同一个被 pin 的 port：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">proto_library_config</span><span class="p">(</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;vcpkg#protobuf&#39;</span><span class="p">,</span>                 <span class="c1"># 来自 vcpkg protobuf port 的 protoc</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#protobuf:protobuf&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">'vcpkg#protobuf'</span><span class="p">,</span>                 <span class="c1"># 来自 vcpkg protobuf port 的 protoc</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vcpkg#protobuf:protobuf'</span><span class="p">],</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">)</span>
 </code></pre></div>
 <p><code>'vcpkg#&lt;port&gt;'</code> 会解析为安装在 Blade vcpkg 树中的 protoc。解析出的 protoc 二进制
@@ -3168,13 +3168,13 @@ port 是<strong>硬错误</strong>——这样所有外部依赖都集中声明�
 过期的 <code>.pb.*</code>）。</p>
 <h2 id="port_2">仅头文件 port<a class="headerlink" href="#port_2" title="Permanent link">&para;</a></h2>
 <p>仅头文件的 port 用 <code>:hdrs</code> 哨兵——Blade 暴露 include 目录，不链接任何归档：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#nlohmann-json:hdrs&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vcpkg#nlohmann-json:hdrs'</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="port-port">查看有哪些 port 及 port 提供哪些库<a class="headerlink" href="#port-port" title="Permanent link">&para;</a></h2>
 <h3 id="baseline-port">某个 baseline 下有哪些 port、版本是什么<a class="headerlink" href="#baseline-port" title="Permanent link">&para;</a></h3>
 <p>可用的 port 及其默认版本由 <code>baseline</code>（对应 ports 树的某次提交）决定。查看方式：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>vcpkg<span class="w"> </span>search<span class="w">            </span><span class="c1"># ports 树中的所有 port 及其版本</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>vcpkg<span class="w"> </span>search<span class="w"> </span>fmt<span class="w">        </span><span class="c1"># 名称/描述匹配 &quot;fmt&quot; 的 port</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>vcpkg<span class="w"> </span>search<span class="w"> </span>fmt<span class="w">        </span><span class="c1"># 名称/描述匹配 "fmt" 的 port</span>
 </code></pre></div>
 <p><code>vcpkg search</code> 反映的是 ports 树当前检出的状态。要查看某个具体 <code>baseline</code>，先把
 vcpkg 仓库检出到该提交（<code>git -C $VCPKG_ROOT checkout &lt;baseline&gt;</code>），或直接读版本
@@ -3244,11 +3244,11 @@ vcpkg 仓库检出到该提交（<code>git -C $VCPKG_ROOT checkout &lt;baseline&
 <p>如果你的仓库已经通过 <code>//third_party/</code> 层统一管理第三方代码，可以把 <code>vcpkg#</code>
 引用藏在普通 <code>cc_library</code> 封装之后，业务代码不直接接触：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># //third_party/openssl/BUILD</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">],</span>    <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;crypto&#39;</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">],</span> <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'ssl'</span><span class="p">,</span>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'vcpkg#openssl:ssl'</span><span class="p">],</span>    <span class="n">visibility</span><span class="o">=</span><span class="s1">'PUBLIC'</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'crypto'</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'vcpkg#openssl:crypto'</span><span class="p">],</span> <span class="n">visibility</span><span class="o">=</span><span class="s1">'PUBLIC'</span><span class="p">)</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># //services/payment/BUILD</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span> <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;payment.cc&#39;</span><span class="p">],</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;//third_party/openssl:ssl&#39;</span><span class="p">])</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'payment'</span><span class="p">,</span> <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">'payment.cc'</span><span class="p">],</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'//third_party/openssl:ssl'</span><span class="p">])</span>
 </code></pre></div>
 <h2 id="_8">配置参考<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <p>所有设置都在 <code>BLADE_ROOT</code> 的 <code>vcpkg_config(...)</code> 中。完整字段（<code>manage</code>、

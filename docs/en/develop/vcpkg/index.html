@@ -2600,7 +2600,7 @@ that gather inputs from the toolchain/config and call them.</p>
 <p><code>vcpkg</code> extends Blade's <code>#name</code> system-library family. A dependency of the form
 <code>&lt;scheme&gt;#&lt;coordinate&gt;</code> is dispatched by <code>target._unify_scheme_dep</code>, and at
 import time <code>vcpkg.py</code> registers itself:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">_blade_target</span><span class="o">.</span><span class="n">register_dep_scheme</span><span class="p">(</span><span class="s1">&#39;vcpkg&#39;</span><span class="p">,</span> <span class="n">_vcpkg_dep_handler</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">_blade_target</span><span class="o">.</span><span class="n">register_dep_scheme</span><span class="p">(</span><span class="s1">'vcpkg'</span><span class="p">,</span> <span class="n">_vcpkg_dep_handler</span><span class="p">)</span>
 </code></pre></div>
 <p>The import happens in <code>load_build_files.py</code>, so the scheme is live before any
 BUILD file is parsed. <code>#pthread</code> (no scheme) still means "a system lib resolved

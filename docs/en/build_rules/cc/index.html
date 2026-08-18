@@ -3332,10 +3332,10 @@ dependencies. See <a href="../vcpkg/">Using vcpkg packages</a> for the full guid
 dynamic_linked cc_binary, or run blade build with <code>--generate-dynamic</code>.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;lowercase&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lower/plowercase.cpp&#39;</span><span class="p">],</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">hdrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lower/plowercase.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">'lowercase'</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">'lower/plowercase.cpp'</span><span class="p">],</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">hdrs</span><span class="o">=</span><span class="p">[</span><span class="s1">'lower/plowercase.h'</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'#pthread'</span><span class="p">],</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">link_all_symbols</span><span class="o">=</span><span class="kc">False</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
 </code></pre></div>
@@ -3389,10 +3389,10 @@ dynamic_linked cc_binary, or run blade build with <code>--generate-dynamic</code
 <p><strong>X-macro / token lists</strong> — a file <code>#include</code>d repeatedly with different
     macro definitions to expand a list (no include guard, not standalone):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;opcodes&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vm.cc&#39;</span><span class="p">],</span>          <span class="c1"># vm.cc: #define OP(x) ...; #include &quot;opcodes.def&quot;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vm.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;opcodes.def&#39;</span><span class="p">],</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'opcodes'</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vm.cc'</span><span class="p">],</span>          <span class="c1"># vm.cc: #define OP(x) ...; #include "opcodes.def"</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vm.h'</span><span class="p">],</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'opcodes.def'</span><span class="p">],</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </code></pre></div>
 </li>
@@ -3401,11 +3401,11 @@ dynamic_linked cc_binary, or run blade build with <code>--generate-dynamic</code
     implementation fragment per platform, so the fragments are not compiled
     directly:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;event_loop&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="c1"># event_loop.cc: #if __linux__  #include &quot;event_loop_epoll.inc&quot; ...</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop.cc&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_loop_epoll.inc&#39;</span><span class="p">,</span> <span class="s1">&#39;event_loop_kqueue.inc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'event_loop'</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="c1"># event_loop.cc: #if __linux__  #include "event_loop_epoll.inc" ...</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'event_loop.cc'</span><span class="p">],</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'event_loop.h'</span><span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">textual_hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'event_loop_epoll.inc'</span><span class="p">,</span> <span class="s1">'event_loop_kqueue.inc'</span><span class="p">],</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
 </code></pre></div>
 </li>
@@ -3464,13 +3464,13 @@ dynamic_linked cc_binary, or run blade build with <code>--generate-dynamic</code
   problem can be solved by setting this attribute on both 'tcmalloc' and 'jemalloc'.</p>
 <p>A 'binary_link_only' library can depends on other 'binary_link_only' libraries.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;tcmaloc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'tcmaloc'</span><span class="p">,</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">binary_link_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="o">...</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;jemaloc&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'jemaloc'</span><span class="p">,</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">binary_link_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="o">...</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">)</span>
@@ -3542,23 +3542,23 @@ For problems that existed before hdrs were supported, It can be suppressed by <a
 <p><strong>Legitimate "facade" re-export across a visibility boundary.</strong> When an umbrella target's own public header re-<code>#include</code>s a sub-library's header so the umbrella's consumers can use those types, blade will report a Missing-dep notice on the umbrella because the sub-library is locked down via <code>visibility</code>. The umbrella IS a legitimate consumer — it's the canonical re-exporter — but case (2)'s "private, direct use prohibited" rule is overly absolute here. Treat the umbrella like a C++ <code>friend</code>: add it to the sub-library's <code>visibility</code> list (a narrow, named widening) and declare the sub-library in the umbrella's <code>deps</code>. Both the visibility entry and the dep declaration should mention the re-export so the relationship is self-documenting.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># In the inner sub-library:</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;http_filter&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="s1">&#39;http_filter.h&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'http_filter'</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="s1">'http_filter.h'</span><span class="p">,</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="o">...</span><span class="p">,</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="c1"># `friend`-style allow-list: only the two umbrella facades may</span>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="c1"># depend on us directly; everyone else must go through them.</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//flare/rpc:http&#39;</span><span class="p">,</span> <span class="s1">&#39;//flare/rpc:rpc&#39;</span><span class="p">],</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//flare/rpc:http'</span><span class="p">,</span> <span class="s1">'//flare/rpc:rpc'</span><span class="p">],</span>
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># In the umbrella whose public `hdrs` re-export the sub-library:</span>
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http_filter.h&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># re-includes inner header</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc'</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'http_filter.h'</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># re-includes inner header</span>
 <a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>        <span class="o">...</span><span class="p">,</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="s1">&#39;//flare/rpc/protocol/http:http_filter&#39;</span><span class="p">,</span>  <span class="c1"># we re-export it</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="s1">'//flare/rpc/protocol/http:http_filter'</span><span class="p">,</span>  <span class="c1"># we re-export it</span>
 <a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="p">],</span>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="s1">&#39;PUBLIC&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">visibility</span> <span class="o">=</span> <span class="s1">'PUBLIC'</span><span class="p">,</span>
 <a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="p">)</span>
 </code></pre></div>
 <p>If the umbrella consumes the sub-library only for its public surface (not as a re-export through the umbrella's own hdrs), and <code>unused_deps</code> flags the dep, that's actually the <a href="#check-unused-dependencies">Header re-export auto-exemption</a> case in the other direction — declare the sub-library's header in the umbrella's <code>hdrs</code> and the unused-deps check stops complaining without any visibility widening.</p>
@@ -3630,11 +3630,11 @@ If it belongs to other libraries, it should be added to <code>hdrs</code> of oth
 <p>A library depended on for its link-time side effects (e.g. self-registration via global objects) should declare <code>link_all_symbols = True</code> regardless, so the linker does not drop it.</p>
 <p><code>keep_deps</code> is appropriate only when none of the above applies — for example, an umbrella that bundles several link-only registrations none of whose headers it owns or re-exports.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.cc&#39;</span><span class="p">],</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:bar&#39;</span><span class="p">],</span>          <span class="c1"># used via headers</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">keep_deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:baz&#39;</span><span class="p">],</span>     <span class="c1"># truly link-only, header-bearing, not auto-exempt</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'foo'</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'foo.cc'</span><span class="p">],</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'foo.h'</span><span class="p">],</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':bar'</span><span class="p">],</span>          <span class="c1"># used via headers</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">keep_deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':baz'</span><span class="p">],</span>     <span class="c1"># truly link-only, header-bearing, not auto-exempt</span>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span>
 </code></pre></div>
 <h4 id="common-false-positive-patterns-what-looks-like-a-redundant-dep-but-isnt">Common false-positive patterns (what looks like a redundant dep but isn't)<a class="headerlink" href="#common-false-positive-patterns-what-looks-like-a-redundant-dep-but-isnt" title="Permanent link">&para;</a></h4>
@@ -3729,26 +3729,26 @@ include compile and link related options, are not not present in prebuilt_cc_lib
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># By name convention (looks for lib&lt;name&gt; under the lib{32,64} subdir):</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:mystring&#39;</span><span class="p">,</span> <span class="s1">&#39;#pthread&#39;</span><span class="p">]</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'mysql'</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':mystring'</span><span class="p">,</span> <span class="s1">'#pthread'</span><span class="p">]</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">)</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># By explicit path:</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">static_library</span> <span class="o">=</span> <span class="s1">&#39;lib/libfoo.a&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">&#39;lib/libfoo.so&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'foo'</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'foo.h'</span><span class="p">],</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">static_library</span> <span class="o">=</span> <span class="s1">'lib/libfoo.a'</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">'lib/libfoo.so'</span><span class="p">,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'include'</span><span class="p">],</span>
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="p">)</span>
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
 <a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># Windows: link the import lib, ship the DLL as the runtime payload:</span>
 <a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="n">prebuilt_cc_library</span><span class="p">(</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bar.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="n">import_library</span> <span class="o">=</span> <span class="s1">&#39;lib/bar.lib&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">&#39;bin/bar.dll&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">],</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'bar'</span><span class="p">,</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'bar.h'</span><span class="p">],</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="n">import_library</span> <span class="o">=</span> <span class="s1">'lib/bar.lib'</span><span class="p">,</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="n">dynamic_library</span> <span class="o">=</span> <span class="s1">'bin/bar.dll'</span><span class="p">,</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'include'</span><span class="p">],</span>
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="foreign_cc_library">foreign_cc_library<a class="headerlink" href="#foreign_cc_library" title="Permanent link">&para;</a></h2>
@@ -3789,32 +3789,32 @@ The library file is installed in the <code>lib</code> subdirectory.</p>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># We have developed general build rules for autotools and cmake, but they are still in the experimental state.</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Here we still use `gen_rule` to examplify.</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">gen_rule</span><span class="p">(</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;zlib_build&#39;</span><span class="p">,</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zlib-1.2.11.tar.gz&#39;</span><span class="p">],</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lib/libz.a&#39;</span><span class="p">,</span> <span class="s1">&#39;include/zlib.h&#39;</span><span class="p">,</span> <span class="s1">&#39;include/zconf.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>  <span class="c1"># tar xf, configure, make, make install...</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'zlib_build'</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'zlib-1.2.11.tar.gz'</span><span class="p">],</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'lib/libz.a'</span><span class="p">,</span> <span class="s1">'include/zlib.h'</span><span class="p">,</span> <span class="s1">'include/zconf.h'</span><span class="p">],</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">'...'</span><span class="p">,</span>  <span class="c1"># tar xf, configure, make, make install...</span>
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">)</span>
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1"># Describe the installed library of zlib</span>
 <a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
 <a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span>  <span class="c1"># The name of the library is `libz.a`, under the `lib` subdirectory</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1"># The installation directory is `build_release/thirdparty/libz`</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="c1"># lib_dir= &#39;lib&#39;, # The dafault os OK and can be omitted.</span>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:zlib_build&#39;</span><span class="p">],</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'z'</span><span class="p">,</span>  <span class="c1"># The name of the library is `libz.a`, under the `lib` subdirectory</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span> <span class="c1"># The installation directory is `build_release/thirdparty/libz`</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="c1"># lib_dir= 'lib', # The dafault os OK and can be omitted.</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':zlib_build'</span><span class="p">],</span>
 <a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="p">)</span>
 </code></pre></div>
 <p>Use the above library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;use_zlib&#39;</span><span class="p">,</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;use_zlib.cc&#39;</span><span class="p">],</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//thirdparty/openssl:ssl&#39;</span><span class="p">],</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'use_zlib'</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'use_zlib.cc'</span><span class="p">],</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//thirdparty/openssl:ssl'</span><span class="p">],</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>use_openssl.cc:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;thirdparty/zlib/include/zlib.h&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"thirdparty/zlib/include/zlib.h"</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1">// or</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;zlib.h&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"zlib.h"</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">// because `thirdparty/zlib/include` has been exported in the `foreign_cc_library` defaultly</span>
 </code></pre></div>
 <h3 id="example-2-openssl">Example 2, openssl<a class="headerlink" href="#example-2-openssl" title="Permanent link">&para;</a></h3>
@@ -3825,44 +3825,44 @@ However, its header file paths have package name prefix, which is not directly u
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Assuming that after executing this rule, the built package will be installed under `build_release/thirdparty/openssl`,</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># then the header file is under `include/openssl` and the library file is under `lib`.</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">gen_rule</span><span class="p">(</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;openssl_build&#39;</span><span class="p">,</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;openssl-1.1.0.tar.gz&#39;</span><span class="p">],</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lib/libcrypto.a&#39;</span><span class="p">,</span> <span class="s1">&#39;lib/libss.a&#39;</span><span class="p">],</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>  <span class="c1"># tar xf, Config, make, make install...</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="s1">&#39;include&#39;</span><span class="p">,</span> <span class="c1"># Let the compiler find the `openssl` subdirectory under `include`</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'openssl_build'</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'openssl-1.1.0.tar.gz'</span><span class="p">],</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'lib/libcrypto.a'</span><span class="p">,</span> <span class="s1">'lib/libss.a'</span><span class="p">],</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">'...'</span><span class="p">,</span>  <span class="c1"># tar xf, Config, make, make install...</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">export_incs</span> <span class="o">=</span> <span class="s1">'include'</span><span class="p">,</span> <span class="c1"># Let the compiler find the `openssl` subdirectory under `include`</span>
 <a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">)</span>
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
 <a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># Describe the above 2 libraries</span>
 <a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
 <a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;crypto&#39;</span><span class="p">,</span>  <span class="c1"># The name of the library is libcrypto.a, under the `lib` subdirectory</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1"># The installation directory is `build_release/thirdparty/openssl`</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:openssl_build&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'crypto'</span><span class="p">,</span>  <span class="c1"># The name of the library is libcrypto.a, under the `lib` subdirectory</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span> <span class="c1"># The installation directory is `build_release/thirdparty/openssl`</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':openssl_build'</span><span class="p">],</span>
 <a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="p">)</span>
 <a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
 <a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="n">foreign_cc_library</span><span class="p">(</span>
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ssl&#39;</span><span class="p">,</span>  <span class="c1"># The name of the library is libssl.a, under the `lib` subdirectory</span>
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="n">deps</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:openssl_build&#39;</span><span class="p">,</span> <span class="s1">&#39;:crypto&#39;</span><span class="p">],</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'ssl'</span><span class="p">,</span>  <span class="c1"># The name of the library is libssl.a, under the `lib` subdirectory</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">install_dir</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="n">deps</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">':openssl_build'</span><span class="p">,</span> <span class="s1">':crypto'</span><span class="p">],</span>
 <a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="p">)</span>
 </code></pre></div>
 <p>Use the above library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;use_openssl&#39;</span><span class="p">,</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;use_openssl.cc&#39;</span><span class="p">],</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//thirdparty/openssl:ssl&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'use_openssl'</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'use_openssl.cc'</span><span class="p">],</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//thirdparty/openssl:ssl'</span><span class="p">],</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>use_openssl.cc:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;openssl/ssl.h&quot;</span><span class="c1">  // Contains package name</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"openssl/ssl.h"</span><span class="w">  </span><span class="c1">// Contains package name</span>
 </code></pre></div>
 <h2 id="cc_binary">cc_binary<a class="headerlink" href="#cc_binary" title="Permanent link">&para;</a></h2>
 <p>Build executable from source.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;prstr&#39;</span><span class="p">,</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./src/mystr_main/mystring.cpp&#39;</span><span class="p">],</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">,</span><span class="s1">&#39;:lowercase&#39;</span><span class="p">,</span><span class="s1">&#39;:uppercase&#39;</span><span class="p">,</span><span class="s1">&#39;#dl&#39;</span><span class="p">],</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">'prstr'</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">'./src/mystr_main/mystring.cpp'</span><span class="p">],</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'#pthread'</span><span class="p">,</span><span class="s1">':lowercase'</span><span class="p">,</span><span class="s1">':uppercase'</span><span class="p">,</span><span class="s1">'#dl'</span><span class="p">],</span>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">)</span>
 </code></pre></div>
 <ul>
@@ -3896,7 +3896,7 @@ However, its header file paths have package name prefix, which is not directly u
   export ceiling and expose internals); for a one-off symbol, <code>linkflags = ['/EXPORT:&lt;symbol&gt;']</code>
   works without an export map.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">cc_binary</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;host.cc&#39;</span><span class="p">],</span> <span class="n">export_map</span> <span class="o">=</span> <span class="s1">&#39;host_api.map&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">cc_binary</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'host'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'host.cc'</span><span class="p">],</span> <span class="n">export_map</span> <span class="o">=</span> <span class="s1">'host_api.map'</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li><code>strip</code>: bool = False</li>
@@ -3917,13 +3917,13 @@ which are then packaged into a single <code>.dwp</code> file for each binary tar
 <p>If you need to deploy the binary with debug information for debugging in production or other environments,
 you can include the dwp file in your package by referencing it through the binary target:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">package</span><span class="p">(</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;server_package&#39;</span><span class="p">,</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'server_package'</span><span class="p">,</span>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="o">...</span><span class="p">,</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="c1"># executable</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="p">(</span><span class="s1">&#39;$(location //server:server)&#39;</span><span class="p">,</span> <span class="s1">&#39;bin/server&#39;</span><span class="p">),</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="p">(</span><span class="s1">'$(location //server:server)'</span><span class="p">,</span> <span class="s1">'bin/server'</span><span class="p">),</span>
 <a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="c1"># Include the dwp file for server binary</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="p">(</span><span class="s1">&#39;$(location //server:server dwp)&#39;</span><span class="p">,</span> <span class="s1">&#39;bin/server.dwp&#39;</span><span class="p">),</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="p">(</span><span class="s1">'$(location //server:server dwp)'</span><span class="p">,</span> <span class="s1">'bin/server.dwp'</span><span class="p">),</span>
 <a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>        <span class="o">...</span><span class="p">,</span>
 <a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="p">],</span>
 <a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="p">)</span>
@@ -3950,25 +3950,25 @@ If you want to pass some data files into it, you must need <code>testdata</code>
 </ul>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">cc_test</span><span class="p">(</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;textfile_test&#39;</span><span class="p">,</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;textfile_test.cpp&#39;</span><span class="p">,</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:io&#39;</span><span class="p">,</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'textfile_test'</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'textfile_test.cpp'</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':io'</span><span class="p">,</span>
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">testdata</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        <span class="s1">&#39;test_dos.txt&#39;</span><span class="p">,</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        <span class="s1">&#39;//your_proj/path/file&#39;</span><span class="p">,</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        <span class="p">(</span><span class="s1">&#39;//your_proj/path/file&#39;</span><span class="p">,</span> <span class="s1">&#39;new_name&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        <span class="s1">'test_dos.txt'</span><span class="p">,</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        <span class="s1">'//your_proj/path/file'</span><span class="p">,</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        <span class="p">(</span><span class="s1">'//your_proj/path/file'</span><span class="p">,</span> <span class="s1">'new_name'</span><span class="p">)</span>
 <a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="p">]</span>
 <a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="cc_plugin">cc_plugin<a class="headerlink" href="#cc_plugin" title="Permanent link">&para;</a></h2>
 <p>Link all denendencies into the generated <code>so</code> file, make it can be easily loaded in other languages.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">cc_plugin</span><span class="p">(</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mystring&#39;</span><span class="p">,</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;./src/mystr/mystring.cpp&#39;</span><span class="p">],</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#pthread&#39;</span><span class="p">,</span><span class="s1">&#39;:lowercase&#39;</span><span class="p">,</span><span class="s1">&#39;:uppercase&#39;</span><span class="p">,</span><span class="s1">&#39;#dl&#39;</span><span class="p">],</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">warning</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">defs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_MT&#39;</span><span class="p">],</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">optimize</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;O3&#39;</span><span class="p">]</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">'mystring'</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">'./src/mystr/mystring.cpp'</span><span class="p">],</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'#pthread'</span><span class="p">,</span><span class="s1">':lowercase'</span><span class="p">,</span><span class="s1">':uppercase'</span><span class="p">,</span><span class="s1">'#dl'</span><span class="p">],</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">warning</span><span class="o">=</span><span class="s1">'no'</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">defs</span><span class="o">=</span><span class="p">[</span><span class="s1">'_MT'</span><span class="p">],</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">optimize</span><span class="o">=</span><span class="p">[</span><span class="s1">'O3'</span><span class="p">]</span>
 <a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="p">)</span>
 </code></pre></div>
 <p>Attributes:</p>
@@ -4017,10 +4017,10 @@ setting <code>prefix=''</code> makes it <code>file.so</code>. Passing a <code>na
 <p>Because C++ symbols are mangled, list the <em>demangled</em> names inside an <code>extern "C++"</code> block. Write the <code>export_map</code> file (e.g. <code>api.map</code>):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>{
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>global:
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    extern &quot;C++&quot; {
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    extern "C++" {
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        # Quoted names are matched literally (no wildcard) -- use this when
 <a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        # the exact signature matters or to avoid matching overloads.
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        &quot;mylib::Create()&quot;;
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        "mylib::Create()";
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
 <a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        # Unquoted names allow wildcards: export every member of mylib::Api
 <a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        # (constructors, Run(), ...).
@@ -4028,7 +4028,7 @@ setting <code>prefix=''</code> makes it <code>file.so</code>. Passing a <code>na
 <a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
 <a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        # vtable / typeinfo are needed by code that inherits from or
 <a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>        # dynamic_casts the class across the library boundary. The demangler
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>        # prints a space here; match it with the &#39;?&#39; single-char wildcard.
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>        # prints a space here; match it with the '?' single-char wildcard.
 <a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>        typeinfo?for?mylib::Api;
 <a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>        vtable?for?mylib::Api;
 <a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>    };
@@ -4038,10 +4038,10 @@ setting <code>prefix=''</code> makes it <code>file.so</code>. Passing a <code>na
 </code></pre></div>
 <p>Wire it into the BUILD file (only the shared library is affected; the static archive is unchanged):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mylib&#39;</span><span class="p">,</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;api.cc&#39;</span><span class="p">],</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;api.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">export_map</span> <span class="o">=</span> <span class="s1">&#39;api.map&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'mylib'</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'api.cc'</span><span class="p">],</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'api.h'</span><span class="p">],</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">export_map</span> <span class="o">=</span> <span class="s1">'api.map'</span><span class="p">,</span>
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>To see the visibility of symbols in the library, you can use the <code>nm</code> command.</p>
@@ -4083,10 +4083,10 @@ It will be ignored when linking even if it appears in the <code>deps</code> of o
 The resulting <code>.res</code> files are automatically linked into any <code>cc_binary</code> that depends on this target via <code>deps</code>.</p>
 <p>On non-Windows platforms this rule is a <strong>no-op</strong>: it resolves to nothing and has no effect on the build.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">windows_resources</span><span class="p">(</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hello_res&#39;</span><span class="p">,</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">rc_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hello_gui.rc&#39;</span><span class="p">,</span> <span class="s1">&#39;version.rc&#39;</span><span class="p">],</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;resource.h&#39;</span><span class="p">],</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;image/blade.ico&#39;</span><span class="p">],</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'hello_res'</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">rc_files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'hello_gui.rc'</span><span class="p">,</span> <span class="s1">'version.rc'</span><span class="p">],</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'resource.h'</span><span class="p">],</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'image/blade.ico'</span><span class="p">],</span>
 <a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>Attributes:</p>
@@ -4097,10 +4097,10 @@ The resulting <code>.res</code> files are automatically linked into any <code>cc
 </ul>
 <p>The <code>.res</code> files produced by this target appear as inputs to the linker command, just like object and library files. Use it with <code>cc_binary</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hello_gui&#39;</span><span class="p">,</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hello_gui.c&#39;</span><span class="p">],</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">extra_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/SUBSYSTEM:WINDOWS&#39;</span><span class="p">,</span> <span class="s1">&#39;user32.lib&#39;</span><span class="p">],</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:hello_res&#39;</span><span class="p">],</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'hello_gui'</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'hello_gui.c'</span><span class="p">],</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">extra_linkflags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/SUBSYSTEM:WINDOWS'</span><span class="p">,</span> <span class="s1">'user32.lib'</span><span class="p">],</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':hello_res'</span><span class="p">],</span>
 <a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="resource_library">resource_library<a class="headerlink" href="#resource_library" title="Permanent link">&para;</a></h2>
@@ -4109,15 +4109,15 @@ The resulting <code>.res</code> files are automatically linked into any <code>cc
 Blade support <code>resource_library</code>, make it quite easy to put resource files into the executable easily.
 For example, put there static pages into a library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">resource_library</span><span class="p">(</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;static_resource&#39;</span><span class="p">,</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'static_resource'</span><span class="p">,</span>
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>        <span class="s1">&#39;static/favicon.ico&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>        <span class="s1">&#39;static/forms.html&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>        <span class="s1">&#39;static/forms.js&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>        <span class="s1">&#39;static/jquery-1.4.2.min.js&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>        <span class="s1">&#39;static/jquery.json-2.2.min.js&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>        <span class="s1">&#39;static/methods.html&#39;</span><span class="p">,</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>        <span class="s1">&#39;static/poppy.html&#39;</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>        <span class="s1">'static/favicon.ico'</span><span class="p">,</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>        <span class="s1">'static/forms.html'</span><span class="p">,</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>        <span class="s1">'static/forms.js'</span><span class="p">,</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>        <span class="s1">'static/jquery-1.4.2.min.js'</span><span class="p">,</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>        <span class="s1">'static/jquery.json-2.2.min.js'</span><span class="p">,</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>        <span class="s1">'static/methods.html'</span><span class="p">,</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>        <span class="s1">'static/poppy.html'</span>
 <a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>    <span class="p">]</span>
 <a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="p">)</span>
 </code></pre></div>
@@ -4143,10 +4143,10 @@ Environment variable <code>CUDA_PATH</code> is pointed to the installed path of 
 <p>Priority:  <code>cuda_path</code> &gt; <code>NVCC</code>/<code>CUDA_PATH</code>.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">cu_library</span><span class="p">(</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;template_gpu&#39;</span><span class="p">,</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;template_gpu.cu&#39;</span><span class="p">],</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'template_gpu'</span><span class="p">,</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'template_gpu.cu'</span><span class="p">],</span>
 <a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[],</span>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="c1"># cuda_path = '//thirdparty/cuda',</span>
 <a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="cu_binary">cu_binary<a class="headerlink" href="#cu_binary" title="Permanent link">&para;</a></h2>
@@ -4154,10 +4154,10 @@ Environment variable <code>CUDA_PATH</code> is pointed to the installed path of 
 <p>Rules are similar to <code>cc_binary</code> . Use environment variables reference to <code>cu_library</code>.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">cu_binary</span><span class="p">(</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;template&#39;</span><span class="p">,</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;template.cu&#39;</span><span class="p">],</span>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:template_cpu&#39;</span><span class="p">],</span>
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'template'</span><span class="p">,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'template.cu'</span><span class="p">],</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':template_cpu'</span><span class="p">],</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="c1"># cuda_path = '//thirdparty/cuda',</span>
 <a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="cu_test">cu_test<a class="headerlink" href="#cu_test" title="Permanent link">&para;</a></h2>
@@ -4165,10 +4165,10 @@ Environment variable <code>CUDA_PATH</code> is pointed to the installed path of 
 <p>Rules are similar to <code>cc_test</code> . Use environment variables reference to <code>cu_library</code>.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">cu_test</span><span class="p">(</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;cu_test&#39;</span><span class="p">,</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cu_test.cu&#39;</span><span class="p">],</span>
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;:template_cpu&#39;</span><span class="p">],</span>
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    <span class="c1"># cuda_path = &#39;//thirdparty/cuda&#39;,</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'cu_test'</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'cu_test.cu'</span><span class="p">],</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">':template_cpu'</span><span class="p">],</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    <span class="c1"># cuda_path = '//thirdparty/cuda',</span>
 <a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="p">)</span>
 </code></pre></div>
 

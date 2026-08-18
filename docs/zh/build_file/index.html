@@ -2645,18 +2645,18 @@
 <h2 id="build_1">BUILD 文件示例<a class="headerlink" href="#build_1" title="Permanent link">&para;</a></h2>
 <p>示例：<code>common/base/string/BUILD</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'string'</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">&#39;algorithm.cpp&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">&#39;format.cpp&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">&#39;concat.cpp&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">'algorithm.cpp'</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">'format.cpp'</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'concat.cpp'</span><span class="p">,</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="p">],</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">&#39;algorithm.h&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">&#39;format.h&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">&#39;concat.h&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">'algorithm.h'</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">'format.h'</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">'concat.h'</span><span class="p">,</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">],</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//common/base:int&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//common/base:int'</span><span class="p">],</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span>
 </code></pre></div>
 <p>BUILD 文件采用声明式语法：开发者只需声明目标名、源文件与依赖，而无需显式描述编译或链接命令。</p>
@@ -2692,10 +2692,10 @@
 <p>目标模式的列表或字符串，用于控制该目标对哪些目标可见。特殊值 <code>PUBLIC</code> 表示对所有目标可见；同一目录下的目标之间始终相互可见。</p>
 <p>示例：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[]</span>                                             <span class="c1"># 私有，仅对当前 BUILD 文件可见</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">]</span>                                     <span class="c1"># 对所有目标可见</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module1:program12&#39;</span><span class="p">,</span> <span class="s1">&#39;//module1:program2&#39;</span><span class="p">]</span>  <span class="c1"># 仅对这两个目标可见</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module2:*&#39;</span><span class="p">]</span>                                <span class="c1"># 仅对 module2 目录下的目标可见，不含其子目录</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module3:...&#39;</span><span class="p">]</span>                              <span class="c1"># 对 module3 及其所有子目录下的目标均可见</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'PUBLIC'</span><span class="p">]</span>                                     <span class="c1"># 对所有目标可见</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module1:program12'</span><span class="p">,</span> <span class="s1">'//module1:program2'</span><span class="p">]</span>  <span class="c1"># 仅对这两个目标可见</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module2:*'</span><span class="p">]</span>                                <span class="c1"># 仅对 module2 目录下的目标可见，不含其子目录</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module3:...'</span><span class="p">]</span>                              <span class="c1"># 对 module3 及其所有子目录下的目标均可见</span>
 </code></pre></div>
 <p>在 Blade 1 中，所有目标默认都是 <code>PUBLIC</code>。在 Blade 2 中，为了适应更大规模项目的依赖管理，默认改为私有。
 对于既有项目中的存量目标，可以通过 <a href="../config/#global_config"><code>legacy_public_targets</code></a> 配置项整体设为 <code>PUBLIC</code>，只在新增目标上显式声明可见性即可。</p>

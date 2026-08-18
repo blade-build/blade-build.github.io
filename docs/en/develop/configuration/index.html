@@ -2616,9 +2616,9 @@ from the toolchain's defaults). The selection is not finalized at
 config-file parse time; it depends on CLI flags and host detection. So
 blade lets you write the value as a lambda taking the live <code>blade</code> module:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cc_config</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">cppflags</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-std=c++17&#39;</span><span class="p">]</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>              <span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">cc_vendor</span> <span class="o">!=</span> <span class="s1">&#39;msvc&#39;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>              <span class="k">else</span> <span class="p">[</span><span class="s1">&#39;/std:c++17&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">cppflags</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">blade</span><span class="p">:</span> <span class="p">[</span><span class="s1">'-std=c++17'</span><span class="p">]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>              <span class="k">if</span> <span class="n">blade</span><span class="o">.</span><span class="n">cc_toolchain</span><span class="o">.</span><span class="n">cc_vendor</span> <span class="o">!=</span> <span class="s1">'msvc'</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>              <span class="k">else</span> <span class="p">[</span><span class="s1">'/std:c++17'</span><span class="p">],</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>At parse time, <code>_assign_item_value</code> sees the callable and (after

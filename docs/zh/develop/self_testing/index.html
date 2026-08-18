@@ -2603,8 +2603,8 @@ hdr_dep_check、guard_suppression、header_only_incstk…）分子目录。每�
 </ul>
 <h2 id="4">4. 覆盖率<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
 <p>捕获发生在集成层，由 <code>src/test/run.sh</code>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">BLADE_PYTHON_INTERPRETER</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PYTHON</span><span class="s2"> -m coverage run \</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s2">    --source=</span><span class="nv">$ROOT</span><span class="s2">/src/blade --rcfile=</span><span class="nv">$ROOT</span><span class="s2">/.coveragerc&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">BLADE_PYTHON_INTERPRETER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PYTHON</span><span class="s2"> -m coverage run \</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s2">    --source=</span><span class="nv">$ROOT</span><span class="s2">/src/blade --rcfile=</span><span class="nv">$ROOT</span><span class="s2">/.coveragerc"</span>
 </code></pre></div>
 <p>所以集成测试启的每个 blade 子进程都在 <code>coverage</code> 下运行。<code>.coveragerc</code>
 里 <code>parallel = true</code>，会按 PID 写 <code>.coverage.&lt;pid&gt;</code> 文件——必要，因为

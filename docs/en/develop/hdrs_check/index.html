@@ -2992,11 +2992,11 @@
 <ul>
 <li><strong>It is another target's private header</strong> (the owner set does not contain this target) → error:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&quot;X&quot; is a private header file of &quot;//foo:bar&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>"X" is a private header file of "//foo:bar"
 </code></pre></div>
 <p>i.e. a <strong>private header used across libraries</strong>. A private header may only be included by its owning library; for another library to use it, the owner should export it by adding it to <code>hdrs</code>.
  - <strong>It is not any library's private header</strong> (and not exported by any library) → treated as <strong>undeclared / not exported</strong>, error:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&quot;X&quot; is not declared in any cc target. ...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>"X" is not declared in any cc target. ...
 </code></pre></div>
 <p>(unless the header is in <code>allowed_undeclared_hdrs</code> or in the <code>suppress</code> list.) i.e. the header does not appear in any library's <code>hdrs</code> or <code>srcs</code>.
    - <strong>A public owner is found</strong> → proceed to the "missing direct dependency" check in section 3.</p>
@@ -3009,8 +3009,8 @@
 <h3 id="31-missing-direct-dependency-missing-dependency">3.1 Missing direct dependency (Missing dependency)<a class="headerlink" href="#31-missing-direct-dependency-missing-dependency" title="Permanent link">&para;</a></h3>
 <p>Still in <code>_check_direct_headers()</code>: when <code>hdr</code> has a public owner set <code>libs</code>, but the intersection of <code>libs</code> with <code>deps ∪ {self}</code> is empty → error:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;target&gt;: Missing dependency declaration:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  In file included from &quot;src/foo.cc&quot;,
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    For &quot;common/rpc/rpc_client.h&quot;, which belongs to &quot;//common/rpc:rpc_client&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  In file included from "src/foo.cc",
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    For "common/rpc/rpc_client.h", which belongs to "//common/rpc:rpc_client"
 </code></pre></div>
 <p>i.e. you directly <code>#include</code> a library's public header but did not depend on that library in <code>deps</code>. The fix is usually to add the reported library to this target's <code>deps</code>.</p>
 <h3 id="32-missing-indirect-generated-header-dependency-missing-indirect-dependency">3.2 Missing indirect (generated-header) dependency (Missing indirect dependency)<a class="headerlink" href="#32-missing-indirect-generated-header-dependency-missing-indirect-dependency" title="Permanent link">&para;</a></h3>

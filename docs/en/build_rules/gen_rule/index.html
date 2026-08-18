@@ -2455,9 +2455,9 @@ avoids per-shell quoting.</p>
     <code>cmd = 'cat $(locations //idl:msgs) &gt; $OUTS'</code>.
     Commonly used in <code>gen_rule.cmd</code>, <code>testdata</code>, <code>package</code>, and <code>sh_test</code>. Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">gen_rule</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;copy_binary&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;cp $(location //server:server) $OUT_DIR/server&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'copy_binary'</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">'cp $(location //server:server) $OUT_DIR/server'</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'server'</span><span class="p">],</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
 </code></pre></div>
 </li>

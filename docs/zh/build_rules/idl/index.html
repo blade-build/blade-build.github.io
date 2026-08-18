@@ -2471,9 +2471,9 @@ deps 为 import 所涉及的其他 proto_library
 自动依赖 protobuf 运行库，使用者不需要再显式指定。</p>
 <p>示例：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>protobuf_library 支持生成多种语言的目标。</p>
@@ -2484,10 +2484,10 @@ deps 为 import 所涉及的其他 proto_library
 因此同一个 proto_library 目标可以被多种语言所使用。</p>
 <p>如果需要强制生成某种语言的目标库，可以通过 <code>target_languages</code> 参数来指定：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;java&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">],</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'python'</span><span class="p">],</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </code></pre></div>
 <p>C++ 代码总是会生成。</p>
@@ -2496,14 +2496,14 @@ deps 为 import 所涉及的其他 proto_library
 <p>另外，使用 <code>plugin_opts</code> 传递插件所需参数，例如 <code>plugin_opts = {"plugin_name": ["option1", "option2"]}</code>。
 Blade 会传递 <code>--plugin_name_opt=option1 --plugin_name_opt=option2</code> 给 grpc 插件。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;rpc_meta_info.proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:rpc_option_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;java&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;grpc&#39;</span><span class="p">],</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">cpp_outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.pb&#39;</span><span class="p">,</span> <span class="s1">&#39;.grpc.pb&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc_meta_info_proto'</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'rpc_meta_info.proto'</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':rpc_option_proto'</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">target_languages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'java'</span><span class="p">,</span> <span class="s1">'python'</span><span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'grpc'</span><span class="p">],</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">cpp_outs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.pb'</span><span class="p">,</span> <span class="s1">'.grpc.pb'</span><span class="p">],</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">plugin_opts</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="s1">&#39;grpc&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;option1&quot;</span><span class="p">,</span> <span class="s2">&quot;option2&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="s1">'grpc'</span><span class="p">:</span> <span class="p">[</span><span class="s2">"option1"</span><span class="p">,</span> <span class="s2">"option2"</span><span class="p">],</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="p">},</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">)</span>
 </code></pre></div>
@@ -2517,9 +2517,9 @@ Blade 会传递 <code>--plugin_name_opt=option1 --plugin_name_opt=option2</code>
 （相对于 BUILD 所在包的路径），Blade 就会用 <code>--proto_path=&lt;包&gt;/&lt;前缀&gt;</code> 编译，
 使 import 和生成的 <code>#include</code> 都相对该根目录解析，而非 workspace 根：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">proto_library</span><span class="p">(</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;options_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;src/foo/bar/x.proto&#39;</span><span class="p">,</span>   <span class="c1"># import &quot;bar/y.proto&quot;，代码 #include &quot;bar/x.pb.h&quot;</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">strip_import_prefix</span> <span class="o">=</span> <span class="s1">&#39;src/foo&#39;</span><span class="p">,</span> <span class="c1"># -&gt; 以 --proto_path=src/foo 编译</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'options_proto'</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'src/foo/bar/x.proto'</span><span class="p">,</span>   <span class="c1"># import "bar/y.proto"，代码 #include "bar/x.pb.h"</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">strip_import_prefix</span> <span class="o">=</span> <span class="s1">'src/foo'</span><span class="p">,</span> <span class="c1"># -&gt; 以 --proto_path=src/foo 编译</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
 </code></pre></div>
 <p>这是 Bazel <code>proto_library(strip_import_prefix=...)</code> 的对应物，目前作用于生成的
@@ -2530,14 +2530,14 @@ deps 为 import 所涉及的其他 thrift_library
 自动依赖 thrift，使用者不需要再显式指定。
 构建时自动调用 thrift 命令生成 cpp 和 h，并且编译成对应的 cc_library</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">thrift_library</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;shared_thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;shared.thrift&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'shared_thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'shared.thrift'</span><span class="p">,</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">)</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">thrift_library</span><span class="p">(</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;tutorial_thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;tutorial.thrift&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:shared_thrift&#39;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'tutorial_thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'tutorial.thrift'</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="s1">':shared_thrift'</span>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">)</span>
 </code></pre></div>
 <p>C++中使用生成的头文件时，规则类似 proto，需要带上相对 BLADE_ROOT 的目录前缀。</p>

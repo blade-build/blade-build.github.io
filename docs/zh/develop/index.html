@@ -3042,10 +3042,10 @@
 <h3 id="ninja">向后端构建器（ninja）传递选项<a class="headerlink" href="#ninja" title="Permanent link">&para;</a></h3>
 <p><code>--backend-builder-options</code> 可把任意选项直接转发给 ninja（见 <a href="https://github.com/blade-build/blade-build/blob/master/src/blade/ninja_runner.py"><code>ninja_runner.py</code></a>）。调试时最常用的：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># 为什么某个目标会被（重新）构建——尤其是每次都重建的？让 ninja 解释它的判断。</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">&quot;-d explain&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">"-d explain"</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># 打印 ninja 实际执行的命令（-v），或只做 dry-run 不实际构建（-n）。</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">&quot;-v&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>blade<span class="w"> </span>build<span class="w"> </span>//foo/...<span class="w"> </span>--backend-builder-options<span class="o">=</span><span class="s2">"-v"</span>
 </code></pre></div>
 <p><code>-d explain</code> 会为每条将要执行的 edge 打印它被判定为“脏”的<em>原因</em>——输入更新、输出比输入旧、命令行变化、或记录的依赖（<code>deps</code>/depfile）已不存在。当构建不增量（尤其是每次都重建）时，这是首先要用的工具。</p>
 <p>也可以直接对生成的构建文件运行 ninja（在 <code>blade build --stop-after generate</code> 之后尤其方便——此时只生成了构建文件、尚未运行 ninja）。blade 从工作区根目录运行 ninja，所以用相对 build 目录的路径；加 <code>-n</code> 做只解释不构建的 dry-run：</p>

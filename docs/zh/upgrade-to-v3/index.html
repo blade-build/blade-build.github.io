@@ -2672,7 +2672,7 @@
 </ul>
 <h3 id="_6">构建目录名<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>默认构建目录已从 <code>build64_&lt;profile&gt;</code> 改名为 <code>build_&lt;profile&gt;</code>——例如 <code>build64_release</code> → <code>build_release</code>。遗留的 <code>64</code> 是 32/64 位 multilib 时代的产物，无法区分 <code>arm64</code> 与 <code>x86_64</code>；平台信息现在来自所选工具链，<code>global_config.build_path_template</code> 也新增了 <code>${os}</code>/<code>${arch}</code> 变量，供需要构建多个平台的项目使用：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">global_config</span><span class="p">(</span><span class="n">build_path_template</span> <span class="o">=</span> <span class="s1">&#39;build_$</span><span class="si">{os}</span><span class="s1">_$</span><span class="si">{arch}</span><span class="s1">_$</span><span class="si">{profile}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">global_config</span><span class="p">(</span><span class="n">build_path_template</span> <span class="o">=</span> <span class="s1">'build_$</span><span class="si">{os}</span><span class="s1">_$</span><span class="si">{arch}</span><span class="s1">_$</span><span class="si">{profile}</span><span class="s1">'</span><span class="p">)</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># build_linux_x86_64_release, build_darwin_arm64_release, ...</span>
 </code></pre></div>
 <p>这是唯一带有一次性成本的变更：</p>
@@ -2681,7 +2681,7 @@
 <li>将 <code>.gitignore</code>、CI 缓存键以及引用了 <code>build64_*</code> 的脚本更新为 <code>build_*</code>（或同时覆盖两者的通配）。</li>
 <li><strong>若要保留旧名称</strong>，在 <code>BLADE_ROOT</code> 中固定模板即可——它会逐字复现 v2 的布局：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">global_config</span><span class="p">(</span><span class="n">build_path_template</span> <span class="o">=</span> <span class="s1">&#39;build$</span><span class="si">{bits}</span><span class="s1">_$</span><span class="si">{profile}</span><span class="s1">&#39;</span><span class="p">)</span>   <span class="c1"># -&gt; build64_release</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">global_config</span><span class="p">(</span><span class="n">build_path_template</span> <span class="o">=</span> <span class="s1">'build$</span><span class="si">{bits}</span><span class="s1">_$</span><span class="si">{profile}</span><span class="s1">'</span><span class="p">)</span>   <span class="c1"># -&gt; build64_release</span>
 </code></pre></div>
 <p>遗留的 <code>-m32</code>/<code>-m64</code> 选项同样已废弃（它是 x86 multilib 选择器）；请改为选择 arch 为 32/64 位的工具链——由工具链决定 <code>${arch}</code>/<code>${bits}</code>。</p>
 <h2 id="v2-v3">V2 → V3 升级步骤<a class="headerlink" href="#v2-v3" title="Permanent link">&para;</a></h2>

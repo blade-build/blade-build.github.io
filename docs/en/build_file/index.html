@@ -2645,18 +2645,18 @@
 <h2 id="build-file-example">BUILD File Example<a class="headerlink" href="#build-file-example" title="Permanent link">&para;</a></h2>
 <p>Example: <code>common/base/string/BUILD</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cc_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'string'</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">&#39;algorithm.cpp&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">&#39;format.cpp&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">&#39;concat.cpp&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">'algorithm.cpp'</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">'format.cpp'</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'concat.cpp'</span><span class="p">,</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="p">],</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">hdrs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">&#39;algorithm.h&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">&#39;format.h&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">&#39;concat.h&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">'algorithm.h'</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">'format.h'</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">'concat.h'</span><span class="p">,</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">],</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//common/base:int&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//common/base:int'</span><span class="p">],</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span>
 </code></pre></div>
 <p>BUILD files employ a declarative syntax where developers specify target names, source files, and dependencies without needing to define compilation or linking commands explicitly.</p>
@@ -2701,10 +2701,10 @@ there is a special value: <code>PUBLIC</code>, means visible to everyone, the ta
 are always visible to each other.</p>
 <p>Examples:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[]</span>                                            <span class="c1"># Private, only visible to the current BUILD file</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">]</span>                                    <span class="c1"># Visible to every one</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module1:program12&#39;</span><span class="p">,</span><span class="s1">&#39;//module1:program2&#39;</span><span class="p">]</span>  <span class="c1"># Only visible to these two targets</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module2:*&#39;</span><span class="p">]</span>                               <span class="c1"># Only visible to the targets under the module2 directory, but not to its subdirectories</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;//module3:...&#39;</span><span class="p">]</span>                             <span class="c1"># Only visible to the targets under the module3 directory and all its subdirectories</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'PUBLIC'</span><span class="p">]</span>                                    <span class="c1"># Visible to every one</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module1:program12'</span><span class="p">,</span><span class="s1">'//module1:program2'</span><span class="p">]</span>  <span class="c1"># Only visible to these two targets</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module2:*'</span><span class="p">]</span>                               <span class="c1"># Only visible to the targets under the module2 directory, but not to its subdirectories</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'//module3:...'</span><span class="p">]</span>                             <span class="c1"># Only visible to the targets under the module3 directory and all its subdirectories</span>
 </code></pre></div>
 <p>In Blade 1, all targets are <code>PUBLIC</code> by default. In Blade 2, in order to adapt to the dependency
 management of larger projects, it is adjusted to be private by default.</p>

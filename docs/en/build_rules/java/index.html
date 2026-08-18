@@ -2534,24 +2534,24 @@
 <h2 id="java_library">java_library<a class="headerlink" href="#java_library" title="Permanent link">&para;</a></h2>
 <p>Build a jar from java source file.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;rpc&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'rpc'</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">&#39;src/main/java/**/*.java&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s1">'src/main/java/**/*.java'</span><span class="p">,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">&#39;*Test.java&#39;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'*Test.java'</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="p">]),</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">&#39;src/main/resources/log4j.properties&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">&#39;resources/rpc.conf&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">&#39;resources/services.xml&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="s1">'src/main/resources/log4j.properties'</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="s1">'resources/rpc.conf'</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s1">'resources/services.xml'</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">],</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s1">&#39;//common/rpc:rpc_error_code_proto&#39;</span>         <span class="c1"># Depends on proto_libraries</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="s1">&#39;//common/rpc:rpc_options_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="s1">&#39;//common/net/http/java:http_utilities&#39;</span><span class="p">,</span>    <span class="c1"># Depends on other java libraries</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="s1">&#39;//thirdparty/java/deps:slf4j&#39;</span><span class="p">,</span>             <span class="c1"># Depends on third party java libraries</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="s1">&#39;//thirdparty/java/deps:guava&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="s1">&#39;//thirdparty/java/deps:netty-4.0.36.final&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s1">'//common/rpc:rpc_error_code_proto'</span>         <span class="c1"># Depends on proto_libraries</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="s1">'//common/rpc:rpc_options_proto'</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="s1">'//common/net/http/java:http_utilities'</span><span class="p">,</span>    <span class="c1"># Depends on other java libraries</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="s1">'//thirdparty/java/deps:slf4j'</span><span class="p">,</span>             <span class="c1"># Depends on third party java libraries</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="s1">'//thirdparty/java/deps:guava'</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="s1">'//thirdparty/java/deps:netty-4.0.36.final'</span><span class="p">,</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="p">]</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">)</span>
 </code></pre></div>
@@ -2573,9 +2573,9 @@ src/main/resources/runtime.conf|src/main/resources/runtime.conf | ditto
 </ul>
 <p>Used to describe a prebuilt jar file, but think twice before use it, usually <code>maven_jar</code> is more preferable.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;parquet-column-gdt&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'parquet-column-gdt'</span><span class="p">,</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">prebuilt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">binary_jar</span> <span class="o">=</span> <span class="s1">&#39;parquet-column-1.9.1-SNAPSHOT.jar&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">binary_jar</span> <span class="o">=</span> <span class="s1">'parquet-column-1.9.1-SNAPSHOT.jar'</span><span class="p">,</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
 </code></pre></div>
 <ul>
@@ -2586,9 +2586,9 @@ src/main/resources/runtime.conf|src/main/resources/runtime.conf | ditto
 <p>For java targets,except the normal <code>deps</code>, they also support <code>exported_deps</code>,<code>provided_deps</code>.
 There is a notable difference from C++ targets: for java_library, the dependancies are not <strong>transtive</strong> at the compile phrase.
 For example, in this BUILD file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;A.java&#39;</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:B&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;B.java&#39;</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">&#39;:C&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;C.java&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'A'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'A.java'</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">':B'</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'B'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'B.java'</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="s1">':C'</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'C'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'C.java'</span><span class="p">)</span>
 </code></pre></div>
 <p>The symbols defined in <code>C.java</code> is invisible to <code>A.java</code>, so when you write the deps for a
 java_library, you must add all of the direct dependencies into the deps. you can see you import
@@ -2604,7 +2604,7 @@ they should depends one your dependency, use this attribute will be a help.</p>
 <p>For the above example, if in B.java, some method used the type defined in C.java,the user of <code>B</code>,
 <code>A</code> also have to depends on <code>C</code>, or there will be a compile error. if you put <code>C</code> int the
 <code>exported_deps</code> of <code>B</code>, <code>A</code> will get <code>C</code> as as it compile dependency.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">&#39;B.java&#39;</span><span class="p">,</span> <span class="n">exported_deps</span> <span class="o">=</span> <span class="s1">&#39;:C&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'B'</span><span class="p">,</span> <span class="n">srcs</span> <span class="o">=</span> <span class="s1">'B.java'</span><span class="p">,</span> <span class="n">exported_deps</span> <span class="o">=</span> <span class="s1">':C'</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li>provided_deps attribute</li>
@@ -2616,8 +2616,8 @@ the size of fatjar, and also reduces the conflict with the environment provided 
 <h2 id="maven_jar">maven_jar<a class="headerlink" href="#maven_jar" title="Permanent link">&para;</a></h2>
 <p>Use this rule to describe a jar in the maven repository.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">maven_jar</span> <span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hadoop-common-2.7.2-tdw&#39;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;org.apache.hadoop:hadoop-common:2.7.2-tdw-1.0.1&#39;</span><span class="p">,</span>  <span class="c1"># full maven artifact id</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="n">name</span> <span class="o">=</span> <span class="s1">'hadoop-common-2.7.2-tdw'</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="nb">id</span> <span class="o">=</span> <span class="s1">'org.apache.hadoop:hadoop-common:2.7.2-tdw-1.0.1'</span><span class="p">,</span>  <span class="c1"># full maven artifact id</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">)</span>
 </code></pre></div>
 <p>Besides <code>name</code> and <code>id</code>, maven_jar also provides the following attributes to fit the use of maven repository.</p>
@@ -2638,37 +2638,37 @@ it is recommended to <a href="../../config/#java_config">centralized management<
 <h2 id="java_fat_library">java_fat_library<a class="headerlink" href="#java_fat_library" title="Permanent link">&para;</a></h2>
 <p>Merge all java_library/maven_jar, generate a fatjar, can be used for deploy, same as <code>jar-with-dependencies</code> in maven.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">java_library</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;log_process&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">&#39;**/*.java&#39;</span><span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*Test.java&#39;</span><span class="p">]),</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">&#39;resources/*&#39;</span><span class="p">]),</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'log_process'</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">'**/*.java'</span><span class="p">],</span> <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'*Test.java'</span><span class="p">]),</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="n">glob</span><span class="p">([</span><span class="s1">'resources/*'</span><span class="p">]),</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s1">&#39;:log_proto&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="s1">&#39;//log/com/tencent/monitor:monitor&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="s1">&#39;//log/com/tencent/monitor:schema&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="s1">&#39;//thirdparty/java/deps:hbase-client&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="s1">&#39;//thirdparty/java/deps:snappy&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s1">':log_proto'</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="s1">'//log/com/tencent/monitor:monitor'</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="s1">'//log/com/tencent/monitor:schema'</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="s1">'//thirdparty/java/deps:hbase-client'</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="s1">'//thirdparty/java/deps:snappy'</span><span class="p">,</span>
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="p">],</span>
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">provided_deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="s1">&#39;//thirdparty/java/deps:hadoop-common&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="s1">&#39;//thirdparty/java/deps:hadoop-mapreduce&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="s1">&#39;//thirdparty/java/deps:log4j&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="s1">&#39;//thirdparty/java/deps:slf4j&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="s1">'//thirdparty/java/deps:hadoop-common'</span><span class="p">,</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="s1">'//thirdparty/java/deps:hadoop-mapreduce'</span><span class="p">,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="s1">'//thirdparty/java/deps:log4j'</span><span class="p">,</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="s1">'//thirdparty/java/deps:slf4j'</span><span class="p">,</span>
 <a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="p">],</span>
 <a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="p">)</span>
 <a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">java_fat_library</span><span class="p">(</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;log_process_main&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'log_process_main'</span><span class="p">,</span>
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>        <span class="s1">&#39;:log_process&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="s1">&#39;//thirdparty/java/deps:guava&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>        <span class="s1">':log_process'</span><span class="p">,</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="s1">'//thirdparty/java/deps:guava'</span><span class="p">,</span>
 <a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="p">],</span>
 <a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="n">resources</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="p">(</span><span class="s1">&#39;//log/configuration/log4j.properties&#39;</span><span class="p">,</span> <span class="s1">&#39;log4j.properties&#39;</span><span class="p">),</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>        <span class="p">(</span><span class="s1">&#39;//log/configuration/sites.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;conf/sites.xml&#39;</span><span class="p">),</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="p">(</span><span class="s1">'//log/configuration/log4j.properties'</span><span class="p">,</span> <span class="s1">'log4j.properties'</span><span class="p">),</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>        <span class="p">(</span><span class="s1">'//log/configuration/sites.xml'</span><span class="p">,</span> <span class="s1">'conf/sites.xml'</span><span class="p">),</span>
 <a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="p">],</span>
 <a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="n">exclusions</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="s1">&#39;com.google.protobuf:*:*&#39;</span><span class="p">,</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="s1">&#39;org.apache.spark:*:*&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="s1">'com.google.protobuf:*:*'</span><span class="p">,</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="s1">'org.apache.spark:*:*'</span><span class="p">,</span>
 <a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    <span class="p">]</span>
 <a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="p">)</span>
 </code></pre></div>
@@ -2681,13 +2681,13 @@ it is recommended to <a href="../../config/#java_config">centralized management<
 <h2 id="java_binary">java_binary<a class="headerlink" href="#java_binary" title="Permanent link">&para;</a></h2>
 <p>Build executable from java source files.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">java_binary</span><span class="p">(</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;poppy_java_example&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'poppy_java_example'</span><span class="p">,</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;src/com/soso/poppy/tool/*.Java)&#39;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">'src/com/soso/poppy/tool/*.Java)'</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="p">],</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="s1">&#39;//poppy:poppy_java_client&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="s1">&#39;//poppy:rpc_example_proto&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="s1">'//poppy:poppy_java_client'</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="s1">'//poppy:rpc_example_proto'</span><span class="p">,</span>
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="p">]</span>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">)</span>
 </code></pre></div>
@@ -2695,13 +2695,13 @@ it is recommended to <a href="../../config/#java_config">centralized management<
 <h2 id="java_test">java_test<a class="headerlink" href="#java_test" title="Permanent link">&para;</a></h2>
 <p>Build and run tests.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">java_test</span><span class="p">(</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;poppy_java_test&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'poppy_java_test'</span><span class="p">,</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">&#39;test/com/soso/poppy/**/*Test.Java)&#39;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="n">glob</span><span class="p">(</span><span class="s1">'test/com/soso/poppy/**/*Test.Java)'</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="p">],</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="s1">&#39;//poppy:poppy_java&#39;</span><span class="p">,</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="s1">&#39;//thirdparty/junit:junit&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="s1">'//poppy:poppy_java'</span><span class="p">,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="s1">'//thirdparty/junit:junit'</span><span class="p">,</span>
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="p">],</span>
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">)</span>
 </code></pre></div>

@@ -2597,7 +2597,7 @@
 <h2 id="2-vcpkg-scheme">2. <code>vcpkg#</code> 引用是一个依赖 <em>scheme</em><a class="headerlink" href="#2-vcpkg-scheme" title="Permanent link">&para;</a></h2>
 <p><code>vcpkg</code> 扩展了 Blade 的 <code>#name</code> 系统库家族。形如 <code>&lt;scheme&gt;#&lt;coordinate&gt;</code> 的依赖由
 <code>target._unify_scheme_dep</code> 派发，<code>vcpkg.py</code> 在 import 时注册自己：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">_blade_target</span><span class="o">.</span><span class="n">register_dep_scheme</span><span class="p">(</span><span class="s1">&#39;vcpkg&#39;</span><span class="p">,</span> <span class="n">_vcpkg_dep_handler</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">_blade_target</span><span class="o">.</span><span class="n">register_dep_scheme</span><span class="p">(</span><span class="s1">'vcpkg'</span><span class="p">,</span> <span class="n">_vcpkg_dep_handler</span><span class="p">)</span>
 </code></pre></div>
 <p>这个 import 发生在 <code>load_build_files.py</code> 中，所以 scheme 在任何 BUILD 文件被解析之
 前就已生效。<code>#pthread</code>（无 scheme）仍表示"按名字解析的系统库"；<code>vcpkg#fmt:fmt</code> 表

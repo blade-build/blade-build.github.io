@@ -2616,8 +2616,8 @@ silently dropped from CI.</p>
 </ul>
 <h2 id="4-coverage">4. Coverage<a class="headerlink" href="#4-coverage" title="Permanent link">&para;</a></h2>
 <p>Capture happens at the integration layer, in <code>src/test/run.sh</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">BLADE_PYTHON_INTERPRETER</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PYTHON</span><span class="s2"> -m coverage run \</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s2">    --source=</span><span class="nv">$ROOT</span><span class="s2">/src/blade --rcfile=</span><span class="nv">$ROOT</span><span class="s2">/.coveragerc&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">BLADE_PYTHON_INTERPRETER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PYTHON</span><span class="s2"> -m coverage run \</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s2">    --source=</span><span class="nv">$ROOT</span><span class="s2">/src/blade --rcfile=</span><span class="nv">$ROOT</span><span class="s2">/.coveragerc"</span>
 </code></pre></div>
 <p>So every <code>blade</code> subprocess the integration tests spawn runs under
 <code>coverage</code>. <code>.coveragerc</code> sets <code>parallel = true</code>, which writes

@@ -2972,10 +2972,10 @@ removes most of the per-package <code>cmake_build</code> boilerplate.</p>
 <li><strong>Declare the allowed packages</strong> in <code>BLADE_ROOT</code>:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">baseline</span> <span class="o">=</span> <span class="s1">&#39;2024-12-15&#39;</span><span class="p">,</span>          <span class="c1"># pins the ports tree (recommended)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">baseline</span> <span class="o">=</span> <span class="s1">'2024-12-15'</span><span class="p">,</span>          <span class="c1"># pins the ports tree (recommended)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s1">'openssl'</span><span class="p">:</span> <span class="s1">'3.2.1'</span><span class="p">,</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">},</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
 </code></pre></div>
@@ -2983,11 +2983,11 @@ removes most of the per-package <code>cmake_build</code> boilerplate.</p>
 <li><strong>Depend on a library</strong> with <code>vcpkg#&lt;port&gt;:&lt;lib&gt;</code>:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cc_binary</span><span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;app.cc&#39;</span><span class="p">],</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'app'</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">srcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'app.cc'</span><span class="p">],</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">&#39;vcpkg#fmt:fmt&#39;</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s1">'vcpkg#fmt:fmt'</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s1">'vcpkg#openssl:ssl'</span><span class="p">,</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="p">],</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
 </code></pre></div>
@@ -3035,8 +3035,8 @@ keeps every external dependency declared and versioned in one place. Each value
 is either a version string or a dict with the keys below:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">vcpkg_config</span><span class="p">(</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span>                                   <span class="c1"># short form</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;curl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;8.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span> <span class="s1">&#39;http2&#39;</span><span class="p">]},</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span>                                   <span class="c1"># short form</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">'curl'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'version'</span><span class="p">:</span> <span class="s1">'8.5.0'</span><span class="p">,</span> <span class="s1">'features'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'ssl'</span><span class="p">,</span> <span class="s1">'http2'</span><span class="p">]},</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">},</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
 </code></pre></div>
@@ -3110,7 +3110,7 @@ module that can't see what another module registered (a segfault). The default
 shared instance. You only need to pin <code>linkage</code> for these when you want to
 override the default — e.g. <code>'dynamic'</code> to force shared even for static-link
 binaries:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s1">&#39;protobuf&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;3.21.12&#39;</span><span class="p">},</span>   <span class="c1"># &#39;auto&#39; default: one shared libprotobuf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s1">'protobuf'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'version'</span><span class="p">:</span> <span class="s1">'3.21.12'</span><span class="p">},</span>   <span class="c1"># 'auto' default: one shared libprotobuf</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                      <span class="c1"># across all dylibs, static for static exes</span>
 </code></pre></div>
 <h3 id="link_all_symbols-true-force-static-initializers"><code>link_all_symbols: True</code> — force static initializers<a class="headerlink" href="#link_all_symbols-true-force-static-initializers" title="Permanent link">&para;</a></h3>
@@ -3124,18 +3124,18 @@ the default <code>'auto'</code>/<code>'dynamic'</code> linkage, not by this.)</p
 code includes them under a subdir (<code>"snappy/snappy.h"</code>). <code>include_prefix</code>
 exposes the port's include dir under the path(s) you use, with no hand-written
 wrapper headers — the port's native layout still resolves too:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">},</span>          <span class="c1"># &quot;snappy/h&quot; -&gt; include/h</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">&#39;zlib&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span> <span class="s1">&#39;thirdparty/zlib&#39;</span><span class="p">]},</span>  <span class="c1"># two prefixes</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># {prefix: subdir} maps to a header already nested in the port&#39;s include:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">&#39;glog&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;linkage&#39;</span><span class="p">:</span> <span class="s1">&#39;dynamic&#39;</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>           <span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;thirdparty/glog&#39;</span><span class="p">:</span> <span class="s1">&#39;glog&#39;</span><span class="p">}},</span>   <span class="c1"># -&gt; include/glog/h</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">'snappy'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="s1">'snappy'</span><span class="p">},</span>          <span class="c1"># "snappy/h" -&gt; include/h</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">'zlib'</span><span class="p">:</span>   <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'zlib'</span><span class="p">,</span> <span class="s1">'thirdparty/zlib'</span><span class="p">]},</span>  <span class="c1"># two prefixes</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># {prefix: subdir} maps to a header already nested in the port's include:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">'glog'</span><span class="p">:</span>   <span class="p">{</span><span class="s1">'linkage'</span><span class="p">:</span> <span class="s1">'dynamic'</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>           <span class="s1">'include_prefix'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'thirdparty/glog'</span><span class="p">:</span> <span class="s1">'glog'</span><span class="p">}},</span>   <span class="c1"># -&gt; include/glog/h</span>
 </code></pre></div>
 <h3 id="cmake_options-extra-build-options"><code>cmake_options</code> — extra build options<a class="headerlink" href="#cmake_options-extra-build-options" title="Permanent link">&para;</a></h3>
 <p>Pass per-port CMake configure options (emitted as that port's
 <code>VCPKG_CMAKE_CONFIGURE_OPTIONS</code>). For example vcpkg's snappy disables RTTI
 unless asked otherwise:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s1">&#39;snappy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;include_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;snappy&#39;</span><span class="p">,</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           <span class="s1">&#39;cmake_options&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-DSNAPPY_WITH_RTTI=ON&#39;</span><span class="p">]},</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s1">'snappy'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'include_prefix'</span><span class="p">:</span> <span class="s1">'snappy'</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           <span class="s1">'cmake_options'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'-DSNAPPY_WITH_RTTI=ON'</span><span class="p">]},</span>
 </code></pre></div>
 <h2 id="managed-vs-unmanaged-installs">Managed vs. unmanaged installs<a class="headerlink" href="#managed-vs-unmanaged-installs" title="Permanent link">&para;</a></h2>
 <p><code>vcpkg_config(manage=...)</code> selects who runs <code>vcpkg install</code>.</p>
@@ -3155,14 +3155,14 @@ existing install tree at <code>&lt;root&gt;/installed/&lt;triplet&gt;/</code>, w
 <code>vcpkg_config.root</code> or <code>$VCPKG_ROOT</code>:</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vcpkg<span class="w"> </span>install<span class="w"> </span>fmt<span class="w"> </span>openssl<span class="w">          </span><span class="c1"># you install</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">vcpkg_config</span><span class="p">(</span><span class="n">manage</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fmt&#39;</span><span class="p">:</span> <span class="s1">&#39;10.2.1&#39;</span><span class="p">,</span> <span class="s1">&#39;openssl&#39;</span><span class="p">:</span> <span class="s1">&#39;3.2.1&#39;</span><span class="p">})</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">vcpkg_config</span><span class="p">(</span><span class="n">manage</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">packages</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'10.2.1'</span><span class="p">,</span> <span class="s1">'openssl'</span><span class="p">:</span> <span class="s1">'3.2.1'</span><span class="p">})</span>
 </code></pre></div></p>
 <h2 id="multi-library-ports">Multi-library ports<a class="headerlink" href="#multi-library-ports" title="Permanent link">&para;</a></h2>
 <p>Ports such as <code>openssl</code>, <code>protobuf</code> or <code>icu</code> produce several archives. Each is
 its own target, and you declare the ones you use:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">,</span>         <span class="c1"># libssl.a</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">,</span>      <span class="c1"># libcrypto.a</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s1">'vcpkg#openssl:ssl'</span><span class="p">,</span>         <span class="c1"># libssl.a</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s1">'vcpkg#openssl:crypto'</span><span class="p">,</span>      <span class="c1"># libcrypto.a</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">]</span>
 </code></pre></div>
 <p>A bare <code>vcpkg#openssl</code> is rejected, so you never accidentally pull in libraries
@@ -3181,8 +3181,8 @@ list them yourself. (System/SDK libraries a port needs — <code>ws2_32</code>, 
 Point <code>proto_library_config</code> at the vcpkg-provided protoc (and libprotobuf) so
 both come from the same pinned port:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">proto_library_config</span><span class="p">(</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">&#39;vcpkg#protobuf&#39;</span><span class="p">,</span>                 <span class="c1"># protoc from the vcpkg protobuf port</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#protobuf:protobuf&#39;</span><span class="p">],</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">protoc</span> <span class="o">=</span> <span class="s1">'vcpkg#protobuf'</span><span class="p">,</span>                 <span class="c1"># protoc from the vcpkg protobuf port</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">protobuf_libs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vcpkg#protobuf:protobuf'</span><span class="p">],</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">)</span>
 </code></pre></div>
 <p><code>'vcpkg#&lt;port&gt;'</code> resolves to the protoc installed in Blade's vcpkg tree. The
@@ -3191,14 +3191,14 @@ protobuf version re-runs codegen automatically (no stale <code>.pb.*</code>).</p
 <h2 id="header-only-ports">Header-only ports<a class="headerlink" href="#header-only-ports" title="Permanent link">&para;</a></h2>
 <p>For a header-only port, use the <code>:hdrs</code> sentinel — Blade exposes the include
 directory and links no archive:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vcpkg#nlohmann-json:hdrs&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'vcpkg#nlohmann-json:hdrs'</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="discovering-ports-and-their-libraries">Discovering ports and their libraries<a class="headerlink" href="#discovering-ports-and-their-libraries" title="Permanent link">&para;</a></h2>
 <h3 id="which-ports-and-versions-are-available">Which ports and versions are available<a class="headerlink" href="#which-ports-and-versions-are-available" title="Permanent link">&para;</a></h3>
 <p>The available ports and their default versions are fixed by your <code>baseline</code>
 (the ports tree at that commit). To explore them:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>vcpkg<span class="w"> </span>search<span class="w">            </span><span class="c1"># every port and its version in the ports tree</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>vcpkg<span class="w"> </span>search<span class="w"> </span>fmt<span class="w">        </span><span class="c1"># ports whose name/description matches &quot;fmt&quot;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>vcpkg<span class="w"> </span>search<span class="w"> </span>fmt<span class="w">        </span><span class="c1"># ports whose name/description matches "fmt"</span>
 </code></pre></div>
 <p><code>vcpkg search</code> reflects the ports tree at its current checkout. To inspect a
 specific <code>baseline</code>, check the vcpkg repo out at that commit first
@@ -3273,11 +3273,11 @@ triplet with <code>vcpkg_config(triplet='...')</code> when you need a specific o
 layer, hide the <code>vcpkg#</code> references behind ordinary <code>cc_library</code> wrappers so
 business code never sees them:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># //third_party/openssl/BUILD</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ssl&#39;</span><span class="p">,</span>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:ssl&#39;</span><span class="p">],</span>    <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;crypto&#39;</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vcpkg#openssl:crypto&#39;</span><span class="p">],</span> <span class="n">visibility</span><span class="o">=</span><span class="s1">&#39;PUBLIC&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'ssl'</span><span class="p">,</span>    <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'vcpkg#openssl:ssl'</span><span class="p">],</span>    <span class="n">visibility</span><span class="o">=</span><span class="s1">'PUBLIC'</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'crypto'</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'vcpkg#openssl:crypto'</span><span class="p">],</span> <span class="n">visibility</span><span class="o">=</span><span class="s1">'PUBLIC'</span><span class="p">)</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># //services/payment/BUILD</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span> <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;payment.cc&#39;</span><span class="p">],</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;//third_party/openssl:ssl&#39;</span><span class="p">])</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">cc_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'payment'</span><span class="p">,</span> <span class="n">srcs</span><span class="o">=</span><span class="p">[</span><span class="s1">'payment.cc'</span><span class="p">],</span> <span class="n">deps</span><span class="o">=</span><span class="p">[</span><span class="s1">'//third_party/openssl:ssl'</span><span class="p">])</span>
 </code></pre></div>
 <h2 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h2>
 <p>All settings live in <code>vcpkg_config(...)</code> in <code>BLADE_ROOT</code>. See the
