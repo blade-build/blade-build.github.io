@@ -2494,14 +2494,13 @@ avoids per-shell quoting.</p>
   Turning on this option will reduce build performance, but will help reduce build failures caused by insufficient resources.</li>
 </ul>
 <p>Example:</p>
-<p>```python
+<p><code>ython
 gen_rule(
     name='test_gen_target',
     cmd='echo what_a_nice_day;touch test2.c',
     deps=[':test_gen'],
     outs=['test2.c']
-)
-````</p>
+)</code></p>
 <p>NOTE:</p>
 <p><code>gen_rule</code> only writes <code>outs</code> files in the subdir of BUILD_DIR, but when you use <code>gen_rule</code>
 to generate source code and want to reference the generated source code in other targets, just
