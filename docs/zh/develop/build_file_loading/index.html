@@ -2624,9 +2624,9 @@ None)</code> 执行。globals 是 <code>_get_globals_for_build_file()</code> 为
 <li><strong>基于 deps 闭包的惰性加载</strong>让加载耗时与工作区中真正涉及的切片大体成
   正比。在大型 monorepo 里，这是 <code>blade build //foo:bar</code> 不必读整棵
   workspace 的主因。</li>
-<li><strong>BUILD 去重（<code>processed_dirs</code>）</strong>把潜在的指数级 BFS 退化成线性：每个
+<li>**BUILD 去重（<code>processed_dirs</code>）**把潜在的指数级 BFS 退化成线性：每个
   BUILD 在一次 <code>blade</code> 调用中只加载一次，不管多少边指向它。</li>
-<li><strong>扩展缓存（<code>__loaded_extension_info</code>）</strong>是同样思路在另一层：被许多
+<li>**扩展缓存（<code>__loaded_extension_info</code>）**是同样思路在另一层：被许多
   BUILD <code>load()</code> 的扩展文件也只 <code>exec</code> 一次。</li>
 <li><strong>每 target fingerprint</strong>（以 <code>#Fingerprint=...</code> 写在 per-target
   <code>.build.ninja</code> 第一行）让增量构建在 target 的加载期输入（srcs、deps、

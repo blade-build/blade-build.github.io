@@ -2699,7 +2699,7 @@ schema 与 <strong>action 的源码</strong>：</p>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">kind</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">default</span><span class="p">),</span> <span class="n">a</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">exts</span> <span class="ow">or</span> <span class="p">()))</span> <span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 <p><code>_action_fingerprint</code> 对 <code>inspect.getsource(self._action)</code> 加上 action 所在文件的
-md5 做哈希。这正是 V1 限制<strong>"action 要自包含在它的 <code>.bld</code> 里"</strong>的由来：action 从其
+md5 做哈希。这正是 V1 限制**"action 要自包含在它的 <code>.bld</code> 里"**的由来：action 从其
 它 <code>.py</code> 模块 import 的辅助函数<em>不</em>在这份指纹里，所以改它们不会触发重建。schema 之
 所以可序列化，正是为了能在这里无特殊处理地加入熵。</p>
 <h2 id="8">8. 由设计自然导出的限制<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>

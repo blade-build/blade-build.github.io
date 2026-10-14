@@ -2623,8 +2623,8 @@ inclusion-declaration pickle、per-target ninja 文件，以及（cc wrapper 内
 <li><strong>拓扑序是为了生成阶段，不是执行阶段。</strong> ninja 完全按图自己调度执
   行。blade 排序只是为了在写某个 target 的 rule 前，能拿到来自其依赖
   的字段（如 <code>declared_genhdrs</code> 从 <code>proto_library</code> 传给 <code>cc_library</code>）。</li>
-<li><strong>生成头的 order-only deps（<code>||</code>）</strong>到处都是。它保证生成器先于任何可
-  能 <code>#include</code> 该生成头的编译运行，但<strong>不</strong>因生成器输出的 mtime 变化
+<li><strong>生成头的 order-only deps（<code>||</code>）<strong>到处都是。它保证生成器先于任何可
+  能 <code>#include</code> 该生成头的编译运行，但</strong>不</strong>因生成器输出的 mtime 变化
   而强迫重编。配合生成器规则的 <code>restat</code>，得到"再生成但内容未变 → 不
   rebuild"的语义；真正基于内容的重新触发由编译器 depfile（<code>-MMD</code>）负
   责。</li>
