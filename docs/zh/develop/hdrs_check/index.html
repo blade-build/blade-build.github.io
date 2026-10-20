@@ -3062,7 +3062,7 @@
 <li><strong>沙箱</strong>在文件系统层面隔离：但一个 <code>.cc</code> 的沙箱必须包含其<strong>传递闭包</strong>的全部头文件（否则合法的传递包含会找不到文件）。因此沙箱只能拦住"包含了根本不在闭包里的头"（完全未声明），却<strong>无法分辨</strong>"直接包含了某个传递依赖（而非直接依赖）的头"这类 strict-deps 违规。</li>
 <li><strong><code>layering_check</code></strong> 补上后者：它基于 Clang 的 module map + <code>-fmodules-decluse</code>（declared uses）——为每个库生成 module map 标注其头文件归属及到<strong>直接依赖</strong>的 <code>use</code> 边，由编译器在编译时强制"被包含的头必须来自已声明 <code>use</code> 的模块"。它是编译期、随普通编译附带（无需真正构建 <code>.pcm</code>），但<strong>依赖工具链支持</strong>：<code>-fmodules-decluse</code> 仅 Clang 提供，gcc 无等价物，故 Bazel 仅在 Unix/macOS 的 clang 上支持该特性。</li>
 </ul>
-<p>本机制用**单一的"观测 + 所有权映射"**同时覆盖这两件事：<code>"... is not declared in any cc target"</code> 对应沙箱拦截的"完全未声明"，<code>libs ∩ (deps ∪ self) == ∅</code> 对应 <code>layering_check</code> 的"直接包含必须来自直接依赖"。而且因为它观测的是 <code>-H</code> / <code>/showIncludes</code> 的输出、而非依赖某个 Clang 专属的强制开关，所以在 <strong>gcc、clang、MSVC</strong> 上都能工作。</p>
+<p>本机制用<strong>单一的"观测 + 所有权映射"</strong>同时覆盖这两件事：<code>"... is not declared in any cc target"</code> 对应沙箱拦截的"完全未声明"，<code>libs ∩ (deps ∪ self) == ∅</code> 对应 <code>layering_check</code> 的"直接包含必须来自直接依赖"。而且因为它观测的是 <code>-H</code> / <code>/showIncludes</code> 的输出、而非依赖某个 Clang 专属的强制开关，所以在 <strong>gcc、clang、MSVC</strong> 上都能工作。</p>
 <hr />
 <h2 id="_9">附录：相关产物文件<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <table>

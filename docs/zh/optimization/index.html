@@ -2490,7 +2490,7 @@
 </ul>
 <p>blade 负责构建标志和 clang 的合并步骤；而产出<strong>代表性</strong>负载（以及判断 profile 是否过期）是你的职责。profile <strong>不能</strong>跨编译器复用——插桩、运行、优化都要在同一套工具链上完成。</p>
 <blockquote>
-<p><strong>插桩</strong>构建会定义 <code>BLADE_PGO_GENERATE</code>（Blade 私有宏，非编译器/业界标准），便于源码在长跑或 fork 型服务里主动刷写 profile —— 例如 <code>#ifdef BLADE_PGO_GENERATE</code> → <code>__llvm_profile_write_file()</code>（clang）/ <code>__gcov_dump()</code>（gcc）/ <code>PgoAutoSweep(...)</code>（MSVC）。**优化（use）**构建和 <strong>AutoFDO</strong> 不定义任何宏：这些二进制应当与普通 release 行为完全一致。</p>
+<p><strong>插桩</strong>构建会定义 <code>BLADE_PGO_GENERATE</code>（Blade 私有宏，非编译器/业界标准），便于源码在长跑或 fork 型服务里主动刷写 profile —— 例如 <code>#ifdef BLADE_PGO_GENERATE</code> → <code>__llvm_profile_write_file()</code>（clang）/ <code>__gcov_dump()</code>（gcc）/ <code>PgoAutoSweep(...)</code>（MSVC）。<strong>优化（use）</strong>构建和 <strong>AutoFDO</strong> 不定义任何宏：这些二进制应当与普通 release 行为完全一致。</p>
 </blockquote>
 <h3 id="pgoautofdo">采样式 PGO（AutoFDO）<a class="headerlink" href="#pgoautofdo" title="Permanent link">&para;</a></h3>
 <p>上面那套插桩式 PGO 要"插桩构建 → 跑负载 → 优化构建"两遍构建，比较繁琐，且插桩本身有运行开销。</p>
